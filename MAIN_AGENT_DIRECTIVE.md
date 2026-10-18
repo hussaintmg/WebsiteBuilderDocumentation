@@ -40,8 +40,13 @@ Doing otherwise results in misaligned architecture, wasted tokens, and rework.
 When the user presents an idea or starts a new project:
 1. Open [`DISCOVERY_QUESTIONNAIRE.md`](./DISCOVERY_QUESTIONNAIRE.md).
 2. Ask questions in structured, digestible batches (never overwhelm the user with 50 questions at once; group them logically by Phase: Scope -> UI/UX -> RBAC -> Features -> Safeguards).
-3. Always suggest recommended defaults (e.g. `(Recommended) Next.js App Router with FastAPI backend`).
-4. Support the user in their preferred language (English, Urdu, or Roman Urdu).
+3. **Explicit Backend Placement Inquiry**: The agent **MUST explicitly ask the user upfront** whether they want the backend built:
+   - Inside the same Next.js project (Unified Monolith).
+   - As a dedicated Next.js Backend API project (Dual Next.js: `frontend/` + `backend/`).
+   - As a dedicated Python FastAPI backend.
+   - As a dedicated Node.js/Express backend.
+4. Always suggest recommended defaults based on their workload.
+5. Support the user in their preferred language (English, Urdu, or Roman Urdu).
 
 ---
 
@@ -63,6 +68,7 @@ Once answers are received:
 Once the plan is approved:
 1. Follow **Foundation-First rule**:
    - **Original & Bespoke Design Mandate (Design Apna Banana Hai)**: Documentation code examples and color palettes are technical architecture blueprints—**NEVER copy them verbatim into the project**. The agent must craft an original visual identity, bespoke color palette, tailored card layouts, and custom typography pairing for every single project.
+   - **Backend-Only Payment Safeguard Enforcement**: All licensing checks and payment verification calls must execute **strictly from the backend server**; the frontend browser must never call the licensing API directly.
    - Set up **Tailwind CSS** with dual-theme (`dark:`) configuration and bespoke typography imports per [`rules/DESIGN_ARCHITECTURE.md`](./rules/DESIGN_ARCHITECTURE.md) and [`rules/FRONTEND_DESIGN_RULES.md`](./rules/FRONTEND_DESIGN_RULES.md).
    - Scaffold the foundational UI atoms: custom Floating Label Inputs (Text, Textarea, Select), `cursor-pointer` Buttons, and Resizable `h-dvh` Sidebar.
    - Set up the database schema and connection layer per [`rules/BACKEND_CONNECTION_RULES.md`](./rules/BACKEND_CONNECTION_RULES.md).

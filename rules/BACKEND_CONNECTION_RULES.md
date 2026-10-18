@@ -66,6 +66,66 @@ Next.js Application (/src/app)
 
 ---
 
+### Mode C: Dual Next.js Projects Architecture (Frontend Next.js + Dedicated Backend Next.js API)
+Used when a team desires the full power of Next.js App Router for the Frontend UI, while having a completely independent, dedicated Next.js project solely dedicated to serving the Backend API, Route Handlers, Database ORM, and Webhooks.
+
+```
+Root Workspace /
+├── frontend/               <-- Next.js UI Application (Port 3000 / app.domain.com)
+│   ├── src/app/            <-- Pages, Layouts, SSR & Client Components
+│   └── lib/apiClient.ts    <-- Typed fetcher targeting Backend URL
+│
+└── backend/                <-- Dedicated Next.js Backend API (Port 3001 / api.domain.com)
+    ├── src/app/api/        <-- Pure Route Handlers (GET, POST, PUT, DELETE)
+    ├── src/db/             <-- Database Schemas, Drizzle / Prisma / PostgreSQL
+    └── middleware.ts       <-- CORS, Auth tokens, Rate Limiting
+```
+
+#### Dual Next.js Standards:
+1. **Frontend Configuration (`frontend/.env.local`)**:
+   `NEXT_PUBLIC_API_URL=http://localhost:3001/api` (Production: `https://api.yourdomain.com/api`)
+2. **Backend Dedicated CORS Middleware (`backend/src/middleware.ts`)**:
+   Must permit cross-origin requests from the frontend with credentials (cookies):
+   ```typescript
+   import { NextResponse } from "next/server";
+   import type { NextRequest } from "next/server";
+
+   export function middleware(request: NextRequest) {
+     const origin = request.headers.get("origin") || "";
+     const allowedOrigins = [
+       "http://localhost:3000",
+       process.env.FRONTEND_URL || "https://app.yourdomain.com",
+     ];
+
+     if (request.method === "OPTIONS") {
+       return new NextResponse(null, {
+         status: 200,
+         headers: {
+           "Access-Control-Allow-Origin": allowedOrigins.includes(origin) ? origin : "",
+           "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+           "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+           "Access-Control-Allow-Credentials": "true",
+         },
+       });
+     }
+
+     const response = NextResponse.next();
+     if (allowedOrigins.includes(origin)) {
+       response.headers.set("Access-Control-Allow-Origin", origin);
+       response.headers.set("Access-Control-Allow-Credentials", "true");
+     }
+     return response;
+   }
+
+   export const config = {
+     matcher: "/api/:path*",
+   };
+   ```
+3. **Frontend Fetch Client**:
+   All fetch calls include `credentials: "include"` to pass auth cookies across the dual Next.js origins.
+
+---
+
 ## 📦 2. Standardized API Response Envelope
 
 Every API endpoint (whether FastAPI or Serverless) must return a consistent JSON response structure:

@@ -6,24 +6,46 @@
 
 ## 🎯 Core Principles & Security Constraints
 
-1. **Owner-Only Visibility**:
+1. **Backend-Only Verification Mandate (Zero Direct Frontend Calls)**:
+   - All license checks, payment status verifications, and safeguard API calls **MUST ALWAYS originate from the Backend Server** (FastAPI / Dedicated Next.js Backend / Node.js).
+   - **NEVER allow the frontend client or browser to make direct calls to the developer licensing server.** Frontend-originating calls are vulnerable to browser devtool interception, request blocking, and script tampering.
+2. **Sovereign Backend Gate ("Backend Allow Kare Ga To Hi Website Chale Gi")**:
+   - The backend server is the absolute sovereign gatekeeper of the application.
+   - The backend periodically queries the developer licensing authority server-to-server (with secure background caching, e.g. 1-6 hour TTL, to prevent external network hiccups).
+   - **Backend Permission Gate**: If the backend verifies that the account is in good standing, it serves all API routes and data normally. If the backend determines that service is locked/unpaid past the 8th grace period, the backend restricts protected endpoints and transmits the locked status to the frontend.
+3. **Owner-Only Visibility**:
    - The payment status banner must **ONLY** ever be rendered for authenticated users with the `Owner` role.
    - Under no circumstances should `Customer`, `Staff / Employee`, or public anonymous visitors ever see or have DOM access to this banner.
-2. **Grace Period Rule (The 8th of the Month)**:
+4. **Grace Period Rule (The 8th of the Month)**:
    - For monthly billing cycles, the client has a built-in grace period until the **8th calendar day of each month**.
    - If payment is pending on or before the 8th: A clean, respectful, non-blocking notification bar is displayed at the top of the Owner's dashboard.
    - If payment is pending after the 8th: The banner switches to an urgent payment resolution status.
-3. **Zero Impact on Business Operations**:
-   - The banner must never crash the application.
-   - If the developer licensing API is unreachable or times out, the system **fails open** (`paymentClear: true` as fallback) or logs silently, preventing accidental downtime for the client.
+5. **Zero Accidental Downtime (Fail-Open / Cache Resilience)**:
+   - If the developer licensing server is temporarily unreachable or times out, the backend relies on the last verified cached state or gracefully fails open (`paymentClear: true` fallback) while logging the issue silently.
+6. **Future Payment Architecture Note**:
+   - Complete extended payment safeguards, tier-based lockouts, and billing integration specs will be expanded further per client requirements, but the **Backend-Only Call Standard** is immutable across all projects.
 
 ---
 
-## 📡 API Contract (Abstract Developer Specification)
+## 📡 Architecture & API Contract (Server-to-Server Flow)
 
-The client application periodically pings the developer license/payment verification endpoint (or an environment-configured webhook):
+```
+┌─────────────────────────┐          Internal API Call          ┌──────────────────────────┐
+│   Frontend Client App   │ ───────────────────────────────────►│      Backend Server      │
+│ (Next.js UI / React)    │ ◄───────────────────────────────────│ (FastAPI / Next.js API)  │
+└─────────────────────────┘      Status: CLEAR or RESTRICTED    └────────────┬─────────────┘
+                                                                             │
+                                                                 Server-to-Server HTTPS
+                                                                 (Never exposed to browser)
+                                                                             │
+                                                                             ▼
+                                                                ┌──────────────────────────┐
+                                                                │  Developer Licensing /   │
+                                                                │  Billing Authority API   │
+                                                                └──────────────────────────┘
+```
 
-### Request
+### Server-to-Server Request (Backend to Licensing API)
 ```http
 GET /api/system/billing-status
 Headers:

@@ -16,15 +16,19 @@ What is the scope of this build?
 
 ---
 
-### Q1.2: Core Technology Stack (Konsa Framework & Database?)
-Which technology stack do you prefer?
-- [x] **(Recommended) Next.js (App Router) + FastAPI (Python Backend) + PostgreSQL (Supabase/Neon)**  
-  *Best for high-performance dedicated server tasks, data processing, and enterprise dashboards.*
-- [ ] **Full-Stack Next.js (TypeScript) + Serverless Route Handlers + PostgreSQL / Prisma**  
-  *Best for rapid deployment on Vercel without maintaining a dedicated Python backend.*
-- [ ] **Vite + React (Frontend SPA) + Node.js / Express (Backend) + MongoDB**  
-  *Best for flexible MERN stack architectures.*
-- [ ] **FastAPI Backend Only + Swagger/OpenAPI Docs + PostgreSQL / SQLAlchemy**
+### Q1.2: Core Technology Stack & Backend Placement (Backend Kahan Rakhna Hai?)
+> **MANDATORY AGENT REQUIREMENT**: The agent MUST ask the user upfront how they want the backend structured (inside the same Next.js project, as a separate Next.js backend project, as Python FastAPI, or Node.js).
+Which architectural setup do you prefer?
+- [x] **(Recommended Dual Next.js) Next.js Frontend + Dedicated Next.js Backend API (2 Separate Next.js Projects)**:  
+  - `frontend/`: Next.js App Router for UI, Layouts, SSR, and Client Components.  
+  - `backend/`: Dedicated Next.js project solely hosting `/api` Route Handlers, Database ORM, Background Jobs, and Webhooks.  
+  *Best for team separation, independent deployments, and end-to-end TypeScript.*
+- [ ] **Next.js (App Router) Frontend + Dedicated FastAPI (Python) Backend + PostgreSQL**:  
+  *Best for high-performance dedicated server tasks, Python AI/data pipelines, and enterprise scale.*
+- [ ] **Unified Full-Stack Next.js Monolith (Single Next.js Project)**:  
+  *Frontend UI and internal `/api` Route Handlers reside inside a single repository. Zero CORS, fast deployment.*
+- [ ] **Next.js Frontend + Dedicated Node.js / Express Backend + MongoDB/PostgreSQL**:  
+  *Best for traditional Node microservices.*
 - [ ] **Custom Stack** *(Specify frontend, backend, database, and ORM)*
 
 ---
