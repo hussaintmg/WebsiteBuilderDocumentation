@@ -62,6 +62,7 @@ Once answers are received:
 ### Phase 3: Scaffolding & Foundation First
 Once the plan is approved:
 1. Follow **Foundation-First rule**:
+   - **Original & Bespoke Design Mandate (Design Apna Banana Hai)**: Documentation code examples and color palettes are technical architecture blueprints—**NEVER copy them verbatim into the project**. The agent must craft an original visual identity, bespoke color palette, tailored card layouts, and custom typography pairing for every single project.
    - Set up **Tailwind CSS** with dual-theme (`dark:`) configuration and bespoke typography imports per [`rules/DESIGN_ARCHITECTURE.md`](./rules/DESIGN_ARCHITECTURE.md) and [`rules/FRONTEND_DESIGN_RULES.md`](./rules/FRONTEND_DESIGN_RULES.md).
    - Scaffold the foundational UI atoms: custom Floating Label Inputs (Text, Textarea, Select), `cursor-pointer` Buttons, and Resizable `h-dvh` Sidebar.
    - Set up the database schema and connection layer per [`rules/BACKEND_CONNECTION_RULES.md`](./rules/BACKEND_CONNECTION_RULES.md).
@@ -100,6 +101,7 @@ Before marking any task or sprint as completed:
 ## ⚡ Agent Behavioral Guardrails
 
 1. **Aesthetics are Non-Negotiable**: No barebones, plain HTML, or default browser aesthetics. Use sleek dark modes, glassmorphism, curated typography (e.g. Outfit / Inter), smooth transitions, and polished micro-animations.
-2. **Strict RBAC Separation**: Developer role is infrastructure/platform guardian; Owner is business master. Developer must NEVER lock out or modify Owner business permissions without explicit credentials.
-3. **Payment Safeguard UI Discretion**: If the developer payment safeguard is enabled, the unpaid notification bar must ONLY be visible to the `Owner` role. Never expose it to customers, employees, or public users.
-4. **Resilience & Graceful Fallbacks**: If external APIs (WhatsApp, SMTP, Biometric hardware) are unavailable or fail, provide graceful UI fallbacks and clear error toasts instead of crashing the app.
+2. **Original & Bespoke Design (Design Apna Banana Hai - No Blind Copying from Docs)**: Documentation code examples and sample palettes are architectural blueprints and mechanical references. The agent MUST create a completely original, brand-tailored, and project-specific design. Never copy-paste dummy colors, mock cards, or placeholder layouts from `Main-docs`.
+3. **Strict RBAC Separation**: Developer role is infrastructure/platform guardian; Owner is business master. Developer must NEVER lock out or modify Owner business permissions without explicit credentials.
+4. **Payment Safeguard UI Discretion**: If the developer payment safeguard is enabled, the unpaid notification bar must ONLY be visible to the `Owner` role. Never expose it to customers, employees, or public users.
+5. **Resilience & Graceful Fallbacks**: If external APIs (WhatsApp, SMTP, Biometric hardware) are unavailable or fail, provide graceful UI fallbacks and clear error toasts instead of crashing the app.

@@ -1,6 +1,9 @@
 # Master Design Architecture & UI/UX System Specification
 
 > **CORE MANDATE**: Tailwind CSS is the exclusive, mandatory styling framework across all projects. Every interface must feature state-of-the-art micro-animations, bespoke typography, fluid hover transitions, accessible dark/light themes, and specialized interactive components (Floating Label inputs, resizable `dvh` sidebars, animated toasts, and animated icons).
+>
+> 👑 **THE GOLDEN LAW: "DESIGN APNA BANANA HAI" (ZERO BLIND COPYING FROM DOCS)**:  
+> This documentation defines architectural mechanics, structural patterns, and behavioral contracts. The AI agent or developer **MUST craft an original, bespoke, brand-tailored visual design** for each specific project. **NEVER copy-paste the exact dummy colors, example layouts, or sample palettes verbatim from these docs**. The color harmonies, typography pairings, card layouts, hero styling, and aesthetic personality must be handcrafted uniquely to match the client's domain and brand identity.
 
 ---
 

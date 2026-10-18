@@ -4,6 +4,19 @@
 
 ---
 
+## 👑 0. The Law of Original & Bespoke Design ("Design Apna Banana Hai - No Blind Copying from Docs")
+
+> **CRITICAL ARCHITECTURAL DIRECTIVE FOR ALL AGENTS & DEVELOPERS**:
+> - **Documentation is an Architectural Blueprint, NOT a Static Template**: All code snippets, color palettes, card layouts, and dummy examples in `Main-docs` exist to define **mechanics, structural rules, and behavioral contracts** (e.g. dynamic `h-dvh` sidebars, floating label transitions, hybrid desktop table vs mobile cards, marquee drag selection math, keyboard event stacks).
+> - **NEVER Blindly Copy Documentation Design**: You must NEVER copy-paste the exact dummy colors, placeholder cards, or generic mock themes verbatim from the documentation into the project.
+> - **Design Apna Banana Hai (Craft Bespoke UI/UX)**: Every application MUST have its own dedicated, bespoke visual identity:
+>   1. **Tailored Color Palette**: Curate brand-specific primary, secondary, and accent colors tailored to the client's business domain (e.g. obsidian & emerald for fintech, deep midnight indigo & cyan for cloud SaaS, rich amber & slate for logistics).
+>   2. **Distinct Typography Pairing**: Select and configure intentional font pairings from our bespoke font library (e.g. Neofolio + Plus Jakarta Sans, Bierika + Outfit, Nexo Kora + Inter) that express the unique brand personality.
+>   3. **Bespoke Component Styling**: Design custom card layouts, hero sections, metric badges, and empty states tailored specifically to the project's actual data models and workflows.
+>   4. **WOW-Factor Polish**: Handcrafted micro-animations, glassmorphic depths, and glowing hover states that blow the user away at first glance.
+
+---
+
 ## 🎨 1. Tailwind CSS Mandatory Standard
 
 Tailwind CSS (v3 / v4) is the mandatory styling engine across all applications. Do not use plain, unstyled HTML or basic CSS files.

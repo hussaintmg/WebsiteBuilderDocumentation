@@ -40,6 +40,18 @@ How should the backend be hosted?
 
 ## 🎨 Phase 2: Design Aesthetics, UI/UX & Component Architecture
 
+### Q2.0: Bespoke Brand Identity & Aesthetic Theme ("Design Apna Banana Hai")
+> **MANDATORY PRINCIPLE**: Documentation code snippets are mechanical blueprints. The agent will craft a completely original, bespoke visual identity for your project, NOT a generic copy-paste from docs.
+What is the visual personality, vibe, and bespoke color motif of your brand?
+- [x] **(Recommended) High-End Obsidian & Sky Cyan / Electric Indigo** (Sleek dark mode, glowing sky-cyan highlights, deep frosted glass).
+- [ ] **Emerald Mint & Deep Slate** (Fintech / Banking / Growth aesthetic, prestige feel).
+- [ ] **Warm Amber, Gold & Midnight Charcoal** (Luxury e-commerce, hospitality, premium agency).
+- [ ] **Vibrant Violet & Rose Gradient** (Creator economy, AI SaaS, modern social tool).
+- [ ] **Minimalist Monochrome & Architectural Precision** (Clean black, stark white, fine borders, high Swiss typographic rigor).
+- [ ] **Custom Brand Identity** *(User provides brand primary hex code, secondary color, and style guidelines)*.
+
+---
+
 ### Q2.1: Styling Framework
 - [x] **(Mandatory) Tailwind CSS (v3 / v4)**  
   *Tailwind CSS is the official styling engine. Built with `dark:` class dual-theme support, custom glassmorphism utilities, and glow effects.*

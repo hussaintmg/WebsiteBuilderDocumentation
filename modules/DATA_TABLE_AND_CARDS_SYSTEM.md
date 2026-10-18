@@ -11,6 +11,7 @@
 > - **Desktop (`lg:`, `>= 1024px`)**: ALWAYS render the comprehensive **Master Data Table**. The Mobile Cards grid is strictly hidden (`hidden lg:block`).
 > - **Mobile & Small Tablet (`< 1024px`)**: ALWAYS render the touch-optimized **Interactive Cards Grid**. The Data Table is strictly hidden (`block lg:hidden`).
 > - **Unified State**: Both views share the exact same underlying state (`selectedIds`, `searchQuery`, `filters`, `sortConfig`, `pagination`, and bulk actions). A selection made via marquee drag or keyboard syncs seamlessly.
+> - **Original Design Mandate (Design Apna Banana Hai)**: The components, code snippets, and classes in this module define the **architectural mechanics** (responsive breakpoints, AABB collision math, loading states, keyboard hotkeys). The actual **visual styling, badge colors, card layouts, table column aesthetics, and animations** MUST be handcrafted uniquely for each application—**never blindly copy-paste the dummy colors or sample cards verbatim from this documentation**.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐

@@ -74,7 +74,8 @@ The agent loads the specific feature guides from `modules/` and executes sprint 
 
 ## 🛡️ Core Highlights
 
-- **Mandatory Tailwind CSS & Bespoke Design**: 100% Tailwind CSS with dual-theme (`dark:`) support, glow shadows, and glassmorphism.
+- **The "Design Apna Banana Hai" Law (Original & Bespoke Design)**: Documentation defines architectural and structural mechanics. Agents and developers **MUST craft an original, brand-tailored, state-of-the-art visual identity for every project**—never blindly copy-paste dummy colors, mock cards, or example templates verbatim from docs.
+- **Mandatory Tailwind CSS & Rich Aesthetics**: 100% Tailwind CSS with dual-theme (`dark:`) support, glow shadows, bespoke glassmorphism, and spring animations.
 - **Custom Floating Label Inputs (No Placeholders)**: Centered label transitions to top border notch upon focus or entry; First-line textarea alignment; Google Forms style Select.
 - **Fixed Resizable `h-dvh` Sidebar**: Dynamic viewport height (`h-dvh`), smooth drag handle to resize width with `localStorage` memory, and collapse/expand toggle.
 - **Bespoke Typography & Animated Icons**: Expressive fonts (**Neofolio**, **Nexo Kora**, **Bierika**, **OSIRIS**, **Plus Jakarta Sans**, **Outfit**) combined with vector icons (Lucide, FontAwesome, Material) and animated micro-icons (**Lordicon**, **Icons8**, **LottieFlow**, **LottieFiles**).
