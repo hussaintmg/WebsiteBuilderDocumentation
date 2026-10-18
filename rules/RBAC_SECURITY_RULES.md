@@ -130,3 +130,54 @@ def require_permission(required_perm: str):
 def delete_order(order_id: str, user = Depends(require_permission("orders:delete"))):
     return order_service.delete(order_id)
 ```
+
+---
+
+## 🛡️ 5. Authentication Security, Anti-Enumeration & Rate Limiting Guardrails
+
+Cross-referenced with [`modules/AUTH_AND_FACELOCK.md`](../modules/AUTH_AND_FACELOCK.md).
+
+### 5.1 Strict Anti-Enumeration Principle
+Under no circumstances should the backend or frontend leak whether an account exists:
+- **Login API**: NEVER respond with `"Email not found"` or `"Incorrect password"`. Always respond with a generic HTTP 401: `"Invalid email or password"`.
+- **Signup Flow**: NEVER respond with `"Email already exists"`. Both existing and non-existing emails receive an OTP via email. Only after OTP verification is the user routed to either password setup (new user) or the login page (existing user).
+
+### 5.2 Timing Attack Defense: Bcrypt Constant-Time Dummy Hash
+To prevent attackers from distinguishing valid emails from invalid emails through response latency:
+- When a requested email is NOT found in the database, the backend **MUST execute a real `bcrypt.checkpw()` against a pre-computed dummy hash** before raising HTTP 401.
+- This guarantees identical computation time (~80-120ms) across all login attempts.
+
+```python
+# app/core/security.py
+import bcrypt
+
+DUMMY_BCRYPT_HASH = b"$2b$12$e8uq0wNq1X3Z.z7uR6Cg2.1vG4yJ9nO5zB2c8X0mR3pL9kW1qD2uS"
+
+def verify_password_safe(plain_password: str, hashed_password: str | None) -> bool:
+    if not hashed_password:
+        # Run dummy check to keep response time constant
+        bcrypt.checkpw(plain_password.encode("utf-8"), DUMMY_BCRYPT_HASH)
+        return False
+    return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
+```
+
+### 5.3 Dynamic Environment-Driven Rate Limiting
+All authentication routes (login, signup, OTP verify, password reset) must enforce strict IP and user-based rate limits defined via environment variables:
+
+```env
+# .env.example
+RATE_LIMIT_LOGIN_PER_MIN=5
+RATE_LIMIT_SIGNUP_PER_MIN=5
+RATE_LIMIT_OTP_VERIFY_PER_MIN=5
+RATE_LIMIT_GLOBAL_PER_MIN=60
+```
+- Requests exceeding thresholds MUST return HTTP 429 Too Many Requests with a `Retry-After` header.
+
+### 5.4 Strong Password Policy Standard
+All passwords must satisfy 5 mandatory criteria:
+1. Minimum 8-12 characters.
+2. At least 1 Uppercase letter (`[A-Z]`).
+3. At least 1 Lowercase letter (`[a-z]`).
+4. At least 1 Numeric digit (`[0-9]`).
+5. At least 1 Special symbol (`[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]`).
+

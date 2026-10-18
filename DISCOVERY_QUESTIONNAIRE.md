@@ -151,6 +151,19 @@ Which dedicated portal interfaces are required?
 
 ---
 
+### Q3.5: Authentication Engine, Silent Facelock & Multi-Account Switcher
+Which authentication and identity workflows should be enabled?
+- [x] **(Recommended) Advanced Multi-Account & Biometric Facelock Suite**:
+  - **Silent Background Facelock**: Automatically probes face detection on login page without opening visible camera UI; falls back to manual button.
+  - **Multi-Face Conflict Dialog**: If 1 face matches multiple profiles, user chooses target account; remaining profiles load into multi-session vault.
+  - **Topbar Account Switcher**: Switch between active accounts instantly from the user profile dropdown without re-entering passwords.
+  - **Anti-Enumeration & Timing Attack Defense**: Generic `"Invalid email or password"` message; backend executes constant-time bcrypt checks against a dummy hash for non-existent users.
+  - **Multi-Step Signup & 6-Box OTP**: Email-first registration with signed token URL (`?token=&option=otp`), 6-box auto-verifying OTP (with `Ctrl+V` support), and strong password policy enforcement.
+  - **Dynamic Rate Limiting**: All auth endpoints governed by `.env` request caps.
+- [ ] **Standard Credentials Only (Email + Password + Simple OTP)**.
+
+---
+
 ## 🏢 Phase 4: Multi-Company & Multi-Tenant Architecture
 
 ### Q4.1: Single Company vs Multi-Company (Multi-Tenancy)

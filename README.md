@@ -42,7 +42,7 @@ Main-docs/
     ├── DATA_TABLE_AND_CARDS_SYSTEM.md # Hybrid Responsive Table vs Cards, Pagination, Sort, Drag Selection & Bulk Actions
     ├── CMS_ENGINE.md                  # Integrated vs Standalone CMS, content modeling & dynamic pages
     ├── SHORTCUT_KEYS_SYSTEM.md        # Complete Ctrl/Alt key matrix, single-key 'F' search, component shortcuts
-    ├── AUTH_AND_FACELOCK.md           # Standard Auth + WebAuthn / Face-lock biometric access
+    ├── AUTH_AND_FACELOCK.md           # Silent Facelock, Multi-Account Switching, Anti-Enumeration, 6-Box OTP, Dummy Bcrypt Hash
     └── AUTOMATIONS_AND_NOTIFICATIONS.md # SMTP emails, WhatsApp automation, Web Push, GitHub CI/CD
 ```
 
@@ -88,5 +88,5 @@ The agent loads the specific feature guides from `modules/` and executes sprint 
 - **Floating Bulk Action Bar with Animated Icons**: Delete All (`Alt+D`), Bulk PDF (`Alt+E`), Bulk Email (`Alt+M`), Bulk WhatsApp (`Alt+W`) with mandatory Lordicon/Lottie micro-animations.
 - **Multi-Tenant with Custom Domains**: Clean separation of company data, developer super-admin tenant onboarding, and company-specific domains/subdomains.
 - **Client Payment Safeguard**: Built-in developer safeguard rule with grace period (up to 8th of the month) and non-intrusive Owner-only top banner.
-- **Biometric / Facelock Security**: Modern passkey and biometric auth specifications.
+- **Biometric / Facelock & Multi-Account Security**: Silent background face detection, multi-face account conflict resolution, instant account switching from topbar, 6-box auto-verifying OTP, constant-time dummy bcrypt hashing against timing attacks, and strict rate limiting.
 - **Master Keyboard Shortcuts Engine**: Complete `Ctrl` key suite (`Ctrl+A,C,V,X,O,Z,Y,S,Enter,K,B,P`), complete `Alt` key suite (`Alt+T,S,N,F,P,D,M,W,E`), single-key `F` Global Search, and component shortcuts.

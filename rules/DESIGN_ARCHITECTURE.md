@@ -642,3 +642,33 @@ All interfaces must hook into the master shortcut engine detailed in [`modules/S
 - **Complete `Ctrl` Suite**: `Ctrl + A` (Select all), `Ctrl + C` (Copy record), `Ctrl + V` (Batch paste), `Ctrl + X` (Cut/stage), `Ctrl + O` (Open details), `Ctrl + Z` (Undo), `Ctrl + Y` (Redo), `Ctrl + S` (Save draft), `Ctrl + Enter` (Submit/Approve), `Ctrl + K` (Command palette), `Ctrl + P` (PDF print).
 - **Complete `Alt` Suite**: `Alt + D` (Delete selected), `Alt + E` (Bulk PDF), `Alt + M` (Bulk Email), `Alt + W` (Bulk WhatsApp), `Alt + N` (New record), `Alt + F` (Focus filter).
 
+---
+
+## 🔐 13. Authentication & Account Switching UI/UX Standards
+
+Cross-referenced with [`modules/AUTH_AND_FACELOCK.md`](../modules/AUTH_AND_FACELOCK.md).
+
+### 13.1 Silent Background Facelock
+- When the login page mounts, biometric face recognition is initiated silently in the background **without displaying any camera feed or webcam preview box**.
+- If recognized: user is authenticated automatically.
+- If unverified or unsupported: the manual "Sign in with Face Biometric" button is shown gracefully without throwing disruptive errors.
+
+### 13.2 Multi-Account Topbar Switcher
+- The topbar user profile dropdown must include an interactive **"Switch Account"** section displaying all currently logged-in accounts on this device.
+- Clicking any authenticated account switches active session instantaneously **without requiring a password re-entry**.
+- Includes an **"Add another account"** button linking to `/login?mode=add_account`. If only 1 account exists, clicking "Switch Account" redirects to the login screen.
+
+### 13.3 6-Box Auto-Verifying OTP Component
+- **Structure**: 6 discrete rounded input boxes (`input type="text"`, `inputMode="numeric"`, `maxLength={1}`).
+- **Clipboard Paste**: Full support for pasting (`Ctrl + V`) a 6-digit code which distributes across the boxes automatically.
+- **Auto-Verification**: Trigger verification immediately upon completion of the 6th digit—**never require clicking a manual "Verify" button**.
+
+### 13.4 Real-Time Password Strength Meter
+- Every password creation and reset screen must display a dynamic strength bar (Weak, Moderate, Strong) paired with real-time green checkmarks for all 5 criteria:
+  1. Minimum 8 characters.
+  2. Uppercase letter (`[A-Z]`).
+  3. Lowercase letter (`[a-z]`).
+  4. Numeric digit (`[0-9]`).
+  5. Special symbol (`[!@#$%^&*]`).
+
+
