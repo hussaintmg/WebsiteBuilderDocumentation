@@ -15,6 +15,26 @@
 >   3. **Bespoke Component Styling**: Design custom card layouts, hero sections, metric badges, and empty states tailored specifically to the project's actual data models and workflows.
 >   4. **WOW-Factor Polish**: Handcrafted micro-animations, glassmorphic depths, and glowing hover states that blow the user away at first glance.
 
+### 🏷️ 0.1 Bespoke Logo & Real Favicon Suite Mandate (Never Leave Default Icons!)
+
+> **MANDATORY BRANDING RULE**:  
+> Leaving the default framework favicon (e.g. Next.js black/white triangle `favicon.ico`, Vite bird icon, React atom, or empty browser globe) or using generic plain unstyled text for a company logo is considered **AN UNACCEPTABLE DESIGN FAILURE**.
+
+1. **Bespoke Logo Requirements**:
+   - Every application MUST feature a high-end, custom-crafted brand Logo:
+     - **Full Logo (`variant="full"`)**: Scalable vector brand glyph mark + stylized brand wordmark using one of our bespoke fonts (e.g. Neofolio, Nexo Kora, Bierika, or Clash Display) for the Topbar, Auth cards, Landing page hero, and Footer.
+     - **Compact Icon / Glyph (`variant="icon"`)**: Square or circular emblem for the collapsed `h-dvh` sidebar rail, mobile header, and PWA launcher.
+     - **Dual Theme Support**: Logo must automatically adapt or pop across dark and light modes using glowing gradients, SVG filters, or clean monochrome contrasts.
+2. **Complete Favicon Suite Requirements**:
+   - The developer / agent must create a real, crisp, bespoke Favicon suite placed in `/public` or via Next.js metadata (`app/icon.tsx`):
+     - `favicon.ico`: Multi-resolution (16x16, 32x32, 48x48) clean icon.
+     - `icon.svg`: Crisp vector icon with glowing gradients.
+     - `apple-touch-icon.png`: 180x180 px high-res icon for iOS home screen bookmarks and Safari tab bars.
+     - `icon-192.png` & `icon-512.png`: PWA Android / Chrome manifest icons.
+     - `site.webmanifest`: Linked with project brand theme colors.
+3. **Design Quality Bar**:
+   - Whether handcrafted directly in SVG code, designed with modern geometry, or generated using image/vector tools—the logo and favicon **MUST BE TOP-NOTCH, REAL, AND STATE-OF-THE-ART**. No blurry, generic, or stock icons are permitted!
+
 ---
 
 ## 🎨 1. Tailwind CSS Mandatory Standard

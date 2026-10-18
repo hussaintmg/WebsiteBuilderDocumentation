@@ -105,6 +105,79 @@ All projects must leverage high-grade iconography. Combine static icon sets with
 | **LottieFlow** (`https://lottieflow.com/`) | Minimal Flow Animations | Toggle switches, menu burger-to-cross, spinners | `@dotlottie/react-player` |
 | **LottieFiles** (`https://lottiefiles.com/`) | Rich Character & Scene Animations | Hero illustrations, checkout celebration, 404 pages | `@lottiefiles/react-lottie-player` |
 
+### 3.3 Bespoke Brand Logo & Real Favicon Suite Architecture
+
+> **MANDATORY BRAND ASSET RULE**:  
+> Every project MUST have custom-crafted brand assets. Leaving the default Next.js triangle, Vite bird, React atom, or empty globe icon is strictly forbidden. The agent must create real, high-resolution, beautiful branding assets.
+
+#### 1. Reusable Vector Brand Logo (`components/ui/BrandLogo.tsx`)
+```tsx
+"use client";
+
+import React from "react";
+
+export const BrandLogo: React.FC<{
+  variant?: "full" | "icon";
+  className?: string;
+  brandName?: string;
+}> = ({ variant = "full", className = "", brandName = "NovaSaaS" }) => {
+  return (
+    <div className={`flex items-center gap-2.5 select-none ${className}`}>
+      {/* Custom Vector Brand Mark */}
+      <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 via-indigo-600 to-cyan-400 p-[1.5px] shadow-glow-sky group cursor-pointer">
+        <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden">
+          <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 transition-transform duration-300 group-hover:scale-110">
+            <defs>
+              <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#38bdf8" />
+                <stop offset="100%" stopColor="#818cf8" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M12 2L2 7L12 12L22 7L12 2Z"
+              stroke="url(#logo-grad)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M2 17L12 22L22 17"
+              stroke="url(#logo-grad)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M2 12L12 17L22 12"
+              stroke="url(#logo-grad)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+      </div>
+
+      {/* Styled Wordmark (Only in full variant) */}
+      {variant === "full" && (
+        <span className="font-display font-extrabold text-lg tracking-tight text-slate-900 dark:text-white flex items-center">
+          {brandName}
+          <span className="w-1.5 h-1.5 rounded-full bg-sky-400 ml-0.5 animate-pulse" />
+        </span>
+      )}
+    </div>
+  );
+};
+```
+
+#### 2. Complete Favicon & PWA Suite Checklist
+Before deploying or completing foundation scaffolding, generate and install:
+- `/public/favicon.ico`: Multi-resolution icon for legacy browser tabs.
+- `/public/icon.svg` or `/src/app/icon.tsx`: Modern crisp SVG vector favicon that scales to Retina displays without pixelation.
+- `/public/apple-touch-icon.png`: 180x180 px PNG for iOS home screen bookmarks and Safari tabs.
+- `/public/icon-192.png` & `/public/icon-512.png`: PWA manifest icons.
+- `/public/site.webmanifest`: Complete with `name`, `short_name`, `theme_color`, and `background_color`.
+
 ---
 
 ## 🔠 4. Bespoke Typography & Font Discovery

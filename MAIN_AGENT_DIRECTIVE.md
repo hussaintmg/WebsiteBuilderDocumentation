@@ -68,6 +68,7 @@ Once answers are received:
 Once the plan is approved:
 1. Follow **Foundation-First rule**:
    - **Original & Bespoke Design Mandate (Design Apna Banana Hai)**: Documentation code examples and color palettes are technical architecture blueprints—**NEVER copy them verbatim into the project**. The agent must craft an original visual identity, bespoke color palette, tailored card layouts, and custom typography pairing for every single project.
+   - **Bespoke Brand Logo & Complete Favicon Suite**: The agent MUST design and integrate an authentic, high-resolution vector Brand Logo (both full wordmark and compact 32x32 glyph) and a complete real Favicon & PWA suite (`favicon.ico`, `icon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest`). Leaving default framework favicons (Next.js triangle, Vite bird, React atom) or generic unstyled text for a logo is strictly prohibited.
    - **Backend-Only Payment Safeguard Enforcement**: All licensing checks and payment verification calls must execute **strictly from the backend server**; the frontend browser must never call the licensing API directly.
    - Set up **Tailwind CSS** with dual-theme (`dark:`) configuration and bespoke typography imports per [`rules/DESIGN_ARCHITECTURE.md`](./rules/DESIGN_ARCHITECTURE.md) and [`rules/FRONTEND_DESIGN_RULES.md`](./rules/FRONTEND_DESIGN_RULES.md).
    - Scaffold the foundational UI atoms: custom Floating Label Inputs (Text, Textarea, Select), `cursor-pointer` Buttons, and Resizable `h-dvh` Sidebar.
@@ -111,3 +112,4 @@ Before marking any task or sprint as completed:
 3. **Strict RBAC Separation**: Developer role is infrastructure/platform guardian; Owner is business master. Developer must NEVER lock out or modify Owner business permissions without explicit credentials.
 4. **Payment Safeguard UI Discretion**: If the developer payment safeguard is enabled, the unpaid notification bar must ONLY be visible to the `Owner` role. Never expose it to customers, employees, or public users.
 5. **Resilience & Graceful Fallbacks**: If external APIs (WhatsApp, SMTP, Biometric hardware) are unavailable or fail, provide graceful UI fallbacks and clear error toasts instead of crashing the app.
+6. **Bespoke Logo & Favicon Suite Obligation**: Never launch or build an interface with default framework icons (Next.js, Vite, React) or placeholder typography logos. Every application must feature custom SVG vector branding and a full multi-resolution favicon/PWA suite matching the brand aesthetic.

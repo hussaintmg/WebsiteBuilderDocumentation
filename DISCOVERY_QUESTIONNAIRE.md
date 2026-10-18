@@ -56,6 +56,22 @@ What is the visual personality, vibe, and bespoke color motif of your brand?
 
 ---
 
+### Q2.0B: Brand Logo & Real Favicon Suite Style (Logo & Favicon Kesa Chahiye?)
+> **MANDATORY BRANDING RULE**: Leaving framework default favicons (Next.js triangle, Vite bird, React atom) or generic unstyled text for a logo is strictly forbidden. The agent MUST create a bespoke, production-ready SVG brand logo and full favicon suite.
+Which visual style should be crafted for your brand logo and favicon suite?
+- [x] **(Recommended) High-End Geometric Abstract Mark + Wordmark**:
+  - **Full Logo**: Bespoke geometric vector emblem with glowing multi-stop gradient paired with bold typographic wordmark (using display font).
+  - **Collapsed Glyph**: High-contrast 32x32 vector glyph tailored for the `h-dvh` collapsed sidebar, mobile topbar, and PWA icon.
+  - **Complete Favicon Suite**: Real `favicon.ico` (multi-resolution), `icon.svg` (crisp scalable vector), `apple-touch-icon.png` (180x180 iOS), `icon-192.png` & `icon-512.png` (Android/PWA), and `site.webmanifest`.
+- [ ] **Modern Tech Monogram / Stylized Lettermark**:
+  - High-impact typography monogram with ambient glow and clean corporate subtitle.
+- [ ] **Minimalist Architectural Shield / Emblem**:
+  - Clean vector crest/shield with fine geometric lines (ideal for fintech, legal, security, enterprise).
+- [ ] **Custom Existing Brand Assets**:
+  - *User provides exact SVG vector paths, high-res PNGs, and existing brand guidelines to integrate.*
+
+---
+
 ### Q2.1: Styling Framework
 - [x] **(Mandatory) Tailwind CSS (v3 / v4)**  
   *Tailwind CSS is the official styling engine. Built with `dark:` class dual-theme support, custom glassmorphism utilities, and glow effects.*
