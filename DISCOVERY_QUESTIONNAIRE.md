@@ -238,9 +238,9 @@ What level of keyboard shortcut support should be built?
 ---
 
 ### Q7.3: Biometric / Facelock Authentication
-Should high-security biometric or facial authentication be provided?
-- [x] **(Recommended) WebAuthn Passkeys & Biometric Lock (Face/Fingerprint)**:  
-  *Allows Owner and Staff to authenticate high-value transactions, order refunds, or sensitive login via device biometrics (Windows Hello, Touch ID, Face ID).*
+Should facial biometric authentication be provided?
+- [x] **(Recommended) Custom Face Recognition AI Model (128-d Vector Embeddings - No Passkeys)**:  
+  *Uses client-side computer vision models (MediaPipe / FaceNet) to extract 128-d face descriptors, matched on backend via vector distance. Supports silent background scan and multi-face account resolution without requiring OS WebAuthn passkeys.*
 - [ ] **Standard Auth Only (Email/Password, Google OAuth, Magic Link)**.
 
 ---

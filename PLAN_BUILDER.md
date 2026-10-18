@@ -42,7 +42,7 @@ The agent must generate `PLAN.md` using the following standardized layout:
 - **Backend Framework**: [FastAPI (ASGI) | Next.js Serverless Route Handlers | Node Express]
 - **Database & Storage**: [PostgreSQL (Supabase/Neon) | SQLite | MongoDB]
 - **ORM / Query Builder**: [Drizzle | Prisma | SQLAlchemy]
-- **Authentication**: [NextAuth/Auth.js | Supabase Auth | Custom JWT + WebAuthn Biometrics]
+- **Authentication**: [NextAuth/Auth.js | Supabase Auth | Custom JWT + Custom AI Face Models]
 - **State Management**: [Zustand | React Query (TanStack) | Context API]
 
 ## 3. Active Feature Modules
@@ -53,7 +53,7 @@ The agent must generate `PLAN.md` using the following standardized layout:
 | **Order Slide Workflow** | [Enabled/Disabled] | Table View + 1-by-1 Slide Carousel with Fast Actions |
 | **CMS Engine** | [Enabled/Disabled] | [Integrated in Dashboard | Standalone Headless] |
 | **Keyboard Shortcuts** | [Enabled/Disabled] | [Basic (Cmd+K, Esc) | Master (Vim-style, Hotkeys)] |
-| **Facelock / Biometrics** | [Enabled/Disabled] | WebAuthn / Passkeys for sensitive actions |
+| **Facelock / Biometrics** | [Enabled/Disabled] | Custom AI Face Models (128-d Vector Embeddings, No Passkeys) |
 | **Automations & SMTP** | [Enabled/Disabled] | SMTP emails + WhatsApp Business alerts |
 | **Developer Payment Safeguard** | [Enabled/Disabled] | Grace period up to 8th of month, Owner-only banner |
 
@@ -141,7 +141,7 @@ Break implementation into 4 to 6 measurable sprints:
   - [ ] Setup API client and connection ping test
 
 - [ ] **Sprint 1: Authentication & RBAC Engine**
-  - [ ] Setup Auth tables & password hashing / WebAuthn
+  - [ ] Setup Auth tables, password hashing & Face Vector Embedding storage (PostgreSQL / JSONB)
   - [ ] Implement `useRBAC` hook and backend role middleware
   - [ ] Implement action-level permission buttons (create, edit, delete gates)
 

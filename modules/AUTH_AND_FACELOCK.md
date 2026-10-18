@@ -1,6 +1,19 @@
-# Module Specification: Master Authentication, Biometric Facelock & Multi-Account Engine
+# Module Specification: Master Authentication, Custom AI Facelock & Multi-Account Engine
 
-> **PURPOSE**: Defines the enterprise-grade authentication ecosystem combining standard credentials (Email/Password), **Silent Background Facelock & Hardware WebAuthn**, **Multi-Account Switching without re-login**, **Anti-Enumeration Signup with 6-box Auto-Verifying OTP**, **Timing Attack Protection via Constant-Time Dummy Hashing**, and **Strong Password Governance**.
+> **PURPOSE**: Defines the enterprise-grade authentication ecosystem combining standard credentials (Email/Password), **Custom Client-Side Face Recognition AI Models (128-d Vector Embeddings & Silent Background Detection - NO WEBAUTHN / NO PASSKEYS)**, **Multi-Account Switching without re-login**, **Anti-Enumeration Signup with 6-box Auto-Verifying OTP**, **Timing Attack Protection via Constant-Time Dummy Hashing**, and **Strong Password Governance**.
+
+---
+
+## 🚫 Hard Architectural Mandate: Custom AI Models Only (Zero Passkeys / No WebAuthn)
+
+> **CRITICAL ARCHITECTURAL DIRECTIVE**:  
+> - **NO WebAuthn / NO Hardware Passkeys**: Do not use browser `navigator.credentials.create()`, `PublicKeyCredential`, or OS hardware passkeys.
+> - **Self-Contained Custom Face AI Models**: The facelock system MUST use our own lightweight face recognition pipeline:
+>   1. **Client-side Landmark Detection**: Extracts face keypoints and aligns the face bounding box via lightweight computer vision models (e.g. MediaPipe Face Mesh, MobileFaceNet, or face-api.js).
+>   2. **128-Dimensional Vector Embedding**: Generates a standardized 128-d (or 512-d) float32 face descriptor vector representing facial geometry.
+>   3. **Anti-Spoofing & Liveness Check**: Multi-frame micro-motion / blink verification to prevent static photo or screen spoofing.
+>   4. **Backend Vector Matching**: Vector distance computation (Euclidean distance `< 0.45` or Cosine Similarity `> 0.88`) against stored face embeddings in the database (PostgreSQL `pgvector` or JSON vector array).
+>   5. **Cross-Platform & Universal**: Works identically across all desktop webcams, laptops, Android, iOS, and kiosk browsers without hardware biometric limitations.
 
 ---
 
@@ -16,12 +29,13 @@
 ┌───────────────────────┐       ┌───────────────────────┐            ┌───────────────────────┐
 │     LOGIN PAGE        │       │      SIGNUP FLOW      │            │    FORGOT PASSWORD    │
 │ • Email + Password    │       │ • Email-Only Step 1   │            │ • Email input         │
-│ • Silent Facelock     │       │ • No Enumeration      │            │ • ?token=..           │
-│ • Manual Facelock     │       │ • ?token=..&option=otp│            │ • 6-box OTP Auto-Check│
-│ • Multi-Face Conflict │       │ • 6-box OTP Auto-Check│            │ • /reset-password     │
-│ • Generic Error Msg   │       │ • ?option=registration│            │ • Strong Pwd Enforced │
-│ • Dummy Hash Bcrypt   │       │   or Redirect to Login│            └───────────────────────┘
-└───────────────────────┘       └───────────────────────┘
+│ • Silent Custom Face  │       │ • No Enumeration      │            │ • ?token=..           │
+│   (128-d Vector Probe)│       │ • ?token=..&option=otp│            │ • 6-box OTP Auto-Check│
+│ • Manual Face Modal   │       │ • 6-box OTP Auto-Check│            │ • /reset-password     │
+│ • Multi-Face Conflict │       │ • ?option=registration│            │ • Strong Pwd Enforced │
+│ • Generic Error Msg   │       │   or Redirect to Login│            └───────────────────────┘
+│ • Dummy Hash Bcrypt   │       └───────────────────────┘
+└───────────────────────┘
         │
         ▼
 ┌────────────────────────────────────────────────────────┐
@@ -37,20 +51,21 @@
 
 ## 👤 2. Login Page & Silent Facelock Architecture
 
-### 2.1 The Two-Tier Facelock Strategy
-If enabled in the project plan (`PLAN.md`), the Login page offers both standard email/password authentication and Face Biometric login:
+### 2.1 The Two-Tier Facelock Strategy (Custom Face Model Engine)
+If enabled in the project plan (`PLAN.md`), the Login page offers both standard email/password authentication and Custom AI Face Biometric login:
 
 1. **Tier 1: Silent Background Detection (Zero Camera UI)**:
-   - On page mount, the system automatically initializes a hidden background face detection scan once (via hidden video element or silent WebAuthn platform authenticator probe).
+   - On page mount, the system automatically initializes a hidden background face detection scan once using an off-screen hidden `<video>` element.
    - **No video preview, no visible camera stream, and no intrusive popups** are presented to the user during this background attempt.
-   - If the user's face is successfully recognized and verified against the backend biometric descriptor/credential:
+   - The custom model captures a single clean frame, extracts the 128-dimensional embedding vector, and transmits it to `/api/auth/facelock/verify-silent`.
+   - If the user's face vector matches an enrolled profile in the database (Euclidean distance `< 0.45`):
      - The user is logged in automatically.
    - If face detection fails, times out (e.g. 2.5 seconds), or camera permission is not yet granted:
      - The system gracefully falls back without any jarring errors.
      - The manual **"Sign in with Face Biometric"** button becomes prominently active.
 
 2. **Tier 2: Manual Face Biometric Trigger**:
-   - Clicking **"Sign in with Face Biometric"** opens an explicit visual modal with camera stream feedback, face alignment circle, and status indicators.
+   - Clicking **"Sign in with Face Biometric"** opens an explicit visual modal with camera stream feedback, face alignment circle, real-time liveness feedback, and status indicators.
 
 ### 2.2 Multi-Account Conflict Resolution (Same Face on Multiple Accounts)
 In multi-tenant or enterprise environments, a single individual (e.g. a Manager) may possess multiple distinct user accounts (e.g. `alex.admin@company.com`, `alex.personal@company.com`, `alex.support@company.com`):
@@ -132,6 +147,134 @@ export const FaceAccountSelectionModal: React.FC<{
     </div>
   );
 };
+```
+
+---
+
+### 2.3 Custom Face Recognition AI Pipeline (Client Descriptor & Backend Vector Matching)
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                    CLIENT-SIDE FACE AI PIPELINE                        │
+│ 1. Hidden / Visual Camera Capture (Canvas Frame)                       │
+│ 2. Facial Landmark Mesh Alignment (68 / 468 Keypoints)                 │
+│ 3. Deep Feature Extraction (128-dimensional Float32 Embedding Vector)  │
+│ 4. Anti-Spoofing Check (Blink / Micro-Motion Variance)                 │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ Transmit: `face_descriptor: float[128]`
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                   BACKEND VECTOR MATCHING ENGINE                       │
+│ 1. Query registered face vectors from DB (PostgreSQL / JSONB)          │
+│ 2. Calculate Euclidean Distance: D = || v_candidate - v_stored ||      │
+│ 3. Verification Gate: Match if Distance < 0.45                         │
+│ 4. If 1 match: Authenticate | If 2+ matches: Return Conflict Modal     │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Client-Side Embedding Extraction (`lib/faceModel.ts`):
+```typescript
+/**
+ * Client-Side Face Feature Extractor using Custom Landmark AI Model
+ * NO WebAuthn / NO Passkeys used.
+ */
+
+export interface FaceAuthResult {
+  success: boolean;
+  descriptor?: number[]; // 128-d vector
+  error?: string;
+}
+
+// 1. Silent Background Scan (Off-screen video, zero UI)
+export async function scanFaceSilently(): Promise<number[] | null> {
+  let stream: MediaStream | null = null;
+  let hiddenVideo: HTMLVideoElement | null = null;
+
+  try {
+    // Request webcam stream with minimal dimensions for performance
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { width: 320, height: 240, facingMode: "user" },
+    });
+
+    hiddenVideo = document.createElement("video");
+    hiddenVideo.srcObject = stream;
+    hiddenVideo.setAttribute("playsinline", "true");
+    hiddenVideo.muted = true;
+    hiddenVideo.style.position = "absolute";
+    hiddenVideo.style.opacity = "0";
+    hiddenVideo.style.pointerEvents = "none";
+    document.body.appendChild(hiddenVideo);
+
+    await hiddenVideo.play();
+
+    // Wait 400ms for camera auto-exposure stabilization
+    await new Promise((r) => setTimeout(r, 400));
+
+    // Extract 128-d descriptor vector from video frame
+    const descriptor = await extractFaceDescriptorFromVideo(hiddenVideo);
+    return descriptor;
+  } catch (err) {
+    // Silent fail without popping up error dialogs
+    return null;
+  } finally {
+    // Clean up camera stream and DOM element immediately
+    if (stream) stream.getTracks().forEach((track) => track.stop());
+    if (hiddenVideo && hiddenVideo.parentNode) hiddenVideo.parentNode.removeChild(hiddenVideo);
+  }
+}
+
+// 2. Helper to compute 128-d vector from video frame
+export async function extractFaceDescriptorFromVideo(video: HTMLVideoElement): Promise<number[] | null> {
+  const canvas = document.createElement("canvas");
+  canvas.width = video.videoWidth || 320;
+  canvas.height = video.videoHeight || 240;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  // Invoke loaded lightweight model (e.g. face-api.js or custom ONNX MobileFaceNet runtime)
+  if (typeof (window as any).customFaceModel?.extractEmbedding === "function") {
+    const rawVector = await (window as any).customFaceModel.extractEmbedding(canvas);
+    return Array.from(rawVector); // 128-d float array
+  }
+
+  return null;
+}
+```
+
+#### Backend Vector Matching Engine (`app/services/face_auth_service.py`):
+```python
+# app/services/face_auth_service.py
+import math
+from typing import List, Optional
+from sqlalchemy.orm import Session
+from app.models.user import User
+
+MATCH_DISTANCE_THRESHOLD = 0.45  # Standard threshold: lower distance = closer match
+
+def calculate_euclidean_distance(vec1: List[float], vec2: List[float]) -> float:
+    """Calculates L2 Euclidean distance between two 128-dimensional face embedding vectors."""
+    if len(vec1) != len(vec2):
+        return 999.0
+    return math.sqrt(sum((a - b) ** 2 for a, b in zip(vec1, vec2)))
+
+def match_face_biometric(db: Session, candidate_vector: List[float]) -> List[User]:
+    """
+    Scans candidate face vector against all enrolled users in the tenant.
+    Returns: List of matching User objects (supports 1 user or multi-account detection).
+    """
+    enrolled_users = db.query(User).filter(User.face_embedding.isnot(None), User.is_active == True).all()
+    matched_users = []
+
+    for user in enrolled_users:
+        stored_vector = user.face_embedding  # 128-d float list stored in DB
+        distance = calculate_euclidean_distance(candidate_vector, stored_vector)
+        
+        if distance < MATCH_DISTANCE_THRESHOLD:
+            matched_users.append(user)
+
+    return matched_users
 ```
 
 ---

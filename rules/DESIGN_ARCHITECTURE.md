@@ -648,8 +648,9 @@ All interfaces must hook into the master shortcut engine detailed in [`modules/S
 
 Cross-referenced with [`modules/AUTH_AND_FACELOCK.md`](../modules/AUTH_AND_FACELOCK.md).
 
-### 13.1 Silent Background Facelock
-- When the login page mounts, biometric face recognition is initiated silently in the background **without displaying any camera feed or webcam preview box**.
+### 13.1 Silent Background Facelock (Custom AI Model Engine - No Passkeys)
+- When the login page mounts, biometric face recognition is initiated silently in the background via our custom client-side face landmark model **(NO WebAuthn / NO OS passkeys)** without displaying any camera feed or webcam preview box.
+- The model captures a clean frame via a hidden off-screen video element, extracts a 128-dimensional embedding vector, and matches it against database vectors.
 - If recognized: user is authenticated automatically.
 - If unverified or unsupported: the manual "Sign in with Face Biometric" button is shown gracefully without throwing disruptive errors.
 
