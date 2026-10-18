@@ -62,7 +62,8 @@ Once answers are received:
 ### Phase 3: Scaffolding & Foundation First
 Once the plan is approved:
 1. Follow **Foundation-First rule**:
-   - Create design tokens and global styles first (`index.css` or design tokens file per [`rules/FRONTEND_DESIGN_RULES.md`](./rules/FRONTEND_DESIGN_RULES.md)).
+   - Set up **Tailwind CSS** with dual-theme (`dark:`) configuration and bespoke typography imports per [`rules/DESIGN_ARCHITECTURE.md`](./rules/DESIGN_ARCHITECTURE.md) and [`rules/FRONTEND_DESIGN_RULES.md`](./rules/FRONTEND_DESIGN_RULES.md).
+   - Scaffold the foundational UI atoms: custom Floating Label Inputs (Text, Textarea, Select), `cursor-pointer` Buttons, and Resizable `h-dvh` Sidebar.
    - Set up the database schema and connection layer per [`rules/BACKEND_CONNECTION_RULES.md`](./rules/BACKEND_CONNECTION_RULES.md).
    - Set up the environment variables template (`.env.example`).
 2. Scaffold only the necessary components and routes specified in the approved sprint.
@@ -70,10 +71,11 @@ Once the plan is approved:
 ---
 
 ### Phase 4: Module-Specific Implementation
-Whenever implementing a specific subsystem, the agent **MUST read the corresponding module guide** from the `modules/` directory before writing code:
+Whenever implementing a specific subsystem, the agent **MUST read the corresponding module guide** from the `modules/` and `rules/` directories before writing code:
 
 | Subsystem to Implement | Mandatory Module Document to Read |
 | :--- | :--- |
+| Tailwind Design System, Floating Inputs, Resizable Sidebar | [`rules/DESIGN_ARCHITECTURE.md`](./rules/DESIGN_ARCHITECTURE.md) & [`rules/FRONTEND_DESIGN_RULES.md`](./rules/FRONTEND_DESIGN_RULES.md) |
 | User Roles, Portals, Action Permissions | [`modules/RBAC_SYSTEM.md`](./modules/RBAC_SYSTEM.md) & [`rules/RBAC_SECURITY_RULES.md`](./rules/RBAC_SECURITY_RULES.md) |
 | Multi-Company / Multi-Tenant / Custom Domains | [`modules/MULTI_TENANT_SYSTEM.md`](./modules/MULTI_TENANT_SYSTEM.md) |
 | Order Table & 1-by-1 Slide/Carousel Processing | [`modules/ORDER_SLIDE_WORKFLOW.md`](./modules/ORDER_SLIDE_WORKFLOW.md) |

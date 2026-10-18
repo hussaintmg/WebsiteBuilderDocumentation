@@ -124,7 +124,6 @@ Within the slide view, rapid action buttons allow staff to update records withou
 import React, { useState } from "react";
 import { Order } from "@/types/order";
 import { ActionGuard } from "@/components/common/ActionGuard";
-import styles from "./OrderActionPanel.module.css";
 
 interface Props {
   order: Order;
@@ -151,11 +150,15 @@ export const OrderActionPanel: React.FC<Props> = ({
   };
 
   return (
-    <div className={styles.actionPanel}>
+    <div className="flex flex-wrap items-center gap-3 p-5 bg-slate-950/40 border-t border-slate-200/80 dark:border-white/10">
       {/* 1. Payment Toggle */}
       <button
         id="order-toggle-payment-btn"
-        className={order.isPaid ? styles.btnPaid : styles.btnUnpaid}
+        className={`px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all duration-200 active:scale-95 shadow-sm ${
+          order.isPaid
+            ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30"
+            : "bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30"
+        }`}
         onClick={() => onUpdatePayment(order.id, !order.isPaid)}
         disabled={loading}
       >
@@ -165,7 +168,7 @@ export const OrderActionPanel: React.FC<Props> = ({
       {/* 2. Process / Shipped Action */}
       <button
         id="order-advance-status-btn"
-        className={styles.btnPrimary}
+        className="px-5 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all duration-200 active:scale-95 bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-300 hover:to-blue-400 text-slate-950 shadow-md hover:shadow-glow-sky disabled:opacity-50 disabled:cursor-not-allowed"
         onClick={() => handleStatusChange("PROCESSING")}
         disabled={loading || order.status === "PROCESSING"}
       >
@@ -176,7 +179,7 @@ export const OrderActionPanel: React.FC<Props> = ({
       <ActionGuard permission="orders:override_price">
         <button
           id="order-override-price-btn"
-          className={styles.btnSecondary}
+          className="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all duration-200 active:scale-95 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-white/10"
           onClick={() => {
             const newPrice = prompt("Enter adjusted price:", String(order.totalAmount));
             if (newPrice) onPriceOverride(order.id, parseFloat(newPrice));
@@ -190,7 +193,7 @@ export const OrderActionPanel: React.FC<Props> = ({
       <ActionGuard permission="orders:edit">
         <button
           id="order-cancel-btn"
-          className={styles.btnDanger}
+          className="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all duration-200 active:scale-95 bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-500/30"
           onClick={() => handleStatusChange("CANCELLED")}
           disabled={loading}
         >
@@ -204,79 +207,132 @@ export const OrderActionPanel: React.FC<Props> = ({
 
 ---
 
-## 🎨 5. Glassmorphism Slide Card Styling (`OrderSlideModal.module.css`)
+## 🎨 5. Glassmorphic Slide Card Implementation (Tailwind CSS + Framer Motion)
 
-```css
-.slideBackdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(7, 9, 14, 0.85);
-  backdrop-filter: blur(12px);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
+```tsx
+// components/orders/OrderSlideModal.tsx
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Order } from "@/types/order";
+import { OrderActionPanel } from "./OrderActionPanel";
+
+interface Props {
+  order: Order;
+  isOpen: boolean;
+  onClose: () => void;
+  onNext: () => void;
+  onPrev: () => void;
+  currentIndex: number;
+  totalCount: number;
+  onUpdateStatus: (id: string, status: string) => Promise<void>;
+  onUpdatePayment: (id: string, paid: boolean) => Promise<void>;
+  onPriceOverride: (id: string, price: number) => Promise<void>;
 }
 
-.slideCard {
-  width: 100%;
-  max-width: 900px;
-  background: var(--bg-surface, #0f141f);
-  border: 1px solid var(--border-glass, rgba(255, 255, 255, 0.12));
-  border-radius: var(--radius-lg, 16px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  animation: scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
+export const OrderSlideModal: React.FC<Props> = ({
+  order,
+  isOpen,
+  onClose,
+  onNext,
+  onPrev,
+  currentIndex,
+  totalCount,
+  onUpdateStatus,
+  onUpdatePayment,
+  onPriceOverride,
+}) => {
+  if (!isOpen || !order) return null;
 
-.slideHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem 1.75rem;
-  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
-}
+  return (
+    <AnimatePresence>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96, y: 15 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.96, y: 15 }}
+          transition={{ type: "spring", stiffness: 350, damping: 28 }}
+          className="w-full max-w-4xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-white/10 rounded-3xl shadow-glass-dark overflow-hidden flex flex-col max-h-[90dvh]"
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-slate-900/50">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono px-2.5 py-1 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/20 font-semibold">
+                Order #{order.id}
+              </span>
+              <span className="text-xs text-slate-400">
+                ({currentIndex + 1} of {totalCount} Pending)
+              </span>
+            </div>
 
-.navArrows {
-  display: flex;
-  gap: 0.5rem;
-}
+            {/* Carousel Navigation Arrows */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={onPrev}
+                disabled={currentIndex === 0}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-200 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                title="Previous Order (←)"
+              >
+                ◄ Prev
+              </button>
+              <button
+                onClick={onNext}
+                disabled={currentIndex === totalCount - 1}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                title="Next Order (→)"
+              >
+                Next ►
+              </button>
+              <button
+                onClick={onClose}
+                className="ml-2 text-slate-400 hover:text-white cursor-pointer text-lg p-1"
+                title="Close (Esc)"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
 
-.navBtn {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-primary);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
+          {/* Body Content */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Customer Box */}
+              <div className="p-5 rounded-2xl bg-slate-900/40 border border-white/5 space-y-2">
+                <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Customer Details</h4>
+                <p className="text-base font-bold text-white">{order.customerName}</p>
+                <p className="text-sm text-slate-300">{order.customerPhone}</p>
+                <p className="text-sm text-slate-400">{order.shippingAddress}</p>
+              </div>
 
-.navBtn:hover:not(:disabled) {
-  background: var(--accent-primary, #38bdf8);
-  color: #07090e;
-}
+              {/* Order Summary Box */}
+              <div className="p-5 rounded-2xl bg-slate-900/40 border border-white/5 space-y-2">
+                <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Financial Overview</h4>
+                <div className="flex justify-between text-sm text-slate-300">
+                  <span>Subtotal:</span>
+                  <span>${order.subtotal}</span>
+                </div>
+                <div className="flex justify-between text-sm text-slate-300">
+                  <span>Shipping:</span>
+                  <span>${order.shippingFee}</span>
+                </div>
+                <div className="flex justify-between text-base font-bold text-sky-400 border-t border-white/10 pt-2">
+                  <span>Total Amount:</span>
+                  <span>${order.totalAmount}</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-.actionPanel {
-  display: flex;
-  gap: 0.75rem;
-  padding: 1.25rem 1.75rem;
-  background: rgba(0, 0, 0, 0.2);
-  border-top: 1px solid var(--border-subtle);
-  flex-wrap: wrap;
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
+          {/* Action Panel Footer */}
+          <OrderActionPanel
+            order={order}
+            onUpdateStatus={onUpdateStatus}
+            onUpdatePayment={onUpdatePayment}
+            onPriceOverride={onPriceOverride}
+            onNext={onNext}
+          />
+        </motion.div>
+      </div>
+    </AnimatePresence>
+  );
+};
 ```

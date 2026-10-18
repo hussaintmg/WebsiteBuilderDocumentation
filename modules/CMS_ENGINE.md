@@ -107,12 +107,19 @@ export default async function CMSDynamicPage({ params }: Props) {
   }
 
   return (
-    <article className="cms-container">
-      <header className="cms-header">
-        <h1>{post.title}</h1>
-        <p className="cms-meta">Published on {new Date(post.published_at!).toLocaleDateString()}</p>
+    <article className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <header className="mb-8 border-b border-slate-200 dark:border-white/10 pb-6">
+        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-3">
+          {post.title}
+        </h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          Published on {new Date(post.published_at!).toLocaleDateString()}
+        </p>
       </header>
-      <div className="cms-body" dangerouslySetInnerHTML={{ __html: post.content_html }} />
+      <div
+        className="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: post.content_html }}
+      />
     </article>
   );
 }

@@ -93,7 +93,6 @@ import React from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useBillingStatus } from "@/hooks/useBillingStatus";
 import { evaluatePaymentState } from "@/lib/billingGuard";
-import styles from "./OwnerPaymentBanner.module.css";
 
 export const OwnerPaymentBanner: React.FC = () => {
   const { user } = useAuth();
@@ -109,37 +108,39 @@ export const OwnerPaymentBanner: React.FC = () => {
 
   return (
     <aside
-      className={`${styles.paymentBanner} ${
-        isGracePeriod ? styles.graceBanner : styles.overdueBanner
+      className={`sticky top-0 left-0 right-0 z-50 w-full flex items-center justify-between px-6 py-3 font-sans text-sm shadow-md transition-all duration-300 animate-in slide-in-from-top ${
+        isGracePeriod
+          ? "bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-slate-100 border-b-2 border-sky-400"
+          : "bg-gradient-to-r from-red-950 via-rose-900 to-red-950 text-rose-50 border-b-2 border-rose-500"
       }`}
       role="alert"
       aria-live="polite"
     >
-      <div className={styles.content}>
-        <span className={styles.icon}>{isGracePeriod ? "ℹ️" : "⚠️"}</span>
-        <p className={styles.message}>
+      <div className="flex items-center gap-3">
+        <span className="text-lg">{isGracePeriod ? "ℹ️" : "⚠️"}</span>
+        <p className="m-0 leading-snug">
           {isGracePeriod ? (
             <>
-              <strong>Notice for Account Owner:</strong> Scheduled monthly hosting
+              <strong className="font-semibold text-sky-300">Notice for Account Owner:</strong> Scheduled monthly hosting
               & maintenance fee is pending. Please complete payment before the{" "}
-              <strong>8th of this month</strong> to ensure uninterrupted service.
+              <strong className="font-bold underline decoration-sky-400">8th of this month</strong> to ensure uninterrupted service.
             </>
           ) : (
             <>
-              <strong>Payment Urgent:</strong> The monthly service invoice for this
+              <strong className="font-semibold text-rose-300">Payment Urgent:</strong> The monthly service invoice for this
               account is past the 8th grace date. Please settle payment immediately.
             </>
           )}
         </p>
       </div>
 
-      <div className={styles.actions}>
+      <div className="flex items-center gap-3">
         {billing?.portalUrl && (
           <a
             href={billing.portalUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={styles.payButton}
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg font-semibold text-xs transition-all duration-200 cursor-pointer shadow-sm hover:-translate-y-0.5 active:scale-95 bg-sky-400 hover:bg-sky-300 text-slate-950"
           >
             Review & Settle Invoice →
           </a>
@@ -148,85 +149,6 @@ export const OwnerPaymentBanner: React.FC = () => {
     </aside>
   );
 };
-```
-
-### CSS Design Tokens (`OwnerPaymentBanner.module.css`)
-
-```css
-.paymentBanner {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1.5rem;
-  font-family: var(--font-sans, system-ui, sans-serif);
-  font-size: 0.875rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.graceBanner {
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  color: #f1f5f9;
-  border-bottom: 2px solid #38bdf8; /* Cyan accent */
-}
-
-.overdueBanner {
-  background: linear-gradient(135deg, #450a0a 0%, #1c0505 100%);
-  color: #fef2f2;
-  border-bottom: 2px solid #ef4444; /* Alert red */
-}
-
-.content {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.icon {
-  font-size: 1.1rem;
-}
-
-.message {
-  margin: 0;
-  line-height: 1.4;
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.payButton {
-  padding: 0.4rem 0.9rem;
-  background-color: #38bdf8;
-  color: #0b0f19;
-  font-weight: 600;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 0.8125rem;
-  transition: all 0.2s ease;
-}
-
-.payButton:hover {
-  background-color: #7dd3fc;
-  transform: translateY(-1px);
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
 ```
 
 ---

@@ -34,7 +34,11 @@ The agent must generate `PLAN.md` using the following standardized layout:
 ## 2. Technical Stack Matrix
 - **Scope**: [Fullstack | Frontend Only | Backend Only | Standalone APIs]
 - **Frontend Framework**: [Next.js App Router | Vite + React | Other]
-- **Styling Engine**: [Vanilla CSS with Design Tokens | Tailwind CSS vX]
+- **Styling Engine**: **Tailwind CSS (v3 / v4) - Mandatory**
+- **Typography Choice**: [Display: Neofolio / Nexo Kora / Bierika / OSIRIS | Body: Plus Jakarta Sans / Outfit]
+- **Animation Stack**: [Framer Motion + GSAP ScrollTrigger | Three.js (Optional with User Permission)]
+- **Icon Ecosystem**: [Lucide React + Animated Icons (Lordicon, Icons8, LottieFlow, LottieFiles)]
+- **UI Architecture**: [Floating Label Inputs (No Placeholders) | Resizable dvh Sidebar | Framer Toasts]
 - **Backend Framework**: [FastAPI (ASGI) | Next.js Serverless Route Handlers | Node Express]
 - **Database & Storage**: [PostgreSQL (Supabase/Neon) | SQLite | MongoDB]
 - **ORM / Query Builder**: [Drizzle | Prisma | SQLAlchemy]
@@ -129,7 +133,10 @@ Break implementation into 4 to 6 measurable sprints:
 
 - [ ] **Sprint 0: Foundations & Scaffolding**
   - [ ] Initialize repository structure and dependencies
-  - [ ] Setup global CSS variables & typography (Design Tokens)
+  - [ ] Configure Tailwind CSS (theme colors, glow shadows, dark mode)
+  - [ ] Configure bespoke font imports (Neofolio / Nexo Kora / Bierika / OSIRIS / Outfit)
+  - [ ] Build reusable Floating Label Input components (Text, Textarea, Select)
+  - [ ] Build resizable `h-dvh` Sidebar and Topbar skeleton
   - [ ] Configure database schemas and migrations
   - [ ] Setup API client and connection ping test
 

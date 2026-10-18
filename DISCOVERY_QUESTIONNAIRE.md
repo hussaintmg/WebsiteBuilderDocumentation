@@ -38,27 +38,61 @@ How should the backend be hosted?
 
 ---
 
-## 🎨 Phase 2: Design Aesthetics & UI/UX Experience
+## 🎨 Phase 2: Design Aesthetics, UI/UX & Component Architecture
 
-### Q2.1: Visual Theme & Aesthetic Direction (Design Kesa Chahiye?)
-What aesthetic vibe should the application project?
-- [x] **(Recommended) Sleek Dark Modern with Glassmorphism**  
-  *Deep slate/charcoal backgrounds (`#0B0F19`), subtle gradient borders, backdrop-blur glass panels, vibrant accent glowing buttons (Emerald, Indigo, or Cyan).*
-- [ ] **Clean SaaS Corporate Light/Dark Hybrid**  
-  *Crisp contrast, high readability, refined grays, subtle borders, crisp modern typography.*
-- [ ] **Cyberpunk / High-Tech Neon**  
-  *Dark futuristic aesthetic, high-contrast neon accents, monospaced data readouts.*
-- [ ] **Minimalist Editorial / Luxury**  
-  *Monochrome elegance, generous whitespace, serif/sans-serif pairing, subtle micro-interactions.*
+### Q2.1: Styling Framework
+- [x] **(Mandatory) Tailwind CSS (v3 / v4)**  
+  *Tailwind CSS is the official styling engine. Built with `dark:` class dual-theme support, custom glassmorphism utilities, and glow effects.*
 
 ---
 
-### Q2.2: Styling System & Design Tokens
-What styling engine should be configured?
-- [x] **(Recommended) Custom Vanilla CSS Design Tokens (CSS Variables)**  
-  *Maximum flexibility, zero build overhead, pure custom micro-animations and smooth gradients.*
-- [ ] **Tailwind CSS (Specify v3 or v4)**  
-  *Utility-first styling with custom plugin tokens.*
+### Q2.2: Bespoke Typography & Font Discovery (Konsa Font Chahiye?)
+Which modern typeface pairing would you like for headers and interface body text?
+- [x] **(Recommended) High-Impact Modern Tech Pairing**:  
+  - **Display / Headers**: **Neofolio** or **Nexo Kora** *(Sharp, high-contrast, futuristic neo-grotesque)*  
+  - **Body / Interface**: **Plus Jakarta Sans** or **Outfit** *(Clean, geometric, ultra-legible)*
+- [ ] **Editorial Luxury & Avant-Garde Pairing**:  
+  - **Display / Headers**: **Bierika** or **OSIRIS** *(Architectural, curved terminals, high elegance)*  
+  - **Body / Interface**: **Inter** or **Plus Jakarta Sans**
+- [ ] **Bold Cyberpunk / Monospaced**:  
+  - **Display**: **Clash Display** or **Syne** | **Body**: **Geist Mono** / **Outfit**
+- [ ] **Custom Approved Font Combination** *(Specify font names)*
+
+---
+
+### Q2.3: Animation & 3D WebGL Capabilities
+Which animation libraries and interactive 3D elements should be active?
+- [x] **(Recommended) Framer Motion + GSAP ScrollTrigger**:  
+  *Fluid layout morphing, spring entrance/exit toasts, interactive cards glow hover, and smooth scroll animations.*
+- [ ] **Add Three.js Interactive 3D Model (User Permission Granted)**:  
+  *Includes a lightweight, 100% free, animated 3D GLTF model (from free sources like Kenney or Three.js official models) or procedural 3D particle canvas. (Paid/heavy models are forbidden).*
+- [ ] **Lightweight CSS/Framer Motion Only (No 3D)**.
+
+---
+
+### Q2.4: Iconography & Animated Lottie Ecosystem
+Which icon libraries should be integrated?
+- [x] **(Recommended) Hybrid Modern Vectors + Animated Micro-Icons**:  
+  - **Static Vectors**: `lucide-react`, `@fortawesome/react-fontawesome`, Google Material Symbols.  
+  - **Animated Icons & Lottie**: **Lordicon** (`lordicon.com`), **Icons8** (`icons8.com`), **LottieFlow** (`lottieflow.com`), **LottieFiles** (`lottiefiles.com`) for interactive button triggers, success toasts, and empty states.
+- [ ] **Static Lucide React Only**.
+
+---
+
+### Q2.5: Form Inputs Architecture (Floating Label Rule)
+- [x] **(Mandatory Standard) Custom Floating Label Inputs (Zero Placeholders)**:  
+  - Text/Password inputs: Label starts vertically centered; floats to top border outline on focus or when value exists.  
+  - Textarea: Label starts aligned to the first line; floats to top border on focus.  
+  - Select: Google Forms style centered label with zero premature placeholder text.
+
+---
+
+### Q2.6: Layout Architecture (Fixed Resizable Sidebar & Topbar)
+- [x] **(Recommended) Resizable Fixed `h-dvh` Sidebar**:  
+  - Position: `fixed top-0 left-0`, full dynamic viewport height (`h-dvh`).  
+  - Features: Drag-to-resize handle (with min/max bounds and `localStorage` memory), smooth collapse/expand toggle, custom thin scrollbar.  
+  - Topbar: Sticky glassmorphism header with theme toggle, search shortcut hint, and profile dropdown.
+- [ ] **Static Non-Resizable Sidebar**.
 
 ---
 

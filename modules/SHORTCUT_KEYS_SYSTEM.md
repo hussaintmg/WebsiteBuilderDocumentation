@@ -79,29 +79,12 @@ export function useKeyboardShortcuts(shortcuts: ShortcutConfig[], isEnabled = tr
 
 ```tsx
 import React from "react";
-import styles from "./Kbd.module.css";
 
 export const Kbd: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <kbd className={styles.kbdBadge}>{children}</kbd>
+  <kbd className="inline-flex items-center justify-center px-1.5 py-0.5 font-mono text-[11px] font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-white/15 rounded shadow-sm">
+    {children}
+  </kbd>
 );
-```
-
-```css
-/* Kbd.module.css */
-.kbdBadge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.15rem 0.45rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary, #94a3b8);
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-}
 ```
 
 ---

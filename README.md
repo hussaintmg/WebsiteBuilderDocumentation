@@ -28,8 +28,9 @@ Main-docs/
 ├── DISCOVERY_QUESTIONNAIRE.md         # Master requirements interview script ("Kiya Puchna Hai")
 │
 ├── rules/                             # Core Technical & Business Rules
+│   ├── DESIGN_ARCHITECTURE.md         # Master Design System (Tailwind, Floating Inputs, dvh Sidebar, Fonts, Lottie)
 │   ├── PAYMENT_SAFEGUARD_RULE.md      # Developer client payment tracking & 8th-of-month banner rule
-│   ├── FRONTEND_DESIGN_RULES.md       # High-end aesthetics, Vanilla CSS tokens, typography, UX
+│   ├── FRONTEND_DESIGN_RULES.md       # Tailwind CSS standards, typography, animations, UX
 │   ├── BACKEND_CONNECTION_RULES.md    # API contracts, FastAPI/Node connection, CORS, typed clients
 │   ├── RBAC_SECURITY_RULES.md         # Developer vs Owner hierarchy, protection boundaries
 │   └── TESTING_AND_VERIFICATION.md    # Evidence-based verification, TDD, zero mock assertions
@@ -62,7 +63,7 @@ If no approved plan exists:
 Following `PLAN_BUILDER.md`, the agent generates:
 - `/.project/PLAN.md`: Scope, architecture, chosen tech stack, and feature acceptance criteria.
 - `/.project/ARCHITECTURE.md`: Database schemas, API endpoints, component tree, and data flows.
-- `/.project/RULES.md`: Project-specific rules inherited from `rules/`.
+- `/.project/RULES.md`: Project-specific rules inherited from `rules/` (including `DESIGN_ARCHITECTURE.md`).
 - `/.project/SPRINTS.md`: Phased, step-by-step implementation checklist.
 
 ### Step 4: Execution & Verification
@@ -72,7 +73,12 @@ The agent loads the specific feature guides from `modules/` and executes sprint 
 
 ## 🛡️ Core Highlights
 
-- **Granular RBAC**: Not just page protection, but button/action-level security (e.g. employee can view/edit, but cannot delete).
+- **Mandatory Tailwind CSS & Bespoke Design**: 100% Tailwind CSS with dual-theme (`dark:`) support, glow shadows, and glassmorphism.
+- **Custom Floating Label Inputs (No Placeholders)**: Centered label transitions to top border notch upon focus or entry; First-line textarea alignment; Google Forms style Select.
+- **Fixed Resizable `h-dvh` Sidebar**: Dynamic viewport height (`h-dvh`), smooth drag handle to resize width with `localStorage` memory, and collapse/expand toggle.
+- **Bespoke Typography & Animated Icons**: Expressive fonts (**Neofolio**, **Nexo Kora**, **Bierika**, **OSIRIS**, **Plus Jakarta Sans**, **Outfit**) combined with vector icons (Lucide, FontAwesome, Material) and animated micro-icons (**Lordicon**, **Icons8**, **LottieFlow**, **LottieFiles**).
+- **Animations & Free 3D Models**: Framer Motion for layout & toast animations, GSAP ScrollTrigger for storytelling, and Three.js 3D models (opt-in with free models only).
+- **Granular RBAC**: Not just page protection, but button/action-level security (`<ActionGuard permission="orders:delete">`).
 - **Dual-View Order Processing**: Normal data table + focused single-order review carousel with hotkeys (`ArrowRight`, `ArrowLeft`, `Ctrl+Enter`).
 - **Multi-Tenant with Custom Domains**: Clean separation of company data, developer super-admin tenant onboarding, and company-specific domains/subdomains.
 - **Client Payment Safeguard**: Built-in developer safeguard rule with grace period (up to 8th of the month) and non-intrusive Owner-only top banner.

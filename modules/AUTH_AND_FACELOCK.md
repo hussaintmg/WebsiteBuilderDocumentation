@@ -113,7 +113,6 @@ export async function loginWithBiometrics() {
 ```tsx
 import React, { useState } from "react";
 import { loginWithBiometrics } from "@/lib/facelock";
-import styles from "./FacelockButton.module.css";
 
 export const FacelockButton: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
   const [scanning, setScanning] = useState(false);
@@ -133,17 +132,21 @@ export const FacelockButton: React.FC<{ onSuccess: () => void }> = ({ onSuccess 
   };
 
   return (
-    <div className={styles.container}>
+    <div className="w-full flex flex-col items-center gap-2">
       <button
         id="facelock-biometric-login-btn"
-        className={`${styles.faceBtn} ${scanning ? styles.scanningPulse : ""}`}
+        className={`w-full flex items-center justify-center gap-3 px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-200 cursor-pointer shadow-md active:scale-[0.98] ${
+          scanning
+            ? "bg-sky-500/20 text-sky-300 border border-sky-400 animate-pulse"
+            : "bg-surface-elevatedLight dark:bg-surface-elevatedDark text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-white/10 hover:border-sky-400 hover:shadow-glow-sky"
+        }`}
         onClick={handleFaceScan}
         disabled={scanning}
       >
-        <span className={styles.faceIcon}>👤</span>
+        <span className="text-xl">👤</span>
         {scanning ? "Scanning Face / Biometrics..." : "Sign in with Face ID / Windows Hello"}
       </button>
-      {error && <p className={styles.errorText}>{error}</p>}
+      {error && <p className="text-xs text-rose-500 font-medium">{error}</p>}
     </div>
   );
 };
