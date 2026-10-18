@@ -79,6 +79,7 @@ Whenever implementing a specific subsystem, the agent **MUST read the correspond
 | User Roles, Portals, Action Permissions | [`modules/RBAC_SYSTEM.md`](./modules/RBAC_SYSTEM.md) & [`rules/RBAC_SECURITY_RULES.md`](./rules/RBAC_SECURITY_RULES.md) |
 | Multi-Company / Multi-Tenant / Custom Domains | [`modules/MULTI_TENANT_SYSTEM.md`](./modules/MULTI_TENANT_SYSTEM.md) |
 | Order Table & 1-by-1 Slide/Carousel Processing | [`modules/ORDER_SLIDE_WORKFLOW.md`](./modules/ORDER_SLIDE_WORKFLOW.md) |
+| Master Data Table, Mobile Cards & Drag Selection | [`modules/DATA_TABLE_AND_CARDS_SYSTEM.md`](./modules/DATA_TABLE_AND_CARDS_SYSTEM.md) |
 | Content Management System (CMS) | [`modules/CMS_ENGINE.md`](./modules/CMS_ENGINE.md) |
 | Keyboard Shortcuts Engine | [`modules/SHORTCUT_KEYS_SYSTEM.md`](./modules/SHORTCUT_KEYS_SYSTEM.md) |
 | Passkeys, Face-lock, Biometric Auth | [`modules/AUTH_AND_FACELOCK.md`](./modules/AUTH_AND_FACELOCK.md) |

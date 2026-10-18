@@ -39,8 +39,9 @@ Main-docs/
     ├── RBAC_SYSTEM.md                 # Granular action-level (CRUD buttons) & page-level permissions
     ├── MULTI_TENANT_SYSTEM.md         # Multi-company architecture, custom domains, subdomain routing
     ├── ORDER_SLIDE_WORKFLOW.md        # Dual-view Order System: Master Table + 1-by-1 Slide Carousel
+    ├── DATA_TABLE_AND_CARDS_SYSTEM.md # Hybrid Responsive Table vs Cards, Pagination, Sort, Drag Selection & Bulk Actions
     ├── CMS_ENGINE.md                  # Integrated vs Standalone CMS, content modeling & dynamic pages
-    ├── SHORTCUT_KEYS_SYSTEM.md        # Basic & Master keyboard shortcut navigation engine
+    ├── SHORTCUT_KEYS_SYSTEM.md        # Complete Ctrl/Alt key matrix, single-key 'F' search, component shortcuts
     ├── AUTH_AND_FACELOCK.md           # Standard Auth + WebAuthn / Face-lock biometric access
     └── AUTOMATIONS_AND_NOTIFICATIONS.md # SMTP emails, WhatsApp automation, Web Push, GitHub CI/CD
 ```
@@ -80,7 +81,11 @@ The agent loads the specific feature guides from `modules/` and executes sprint 
 - **Animations & Free 3D Models**: Framer Motion for layout & toast animations, GSAP ScrollTrigger for storytelling, and Three.js 3D models (opt-in with free models only).
 - **Granular RBAC**: Not just page protection, but button/action-level security (`<ActionGuard permission="orders:delete">`).
 - **Dual-View Order Processing**: Normal data table + focused single-order review carousel with hotkeys (`ArrowRight`, `ArrowLeft`, `Ctrl+Enter`).
+- **Hybrid Responsive Data Presentation**: Master Table on Desktop (`hidden lg:block`), touch-friendly Cards Grid on Mobile (`block lg:hidden`), with real-time synchronized state.
+- **Google Drive Marquee Drag Selection**: Canvas pixel drag-to-select tool with AABB collision detection, Shift/Ctrl modifiers, and floating bulk action bar.
+- **Smart Pagination & Filter Engine**: Arrow key navigation (`←` / `→`), animated loading spinners on buttons to prevent race conditions, debounced search, and faceted filter pills.
+- **Floating Bulk Action Bar with Animated Icons**: Delete All (`Alt+D`), Bulk PDF (`Alt+E`), Bulk Email (`Alt+M`), Bulk WhatsApp (`Alt+W`) with mandatory Lordicon/Lottie micro-animations.
 - **Multi-Tenant with Custom Domains**: Clean separation of company data, developer super-admin tenant onboarding, and company-specific domains/subdomains.
 - **Client Payment Safeguard**: Built-in developer safeguard rule with grace period (up to 8th of the month) and non-intrusive Owner-only top banner.
 - **Biometric / Facelock Security**: Modern passkey and biometric auth specifications.
-- **Keyboard Shortcuts Engine**: Basic navigation up to Master power-user shortcuts.
+- **Master Keyboard Shortcuts Engine**: Complete `Ctrl` key suite (`Ctrl+A,C,V,X,O,Z,Y,S,Enter,K,B,P`), complete `Alt` key suite (`Alt+T,S,N,F,P,D,M,W,E`), single-key `F` Global Search, and component shortcuts.

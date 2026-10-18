@@ -8,18 +8,21 @@
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                        VIEW 1: MASTER ORDER TABLE                      │
-│ ┌────────────────────────────────────────────────────────────────────┐ │
-│ │ Filters: [All Statuses ▼] [Payment Status ▼] [Search: ord_...    ] │ │
-│ │ Buttons: [Export CSV]                  [🔥 Start Processing Mode]  │ │
-│ └────────────────────────────────────────────────────────────────────┘ │
-│ │ ID       │ Customer       │ Total   │ Status     │ Date   │ Action │ │
-│ │ #1001    │ Sarah Jenkins  │ $120.00 │ Pending    │ 10m ago│ View   │ │
-│ │ #1002    │ Ahmed Khan     │ $45.50  │ Processing │ 25m ago│ View   │ │
-│ │ #1003    │ Elena Rostova  │ $310.00 │ Paid       │ 1h ago │ View   │ │
+│                        VIEWPORT DETECTION                              │
+│         Screen >= 1024px (Desktop)         Screen < 1024px (Mobile)    │
+│                     │                                  │               │
+│                     ▼                                  ▼               │
+│      [VIEW 1A: MASTER ORDER TABLE]      [VIEW 1B: MOBILE CARDS GRID]   │
+│         Class: `hidden lg:block`           Class: `block lg:hidden`    │
+│                                                                        │
+│  • Google Drive Marquee Drag Selection (Box select across rows/cards)  │
+│  • Tri-state Column Sorting (Amount, Date, Status, Customer)           │
+│  • Arrow-Key Pagination (← / →) with Animated Spinner Button Loaders   │
+│  • Two-Tier Selection: Current Page vs "Select on all other pages"     │
+│  • Floating Bulk Action Bar (Delete, Bulk PDF, Email, WhatsApp)        │
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │
-                       Click "Start Processing"
+                        Click "Start Processing" (or press Enter)
                                     │
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
@@ -46,13 +49,31 @@
 
 ---
 
-## 🗃️ 2. View 1: Master Order Table (`OrderTableView.tsx`)
+## 🗃️ 2. View 1: Master Order Table & Mobile Cards Hybrid Engine
 
-### Key Features:
-- Real-time search by Customer Name, Phone, Email, or Order ID.
-- Multi-filter tabs: `All`, `Pending Review`, `Processing`, `Completed`, `Cancelled`.
-- Column sorting (Amount, Date, Status).
-- Prominent **"Start Processing"** primary button triggers Slide Mode.
+Cross-referenced with [`modules/DATA_TABLE_AND_CARDS_SYSTEM.md`](./DATA_TABLE_AND_CARDS_SYSTEM.md) and [`modules/SHORTCUT_KEYS_SYSTEM.md`](./SHORTCUT_KEYS_SYSTEM.md).
+
+### 2.1 Viewport Separation
+- **Desktop (`lg:`, `>= 1024px`)**: Renders `OrderTableView.tsx` (`hidden lg:block`). Displays rich columns (Order ID, Customer, Items count, Total Amount, Payment Status, Order Status, Created Date, Actions).
+- **Mobile & Tablet (`< 1024px`)**: Renders `OrderCardView.tsx` (`block lg:hidden`). Compact touch-friendly cards with status badges and quick action buttons.
+
+### 2.2 Google Drive-Style Marquee Drag Selection
+- Staff can click and drag anywhere on the order container to draw an interactive bounding box (`border-sky-400 bg-sky-500/15`).
+- Intersecting orders are selected in real-time.
+- `Shift + Drag` adds to selection; `Ctrl + Drag` toggles selection; `Escape` clears selection.
+
+### 2.3 Smart Arrow Pagination with Loading Spinners
+- Hotkeys: `ArrowLeft` flips to previous page, `ArrowRight` flips to next page.
+- While fetching, navigation buttons show `Loader2 animate-spin` and are disabled to prevent double-click race conditions.
+
+### 2.4 Floating Bulk Action Bar & Mandatory Animated Icons
+When orders are selected:
+1. Shows **"Select on all other pages"** banner if current page is full.
+2. Floating bar features buttons with **mandatory animated icons**:
+   - **Bulk Delete** (`Alt + D`): Lordicon animated trash can + safety prompt.
+   - **Bulk PDF Download** (`Alt + E`): Animated document downloader (invoices/packing slips).
+   - **Bulk Send Email** (`Alt + M`): Animated flying email envelope (order updates).
+   - **Bulk Send WhatsApp** (`Alt + W`): Animated pulsing WhatsApp bubble (tracking info).
 
 ---
 

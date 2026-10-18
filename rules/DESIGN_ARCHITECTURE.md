@@ -488,7 +488,7 @@ export const ToastItem = ({ toast, onDismiss }) => {
 ```tsx
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 export const ResizableSidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [width, setWidth] = useState(280);
@@ -498,7 +498,34 @@ export const ResizableSidebar: React.FC<{ children: React.ReactNode }> = ({ chil
   useEffect(() => {
     const saved = localStorage.getItem("sidebar_width");
     if (saved) setWidth(Number(saved));
+    const savedCollapse = localStorage.getItem("sidebar_collapsed");
+    if (savedCollapse !== null) setIsCollapsed(savedCollapse === "true");
   }, []);
+
+  // Keyboard shortcut toggle: Ctrl+B or Alt+S
+  const toggleCollapse = useCallback(() => {
+    setIsCollapsed((prev) => {
+      const next = !prev;
+      localStorage.setItem("sidebar_collapsed", String(next));
+      return next;
+    });
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const isInput = ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) || target.isContentEditable;
+      if (isInput) return;
+
+      if ((e.ctrlKey && e.key.toLowerCase() === "b") || (e.altKey && e.key.toLowerCase() === "s")) {
+        e.preventDefault();
+        toggleCollapse();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [toggleCollapse]);
 
   const startResizing = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -546,3 +573,69 @@ export const ResizableSidebar: React.FC<{ children: React.ReactNode }> = ({ chil
   );
 };
 ```
+
+---
+
+## 📊 9. Responsive Data Presentation: Desktop Table vs Mobile Cards Hybrid Architecture
+
+> **MANDATORY DESIGN RULE**:  
+> Anywhere data is presented in a listing or management screen:
+> - **Desktop (`lg:`, `>= 1024px`)**: ALWAYS render the Master Data Table. The Card Grid is strictly hidden (`hidden lg:block`).
+> - **Mobile & Tablet (`< 1024px`)**: ALWAYS render the touch-optimized Interactive Cards Grid. The Data Table is strictly hidden (`block lg:hidden`).
+> - Both views share the same dataset, filter bar, sorting mechanism, selection state, and pagination.
+
+### 9.1 Column Sorting Standard
+- Sorting is enabled **ONLY** on valid sortable columns (e.g. ID, Date, Amount, Status, Name).
+- Action columns, avatars, and checkboxes MUST have sorting disabled.
+- Tri-state toggle: Neutral (`null`) -> Ascending (`asc`) -> Descending (`desc`).
+- Active sort columns display glowing Sky Cyan indicators (`▲` / `▼`).
+
+### 9.2 Smart Pagination with Animated Navigation Loaders
+- **Arrow Navigation**: `ArrowLeft` flips to Previous Page; `ArrowRight` flips to Next Page (active when user is not typing in an input).
+- **Loading State**: When switching pages, the active navigation button displays an animated spinner (`Loader2 animate-spin text-sky-500`), all navigation controls are disabled to prevent double-clicks, and the data container displays a subtle skeleton/shimmer effect.
+
+---
+
+## 🖱️ 10. Google Drive-Style Marquee Drag Selection Engine
+
+To provide desktop-grade power usability, users can click and drag across the screen to select multiple items:
+1. **Interactive Drag Box**: Holding mouse down on any empty canvas area and dragging draws a translucent rectangle (`border border-sky-400 bg-sky-500/15 backdrop-blur-[1px] rounded-sm pointer-events-none`).
+2. **AABB Intersection Detection**:
+   - Each row (`<tr data-selectable-id="...">`) and card (`<div data-selectable-id="...">`) is measured against the drag rectangle's coordinates.
+   - Any item that collides with or lies within the rectangle is dynamically selected in real-time.
+3. **Modifiers**:
+   - `Shift + Drag`: Adds items to the existing selection.
+   - `Ctrl + Drag`: Inverts the selection state of intersected items.
+   - Normal Drag: Replaces current selection with the newly intersected items.
+   - `Escape`: Instantly cancels selection.
+4. Reference full code hook in [`modules/DATA_TABLE_AND_CARDS_SYSTEM.md`](../modules/DATA_TABLE_AND_CARDS_SYSTEM.md).
+
+---
+
+## ⚡ 11. Floating Bulk Action Toolbar & Mandatory Animated Icons
+
+Whenever 1 or more items are selected (via checkbox, `Ctrl + A`, or marquee drag), a floating glassmorphic toolbar slides up from the bottom center (`fixed bottom-6 left-1/2 -translate-x-1/2`).
+
+### 11.1 "Select on All Other Pages" Banner
+When all items on the current page are checked:
+- Display banner: *"All 25 items on this page are selected. [Select all 1,450 items across all pages]"*.
+- Clicking allows batch execution across the full filtered dataset.
+
+### 11.2 Mandatory Animated Icons Rule
+Every button in the Bulk Action Toolbar **MUST** contain an animated icon (Lordicon, Lottie, or Framer Motion animated SVG):
+1. **Delete All** (`Alt + D`): Animated Trash Can with lifting lid + confirmation modal.
+2. **Bulk PDF Download** (`Alt + E`): Animated Document Downloader with bouncing downward arrow.
+3. **Bulk Send Email** (`Alt + M`): Animated Flying Envelope.
+4. **Bulk Send WhatsApp** (`Alt + W`): Animated WhatsApp Chat Bubble with pulsing wave.
+
+---
+
+## ⌨️ 12. Master Keyboard Shortcuts & Global Search (`F`) System
+
+All interfaces must hook into the master shortcut engine detailed in [`modules/SHORTCUT_KEYS_SYSTEM.md`](../modules/SHORTCUT_KEYS_SYSTEM.md):
+- **Global Search `F` Key**: Pressing `f` (or `/`) opens Global Search / Command Palette **ONLY** when the cursor is outside text inputs, textareas, and select elements.
+- **Sidebar Toggles**: `Ctrl + B` or `Alt + S`.
+- **Theme Switcher**: `Alt + T`.
+- **Complete `Ctrl` Suite**: `Ctrl + A` (Select all), `Ctrl + C` (Copy record), `Ctrl + V` (Batch paste), `Ctrl + X` (Cut/stage), `Ctrl + O` (Open details), `Ctrl + Z` (Undo), `Ctrl + Y` (Redo), `Ctrl + S` (Save draft), `Ctrl + Enter` (Submit/Approve), `Ctrl + K` (Command palette), `Ctrl + P` (PDF print).
+- **Complete `Alt` Suite**: `Alt + D` (Delete selected), `Alt + E` (Bulk PDF), `Alt + M` (Bulk Email), `Alt + W` (Bulk WhatsApp), `Alt + N` (New record), `Alt + F` (Focus filter).
+
