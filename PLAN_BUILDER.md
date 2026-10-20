@@ -1,0 +1,200 @@
+# Plan Builder Specification & Generation Engine
+
+> **FOR THE AGENT**: When conducting project onboarding or starting a new build, use this guide to compile the user's interview responses into a concrete, executable project directory (`/.project/`).
+
+---
+
+## 🏗️ The Project Blueprint Directory Structure
+
+Whenever an agent initializes a project, it must create a dedicated project folder at the root:
+
+```
+<project_root>/
+└── .project/                          # Single-project app (OR /projects/<name>/ in a monorepo)
+    ├── PLAN.md                        # Master scope, stack, requirements, and module selection
+    ├── ARCHITECTURE.md                # System design, data models, API endpoints, component tree
+    ├── RULES.md                       # Tailored engineering, security, and styling constraints
+    └── SPRINTS.md                     # Step-by-step phased execution plan with test checkboxes
+```
+
+---
+
+## 📄 File 1: `/.project/PLAN.md` Template
+
+The agent must generate `PLAN.md` using the following standardized layout:
+
+```markdown
+# Project Plan: [Project Name]
+
+## 1. Executive Summary & Objective
+- **Description**: [Concise 2-3 sentence summary of the application]
+- **Target Audience / End Users**: [Customers, Internal Staff, B2B Clients, Enterprise Admins]
+- **Deployment Target**: [Vercel, AWS, VPS, Docker, Serverless]
+
+## 2. Technical Stack Matrix
+- **Scope**: [Fullstack | Frontend Only | Backend Only | Standalone APIs]
+- **Frontend Framework**: [Next.js App Router | Vite + React | Other]
+- **Styling Engine**: **Tailwind CSS (v3 / v4) - Mandatory**
+- **Typography Choice**: [Display: Neofolio / Nexo Kora / Bierika / OSIRIS | Body: Plus Jakarta Sans / Outfit]
+- **Animation Stack**: [Framer Motion + GSAP ScrollTrigger | Three.js (Optional with User Permission)]
+- **Icon Ecosystem**: [Lucide React + Animated Icons (Lordicon, Icons8, LottieFlow, LottieFiles)]
+- **UI Architecture**: [Floating Label Inputs (No Placeholders) | Resizable dvh Sidebar | Public Mobile Bottom Bar with "More" Drawer | Dashboard Floating "Menu"/"Close" Pill | Framer Toasts]
+- **Backend Framework**: [FastAPI (ASGI) | Next.js Serverless Route Handlers | Node Express]
+- **Database & Storage**: **MongoDB (Atlas / Self-Hosted) - Mandatory NoSQL**
+- **ODM / Query Driver**: **Mongoose (Next.js/Node) | Motor / Beanie (FastAPI Python)**
+- **Authentication**: [NextAuth/Auth.js | Supabase Auth | Custom JWT + Custom AI Face Models]
+- **State Management**: [Zustand | React Query (TanStack) | Context API]
+
+## 3. Active Feature Modules
+| Module | Status | Configuration / Notes |
+| :--- | :--- | :--- |
+| **RBAC System** | [Enabled/Disabled] | Roles: Developer, Owner, Admin, Staff, Customer |
+| **Multi-Tenancy** | [Enabled/Disabled] | [Single-tenant | Multi-company (Subdomains / Custom Domains)] |
+| **Order Slide Workflow** | [Enabled/Disabled] | Table View + 1-by-1 Slide Carousel with Fast Actions |
+| **CMS Engine** | [Enabled/Disabled] | [Integrated in Dashboard (/dashboard/cms) | Standalone Portal (/cms)] + Dual WYSIWYG/Monaco Sync, Variable Registry, Visual Workflow Studio, 30 Templates, Section SDK, FFmpeg Scroll Video, Dynamic PDF Canvas Studio, Email Builder, WhatsApp Studio, Central Assets DAM (Auto-Ingestion & Video Previewer), Website Details Cascading, Auth Pages Theme Customizer & Multi-Tenant CMS Delegation |
+| **Keyboard Shortcuts** | [Enabled/Disabled] | [Basic (Cmd+K, Esc) | Master (Vim-style, Hotkeys)] |
+| **Facelock / Biometrics** | [Enabled/Disabled] | Custom AI Face Models (128-d Vector Embeddings, No Passkeys) |
+| **Automations & SMTP** | [Enabled/Disabled] | SMTP emails + WhatsApp Business alerts |
+| **Settings System** | **Mandatory** | Dual-tier: Normal Settings + System Settings (SMTP, WA, Multi-Storage, Multi-Key AI) |
+| **Route Proxy & Protection** | **Mandatory** | Edge Middleware (`middleware.ts`), Interception Toasts & Login/Logout Cache Invalidation |
+| **Dynamic Feature Flags** | [Enabled/Disabled] | Developer/Owner toggle matrix with strict Zero-Leak UI elimination |
+| **Developer Payment Safeguard** | [Enabled/Disabled] | Grace period up to 8th of month, Owner-only banner |
+| **Universal 404 Game Page** | **Mandatory** | Standalone `app/not-found.tsx` with playable HTML5 Canvas arcade mini-game, high score counter & return CTAs |
+| **Root Models & Contexts Architecture** | **Mandatory** | Dedicated root `/models` (1 file per MongoDB model) + root `/context` (1 context per model + 3 global), context-first API encapsulation (Zero direct component API calls), in-place state mutation & single-fetch guarantee |
+
+## 4. Acceptance Criteria & Success Metrics
+- [ ] Users can authenticate via configured auth methods.
+- [ ] Strict role-based permissions prevent unauthorized page visits and button actions.
+- [ ] All forms feature robust validation with clear, responsive error toasts.
+- [ ] Zero layout shifts, high aesthetic standard (curated typography, dark mode, smooth transitions).
+- [ ] Production build passes with zero lint, type, or runtime errors.
+```
+
+---
+
+## 🏛️ File 2: `/.project/ARCHITECTURE.md` Template
+
+The agent must define the technical blueprint and data flows:
+
+```markdown
+# Architecture Specification: [Project Name]
+
+## 1. System Topology & Data Flow
+\`\`\`mermaid
+graph TD
+    Client[Web Browser / Client]
+    Client -->|HTTPS / WSS| Frontend[Frontend (Next.js / React)]
+    Frontend -->|REST / Typed API| Backend[Backend API (FastAPI / Serverless)]
+    Backend -->|Auth Verification| AuthMiddleware[RBAC & Auth Middleware]
+    AuthMiddleware -->|ODM / Queries| DB[(Database / MongoDB)]
+    Backend -->|Webhooks / Notifications| External[WhatsApp / SMTP Services]
+\`\`\`
+
+## 2. Directory & Component Structure
+\`\`\`
+src/
+├── app/ (or pages/)           # Route handlers & UI pages
+├── components/
+│   ├── ui/                    # Reusable atom components (Button, Modal, Input, Badge)
+│   ├── layout/                # Sidebar, Navbar, PublicMobileFooterBar, DashboardMobileMenuPill, OwnerSafeguardBanner, Footer
+│   ├── orders/                # OrderTable, OrderSlideView, OrderActionPanel
+│   └── modules/               # Feature-specific components (CMS, Shortcuts, Facelock)
+├── hooks/                     # useAuth, useRBAC, useShortcuts, useTheme
+├── lib/                       # API clients, DB connection, utils, formatters
+└── styles/                    # tokens.css, globals.css, theme.css
+\`\`\`
+
+## 3. Database Schema Blueprint (MongoDB / NoSQL)
+Define core document collections (users, companies/tenants, roles, orders, cms_posts, audit_logs).
+Include BSON ObjectIds, tenant scoping (`companyId`), compound indexes, and validation rules.
+
+## 4. API Endpoints Contract
+List all endpoints with HTTP Method, Path, Required Role, and Payload summary.
+Example:
+- `POST /api/v1/auth/login` (Public)
+- `GET /api/v1/orders` (Auth: Staff, Admin, Owner)
+- `PATCH /api/v1/orders/:id/status` (Auth: Action permission `orders:edit`)
+- `DELETE /api/v1/orders/:id` (Auth: Action permission `orders:delete` - Owner/Admin only)
+```
+
+---
+
+## 🛡️ File 3: `/.project/RULES.md` Template
+
+Compile project-specific rules selected from `design-system/` (visual design) and `rules/` (engineering/security):
+1. **Design Rules**: Palette tokens, CSS variables, dark/light contrast rules, responsive breakpoints.
+2. **Backend & API Connection Rules**: API base URLs, typed error responses, CORS whitelists, connection timeouts.
+3. **RBAC Guardrails**: Hierarchy tree, protected roles (Owner cannot be degraded; Developer cannot tamper business data).
+4. **Developer Payment Safeguard Rules**: Logic for `{ paymentClear: boolean }`, 8th-day grace period, and Owner sticky banner.
+
+---
+
+---
+
+## 🏃 File 4: `/.project/SPRINTS.md` Template
+
+The agent must structure the implementation plan following the **6-Phase Non-Breaking Phased Architecture** defined in [`rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`](rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md).
+
+> 🛡️ **THE OPEN-CLOSED PHASED BUILD LAW**:  
+> Every subsequent phase must build upon previous phases without breaking them. Existing working code is enhanced, never dismantled. All major new features and subsystems MUST reside in dedicated, newly created files that integrate cleanly through established interfaces.
+
+```markdown
+# Implementation Sprints: [Project Name]
+
+- [ ] **Phase 1: Foundation & Identity Core (Zero-Debt Skeleton)**
+  - [ ] Initialize repository with strict TypeScript config (`tsconfig.json`) and Next.js App Router / Vite
+  - [ ] Configure database connection pool and environment variables template (`.env.example`)
+  - [ ] Scaffold root `/models` and root `/context` directory structure
+  - [ ] Implement minimal robust Auth: User model, password hashing (bcrypt), JWT session cookies, and login/signup handlers
+  - [ ] Mount root navigation shells (Topbar and Sidebar skeleton)
+  - [ ] Verification Gate: User can signup, login, view empty authenticated dashboard, and logout with zero warnings
+
+- [ ] **Phase 2: Core Domain Purpose & Business Workflows (Functional Minimal Core)**
+  - [ ] Define primary MongoDB domain models in `models/` with tenant scoping (`companyId`)
+  - [ ] Implement corresponding domain React Contexts in `context/` encapsulating 100% of API calls
+  - [ ] Implement primary REST/Serverless CRUD API routes with strict validation (`POST`, `GET`, `PATCH`, `DELETE`)
+  - [ ] Build functional master data tables and input forms (functional end-to-end before heavy styling)
+  - [ ] Verification Gate: Primary business workflow executes with complete database mutation fidelity
+
+- [ ] **Phase 3: Visual Excellence, Design System & Ergonomics**
+  - [ ] Implement Tailwind design token system per [`design-system/01_CSS_PROPERTIES_REFERENCE.md`](design-system/01_CSS_PROPERTIES_REFERENCE.md)
+  - [ ] Apply visual effects (Glassmorphism, Frosted Glass, Border Beams, Ambient Mesh) per [`design-system/02_VISUAL_EFFECTS_CATALOGUE.md`](design-system/02_VISUAL_EFFECTS_CATALOGUE.md)
+  - [ ] Scaffold production UI components (Floating Labels, Gated Action Buttons, Feedback Overlays) per [`design-system/03_UI_COMPONENTS_LIBRARY.md`](design-system/03_UI_COMPONENTS_LIBRARY.md) & [`design-system/09_IMPLEMENTATION_RECIPES.md`](design-system/09_IMPLEMENTATION_RECIPES.md)
+  - [ ] Implement card layouts and stacked decks (Fan-Out, 3D Tilt, Bento Grids) per [`design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md`](design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md)
+  - [ ] Configure keyframes, transitions, and scroll animations per [`design-system/05_ANIMATIONS_CATALOGUE.md`](design-system/05_ANIMATIONS_CATALOGUE.md)
+  - [ ] Structure full page sections per [`design-system/06_WEBSITE_SECTIONS_LIBRARY.md`](design-system/06_WEBSITE_SECTIONS_LIBRARY.md) and industry archetypes per [`design-system/07_WEBSITE_DESIGN_PATTERNS.md`](design-system/07_WEBSITE_DESIGN_PATTERNS.md)
+  - [ ] Build resizable `h-dvh` Sidebar, mobile bottom navigation bar with drawer, and dashboard floating glass menu pill
+  - [ ] Enforce mobile responsive standard: zero horizontal overflow (`overflow-x: hidden`) and minimum `44x44px` touch targets
+  - [ ] Verification Gate: Visual review passes on Desktop (`1440px`), Tablet (`768px`), and Mobile (`390px`)
+
+- [ ] **Phase 4: Advanced Subsystems Expansion (Modular Plug-ins)**
+  - *(Note: All subsystems built in dedicated new files; zero modification to core domain tables)*
+  - [ ] Subsystem A: Omni-Chat & Socket.IO (`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`) + Lightweight Concurrency (`modules/CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md`)
+  - [ ] Subsystem B: Autonomous AI Copilot with Voice Waveforms & Confirmation Gates (`modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md`)
+  - [ ] Subsystem C: Next-Gen CMS Engine & 2D Vector Canvas with Knife Tool (`modules/CMS_ENGINE.md`)
+  - [ ] Subsystem D: Public Enquiries & Leads Triage with Honeypot Defense (`modules/ENQUIRIES_AND_LEADS_SYSTEM.md`)
+  - [ ] Subsystem E: Newsletter Canvas Studio & Blog Engine with Dynamic CMS Loop (`modules/NEWSLETTER_AND_BLOGS_SYSTEM.md`)
+  - [ ] Subsystem F: Automations, SMTP & WhatsApp Dispatches (`modules/AUTOMATIONS_AND_NOTIFICATIONS.md`)
+  - [ ] Subsystem G: Keyboard Shortcuts Engine (`modules/SHORTCUT_KEYS_SYSTEM.md`)
+  - [ ] Verification Gate: Each modular subsystem functions smoothly and interacts strictly via context hooks
+
+- [ ] **Phase 5: Sovereign Security, Biometrics & Hardening**
+  - [ ] Enforce granular Role-Based Access Control (`<resource>:<action>`) across UI buttons and API endpoints
+  - [ ] Implement custom AI Face Recognition biometrics (128-d vector embeddings)
+  - [ ] Deploy Next.js Edge Middleware route proxy (`middleware.ts`), flash toasts (*"Aap is page pe nahi ja sakte hain"*), and session cache invalidation
+  - [ ] Implement Developer Payment Safeguard banner for Owner
+  - [ ] Implement standalone interactive Universal 404 Arcade Game page (`app/not-found.tsx`)
+  - [ ] Verification Gate: Penetration tests pass; unauthorized actions blocked with flash toasts
+
+- [ ] **Phase 6: Universal Verification, Chaos Testing & Code Review Gate**
+  - [ ] Execute the 7-Tier Universal Verification Lifecycle (`rules/TESTING_AND_VERIFICATION.md`)
+  - [ ] Tier 1 (Static Gate): `npx tsc --noEmit` & `npm run build` succeed with Exit Code 0
+  - [ ] Tier 2 (Chaos Monkey): Fuzz forms and endpoints with `null`, `undefined`, extreme strings, and multi-clicks
+  - [ ] Tier 3: Verify zero dirty state mutations in database
+  - [ ] Tier 4: Verify zero direct component API calls (Context Law)
+  - [ ] Tier 5: Verify zero leaked backend technical jargon on UI
+  - [ ] Tier 6: Verify 60 FPS animations and multi-viewport layout
+  - [ ] Tier 7: Perform Principal Code Review using 8-point inspection checklist
+  - [ ] Verification Gate: Fresh terminal output evidence recorded; final build signed off
+```
+
