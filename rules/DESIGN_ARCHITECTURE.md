@@ -652,6 +652,36 @@ export const ResizableSidebar: React.FC<{ children: React.ReactNode }> = ({ chil
 
 ---
 
+### 8.2 Mobile Public Pages: Strict No-Sidebar & Fixed Bottom Footer Bar
+
+Cross-referenced with [`modules/MOBILE_NAVIGATION_AND_LAYOUT.md`](../modules/MOBILE_NAVIGATION_AND_LAYOUT.md).
+
+> **MANDATORY PUBLIC MOBILE LAYOUT LAW**:  
+> On mobile viewports (`< 1024px`), **public marketing, landing, and storefront pages MUST NEVER render a sidebar or slide-out sidepanel**.
+
+Instead, public pages on mobile **MUST feature a Fixed Bottom Footer Navigation Bar**:
+1. **Positioning**: Fixed at bottom of screen (`fixed bottom-0 inset-x-0 z-40 lg:hidden`).
+2. **Glassmorphism**: High-blur frosted glass (`backdrop-blur-xl bg-white/90 dark:bg-slate-950/90 border-t border-slate-200/80 dark:border-slate-800/80 pb-safe`).
+3. **Curated Primary Tabs (3-4 Only)**: Display only 3-4 key destinations (e.g. Home, Explore, Cart/Orders) with crisp icons and labels to guarantee zero clutter.
+4. **Mandatory "More" Link & Bottom Sheet**: The final item in the bottom bar is always **"More"** (`...`). Tapping it smoothly slides up an animated native-style bottom sheet containing all secondary links (About, FAQs, Contact, Terms, Language/Theme controls).
+
+---
+
+### 8.3 Mobile Dashboard: Floating Bottom-Center "Menu" Pill & Dual Close Controls
+
+In authenticated dashboard applications (Staff, Admin, Owner, Developer):
+1. **Mobile Sidebar Available**: Dashboards provide a full navigation sidebar that slides in as a mobile drawer from the left.
+2. **Floating Bottom-Center "Menu" Pill (Vercel-Inspired)**:
+   - Anchored at bottom center: `fixed bottom-6 left-1/2 -translate-x-1/2 z-50 lg:hidden`.
+   - Bespoke obsidian glass styling with ambient glow shadow and micro-icon: `"Menu"`.
+3. **Dual Close ('X') Controls & State Morphing**:
+   - When the mobile sidebar opens:
+     - **Control 1 (Bottom Floating Pill Morphing)**: The bottom pill smoothly morphs into **"Close"** with an animated 'X' cross icon.
+     - **Control 2 (Sidebar Header Close Button)**: Inside the open mobile drawer, the top header has a dedicated close button with an 'X' icon.
+   - Clicking **either** the bottom floating Close button, the top header 'X' button, or tapping the blurred backdrop dismisses the sidebar.
+
+---
+
 ## 📊 9. Responsive Data Presentation: Desktop Table vs Mobile Cards Hybrid Architecture
 
 > **MANDATORY DESIGN RULE**:  
@@ -744,5 +774,292 @@ Cross-referenced with [`modules/AUTH_AND_FACELOCK.md`](../modules/AUTH_AND_FACEL
   3. Lowercase letter (`[a-z]`).
   4. Numeric digit (`[0-9]`).
   5. Special symbol (`[!@#$%^&*]`).
+
+---
+
+## ⏳ 14. Loading State Architecture, Skeleton Themes & Two-Phase Dashboard Hydration
+
+Cross-referenced with [`modules/CMS_ENGINE.md`](../modules/CMS_ENGINE.md#26-two-phase-dashboard-hydration-lifecycle--hierarchical-single-fetch-context-providers).
+
+### 14.1 The Zero Upper Progress Bar Law
+> 🚫 **STRICT BAN ON TOP LOADING BARS**:
+> The application must **NEVER** render a top progress line, browser-edge thin bar (e.g. NProgress), or top-screen loading indicator on the Home page, public pages, or dashboard.
+>
+> **The Standard**: Every asynchronous loading state must render an exact **Layout-Matching Skeleton** that preserves the physical aspect ratio, card height, and table grid of the destination view, guaranteeing **Zero Layout Shift (CLS = 0)**.
+
+### 14.2 Skeleton Loading Themes & `localStorage` Synchronization
+1. **Visual Theme Variants**:
+   - **`CLASSIC_SHIMMER`**: Smooth diagonal metallic gradient sweep (`90deg` shimmer).
+   - **`PULSE_WAVE`**: Sinusoidal opacity fade wave (`0.35` to `0.90`).
+   - **`CYBER_NEON_GLOW`**: Subtle ambient neon edge breathing glow (Cyan / Violet tint).
+   - **`LIQUID_GLASS`**: Translucent frosted shimmer with `backdrop-filter: blur(8px)`.
+   - **`MINIMAL_STATIC`**: Flat, low-contrast placeholder blocks for dense tabular screens.
+2. **`localStorage` Persistence**:
+   - Active skeleton theme is stored in `localStorage.setItem("cms_skeleton_theme", theme)` so client-side navigation renders with zero styling flash.
+
+### 14.3 New User / First-Time Visitor Default: Branded Circle Loader
+- When a user visits the platform for the first time (no cached theme in `localStorage` or initial asset cold boot):
+  - The UI presents a centered **`<BrandedCircleLoader />`** with dual concentric orbital rings and ambient brand glow.
+  - As soon as the client environment initializes, the application permanently activates the customized Skeleton Loading system.
+
+### 14.4 Two-Phase Dashboard Hydration Lifecycle
+When navigating to `/dashboard/*`:
+1. **Phase 1: User & Session Verification Handshake**:
+   - The UI displays the centered **`<BrandedCircleLoader />`** while verifying the session cookie, tenant binding, and role permissions.
+   - Prevents flashing unauthorized dashboard layouts before the proxy check passes.
+2. **Phase 2: Post-Verification Layout Skeleton (`<DashboardSkeletonLayout />`)**:
+   - The instant authentication is validated, the screen cross-fades into the complete **Dashboard Skeleton Layout**:
+     - Sidebar skeleton with logo pill and 6–8 navigation shimmer bars.
+     - Topbar skeleton with breadcrumb, search input pill, and user profile circle.
+     - Main content area with 4 metric card skeletons, chart shimmer canvas, and 5-row striped table skeleton.
+   - Once data arrives, the skeleton cross-fades into live interactive components.
+
+### 14.5 The "Fetch-Once" Context Standard
+- Sidebar items, user profile, unread notification counts, and company details are loaded **EXACTLY ONCE** into a `DashboardShellContext` on initial dashboard mount.
+- Internal navigation between dashboard tabs (e.g. `/dashboard` -> `/dashboard/orders` -> `/dashboard/cms`) **never triggers re-fetching of sidebar or shell data**.
+
+---
+
+## 🧩 15. Context-Driven State Management & Automatic Component Synchronization
+
+Cross-referenced with [`rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`](./MODELS_AND_CONTEXTS_ARCHITECTURE.md).
+
+### 15.1 The Zero-Duplicate-Variable Law
+> ⚠️ **STRICT PROHIBITION**:
+> Components and sub-views **must never create duplicate local state variables** for data that is already managed by a React Context.
+>
+> - **Anti-Pattern**: Copying context arrays into local component state (`const [localList, setLocalList] = useState(contextList)`) causes split-brain state desynchronization.
+> - **The Standard**: Components must consume context variables directly:
+>   ```tsx
+>   // ✅ CORRECT: Direct subscription to context variables
+>   const { programs, selectedProgram, editProgram, deleteProgram } = useProgram();
+>   ```
+
+### 15.2 In-Place State Mutation & Automatic UI Re-Rendering
+1. When an entity is created, edited, or deleted:
+   - The operation executes through the context method (e.g. `editProgram(id, updates)`).
+   - Upon API confirmation, the context updates its existing state array in-place immutably using React `useState`:
+     ```tsx
+     setPrograms((prev) => prev.map((item) => (item._id === updated._id ? updated : item)));
+     ```
+2. **Automatic Synchronization Across Views**:
+   - Every active component subscribed to `useProgram()` across the page (e.g. the Master Data Table, the Slide View Card, the Metric Summary Pill, and the Edit Drawer) **automatically re-renders with the fresh data**.
+   - No manual window reloads, no duplicate API round-trips, and zero visual desynchronization.
+
+### 15.3 Layout Stability & Context Scoping
+- Dashboard Layouts and Shells must never execute API calls on route changes. Layout data is read directly from `DashboardShellContext`.
+- Public landing pages remain lightweight by omitting domain-specific model contexts.
+
+---
+
+## 🚀 16. Premium Button Animation System (100 Hover & 100 Task Presets)
+
+Cross-referenced with master specifications [`rules/PREMIUM_BUTTON_ANIMATION_SYSTEM.md`](./PREMIUM_BUTTON_ANIMATION_SYSTEM.md), [`rules/TASK_ANIMATED_BUTTONS_SYSTEM.md`](./TASK_ANIMATED_BUTTONS_SYSTEM.md), and [`rules/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`](./ROW_CARD_DELETE_DUSTBIN_ANIMATION.md).
+
+### 16.1 The 100 Hover + 100 Task Animation Standard
+- **Enterprise Scope**: The application supports a centralized registry of **100 Unique Hover Presets** (Surface, Typography, Iconography, Interactive Light, and CTA Utilities) and **100 Unique Task Presets** (Shopping, Payment, Documents, Messaging, CRUD, RBAC, and Engagement).
+- **The 9-State Lifecycle Machine**: Every button operates deterministically across `idle`, `hover`, `pressed`, `loading`, `processing`, `success`, `error`, `cancelled`, and `reset` states without layout shifts or text overflow.
+- **The Zero-Boring-Spinner Prohibition**: Generic circle loading spinners (`animate-spin` simple borders) are strictly banned across all surfaces. Buttons must reflect the tangible physical operation being executed.
+
+### 16.2 The Minimum Cycle & Loop Synchronization Law
+1. **Looping on Slow API Response**: If the server network request takes longer than the animation cycle duration ($T_{api} > T_{cycle}$), the animation seamlessly loops continuously without stuttering or abrupt restarts.
+2. **Cycle Completion on Fast API Response**: If the server responds faster than the animation cycle (e.g. API takes 150ms while $T_{cycle} = 1000\text{ms}$), the animation **MUST complete its ongoing cycle gracefully to 100% duration**. Never cut off, snap, or abort an in-flight animation.
+3. **The Strict Post-Animation Toast Execution Rule**:
+   - Toast notifications (`toast.success()`, `toast.error()`) **MUST NEVER be triggered mid-flight** while the button is still animating.
+   - The toast trigger callback is guaranteed to fire **strictly after the full animation cycle and terminal morph transition finish**.
+
+### 16.3 Standard Component Integration
+All action buttons are implemented using the universal `<AnimatedButton />` primitive, `<TaskAnimationRenderer />`, and `useTaskAnimationSync` hook:
+
+```tsx
+<TaskAnimatedButton
+  id="btn-delete-program"
+  label="Delete Program"
+  activeLabel="Shredding Record..."
+  successLabel="Program Deleted"
+  variant="destructive"
+  idleIcon={<Trash2 className="w-5 h-5" />}
+  animatingVector={<ShredderAnimationVector />}
+  cycleDuration={850}
+  onClick={() => deleteProgram(program._id)}
+  onSuccessToast={() => toast.success("Program permanently deleted from MongoDB.")}
+/>
+```
+
+### 16.4 The Table Row & Card Deletion Protocol (Confirmation Modal + Canvas Dustbin Fabric-Fold)
+Cross-referenced with master specification [`rules/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`](./ROW_CARD_DELETE_DUSTBIN_ANIMATION.md).
+
+1. **The Confirmation Modal Handshake**:
+   - Clicking Delete on any table row or card **never runs an abrupt in-place animation**.
+   - `<DeleteConfirmationModal />` opens first.
+   - The modal's Delete button loops its task-specific shredder animation while awaiting API completion.
+2. **Success Sequence (Toast -> Modal Close -> Canvas Dustbin)**:
+   - On HTTP 200 confirmation, Success Toast displays first, the modal closes, and the **Canvas Dustbin emerges from the right side of the screen/viewport**.
+   - The deleted row or card performs a **3D Fabric Folding Wave**: curling from its right edge like silk fabric and suctioning directly into the dustbin mouth.
+   - The dustbin lid snaps shut and exits right offscreen.
+   - The item is removed from the single canonical React Context state array (`programs`), and all remaining rows/cards glide seamlessly into place using Framer Motion `layout` FLIP physics.
+3. **Bulk Deletion Group Flight**:
+   - Multiple selected rows/cards lift and fold into the right-side dustbin **together at the exact same time** (sequential deletion is banned).
+4. **Error Immunity**:
+   - If the backend call fails, Error Toast displays, the canvas dustbin animation **NEVER EXECUTES**, and the item remains 100% visible and untouched.
+
+### 16.5 The Universal Hover Animation System Across 9 UI Categories
+Cross-referenced with master specification [`rules/MASTER_HOVER_ANIMATION_SYSTEM.md`](./MASTER_HOVER_ANIMATION_SYSTEM.md).
+
+Hover micro-interactions are not restricted to buttons; they are enforced across all 9 core UI element categories:
+1. **Buttons & CTAs**: Vercel ambient glow, Codrops sliding color sweep, Framer Motion spring physics.
+2. **Links & Navigation Typography**: Kinetic rolling split-text, center-out underlines, cursor-following media reveals, `:has()` sibling dimming.
+3. **Cards & Content Surfaces**: 3D perspective gyro tilt (`perspective: 1000px`), real-time cursor radial spotlights, offset-path border beams.
+4. **Data Tables & Rows**: Progressive disclosure action toolbars, soft cyan highlighter tint shifts, left accent strips, elevation micro-shadows.
+5. **Navigation Menus & Tabs**: Framer Motion shared `layoutId="active-pill"` and `layoutId="hover-pill"`, animated dropdown panels, chevron 180° rotation.
+6. **Form Inputs & Controls**: Floating label `peer` transforms, glowing focus ring auras (`ring-4 ring-brand/15`), animated toggle switches.
+7. **Media, Avatars & Video**: Cursor-following action badges ("EXPLORE"), coordinate-aware zoom lenses, radar acoustic beacon pings.
+8. **Badges, Tags & Chips**: Lift & glow micro-elevation (`translateY(-1px)`), rotating close 'x' icons, selection state scale morphs.
+9. **Overlays, Tooltips & Accordions**: Portal-rendered tooltips (`z-50`), rotating plus-to-minus indicators (45°), smooth height layout expansion.
+
+---
+
+## 🛡️ 17. The Granular RBAC Permission UI & Zero-Leak UI Elimination Law
+
+Cross-referenced with master specification [`modules/RBAC_SYSTEM.md`](../modules/RBAC_SYSTEM.md).
+
+### 17.1 The Zero-Leak UI Elimination Law
+User interfaces must never expose UI elements that the user cannot interact with:
+1. **Zero-Leak Navigation Elimination**:
+   - If a page is disabled for a role, its navigation link is **completely stripped** from desktop sidebars, mobile bottom bars, topbar breadcrumbs, and quick action palettes.
+   - If a user navigates to the URL directly, [`<RouteGuard />`](../modules/RBAC_SYSTEM.md#64-route-level-access-guard-componentscommonrouteguardtsx) returns `null` immediately and redirects, preventing any visual frame flash.
+2. **Zero-Leak Button Elimination**:
+   - If an action button (e.g. Delete, Export PDF, WhatsApp) is disallowed, [`<ActionGuard />`](../modules/RBAC_SYSTEM.md#62-action-level-button-guard-componentscommonactionguardtsx) returns `null`.
+   - **Banned Practice**: Disallowed buttons must **never** be rendered in disabled states, greyed out, or visually styled with `opacity-0` or `pointer-events-none`. If a user cannot execute an action, the button does not exist in the DOM.
+
+### 17.2 The Owner 3-Tier Permission Governance Studio
+Implemented in [`components/rbac/OwnerPermissionStudio.tsx`](../modules/RBAC_SYSTEM.md#7-the-owner-permission-studio-component-componentsrbacownerpermissionstudiotsx):
+- **Tier 1 (Role Selection)**: Owner selects the target company role from an interactive pill bar.
+- **Tier 2 (Page Module Grid)**: Displays cards for each domain module (`Programs`, `Orders`, `Customers`, `Invoices`, `CMS`) with master toggle switches.
+- **Tier 3 (Granular Drilldown Modal)**:
+  - **Part A (Action Buttons)**: Checkbox matrix for `create`, `edit`, `delete`, `export_pdf`, `send_whatsapp`.
+  - **Part B (Row-Level Data Scope)**: Radio selector for `OWNER_ONLY`, `OWN_ONLY`, `ALL_USERS`, `SELECTED_ROLES`, `SELECTED_USERS`. Role and user dropdown pickers are strictly filtered to the current tenant (`companyId`).
+  - **Part C (Action-on-Scoped-Data Matrix)**: Fine-grained controls defining allowed actions on records created by other users within the selected scope.
+
+### 17.3 Task-Synchronized Save Animation
+- The "Save Permissions" button uses `<TaskAnimatedButton />` with the **`save_vault_lock`** preset.
+- Follows the **Minimum Cycle & Loop Synchronization Law**: guarantees a full 1000ms cyber-vault locking animation, smooth looping during network latency, flawless transition to a checkmark shield, and triggers success toast notifications strictly *after* motion completion.
+
+---
+
+## 🚧 18. Website Maintenance Mode UI & Ambient Visual Standards
+
+Cross-referenced with master specification [`modules/CMS_ENGINE.md`](../modules/CMS_ENGINE.md#25-website-maintenance-mode-studio--sovereign-access-interceptor) and [`modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md`](../modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md#7-edge-middleware-maintenance-mode-interception--sovereign-bypass-handshake).
+
+### 18.1 Public Maintenance Screen Aesthetics (`<MaintenanceModeView />`)
+When maintenance mode is active, public visitors must never see a crude plain text message. They encounter an enterprise-grade visual experience:
+1. **Atmospheric Canvas Lighting**:
+   - Deep canvas background (`#07090e`) with layered radial ambient glows: cyan blur aura (`blur-[140px]`) at top center, subtle amber bloom at bottom.
+2. **Dynamic Brand Identity**:
+   - Header inherits the organization's high-resolution logo and title from [`CmsWebsiteDetails`](../modules/CMS_ENGINE.md#23-website-details-and-global-brand-identity-studio).
+   - Real-time maintenance status pill with pulsing amber radar beacon.
+3. **Typography & Message Delivery**:
+   - Dynamic `headline` in high-impact font (`font-black tracking-tight text-white`).
+   - Dynamic `tagline` paragraph (`text-slate-300 font-normal leading-relaxed max-w-xl mx-auto`).
+   - Optional live countdown timer displaying estimated completion timestamp.
+4. **Prominent Admin & Owner Login CTA**:
+   - A bold, illuminated CTA button (`bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-8 py-4 rounded-2xl shadow-xl shadow-cyan-500/25`) directing authorized personnel to `/login`.
+
+### 18.2 Sovereign Bypass Dashboard Banner (`<MaintenanceActiveBanner />`)
+- When a Developer or Owner navigates the dashboard while maintenance mode is active, a persistent, non-intrusive warning banner is anchored to the top of the viewport (`sticky top-0 z-50 bg-amber-500 text-slate-950`).
+- Displays a clear status notice: *"⚠️ MAINTENANCE MODE IS ACTIVE: Public visitors see your maintenance screen. [ Manage in CMS ]"*.
+
+### 18.3 Non-Owner Role Lockout Screen (`<MaintenanceLockoutScreen />`)
+- If a non-owner authenticated user (Staff, Admin, Customer) logs in while maintenance is active:
+  - System intercepts navigation and displays a centered frosted dark card (`bg-slate-900/90 border-slate-800`).
+  - Displays user email and role badge, clearly stating: *"Access to operational dashboards is restricted to Platform Developers and Business Owners during maintenance."*
+  - Provides a single-click `[ Sign Out ]` button.
+
+---
+
+## 🎛️ 19. Animation Engine Feature Flag (`feature:animations`) & Dual-Mode Rendering Standards
+
+Cross-referenced with master specification [`modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md`](../modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md#63-the-animation-engine-feature-flag-featureanimations--instant-fallback-contract) and [`rules/PREMIUM_BUTTON_ANIMATION_SYSTEM.md`](./PREMIUM_BUTTON_ANIMATION_SYSTEM.md#10-feature-flag-interceptor--instant-fallback-engine-featureanimations).
+
+The **`feature:animations`** flag allows platform operators and tenant owners to dictate whether rich micro-animations are rendered on their website and dashboard:
+
+### 19.1 The Dual-Mode Visual Rendering Law
+1. **Mode A: Rich Motion Mode (`feature:animations === true`, Default)**:
+   - Full motion architecture active: all 100 Hover presets, 100 Task-synchronized animations, Mac-like 3D Fabric Fold into right-sliding Canvas Dustbin, 3D gyro perspective card tilt, and kinetic typography.
+2. **Mode B: Instant Accessible Fallback Mode (`feature:animations === false`)**:
+   - Designed for low-latency corporate environments, battery-constrained devices, or clients preferring clean, distraction-free software.
+   - **Zero 3D Transforms / Canvas Overlays**: Canvas Dustbin and 3D gyro tilt are completely unmounted.
+   - **Instant State Labels**: Action buttons swap states instantly without looping vector delays (`"Saving..."` ➔ `"Saved"`).
+   - **Zero Spinners Law Preserved**: Even with animations disabled, **no generic spinning circles (`animate-spin`) are permitted**. Clean typography and status text convey state.
+   - **Row/Card Deletions**: Removed from context state immediately with a clean 150ms opacity fade.
+
+---
+
+## 🎨 20. The Universal Decorative Shell & Component Styling Engine
+
+Cross-referenced with master specification [`modules/CMS_ENGINE.md`](../modules/CMS_ENGINE.md#29-the-universal-component-decorator--responsive-multi-viewport-stylist).
+
+### 20.1 Decorative Tokens & Universal Target Registry
+The design system exposes a unified set of decorative styling tokens that govern both public storefront shells and operational dashboard components:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    UNIVERSAL DECORATIVE STYLING TOKENS                      │
+├────────────────────┬────────────────────────────────────────────────────────┤
+│ Corner Radiuses    │ `radius-none` (0px), `radius-sm` (6px), `radius-md`    │
+│                    │ (12px), `radius-lg` (18px), `radius-xl` (24px),        │
+│                    │ `radius-2xl` (32px), `radius-full` (9999px)            │
+├────────────────────┼────────────────────────────────────────────────────────┤
+│ Border Glows       │ `glow-cyan` (0 0 15px rgba(6, 182, 212, 0.35)),        │
+│                    │ `glow-magenta` (0 0 15px rgba(236, 72, 153, 0.35)),     │
+│                    │ `glow-amber` (0 0 15px rgba(245, 158, 11, 0.35)),      │
+│                    │ `glow-subtle` (0 0 8px rgba(255, 255, 255, 0.12))      │
+├────────────────────┼────────────────────────────────────────────────────────┤
+│ Surface Optics     │ `glass-frosted` (bg-surface/70 backdrop-blur-md),       │
+│                    │ `glass-heavy` (bg-surface/85 backdrop-blur-xl),         │
+│                    │ `glass-translucent` (bg-surface/40 backdrop-blur-sm)    │
+├────────────────────┼────────────────────────────────────────────────────────┤
+│ Hover Physics      │ `hover-lift` (scale 1.02x, translateY -2px, 200ms),     │
+│                    │ `hover-glow` (border-opacity 100%, shadow increase)     │
+└────────────────────┴────────────────────────────────────────────────────────┘
+```
+
+### 20.2 Shell & Core UI Component Customization
+
+#### 1. Public & Dashboard Navigation Shells:
+- **Public Topbar & Mobile Bottom Bar**:
+  - Configurable floating pill vs edge-to-edge docking.
+  - Active navigation indicator pill with subtle colored underglow.
+- **Dashboard Resizable Sidebar**:
+  - Right-border accent gradient stroke (`border-r border-white/10 dark:border-white/5`).
+  - Active menu link: illuminated background pill (`bg-cyan-500/10 text-cyan-400 border border-cyan-500/20`).
+- **Dashboard Mobile Floating Menu Glass Pill**:
+  - Frosted glass HUD with morphing text icon between `"Menu"` and `"Close"` and ambient glow beacon.
+
+#### 2. Dashboard Core Data UI Components:
+- **Bento & Metric Cards**:
+  - Configurable corner radius (`12px` to `24px`), multi-layer box shadows, and frosted glass opacity.
+- **Master Data Tables**:
+  - Gradient table header with crisp uppercase typography.
+  - Alternating zebra row tinting (`bg-surface/20`) and hover glow highlights.
+  - Integration with the 3D Canvas Dustbin deletion animation.
+- **Filters, Search Bars & Pagination**:
+  - Custom floating label inputs with accent focus rings (`focus:ring-2 focus:ring-cyan-500/40`).
+  - Pagination pills with active page glow and tactile chevron buttons.
+- **Chart & Graph Containers**:
+  - Card backdrops with subtle gradient mesh lighting and accessible axis gridline contrast.
+
+### 20.3 Multi-Viewport Responsive Law (Desktop, Tablet, Mobile)
+- **Viewport Dimension Standards**:
+  - Desktop: `1440x900`
+  - Tablet: `768x1024`
+  - Mobile: `390x844` (iPhone standard)
+- **Fluid Adaptation**:
+  - All card grids automatically transition from 4-column (Desktop) ➔ 2-column (Tablet) ➔ 1-column stacked cards (Mobile).
+  - Data tables automatically morph into responsive card decks on viewports `< 768px`.
+  - Minimum touch target for all interactive elements on mobile is strictly **`44x44px`**.
+  - Horizontal scrollbars on the document body are strictly prohibited (`overflow-x: hidden`).
+
+
 
 

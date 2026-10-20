@@ -110,8 +110,35 @@ All form fields must use custom Floating Label components (see [`DESIGN_ARCHITEC
 
 1. **Mandatory `cursor-pointer`**: Every button, link, tab, clickable table row, and dropdown trigger must have `cursor-pointer`.
 2. **Custom Sleek Scrollbars**: Styled with thin dimensions and semi-transparent thumb.
-3. **Fixed Resizable Sidebar**:
+3. **Fixed Resizable Sidebar (Desktop)**:
    - Position: `fixed top-0 left-0`.
    - Height: `h-dvh` (Dynamic viewport height).
    - Resizable width handle with drag listener and `localStorage` memory.
 4. **Toast Notifications**: Interactive animated toasts with hover-to-pause and glowing status borders.
+5. **Mobile Public Pages Navigation (Fixed Bottom Bar & Strict No-Sidebar)**:
+   - On mobile viewports (`< 1024px`), public/marketing pages **MUST NEVER render a sidebar or sidepanel drawer**.
+   - Fixed bottom tab bar (`fixed bottom-0`) with 3-4 primary links (Home, Explore, Orders) + a mandatory "More" (`...`) link that slides open a native-style bottom sheet drawer for auxiliary links.
+6. **Mobile Dashboard Navigation (Floating Bottom-Center "Menu" Pill & Dual Close Controls)**:
+   - On mobile dashboards, navigation is triggered via a floating bottom-center obsidian glass pill with the label `"Menu"` (Vercel-inspired bespoke design).
+   - **Dual Close Controls**: Opening the sidebar morphs the bottom floating pill into `"Close"` with an animated 'X', while the open sidebar header also features a dedicated top 'X' close button. Clicking either control or the backdrop dismisses the drawer.
+
+---
+
+## 🎬 8. Premium Button Animation System (100 Hover & 100 Task Presets)
+
+Cross-referenced with master specification [`rules/PREMIUM_BUTTON_ANIMATION_SYSTEM.md`](./PREMIUM_BUTTON_ANIMATION_SYSTEM.md), [`rules/TASK_ANIMATED_BUTTONS_SYSTEM.md`](./TASK_ANIMATED_BUTTONS_SYSTEM.md), and [`rules/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`](./ROW_CARD_DELETE_DUSTBIN_ANIMATION.md).
+
+1. **The 100 Hover + 100 Task Presets Standard**:
+   - Universal central animation registry supporting 100 unique hover interactions and 100 unique task-specific action animations across the entire application.
+   - Governed by a **9-State Finite State Machine** (`idle`, `hover`, `pressed`, `loading`, `processing`, `success`, `error`, `cancelled`, `reset`).
+2. **Universal Ban on Boring Circle Spinners**:
+   - Never use generic loading circles (e.g. `animate-spin` simple ring borders) on interactive action buttons across Public pages, CMS, or Dashboards.
+   - Action buttons must render **Task-Specific Micro-Animations** representing what the button actually does (paper planes for messages, shredders for deletion, cash register printouts for invoices, chip reader for card payments, satellite beams for publishing).
+3. **The Minimum Cycle & Looping Law**:
+   - Slow API calls: Animation continuously loops smoothly without jitter.
+   - Fast API calls: Ongoing animation cycle **must run to 100% completion**; never abruptly truncate or snap.
+4. **Strict Post-Animation Toast Execution**:
+   - Toast notifications must only be displayed **AFTER** the button's animation cycle and success/error morph finish completely.
+5. **The Universal Hover Animation System Across 9 Categories**:
+   - Cross-referenced with [`rules/MASTER_HOVER_ANIMATION_SYSTEM.md`](./MASTER_HOVER_ANIMATION_SYSTEM.md).
+   - Hover animations are mandatory across all 9 UI categories: Buttons, Links, Cards, Table Rows, Nav Tabs, Form Inputs, Media Assets, Status Badges, and Tooltip/Accordions.

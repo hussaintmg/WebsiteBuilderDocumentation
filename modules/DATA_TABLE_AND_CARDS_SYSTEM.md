@@ -649,3 +649,127 @@ export const MobileDataCard: React.FC<{
 4. [ ] **Marquee Box Selection Verified**: Clicking and dragging on canvas draws rectangle and selects intersected items in both table rows and cards.
 5. [ ] **"Select on All Other Pages" Verified**: Selecting all visible rows shows the cross-page banner allowing full dataset selection.
 6. [ ] **Bulk Action Bar Verified**: Slides in smoothly on selection with animated icons for Delete, PDF, Email, and WhatsApp.
+
+---
+
+## 🌐 10. Model Context Integration & Zero-Ad-Hoc API Architecture
+
+Cross-referenced with [`rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`](../rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md).
+
+> 🚫 **THE "ZERO DIRECT COMPONENT API CALLS" DIRECTIVE**:
+> Neither the Master Data Table nor the Mobile Card Grid should ever make direct HTTP requests (`fetch` / `axios`) for fetching records, updating status, or triggering bulk exports.
+>
+> All actions, mutations, and filter states **MUST BE ORCHESTRATED EXCLUSIVELY VIA THE MODEL'S REACT CONTEXT** (e.g. `useProgram()` or `useOrder()`).
+
+### 10.1 Real-World Integration Example: `<ProgramManagementView />`
+```tsx
+// components/programs/ProgramManagementView.tsx
+"use client";
+
+import React, { useState } from "react";
+import { useProgram } from "@/context/ProgramContext";
+import { MasterDataTable } from "@/components/ui/MasterDataTable";
+import { MobileCardGrid } from "@/components/ui/MobileCardGrid";
+import { BulkActionBar } from "@/components/ui/BulkActionBar";
+
+export const ProgramManagementView: React.FC = () => {
+  // 1. Consume shared state and methods directly from ProgramContext
+  const {
+    programs,
+    isLoading,
+    filters,
+    setFilters,
+    downloadProgramPdf,
+    sendProgramEmail,
+    deleteProgram,
+    bulkUpdateProgramStatus,
+  } = useProgram();
+
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  // Bulk PDF action triggers context method (never raw fetch in component)
+  const handleBulkPdfDownload = async () => {
+    for (const id of selectedIds) {
+      await downloadProgramPdf(id);
+    }
+  };
+
+  // Bulk Status Change triggers context method
+  const handleBulkStatusChange = async (status: any) => {
+    await bulkUpdateProgramStatus(selectedIds, status);
+    setSelectedIds([]); // Clear selection upon completion
+  };
+
+  return (
+    <div className="w-full flex flex-col gap-6">
+      {/* Search & Filter Bar directly sets context filters */}
+      <div className="flex items-center gap-4">
+        <input
+          type="text"
+          placeholder="Search programs..."
+          value={filters.search || ""}
+          onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+          className="px-4 py-2 rounded-lg bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800"
+        />
+      </div>
+
+      {/* Desktop Master Data Table (Consumed from Context with FabricFoldRow support) */}
+      <div className="hidden lg:block">
+        <MasterDataTable
+          items={programs}
+          isLoading={isLoading}
+          selectedIds={selectedIds}
+          onSelectionChange={setSelectedIds}
+          onDelete={(id, title) => requestDelete({ id, title, type: 'single' })}
+          onDownloadPdf={(id) => downloadProgramPdf(id)}
+          animatingDeleteIds={animatingDeleteIds}
+        />
+      </div>
+
+      {/* Mobile Interactive Cards Grid (Consumed from SAME Context with FabricFoldCard support) */}
+      <div className="block lg:hidden">
+        <MobileCardGrid
+          items={programs}
+          isLoading={isLoading}
+          selectedIds={selectedIds}
+          onSelectionChange={setSelectedIds}
+          onDelete={(id, title) => requestDelete({ id, title, type: 'single' })}
+          onDownloadPdf={(id) => downloadProgramPdf(id)}
+          animatingDeleteIds={animatingDeleteIds}
+        />
+      </div>
+
+      {/* Floating Bulk Action Bar with Confirmation Handshake */}
+      {selectedIds.length > 0 && (
+        <BulkActionBar
+          selectedCount={selectedIds.length}
+          onBulkDelete={() => requestDelete({ id: 'bulk', title: 'Selected Items', type: 'bulk', bulkIds: selectedIds })}
+          onDownloadPdf={handleBulkPdfDownload}
+          onUpdateStatus={handleBulkStatusChange}
+          onClearSelection={() => setSelectedIds([])}
+        />
+      )}
+
+      {/* 4. Canvas Dustbin Portal (Emerges from right viewport edge during deletion) */}
+      <DustbinPortal isActive={isDustbinActive} itemCount={animatingDeleteIds.length} />
+
+      {/* 5. Delete Confirmation Modal with In-Modal Task Animation */}
+      <DeleteConfirmationModal
+        isOpen={isModalOpen}
+        target={modalTarget}
+        onClose={closeModal}
+        onConfirm={confirmDelete}
+        onSuccessToast={() => toast.success("Records permanently deleted from database.")}
+        onErrorToast={(err) => toast.error(err?.message || "Failed to delete.")}
+      />
+    </div>
+  );
+};
+```
+
+### 10.2 Architectural Benefits & Deletion Synchronization:
+1. **Single Source of Truth**: Both the Desktop Table and Mobile Card views subscribe to the same `programs` array in memory.
+2. **Coordinated Physical Deletion**: Clicking delete opens `<DeleteConfirmationModal />`. On confirm, the modal's button loops its task animation. Upon API confirmation, the Success Toast fires, the modal dismisses, the right-side **Dustbin emerges**, and the selected rows/cards **fold like fabric** into the dustbin before being removed from the context array.
+3. **Immediate In-Place Re-Rendering**: When the dustbin lid snaps shut, `ProgramContext` mutates its state immutably (`setPrograms`). **Both table rows and mobile cards vanish, and remaining items glide into position via Framer Motion FLIP (`layout`) with ZERO page reloading**.
+4. **No Redundant Fetching**: Switching views, opening detail drawers, or navigating between tabs reuses the existing context state without firing repeated API calls. Subsequent new records created or fetched immediately reflect in this same array.
+

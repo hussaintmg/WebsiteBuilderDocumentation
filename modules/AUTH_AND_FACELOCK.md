@@ -12,7 +12,7 @@
 >   1. **Client-side Landmark Detection**: Extracts face keypoints and aligns the face bounding box via lightweight computer vision models (e.g. MediaPipe Face Mesh, MobileFaceNet, or face-api.js).
 >   2. **128-Dimensional Vector Embedding**: Generates a standardized 128-d (or 512-d) float32 face descriptor vector representing facial geometry.
 >   3. **Anti-Spoofing & Liveness Check**: Multi-frame micro-motion / blink verification to prevent static photo or screen spoofing.
->   4. **Backend Vector Matching**: Vector distance computation (Euclidean distance `< 0.45` or Cosine Similarity `> 0.88`) against stored face embeddings in the database (PostgreSQL `pgvector` or JSON vector array).
+>   4. **Backend Vector Matching**: Vector distance computation (Euclidean distance `< 0.45` or Cosine Similarity `> 0.88`) against stored face embeddings in the database (MongoDB 128-dimensional float array in `User` documents).
 >   5. **Cross-Platform & Universal**: Works identically across all desktop webcams, laptops, Android, iOS, and kiosk browsers without hardware biometric limitations.
 
 ---
@@ -165,7 +165,7 @@ export const FaceAccountSelectionModal: React.FC<{
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
 │                   BACKEND VECTOR MATCHING ENGINE                       │
-│ 1. Query registered face vectors from DB (PostgreSQL / JSONB)          │
+│ 1. Query registered face vectors from MongoDB (users collection)       │
 │ 2. Calculate Euclidean Distance: D = || v_candidate - v_stored ||      │
 │ 3. Verification Gate: Match if Distance < 0.45                         │
 │ 4. If 1 match: Authenticate | If 2+ matches: Return Conflict Modal     │
@@ -243,13 +243,13 @@ export async function extractFaceDescriptorFromVideo(video: HTMLVideoElement): P
 }
 ```
 
-#### Backend Vector Matching Engine (`app/services/face_auth_service.py`):
+#### Backend Vector Matching Engine (`app/services/face_auth_service.py` & Next.js):
 ```python
-# app/services/face_auth_service.py
+# app/services/face_auth_service.py (FastAPI / Motor Async MongoDB)
 import math
-from typing import List, Optional
-from sqlalchemy.orm import Session
-from app.models.user import User
+from typing import List, Dict, Any, Optional
+from motor.motor_asyncio import AsyncIOMotorDatabase
+from bson import ObjectId
 
 MATCH_DISTANCE_THRESHOLD = 0.45  # Standard threshold: lower distance = closer match
 
@@ -259,22 +259,59 @@ def calculate_euclidean_distance(vec1: List[float], vec2: List[float]) -> float:
         return 999.0
     return math.sqrt(sum((a - b) ** 2 for a, b in zip(vec1, vec2)))
 
-def match_face_biometric(db: Session, candidate_vector: List[float]) -> List[User]:
+async def match_face_biometric(
+    db: AsyncIOMotorDatabase,
+    candidate_vector: List[float],
+    company_id: Optional[str] = None
+) -> List[Dict[str, Any]]:
     """
     Scans candidate face vector against all enrolled users in the tenant.
-    Returns: List of matching User objects (supports 1 user or multi-account detection).
+    Returns: List of matching User documents from MongoDB (supports 1 user or multi-account conflict resolution).
     """
-    enrolled_users = db.query(User).filter(User.face_embedding.isnot(None), User.is_active == True).all()
+    query: Dict[str, Any] = {
+        "faceEmbedding": {"$exists": True, "$ne": None},
+        "isActive": True
+    }
+    if company_id:
+        try:
+            query["companyId"] = ObjectId(company_id)
+        except Exception:
+            pass
+
+    cursor = db.users.find(query)
+    enrolled_users = await cursor.to_list(length=1000)
     matched_users = []
 
     for user in enrolled_users:
-        stored_vector = user.face_embedding  # 128-d float list stored in DB
+        stored_vector = user.get("faceEmbedding", [])  # 128-d float list stored in MongoDB
         distance = calculate_euclidean_distance(candidate_vector, stored_vector)
         
         if distance < MATCH_DISTANCE_THRESHOLD:
             matched_users.append(user)
 
     return matched_users
+```
+
+```typescript
+// lib/faceAuthService.ts (Next.js App Router / Mongoose)
+import { User, IUser } from "@/models/User";
+
+export async function matchFaceBiometricNext(
+  candidateVector: number[],
+  companyId?: string
+): Promise<IUser[]> {
+  const query: any = {
+    faceEmbedding: { $exists: true, $ne: null },
+    isActive: true,
+  };
+  if (companyId) query.companyId = companyId;
+
+  const enrolledUsers = await User.find(query).lean();
+  return enrolledUsers.filter((user) => {
+    const distance = calculateEuclideanDistance(candidateVector, user.faceEmbedding || []);
+    return distance < MATCH_DISTANCE_THRESHOLD;
+  });
+}
 ```
 
 ---
@@ -707,7 +744,32 @@ export const PasswordStrengthMeter: React.FC<{ password: string }> = ({ password
 
 ---
 
-## 🛡️ 9. Verification & Best Practice Checklist
+## 🔄 9. Mandatory Login & Logout Proxy Synchronization & Cache Invalidation
+
+Cross-referenced with [`modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md`](./ROUTE_PROXY_AND_PROTECTION_SYSTEM.md).
+
+> **THE ROUTE CAPABILITY FRESHNESS LAW**:  
+> Every change in authentication status (Login, Logout, Account Switch) **MUST immediately invalidate the Edge Proxy session and re-evaluate protected routes from scratch.**
+
+### 9.1 Login Synchronization Protocol:
+1. **Invalidate Stale Cache**: Before writing new tokens, execute `queryClient.clear()` to purge data belonging to prior sessions.
+2. **Mint Fresh Edge Session Cookie**: Set HTTP-only, Secure cookie `auth_session` containing current user identity, role, permissions, and tenant ID.
+3. **Recompute Route Whitelist**: Edge Middleware and client `RouteGuard` calculate the user's fresh accessible routes matrix.
+4. **Role-Driven Navigation**: Perform a clean redirection to the role landing portal (Developer ➔ `/system-console`, Owner ➔ `/dashboard`, Staff ➔ `/orders`, Customer ➔ `/portal`).
+
+### 9.2 Logout Invalidation & Anti-Cache Protocol:
+1. **Server-Side Token Revocation**: Dispatch `POST /api/v1/auth/logout` to terminate refresh tokens.
+2. **Clear Session Cookies**: Immediately expire `auth_session` and `active_account_id` (`Max-Age=0`).
+3. **Wipe Client Application Memory**:
+   - `queryClient.clear()`
+   - `useAuthStore.getState().logout()`
+   - Remove tokens from `localStorage` & `sessionStorage`.
+4. **Browser History & Back-Button Protection**: All protected views serve `Cache-Control: no-store, no-cache, must-revalidate` to prevent cached view restoration upon browser Back button clicks.
+5. **Toast Feedback**: Display confirmation toast and redirect to `/login`.
+
+---
+
+## 🛡️ 10. Verification & Best Practice Checklist
 
 - [ ] **Silent Facelock Verified**: Automatically attempts face detection once on load without showing visible camera UI; falls back to manual button if unverified.
 - [ ] **Multi-Account Conflict Modal Verified**: Prompts user when 1 face matches multiple accounts, and loads remaining accounts into session vault.
@@ -717,3 +779,78 @@ export const PasswordStrengthMeter: React.FC<{ password: string }> = ({ password
 - [ ] **Rate Limiting Verified**: All auth endpoints enforce environment-driven rate limits (`.env`).
 - [ ] **6-Box OTP Verified**: Text type with numeric mode, `Ctrl+V` paste support, and auto-verification on 6th digit.
 - [ ] **Strong Password Policy Verified**: Min 8 chars, uppercase, lowercase, digit, and symbol with real-time UI feedback.
+- [ ] **Proxy Cache Invalidation Verified**: On login, fresh roles and permissions are written to the proxy session; on logout, cookies and React Query caches are wiped immediately and browser Back-button redirects to `/login`.
+
+---
+
+## 🎨 11. CMS-Driven Dynamic Auth Layout & Theme Customization
+
+Cross-referenced with [`modules/CMS_ENGINE.md`](./CMS_ENGINE.md#24-auth-pages-theme--layout-management-studio).
+
+All authentication views (`/login`, `/signup`, `/forgot-password`, `/reset-password`, `/verify-otp`) are dynamic consumers of the tenant's **`CmsAuthThemeConfig`** governed by the CMS Auth Theme Customizer Studio:
+
+![Auth Pages Theme Studio UI Mockup](file:///C:/Users/lenovo/.gemini/antigravity-ide/brain/0092df92-639b-4139-a039-af9fafc2aed0/auth_pages_theme_studio_1792416954752.jpg)
+
+### 11.1 Dynamic Runtime Shell Architecture
+When a user navigates to any auth route, the parent `<AuthLayoutWrapper>` hydrates the tenant's configuration via Server Component or edge hook:
+
+```tsx
+// components/auth/AuthLayoutWrapper.tsx
+import React from "react";
+import { getTenantAuthThemeConfig } from "@/lib/cms/authTheme";
+import { AuthMediaSection } from "./AuthMediaSection";
+
+export const AuthLayoutWrapper = async ({
+  pageKey,
+  children,
+}: {
+  pageKey: "login" | "signup" | "forgotPassword" | "resetPassword" | "otpVerification";
+  children: React.ReactNode;
+}) => {
+  const config = await getTenantAuthThemeConfig();
+  const pageConfig = config.pages[pageKey] || { layoutMode: config.defaultLayout };
+  const layout = pageConfig.layoutMode;
+
+  const isSplitLeft = layout === "SPLIT_LEFT_FORM_RIGHT_MEDIA";
+  const isSplitRight = layout === "SPLIT_RIGHT_FORM_LEFT_MEDIA";
+  const isCentered = layout === "CENTERED_CARD_WITH_BG";
+
+  return (
+    <div className={`min-h-screen w-full flex relative overflow-hidden transition-colors duration-300 ${
+      isCentered ? "items-center justify-center p-4 sm:p-6" : ""
+    }`}>
+      {/* Split Right Media (if layout is Left Form / Right Media) */}
+      {isSplitRight && <AuthMediaSection pageConfig={pageConfig} className="hidden md:flex md:w-1/2 lg:w-3/5" />}
+
+      {/* Main Auth Form Container (Anti-Compression Guaranteed) */}
+      <main className={`w-full flex items-center justify-center p-6 sm:p-10 ${
+        (isSplitLeft || isSplitRight) ? "md:w-1/2 lg:w-2/5 min-h-screen" : "max-w-[480px]"
+      }`}>
+        <div className="w-full max-w-[440px] flex flex-col justify-center">
+          {children}
+        </div>
+      </main>
+
+      {/* Split Left Media (if layout is Right Form / Left Media) */}
+      {isSplitLeft && <AuthMediaSection pageConfig={pageConfig} className="hidden md:flex md:w-1/2 lg:w-3/5" />}
+    </div>
+  );
+};
+```
+
+### 11.2 Dual-Mode Theme Application
+1. **Light / Dark Theme Synchronicity**:
+   - The auth forms automatically honor the user's active theme (`light` or `dark`), drawing token variables from `CmsLayoutConfig` or page-level overrides (`customLightColors`, `customDarkColors`).
+   - Surfaces render with frosted glass (`backdrop-filter: blur(14px)`), subtle borders (`rgba(255,255,255,0.08)` in dark; `rgba(0,0,0,0.08)` in light), and vibrant brand button gradients.
+2. **Button & Input Styling**:
+   - Buttons inherit primary accent colors with interactive hover animations (`GLOW`, `SHINE`, `SCALE_UP`).
+   - Input borders display focused electric rings (cyan or violet) matching the brand palette.
+
+### 11.3 Strict Mobile Anti-Compression Guarantee
+> 📱 **THE MOBILE FORM EXPANSION RULE**:
+> - On mobile viewports (`< 768px`), all split layouts automatically collapse into a full-width (`100%`) single column.
+> - The auth form container **never shrinks below 100% available viewport width minus standard outer padding (`p-4` or `p-6`)**.
+> - Inputs enforce a minimum tap target height of **48px (`h-12`)** and **16px base font size** to completely eliminate iOS Safari page-zooming artifacts.
+> - The 6-box OTP container dynamically adapts on small viewports, ensuring each digit box has sufficient touch margin (`gap-2`) without clipping or horizontal overflow.
+
+

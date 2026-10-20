@@ -27,8 +27,21 @@ Main-docs/
 ├── PLAN_BUILDER.md                    # Blueprint for constructing project plans & folder structures
 ├── DISCOVERY_QUESTIONNAIRE.md         # Master requirements interview script ("Kiya Puchna Hai")
 │
+├── design-system/                     # Master Design System, CSS Reference & UI Component Knowledge Base
+│   ├── 01_CSS_PROPERTIES_REFERENCE.md # Foundations (Layout, Gradients, Shadows, Math clamp(), Timelines, Variables)
+│   ├── 02_VISUAL_EFFECTS_CATALOGUE.md  # 35+ Visual Effects (Glass, Neumorphism, Auroras, Spotlights, Reveals)
+│   ├── 03_UI_COMPONENTS_LIBRARY.md     # 100+ Production UI Components (Buttons, Nav, Forms, Overlays, Media)
+│   ├── 04_CARDS_AND_CARD_STACKS_LIBRARY.md # 42+ Card Patterns & Stacked Deck Interactive Physics (Tinder, Fan-Out, 3D Tilt)
+│   ├── 05_ANIMATIONS_CATALOGUE.md      # 45+ Motion Choreographies (Transitions, Keyframes, ScrollTimeline, A11y)
+│   ├── 06_WEBSITE_SECTIONS_LIBRARY.md  # 35+ Full Page Sections (Heroes, Bento Grids, Timelines, Mega Footers)
+│   ├── 07_WEBSITE_DESIGN_PATTERNS.md   # 16 Complete Industry Archetypes (SaaS, AI, Agency, E-commerce, Luxury)
+│   ├── 08_SOURCES_AND_REFERENCES.md    # Verified Technical Standards & Component Repositories (MDN, 21st.dev, W3C)
+│   ├── 09_IMPLEMENTATION_RECIPES.md    # Copy-Paste TypeScript + Tailwind CSS Production Component Code
+│   └── 10_SEARCHABLE_INDEX.md          # Faceted Search Taxonomy Matrix & Bidirectional Cross-Reference Graph
+│
 ├── rules/                             # Core Technical & Business Rules
 │   ├── DESIGN_ARCHITECTURE.md         # Master Design System (Tailwind, Floating Inputs, dvh Sidebar, Fonts, Lottie)
+│   ├── EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md # Principal Engineer Mindset, Line Decision Matrix & 6-Phase Non-Breaking Delivery
 │   ├── PAYMENT_SAFEGUARD_RULE.md      # Developer client payment tracking & 8th-of-month banner rule
 │   ├── FRONTEND_DESIGN_RULES.md       # Tailwind CSS standards, typography, animations, UX
 │   ├── BACKEND_CONNECTION_RULES.md    # API contracts, FastAPI/Node connection, CORS, typed clients
@@ -43,7 +56,10 @@ Main-docs/
     ├── CMS_ENGINE.md                  # Integrated vs Standalone CMS, content modeling & dynamic pages
     ├── SHORTCUT_KEYS_SYSTEM.md        # Complete Ctrl/Alt key matrix, single-key 'F' search, component shortcuts
     ├── AUTH_AND_FACELOCK.md           # Silent Facelock, Multi-Account Switching, Anti-Enumeration, 6-Box OTP, Dummy Bcrypt Hash
-    └── AUTOMATIONS_AND_NOTIFICATIONS.md # SMTP emails, WhatsApp automation, Web Push, GitHub CI/CD
+    ├── AUTOMATIONS_AND_NOTIFICATIONS.md # SMTP emails, WhatsApp automation, Web Push, GitHub CI/CD
+    ├── SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md # Dual-Tier Settings (Normal vs System), Multi-Storage, Multi-Key AI Fallback & Zero-Leak Feature Flags
+    ├── ROUTE_PROXY_AND_PROTECTION_SYSTEM.md # Next.js Edge Middleware Proxy, Protected Route Interception Toasts & Login/Logout Cache Invalidation
+    └── MOBILE_NAVIGATION_AND_LAYOUT.md # Public Mobile Bottom Bar with "More" Drawer, Dashboard Floating "Menu"/"Close" Pill & Dual Close Controls
 ```
 
 ---
@@ -91,3 +107,9 @@ The agent loads the specific feature guides from `modules/` and executes sprint 
 - **Client Payment Safeguard**: Built-in developer safeguard rule with grace period (up to 8th of the month) and non-intrusive Owner-only top banner.
 - **Custom AI Facelock & Multi-Account Security**: Custom client-side face recognition AI models (128-d vector embeddings, zero passkeys), silent background face detection, multi-face account conflict resolution, instant account switching from topbar, 6-box auto-verifying OTP, constant-time dummy bcrypt hashing against timing attacks, and strict rate limiting.
 - **Master Keyboard Shortcuts Engine**: Complete `Ctrl` key suite (`Ctrl+A,C,V,X,O,Z,Y,S,Enter,K,B,P`), complete `Alt` key suite (`Alt+T,S,N,F,P,D,M,W,E`), single-key `F` Global Search, and component shortcuts.
+- **Mandatory Dual-Tier Settings & Dynamic Zero-Leak Feature Flags**: Every project features a dedicated Settings page with Normal Settings (user profile, preferences, theme, regional locale, company profile) and System Settings (SMTP, WhatsApp, Multi-Provider Storage, Multi-Key AI Hub with Fallback). Includes live "Test Connection" buttons for all services, multi-tenant settings isolation, and a Developer/Owner Feature Flagging matrix with strict Zero-Leak UI elimination (features toggled OFF completely vanish from UI and return 404).
+- **Edge Route Proxy & Interception Toast Engine**: Complete Next.js Edge Middleware (`middleware.ts`) route protection and client `RouteGuard`. Unauthorized users are strictly blocked at the network edge and redirected with an instant animated toast: *"⛔ Aap is page pe nahi ja sakte hain"*. Mandates complete proxy session invalidation and re-evaluation on every login and logout with `Cache-Control: no-store` history protection.
+- **Mobile Navigation Architecture (Public Bottom Bar vs Dashboard Floating Menu Pill)**: Strict No-Sidebar rule on mobile public/marketing pages in favor of a fixed bottom tab bar with 3-4 curated links + "More" bottom sheet drawer. Mobile dashboards feature a full slide-out drawer triggered via a floating bottom-center obsidian glass pill ("Menu" ➔ "Close" morphing state) with **Dual Close Controls** (pill morphs into 'X' and drawer header features a dedicated top 'X' close button).
+
+
+

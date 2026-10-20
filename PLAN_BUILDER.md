@@ -38,10 +38,10 @@ The agent must generate `PLAN.md` using the following standardized layout:
 - **Typography Choice**: [Display: Neofolio / Nexo Kora / Bierika / OSIRIS | Body: Plus Jakarta Sans / Outfit]
 - **Animation Stack**: [Framer Motion + GSAP ScrollTrigger | Three.js (Optional with User Permission)]
 - **Icon Ecosystem**: [Lucide React + Animated Icons (Lordicon, Icons8, LottieFlow, LottieFiles)]
-- **UI Architecture**: [Floating Label Inputs (No Placeholders) | Resizable dvh Sidebar | Framer Toasts]
+- **UI Architecture**: [Floating Label Inputs (No Placeholders) | Resizable dvh Sidebar | Public Mobile Bottom Bar with "More" Drawer | Dashboard Floating "Menu"/"Close" Pill | Framer Toasts]
 - **Backend Framework**: [FastAPI (ASGI) | Next.js Serverless Route Handlers | Node Express]
-- **Database & Storage**: [PostgreSQL (Supabase/Neon) | SQLite | MongoDB]
-- **ORM / Query Builder**: [Drizzle | Prisma | SQLAlchemy]
+- **Database & Storage**: **MongoDB (Atlas / Self-Hosted) - Mandatory NoSQL**
+- **ODM / Query Driver**: **Mongoose (Next.js/Node) | Motor / Beanie (FastAPI Python)**
 - **Authentication**: [NextAuth/Auth.js | Supabase Auth | Custom JWT + Custom AI Face Models]
 - **State Management**: [Zustand | React Query (TanStack) | Context API]
 
@@ -51,11 +51,16 @@ The agent must generate `PLAN.md` using the following standardized layout:
 | **RBAC System** | [Enabled/Disabled] | Roles: Developer, Owner, Admin, Staff, Customer |
 | **Multi-Tenancy** | [Enabled/Disabled] | [Single-tenant | Multi-company (Subdomains / Custom Domains)] |
 | **Order Slide Workflow** | [Enabled/Disabled] | Table View + 1-by-1 Slide Carousel with Fast Actions |
-| **CMS Engine** | [Enabled/Disabled] | [Integrated in Dashboard | Standalone Headless] |
+| **CMS Engine** | [Enabled/Disabled] | [Integrated in Dashboard (/dashboard/cms) | Standalone Portal (/cms)] + Dual WYSIWYG/Monaco Sync, Variable Registry, Visual Workflow Studio, 30 Templates, Section SDK, FFmpeg Scroll Video, Dynamic PDF Canvas Studio, Email Builder, WhatsApp Studio, Central Assets DAM (Auto-Ingestion & Video Previewer), Website Details Cascading, Auth Pages Theme Customizer & Multi-Tenant CMS Delegation |
 | **Keyboard Shortcuts** | [Enabled/Disabled] | [Basic (Cmd+K, Esc) | Master (Vim-style, Hotkeys)] |
 | **Facelock / Biometrics** | [Enabled/Disabled] | Custom AI Face Models (128-d Vector Embeddings, No Passkeys) |
 | **Automations & SMTP** | [Enabled/Disabled] | SMTP emails + WhatsApp Business alerts |
+| **Settings System** | **Mandatory** | Dual-tier: Normal Settings + System Settings (SMTP, WA, Multi-Storage, Multi-Key AI) |
+| **Route Proxy & Protection** | **Mandatory** | Edge Middleware (`middleware.ts`), Interception Toasts & Login/Logout Cache Invalidation |
+| **Dynamic Feature Flags** | [Enabled/Disabled] | Developer/Owner toggle matrix with strict Zero-Leak UI elimination |
 | **Developer Payment Safeguard** | [Enabled/Disabled] | Grace period up to 8th of month, Owner-only banner |
+| **Universal 404 Game Page** | **Mandatory** | Standalone `app/not-found.tsx` with playable HTML5 Canvas arcade mini-game, high score counter & return CTAs |
+| **Root Models & Contexts Architecture** | **Mandatory** | Dedicated root `/models` (1 file per MongoDB model) + root `/context` (1 context per model + 3 global), context-first API encapsulation (Zero direct component API calls), in-place state mutation & single-fetch guarantee |
 
 ## 4. Acceptance Criteria & Success Metrics
 - [ ] Users can authenticate via configured auth methods.
@@ -81,7 +86,7 @@ graph TD
     Client -->|HTTPS / WSS| Frontend[Frontend (Next.js / React)]
     Frontend -->|REST / Typed API| Backend[Backend API (FastAPI / Serverless)]
     Backend -->|Auth Verification| AuthMiddleware[RBAC & Auth Middleware]
-    AuthMiddleware -->|ORM / Queries| DB[(Database / PostgreSQL)]
+    AuthMiddleware -->|ODM / Queries| DB[(Database / MongoDB)]
     Backend -->|Webhooks / Notifications| External[WhatsApp / SMTP Services]
 \`\`\`
 
@@ -91,7 +96,7 @@ src/
 ├── app/ (or pages/)           # Route handlers & UI pages
 ├── components/
 │   ├── ui/                    # Reusable atom components (Button, Modal, Input, Badge)
-│   ├── layout/                # Sidebar, Navbar, OwnerSafeguardBanner, Footer
+│   ├── layout/                # Sidebar, Navbar, PublicMobileFooterBar, DashboardMobileMenuPill, OwnerSafeguardBanner, Footer
 │   ├── orders/                # OrderTable, OrderSlideView, OrderActionPanel
 │   └── modules/               # Feature-specific components (CMS, Shortcuts, Facelock)
 ├── hooks/                     # useAuth, useRBAC, useShortcuts, useTheme
@@ -99,9 +104,9 @@ src/
 └── styles/                    # tokens.css, globals.css, theme.css
 \`\`\`
 
-## 3. Database Schema Blueprint
-Define core entities (Users, Companies/Tenants, Roles, Orders, CMS Items, AuditLogs).
-Include primary keys, foreign keys, indexes, and row-level security policies.
+## 3. Database Schema Blueprint (MongoDB / NoSQL)
+Define core document collections (users, companies/tenants, roles, orders, cms_posts, audit_logs).
+Include BSON ObjectIds, tenant scoping (`companyId`), compound indexes, and validation rules.
 
 ## 4. API Endpoints Contract
 List all endpoints with HTTP Method, Path, Required Role, and Payload summary.
@@ -124,44 +129,72 @@ Compile project-specific rules selected from `rules/`:
 
 ---
 
+---
+
 ## 🏃 File 4: `/.project/SPRINTS.md` Template
 
-Break implementation into 4 to 6 measurable sprints:
+The agent must structure the implementation plan following the **6-Phase Non-Breaking Phased Architecture** defined in [`rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`](../rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md).
+
+> 🛡️ **THE OPEN-CLOSED PHASED BUILD LAW**:  
+> Every subsequent phase must build upon previous phases without breaking them. Existing working code is enhanced, never dismantled. All major new features and subsystems MUST reside in dedicated, newly created files that integrate cleanly through established interfaces.
 
 ```markdown
 # Implementation Sprints: [Project Name]
 
-- [ ] **Sprint 0: Foundations & Scaffolding**
-  - [ ] Initialize repository structure and dependencies
-  - [ ] Configure Tailwind CSS (theme colors, glow shadows, dark mode)
-  - [ ] Configure bespoke font imports (Neofolio / Nexo Kora / Bierika / OSIRIS / Outfit)
-  - [ ] Build reusable Floating Label Input components (Text, Textarea, Select)
-  - [ ] Build resizable `h-dvh` Sidebar and Topbar skeleton
-  - [ ] Configure database schemas and migrations
-  - [ ] Setup API client and connection ping test
+- [ ] **Phase 1: Foundation & Identity Core (Zero-Debt Skeleton)**
+  - [ ] Initialize repository with strict TypeScript config (`tsconfig.json`) and Next.js App Router / Vite
+  - [ ] Configure database connection pool and environment variables template (`.env.example`)
+  - [ ] Scaffold root `/models` and root `/context` directory structure
+  - [ ] Implement minimal robust Auth: User model, password hashing (bcrypt), JWT session cookies, and login/signup handlers
+  - [ ] Mount root navigation shells (Topbar and Sidebar skeleton)
+  - [ ] Verification Gate: User can signup, login, view empty authenticated dashboard, and logout with zero warnings
 
-- [ ] **Sprint 1: Authentication & RBAC Engine**
-  - [ ] Setup Auth tables, password hashing & Face Vector Embedding storage (PostgreSQL / JSONB)
-  - [ ] Implement `useRBAC` hook and backend role middleware
-  - [ ] Implement action-level permission buttons (create, edit, delete gates)
+- [ ] **Phase 2: Core Domain Purpose & Business Workflows (Functional Minimal Core)**
+  - [ ] Define primary MongoDB domain models in `models/` with tenant scoping (`companyId`)
+  - [ ] Implement corresponding domain React Contexts in `context/` encapsulating 100% of API calls
+  - [ ] Implement primary REST/Serverless CRUD API routes with strict validation (`POST`, `GET`, `PATCH`, `DELETE`)
+  - [ ] Build functional master data tables and input forms (functional end-to-end before heavy styling)
+  - [ ] Verification Gate: Primary business workflow executes with complete database mutation fidelity
 
-- [ ] **Sprint 2: Core Domain Logic & Modules**
-  - [ ] Build primary database models & CRUD endpoints
-  - [ ] Implement Master Order Table + Focused Slide Review Carousel
-  - [ ] Implement Multi-tenant isolation / Custom domain router (if enabled)
+- [ ] **Phase 3: Visual Excellence, Design System & Ergonomics**
+  - [ ] Implement Tailwind design token system per [`design-system/01_CSS_PROPERTIES_REFERENCE.md`](../Main-docs/design-system/01_CSS_PROPERTIES_REFERENCE.md)
+  - [ ] Apply visual effects (Glassmorphism, Frosted Glass, Border Beams, Ambient Mesh) per [`design-system/02_VISUAL_EFFECTS_CATALOGUE.md`](../Main-docs/design-system/02_VISUAL_EFFECTS_CATALOGUE.md)
+  - [ ] Scaffold production UI components (Floating Labels, Gated Action Buttons, Feedback Overlays) per [`design-system/03_UI_COMPONENTS_LIBRARY.md`](../Main-docs/design-system/03_UI_COMPONENTS_LIBRARY.md) & [`design-system/09_IMPLEMENTATION_RECIPES.md`](../Main-docs/design-system/09_IMPLEMENTATION_RECIPES.md)
+  - [ ] Implement card layouts and stacked decks (Fan-Out, 3D Tilt, Bento Grids) per [`design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md`](../Main-docs/design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md)
+  - [ ] Configure keyframes, transitions, and scroll animations per [`design-system/05_ANIMATIONS_CATALOGUE.md`](../Main-docs/design-system/05_ANIMATIONS_CATALOGUE.md)
+  - [ ] Structure full page sections per [`design-system/06_WEBSITE_SECTIONS_LIBRARY.md`](../Main-docs/design-system/06_WEBSITE_SECTIONS_LIBRARY.md) and industry archetypes per [`design-system/07_WEBSITE_DESIGN_PATTERNS.md`](../Main-docs/design-system/07_WEBSITE_DESIGN_PATTERNS.md)
+  - [ ] Build resizable `h-dvh` Sidebar, mobile bottom navigation bar with drawer, and dashboard floating glass menu pill
+  - [ ] Enforce mobile responsive standard: zero horizontal overflow (`overflow-x: hidden`) and minimum `44x44px` touch targets
+  - [ ] Verification Gate: Visual review passes on Desktop (`1440px`), Tablet (`768px`), and Mobile (`390px`)
 
-- [ ] **Sprint 3: Advanced UX, Shortcuts & Global Search**
-  - [ ] Implement Cmd+K command palette
-  - [ ] Configure keyboard shortcuts (Basic or Master Vim mode)
-  - [ ] Integrate Theme toggle (Dark / Light / System)
+- [ ] **Phase 4: Advanced Subsystems Expansion (Modular Plug-ins)**
+  - *(Note: All subsystems built in dedicated new files; zero modification to core domain tables)*
+  - [ ] Subsystem A: Omni-Chat & Socket.IO (`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`) + Lightweight Concurrency (`modules/CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md`)
+  - [ ] Subsystem B: Autonomous AI Copilot with Voice Waveforms & Confirmation Gates (`modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md`)
+  - [ ] Subsystem C: Next-Gen CMS Engine & 2D Vector Canvas with Knife Tool (`modules/CMS_ENGINE.md`)
+  - [ ] Subsystem D: Public Enquiries & Leads Triage with Honeypot Defense (`modules/ENQUIRIES_AND_LEADS_SYSTEM.md`)
+  - [ ] Subsystem E: Newsletter Canvas Studio & Blog Engine with Dynamic CMS Loop (`modules/NEWSLETTER_AND_BLOGS_SYSTEM.md`)
+  - [ ] Subsystem F: Automations, SMTP & WhatsApp Dispatches (`modules/AUTOMATIONS_AND_NOTIFICATIONS.md`)
+  - [ ] Subsystem G: Keyboard Shortcuts Engine (`modules/SHORTCUT_KEYS_SYSTEM.md`)
+  - [ ] Verification Gate: Each modular subsystem functions smoothly and interacts strictly via context hooks
 
-- [ ] **Sprint 4: Automations & Developer Safeguards**
-  - [ ] Configure SMTP email sender & templates
-  - [ ] Setup WhatsApp webhook / notification dispatcher
+- [ ] **Phase 5: Sovereign Security, Biometrics & Hardening**
+  - [ ] Enforce granular Role-Based Access Control (`<resource>:<action>`) across UI buttons and API endpoints
+  - [ ] Implement custom AI Face Recognition biometrics (128-d vector embeddings)
+  - [ ] Deploy Next.js Edge Middleware route proxy (`middleware.ts`), flash toasts (*"Aap is page pe nahi ja sakte hain"*), and session cache invalidation
   - [ ] Implement Developer Payment Safeguard banner for Owner
+  - [ ] Implement standalone interactive Universal 404 Arcade Game page (`app/not-found.tsx`)
+  - [ ] Verification Gate: Penetration tests pass; unauthorized actions blocked with flash toasts
 
-- [ ] **Sprint 5: Testing, Hardening & Verification**
-  - [ ] Run end-to-end integration tests
-  - [ ] Audit responsive layouts on Mobile, Tablet, and Desktop
-  - [ ] Validate zero console errors, zero lint warnings
+- [ ] **Phase 6: Universal Verification, Chaos Testing & Code Review Gate**
+  - [ ] Execute the 7-Tier Universal Verification Lifecycle (`rules/TESTING_AND_VERIFICATION.md`)
+  - [ ] Tier 1 (Static Gate): `npx tsc --noEmit` & `npm run build` succeed with Exit Code 0
+  - [ ] Tier 2 (Chaos Monkey): Fuzz forms and endpoints with `null`, `undefined`, extreme strings, and multi-clicks
+  - [ ] Tier 3: Verify zero dirty state mutations in database
+  - [ ] Tier 4: Verify zero direct component API calls (Context Law)
+  - [ ] Tier 5: Verify zero leaked backend technical jargon on UI
+  - [ ] Tier 6: Verify 60 FPS animations and multi-viewport layout
+  - [ ] Tier 7: Perform Principal Code Review using 8-point inspection checklist
+  - [ ] Verification Gate: Fresh terminal output evidence recorded; final build signed off
 ```
+

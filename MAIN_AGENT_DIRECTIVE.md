@@ -84,6 +84,14 @@ Whenever implementing a specific subsystem, the agent **MUST read the correspond
 | Subsystem to Implement | Mandatory Module Document to Read |
 | :--- | :--- |
 | Tailwind Design System, Floating Inputs, Resizable Sidebar | [`rules/DESIGN_ARCHITECTURE.md`](./rules/DESIGN_ARCHITECTURE.md) & [`rules/FRONTEND_DESIGN_RULES.md`](./rules/FRONTEND_DESIGN_RULES.md) |
+| CSS Properties, Gradients, Shadows, Math clamp() & Modern CSS | [`design-system/01_CSS_PROPERTIES_REFERENCE.md`](./design-system/01_CSS_PROPERTIES_REFERENCE.md) |
+| Visual Effects (Glass, Neumorphism, Auroras, Spotlights, Beams) | [`design-system/02_VISUAL_EFFECTS_CATALOGUE.md`](./design-system/02_VISUAL_EFFECTS_CATALOGUE.md) |
+| Production UI Component Library (Buttons, Nav, Forms, Overlays) | [`design-system/03_UI_COMPONENTS_LIBRARY.md`](./design-system/03_UI_COMPONENTS_LIBRARY.md) |
+| Card Patterns, Stacked Decks, Fan-Outs & Gesture Swipe Physics | [`design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md`](./design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md) |
+| Animation Catalogue, Transitions, Keyframes & ScrollTimeline | [`design-system/05_ANIMATIONS_CATALOGUE.md`](./design-system/05_ANIMATIONS_CATALOGUE.md) |
+| Full-Page Website Sections (Heroes, Bento Grids, Timelines, Footers) | [`design-system/06_WEBSITE_SECTIONS_LIBRARY.md`](./design-system/06_WEBSITE_SECTIONS_LIBRARY.md) |
+| Complete Website Design Patterns (SaaS, AI, Agency, E-Commerce) | [`design-system/07_WEBSITE_DESIGN_PATTERNS.md`](./design-system/07_WEBSITE_DESIGN_PATTERNS.md) |
+| Production React + Tailwind Recipes & Searchable Taxonomy Index | [`design-system/09_IMPLEMENTATION_RECIPES.md`](./design-system/09_IMPLEMENTATION_RECIPES.md) & [`design-system/10_SEARCHABLE_INDEX.md`](./design-system/10_SEARCHABLE_INDEX.md) |
 | User Roles, Portals, Action Permissions | [`modules/RBAC_SYSTEM.md`](./modules/RBAC_SYSTEM.md) & [`rules/RBAC_SECURITY_RULES.md`](./rules/RBAC_SECURITY_RULES.md) |
 | Multi-Company / Multi-Tenant / Custom Domains | [`modules/MULTI_TENANT_SYSTEM.md`](./modules/MULTI_TENANT_SYSTEM.md) |
 | Order Table & 1-by-1 Slide/Carousel Processing | [`modules/ORDER_SLIDE_WORKFLOW.md`](./modules/ORDER_SLIDE_WORKFLOW.md) |
@@ -92,16 +100,32 @@ Whenever implementing a specific subsystem, the agent **MUST read the correspond
 | Keyboard Shortcuts Engine | [`modules/SHORTCUT_KEYS_SYSTEM.md`](./modules/SHORTCUT_KEYS_SYSTEM.md) |
 | Custom AI Face Recognition & Multi-Account Auth | [`modules/AUTH_AND_FACELOCK.md`](./modules/AUTH_AND_FACELOCK.md) |
 | SMTP, WhatsApp Automations, GitHub CI/CD | [`modules/AUTOMATIONS_AND_NOTIFICATIONS.md`](./modules/AUTOMATIONS_AND_NOTIFICATIONS.md) |
+| Settings Hub, Third-Party Integrations & Dynamic Feature Flags | [`modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md`](./modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md) |
+| Edge Proxy Route Protection, Interception Toasts & Session Invalidation | [`modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md`](./modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md) |
+| Mobile Bottom Navigation Bar & Dashboard Floating Menu Pill | [`modules/MOBILE_NAVIGATION_AND_LAYOUT.md`](./modules/MOBILE_NAVIGATION_AND_LAYOUT.md) |
+| Real-Time Omni-Chat & Customer Portal Communication | [`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`](./modules/CHAT_AND_COMMUNICATION_SYSTEM.md) |
+| High-Concurrency Lightweight Sockets & Message Compression | [`modules/CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md`](./modules/CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md) |
+| AI Assistant, Multimodal Copilot & CMS Builder Engine | [`modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md`](./modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md) |
+| Tenant Public Contact Form & Dashboard Enquiries System | [`modules/ENQUIRIES_AND_LEADS_SYSTEM.md`](./modules/ENQUIRIES_AND_LEADS_SYSTEM.md) |
+| Newsletter Canvas Studio, Blog Engine & Public CMS Loop | [`modules/NEWSLETTER_AND_BLOGS_SYSTEM.md`](./modules/NEWSLETTER_AND_BLOGS_SYSTEM.md) |
+| Principal Engineer Mindset, Non-Breaking Phased Planning & Line Decision Matrix | [`rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`](./rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md) |
 | Client Payment Tracking & 8th-Date Banner | [`rules/PAYMENT_SAFEGUARD_RULE.md`](./rules/PAYMENT_SAFEGUARD_RULE.md) |
 
 ---
 
 ### Phase 5: Verification & Completion Gate
-Before marking any task or sprint as completed:
+Before marking any task, file operation, or sprint as completed:
 1. Read [`rules/TESTING_AND_VERIFICATION.md`](./rules/TESTING_AND_VERIFICATION.md).
-2. Execute real verification commands (build scripts, unit tests, API curl tests, browser visual verification).
-3. **Never claim success without actual terminal output or browser screenshots.** Evidence must always precede assertions.
-4. Update `SPRINTS.md` marking completed tasks with `[x]` and notes on tested behavior.
+2. Execute the **7-Tier Universal Verification Lifecycle**:
+   - **Tier 1 (Static Gate)**: `npx tsc --noEmit` & `npm run build` with zero errors (Exit code 0).
+   - **Tier 2 (Adversarial "Brainless User" Testing)**: Fuzz endpoints and utilities with malformed types (`null`, `undefined`, NaN, extreme lengths, SQLi/NoSQL payloads, multi-click attacks); assert zero white-screens, polite error toasts, and rock-solid security boundaries.
+   - **Tier 3 (API Contracts & DB Mutation Fidelity)**: Validate `{ success, data, error }` envelopes; assert database mutations mutate ONLY targeted fields/documents (zero dirty state); verify reactive DOM updates without page reloads; eliminate redundant or slow calls.
+   - **Tier 4 (Single Source of Truth & Context Law)**: Enforce zero direct component API calls when a domain Context exists; eliminate zombie/abandoned context methods.
+   - **Tier 5 (Line-by-Line Algorithmic Audit & Dead Code Purge)**: Write code step-by-step; verify purpose of every line; eliminate duplicate utilities and dead files; leverage existing npm packages; analyze downstream dependents.
+   - **Tier 6 (UI Copywriting & UX Predictability)**: Never leak technical backend terms (database pipelines, Axios terms) on UI; pass the human predictability discovery test.
+   - **Tier 7 (Visual, Responsive, Theme & Animations)**: Verify Light/Dark/CMS themes (zero rogue hex codes); ensure 60 FPS animations and mobile responsiveness (`390x844`).
+3. **Never claim success without actual terminal output or browser inspection logs.** Evidence must always precede assertions.
+4. Update `SPRINTS.md` marking completed tasks with `[x]` and logging complete tier-by-tier evidence notes.
 
 ---
 
@@ -109,7 +133,17 @@ Before marking any task or sprint as completed:
 
 1. **Aesthetics are Non-Negotiable**: No barebones, plain HTML, or default browser aesthetics. Use sleek dark modes, glassmorphism, curated typography (e.g. Outfit / Inter), smooth transitions, and polished micro-animations.
 2. **Original & Bespoke Design (Design Apna Banana Hai - No Blind Copying from Docs)**: Documentation code examples and sample palettes are architectural blueprints and mechanical references. The agent MUST create a completely original, brand-tailored, and project-specific design. Never copy-paste dummy colors, mock cards, or placeholder layouts from `Main-docs`.
-3. **Strict RBAC Separation**: Developer role is infrastructure/platform guardian; Owner is business master. Developer must NEVER lock out or modify Owner business permissions without explicit credentials.
-4. **Payment Safeguard UI Discretion**: If the developer payment safeguard is enabled, the unpaid notification bar must ONLY be visible to the `Owner` role. Never expose it to customers, employees, or public users.
-5. **Resilience & Graceful Fallbacks**: If external APIs (WhatsApp, SMTP, Biometric hardware) are unavailable or fail, provide graceful UI fallbacks and clear error toasts instead of crashing the app.
-6. **Bespoke Logo & Favicon Suite Obligation**: Never launch or build an interface with default framework icons (Next.js, Vite, React) or placeholder typography logos. Every application must feature custom SVG vector branding and a full multi-resolution favicon/PWA suite matching the brand aesthetic.
+3. **Strict RBAC Separation & Settings Fallback**: Developer role is infrastructure/platform guardian; Owner is business master. Developer must NEVER lock out or modify Owner business permissions without explicit credentials. In projects without a Developer role, System Settings is ALWAYS granted to the Owner / Main User role.
+4. **Mandatory Dual-Tier Settings & Live Verification Testing**: Every project MUST feature a Settings hub with Normal Settings (`/settings`) and System Settings (`/settings/system`). All platform integrations (SMTP, WhatsApp, Multi-Provider Storage, Multi-Key AI with Fallback) MUST have working "Test Connection" buttons that verify end-to-end connectivity with real status and latency feedback.
+5. **Strict Zero-Leak Feature Flagging**: When a modular feature (AI, WhatsApp, 3D Models, Facelock, Barcodes, Portals) is toggled OFF, it must completely disappear from the UI. Zero disabled buttons, zero grayed-out teaser menus, zero direct route access (clean 404).
+6. **Edge Proxy Route Protection & Interception Toast Mandate**: The agent MUST configure Next.js Edge Middleware (`middleware.ts`) and client `RouteGuard`. Protected routes must never be accessed by unauthorized users. Any unauthorized attempt MUST immediately redirect and trigger an animated error toast: *"⛔ Aap is page pe nahi ja sakte hain"*. On every login and logout, the proxy session cookie and client cache MUST be invalidated and re-evaluated from scratch with `Cache-Control: no-store`.
+7. **Mobile Navigation Law (Public Bottom Bar vs Dashboard Floating Menu Pill)**: Public marketing/storefront pages on mobile (`< 1024px`) MUST NEVER render a sidebar or sidepanel drawer; they must feature a fixed bottom footer bar (`fixed bottom-0`) with 3-4 primary curated links and a "More" drawer. Dashboard pages on mobile MUST provide a full slide-out sidebar triggered by a floating bottom-center glass pill (`"Menu"`), featuring **Dual Close Controls** (pill morphs into `"Close"` and the sidebar header features a dedicated top 'X' close button).
+8. **Payment Safeguard UI Discretion**: If the developer payment safeguard is enabled, the unpaid notification bar must ONLY be visible to the `Owner` role. Never expose it to customers, employees, or public users.
+9. **Resilience & Graceful Fallbacks**: If external APIs (WhatsApp, SMTP, Biometric hardware, AI providers) are unavailable or fail, provide graceful UI fallbacks, automatic key/provider rotation, and clear error toasts instead of crashing the app.
+10. **Bespoke Logo & Favicon Suite Obligation**: Never launch or build an interface with default framework icons (Next.js, Vite, React) or placeholder typography logos. Every application must feature custom SVG vector branding and a full multi-resolution favicon/PWA suite matching the brand aesthetic.
+11. **The Ironclad Verification & Adversarial Chaos Law**: Any code addition, modification, or file deletion MUST undergo adversarial "Brainless User" chaos testing and line-by-line algorithmic review before marking done. Zero completion claims without fresh, concrete evidence.
+12. **The Principal Engineer Mindset & Open-Closed Phased Build Law**: Every project must follow the 6-Phase Non-Breaking Delivery sequence (Phase 1: Foundation & Auth -> Phase 2: Core Domain Purpose -> Phase 3: Visual Polish & Ergonomics -> Phase 4: Modular Subsystems -> Phase 5: Security & Edge Protection -> Phase 6: Universal Verification). Later phases MUST NOT break earlier phases: new capabilities must be implemented in dedicated new modular files (`modules/`, `context/`, `models/`, `components/`) and enhance existing surfaces through clean, open-closed boundaries. Before writing any line of code, the agent MUST run the 4-question line foresight matrix per [`rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`](./rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md).
+
+
+
+
