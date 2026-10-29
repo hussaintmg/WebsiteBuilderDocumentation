@@ -67,6 +67,12 @@ export interface IAiCopilotSession extends Document {
   activeRoute: string; // e.g. "/dashboard/inventory", "/dashboard/cms/editor/home"
   activeEntityId?: Types.ObjectId; // e.g. current product or invoice being viewed
   title: string;
+  
+  // Rolling Compaction & Context Management
+  rollingSummary: string; // Concise AI summary of older compacted conversation turns
+  compactedTurnsCount: number; // Number of turns folded into the summary
+  tokenCountEstimate: number; // Estimated tokens in active context
+
   status: 'ACTIVE' | 'ARCHIVED';
   createdAt: Date;
   updatedAt: Date;
@@ -85,6 +91,9 @@ const AiCopilotSessionSchema = new Schema<IAiCopilotSession>(
     activeRoute: { type: String, required: true },
     activeEntityId: { type: Schema.Types.ObjectId, default: null },
     title: { type: String, default: 'New Conversation' },
+    rollingSummary: { type: String, default: '' },
+    compactedTurnsCount: { type: Number, default: 0 },
+    tokenCountEstimate: { type: Number, default: 0 },
     status: { type: String, enum: ['ACTIVE', 'ARCHIVED'], default: 'ACTIVE' },
   },
   { timestamps: true }
@@ -243,6 +252,121 @@ const AiActionExecutionSchema = new Schema<IAiActionExecution>(
 
 export const AiActionExecution = model<IAiActionExecution>('AiActionExecution', AiActionExecutionSchema);
 ```
+
+---
+
+### 2.4 `AiUserMemory` Schema (`models/AiUserMemory.ts`)
+Maintains the user's permanent, cross-session personal memory. Injected into every prompt across all chats for that user.
+
+```typescript
+export interface ILearnedFact {
+  factKey: string; // e.g. "preferred_theme", "primary_location", "coding_language"
+  factValue: string; // e.g. "Dark Mode Obsidian", "Dubai, UAE", "TypeScript / Tailwind"
+  confidence: number; // 0.0 - 1.0
+  sourceSessionId?: Types.ObjectId;
+  learnedAt: Date;
+}
+
+export interface IAiUserMemory extends Document {
+  _id: Types.ObjectId;
+  companyId: Types.ObjectId;
+  userId: Types.ObjectId;
+
+  // Static Core Identity Profile
+  coreProfile: {
+    fullName?: string;
+    preferredName?: string;
+    location?: string;
+    language?: string; // e.g. "English", "Urdu", "Arabic"
+    roleDescription?: string;
+    companyBusinessFocus?: string;
+  };
+
+  // User-Defined Custom Instructions
+  customInstructions: string; // e.g. "Always provide complete code snippets; prefer clean bullet points"
+
+  // Dynamically Learned Cross-Chat Facts
+  learnedFacts: ILearnedFact[];
+
+  isMemoryEnabled: boolean; // Master toggle to enable/pause cross-chat memory
+  lastMemoryExtractionAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const AiUserMemorySchema = new Schema<IAiUserMemory>(
+  {
+    companyId: { type: Schema.Types.ObjectId, ref: 'Company', required: true, index: true },
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+    coreProfile: {
+      fullName: String,
+      preferredName: String,
+      location: String,
+      language: { type: String, default: 'English' },
+      roleDescription: String,
+      companyBusinessFocus: String,
+    },
+    customInstructions: { type: String, default: '' },
+    learnedFacts: [
+      {
+        factKey: { type: String, required: true },
+        factValue: { type: String, required: true },
+        confidence: { type: Number, default: 1.0 },
+        sourceSessionId: { type: Schema.Types.ObjectId, ref: 'AiCopilotSession' },
+        learnedAt: { type: Date, default: Date.now },
+      },
+    ],
+    isMemoryEnabled: { type: Boolean, default: true },
+    lastMemoryExtractionAt: { type: Date },
+  },
+  { timestamps: true }
+);
+
+AiUserMemorySchema.index({ companyId: 1, userId: 1 }, { unique: true });
+export const AiUserMemory = model<IAiUserMemory>('AiUserMemory', AiUserMemorySchema);
+```
+
+---
+
+### 2.5 Context Window Auto-Compaction & Rolling Session Summarizer Engine
+
+To prevent context exhaustion, token latency degradation, and astronomical LLM API costs on long-running discussions:
+
+#### 1. Threshold Detection (The 12-Turn / 4,000-Token Barrier)
+- When the active message stream in `AiCopilotSession` crosses **12 turns** (or exceeds **4,000 tokens**):
+  - A lightweight asynchronous worker (e.g. Gemini 1.5 Flash / GPT-4o-mini) triggers background compaction.
+  - The worker analyzes turns 1 through 8 (preserving the most recent 4-6 turns untouched).
+  - It generates a dense, factual summary capturing key decisions, user parameters, and uncompleted actions.
+  - The resulting text updates `AiCopilotSession.rollingSummary`, and `compactedTurnsCount` increments.
+
+#### 2. Three-Tier Hierarchical Prompt Assembly Law
+Every subsequent prompt sent to the LLM adheres to this strict layered assembly:
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        HIERARCHICAL CONTEXT ASSEMBLY SEQUENCE                          │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ Layer 1: System Directive & Tenant RBAC Guardrails                                     │
+│ • Sovereign companyId restriction, tool definitions, output schemas                    │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ Layer 2: Persistent User Long-Term Memory (<USER_MEMORY>)                              │
+│ • Cross-Chat Scope: Injected into EVERY conversation for this user                     │
+│ • Injects: Core Name, Location, Role, Custom Instructions, Learned Facts               │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ Layer 3: Rolling Session Summary (<SESSION_ROLLING_SUMMARY>)                           │
+│ • In-Session Scope: ISOLATED STRICTLY to this conversation session                      │
+│ • Empty on New Chat! Zero summary leakage into fresh conversations                     │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ Layer 4: Active Uncompacted Recent Messages (Last 4–6 Turns)                           │
+│ • Verbatim user prompts, assistant answers, and action execution cards                 │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### 3. Client Compaction Divider (`<AiCompactedSummaryDivider />`)
+- Compacted turns do not mysteriously vanish from the user's viewport without explanation.
+- An in-stream frosted divider appears:
+  `[ 📜 Older conversation compacted (8 turns) — Click to inspect running summary ]`
+- Tapping it smoothly unrolls an accordion card showing the exact summary the AI is retaining.
 
 ---
 
@@ -434,30 +558,267 @@ The AI Copilot interface is engineered for rapid access without obstructing crit
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+### 7.5 Chat History Architecture & Client Single-Fetch Caching
+Users can revisit, search, and continue past conversational threads through an integrated **Chat History Drawer** embedded directly in the AI Assistant:
+
+#### 1. Zero Redundant Fetching Law
+- **Single Mount Fetch**: When the AI Assistant component mounts, `useAiChatHistory` queries `GET /api/v1/ai/sessions` **strictly once**.
+- **Indefinite Cache Lifetime**: Managed via TanStack Query (React Query) / SWR with:
+  ```typescript
+  staleTime: Infinity,
+  gcTime: 1000 * 60 * 60, // 1 hour
+  refetchOnWindowFocus: false,
+  ```
+- **Optimistic Local Mutations**:
+  - Starting a new chat inserts an ephemeral session entry into the cache instantly.
+  - After the first user message, an LLM worker generates a concise 4-word title (e.g. *"Product Pricing Strategy"*), updating the local session cache optimistically.
+  - Renaming or archiving a session mutates the local array in `< 1ms` before background sync.
+- **Instant Session Swapping**: Tapping any past conversation loads its cached messages immediately from client memory. If un-cached, it fetches `GET /api/v1/ai/sessions/:id/messages` once and caches it.
+
+#### 2. React Hook: `useAiChatHistory.ts`
+```typescript
+// hooks/useAiChatHistory.ts
+"use client";
+
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCallback } from "react";
+
+export interface ChatSessionPreview {
+  _id: string;
+  title: string;
+  surface: string;
+  activeRoute: string;
+  compactedTurnsCount: number;
+  updatedAt: string;
+}
+
+export function useAiChatHistory(companyId: string) {
+  const queryClient = useQueryClient();
+  const queryKey = ["ai_sessions", companyId];
+
+  // Fetch strictly ONCE per application lifecycle
+  const { data: sessions = [], isLoading } = useQuery<ChatSessionPreview[]>({
+    queryKey,
+    queryFn: async () => {
+      const res = await fetch(`/api/v1/ai/sessions?companyId=${companyId}`);
+      if (!res.ok) throw new Error("Failed to load chat history");
+      return res.json();
+    },
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
+
+  // Optimistic session title updater
+  const updateSessionTitle = useCallback(
+    (sessionId: string, newTitle: string) => {
+      queryClient.setQueryData<ChatSessionPreview[]>(queryKey, (old = []) =>
+        old.map((s) => (s._id === sessionId ? { ...s, title: newTitle } : s))
+      );
+    },
+    [queryClient, queryKey]
+  );
+
+  // Optimistic new session prepend
+  const addSessionOptimistic = useCallback(
+    (newSession: ChatSessionPreview) => {
+      queryClient.setQueryData<ChatSessionPreview[]>(queryKey, (old = []) => [
+        newSession,
+        ...old,
+      ]);
+    },
+    [queryClient, queryKey]
+  );
+
+  return {
+    sessions,
+    isLoading,
+    updateSessionTitle,
+    addSessionOptimistic,
+  };
+}
+```
+
+#### 3. Production UI Component: `<AiChatHistoryDrawer />`
+```tsx
+// components/ai/AiChatHistoryDrawer.tsx
+"use client";
+
+import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, MessageSquare, Clock, Plus, X, ChevronRight } from "lucide-react";
+import { ChatSessionPreview } from "@/hooks/useAiChatHistory";
+
+interface AiChatHistoryDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+  sessions: ChatSessionPreview[];
+  activeSessionId: string;
+  onSelectSession: (sessionId: string) => void;
+  onNewChat: () => void;
+}
+
+export const AiChatHistoryDrawer: React.FC<AiChatHistoryDrawerProps> = ({
+  isOpen,
+  onClose,
+  sessions,
+  activeSessionId,
+  onSelectSession,
+  onNewChat,
+}) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Group sessions by Today, Yesterday, Previous 7 Days, Older
+  const groupedSessions = useMemo(() => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const yesterday = today - 86400000;
+    const sevenDaysAgo = today - 7 * 86400000;
+
+    const filtered = sessions.filter((s) =>
+      s.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const groups: { [key: string]: ChatSessionPreview[] } = {
+      Today: [],
+      Yesterday: [],
+      "Previous 7 Days": [],
+      Older: [],
+    };
+
+    filtered.forEach((s) => {
+      const time = new Date(s.updatedAt).getTime();
+      if (time >= today) groups.Today.push(s);
+      else if (time >= yesterday) groups.Yesterday.push(s);
+      else if (time >= sevenDaysAgo) groups["Previous 7 Days"].push(s);
+      else groups.Older.push(s);
+    });
+
+    return groups;
+  }, [sessions, searchQuery]);
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ x: "-100%", opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: "-100%", opacity: 0 }}
+          transition={{ type: "spring", stiffness: 350, damping: 30 }}
+          className="absolute inset-y-0 left-0 w-80 bg-slate-950/95 backdrop-blur-xl border-r border-white/10 z-30 flex flex-col shadow-2xl"
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between p-4 border-b border-white/10">
+            <div className="flex items-center gap-2 text-white font-bold text-sm">
+              <Clock className="w-4 h-4 text-cyan-400" />
+              <span>Chat History</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={onNewChat}
+                title="New Chat"
+                className="p-1.5 rounded-lg bg-cyan-600/20 hover:bg-cyan-600 text-cyan-300 hover:text-white transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+              </button>
+              <button
+                onClick={onClose}
+                className="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Search Filter */}
+          <div className="p-3 border-b border-white/5">
+            <div className="flex items-center gap-2 rounded-xl bg-slate-900 border border-white/10 px-3 py-1.5 text-xs">
+              <Search className="w-3.5 h-3.5 text-slate-500" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search conversations..."
+                className="w-full bg-transparent text-slate-200 placeholder-slate-500 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Grouped Session List */}
+          <div className="flex-1 overflow-y-auto p-3 space-y-4">
+            {Object.entries(groupedSessions).map(
+              ([groupName, items]) =>
+                items.length > 0 && (
+                  <div key={groupName} className="space-y-1.5">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-2">
+                      {groupName}
+                    </span>
+                    {items.map((session) => {
+                      const isActive = session._id === activeSessionId;
+                      return (
+                        <button
+                          key={session._id}
+                          onClick={() => {
+                            onSelectSession(session._id);
+                            onClose();
+                          }}
+                          className={`w-full flex items-center justify-between p-2.5 rounded-xl text-left text-xs transition-all ${
+                            isActive
+                              ? "bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 font-semibold"
+                              : "hover:bg-white/5 text-slate-300 hover:text-white border border-transparent"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 truncate">
+                            <MessageSquare className="w-3.5 h-3.5 flex-shrink-0 text-slate-500" />
+                            <span className="truncate">{session.title}</span>
+                          </div>
+                          <ChevronRight className="w-3 h-3 text-slate-600 flex-shrink-0" />
+                        </button>
+                      );
+                    })}
+                  </div>
+                )
+            )}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+```
+
 ---
 
 ## 8. Summary of Core Exported Symbols & API Endpoints
 
 ### 8.1 MongoDB Models & Types
-- `AiCopilotSession`: Tracks ongoing operational or CMS conversational sessions.
+- `AiCopilotSession`: Tracks ongoing conversational sessions with `rollingSummary` and `compactedTurnsCount`.
+- `AiUserMemory`: Manages cross-chat persistent memory, core profile, custom instructions, and learned facts.
 - `AiCopilotMessage`: Stores multimodal messages, attachments, waveforms, and linked action proposals.
 - `AiActionExecution`: Stores Human-in-the-Loop action proposals, diffs, risk tiers, and execution audits.
 
 ### 8.2 Frontend Context & Hooks
-- `AiCopilotProvider` / `useAiCopilot()`: Manages session lifecycle, message stream, and active action execution queue.
+- `AiCopilotProvider` / `useAiCopilot()`: Manages active session lifecycle, message stream, and action execution queue.
+- `useAiChatHistory()`: SWR / React Query cache providing single-fetch chat history with `staleTime: Infinity` and zero redundant network calls.
+- `useAiMemory()`: Exposes cross-chat persistent facts, custom instructions, and memory toggle.
 - `useAiAudioRecorder()`: Web Audio API recording hook capturing live 40-frequency waveform arrays.
 - `useAiDocumentParser()`: In-browser PDF canvas preview and table extraction helper.
 
 ### 8.3 UI Components
 - `AiCopilotTrigger`: Floating bottom-right action trigger pill with glowing cyan aura.
 - `AiCopilotDrawer`: Slide-over responsive glassmorphism conversation window.
+- `AiChatHistoryDrawer`: Left sliding history drawer with date-based grouping (`Today`, `Yesterday`, `Older`) and instant search.
+- `AiCompactedSummaryDivider`: Frosted in-stream accordion divider revealing running compacted turn summaries.
 - `ActionConfirmationCard`: Human-in-the-Loop interactive confirmation card with diff preview and `[ Confirm & Execute ]` button.
 - `AiVoiceWaveformComposer`: Dynamic recording bar featuring pulsing frequency bars.
 - `AiMediaPreviewer`: In-copilot custom video player, multi-page PDF canvas, audio player, and image lightbox.
 
 ### 8.4 REST & Streaming API Endpoints
 - `POST /api/ai/sessions`: Initialize or resume an AI Copilot session for the current route.
+- `GET /api/v1/ai/sessions`: Retrieve all past chat sessions for the user (cached on client).
+- `GET /api/v1/ai/memory`: Retrieve persistent user memory facts and instructions.
+- `PUT /api/v1/ai/memory`: Update custom instructions or learned facts.
 - `POST /api/ai/chat`: Send a prompt with multimodal attachments (streams markdown response via Server-Sent Events).
 - `POST /api/ai/actions/:id/execute`: Affirmatively confirm and execute a proposed action under user credentials.
 - `POST /api/ai/actions/:id/reject`: Discard a proposed action.
 - `POST /api/ai/cms/generate`: Generate a CMS section layout, shell configuration, or document template proposal.
+

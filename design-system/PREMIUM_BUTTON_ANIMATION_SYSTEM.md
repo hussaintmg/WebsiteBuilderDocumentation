@@ -26,9 +26,9 @@ src/components/animations/
 
 ---
 
-## 🔄 2. The 9-State Lifecycle State Machine
+## 🔄 2. The 10-State Lifecycle State Machine (Including Rate-Limited Lockout)
 
-Every task button operates on a deterministic finite state machine with 9 recognized phases. Only states relevant to the actual action are rendered:
+Every task button operates on a deterministic finite state machine with 10 recognized phases, including an automated **`rate-limited`** lockout state that blocks network calls and renders live countdown timers:
 
 ```mermaid
 stateDiagram-v2
@@ -52,6 +52,7 @@ stateDiagram-v2
     Loading --> Success: API Resolved (HTTP 200/201)
     Processing --> Success: Pipeline Completed
     Loading --> Error: API Rejected (HTTP 4xx/5xx/Network)
+    Loading --> RateLimited: API Returns HTTP 429 / Client Cooldown
     Processing --> Error: Pipeline Failed
     Loading --> Cancelled: User aborts via Cancel button
     
@@ -60,6 +61,8 @@ stateDiagram-v2
     Error --> Reset: Error toast fired & delay elapsed
     Cancelled --> Reset: Graceful reversal
     Reset --> Idle: Clean return to interactive state
+    
+    RateLimited --> Idle: Cooldown Timer Reaches 0s (Unlocks automatically)
 ```
 
 ### 2.1 State Definitions & Behavioral Contracts
@@ -72,6 +75,11 @@ stateDiagram-v2
 7. **`error`**: Terminal state upon API rejection. Vibrates with a 3-stage horizontal shake, displays an error alert icon, triggers the error toast, and preserves all user form inputs intact.
 8. **`cancelled`**: For abortable operations (e.g. file upload cancellation). Reverses visual motion gracefully without falsely reporting a save or success.
 9. **`reset`**: Smooth 200ms spring return to `idle`, unlocking the button for subsequent actions.
+10. **`rate-limited`**: Triggered when client or server imposes a temporary cooldown (e.g. HTTP 429 `Retry-After`, 60s OTP resend, login lockout).
+   - **Yellow/Amber Visuals**: Morph into a warning state (`bg-amber-500/15 border-amber-500/40 text-amber-500 dark:text-amber-400 shadow-glow-amber`).
+   - **Live In-Button Timer**: Replaces button label with a ticking countdown: `Try again in {cooldown}s`.
+   - **Pre-Flight Block**: Interaction is disabled (`cursor-not-allowed`); clicking strictly **blocks all API requests** before network transmission.
+   - **Animated Bottom Tooltip Popup**: Clicking or tapping displays a spring-animated bottom tooltip with the live ticking seconds, auto-fading after **2 seconds**.
 
 ---
 
@@ -92,7 +100,8 @@ export type ButtonState =
   | 'success' 
   | 'error' 
   | 'cancelled' 
-  | 'reset';
+  | 'reset'
+  | 'rate-limited';
 
 export type ButtonVariant = 
   | 'primary' 
@@ -835,14 +844,327 @@ When `animationsEnabled === false`:
 
 ## 🔒 11. Master Verification Checklist
 
-Before approving any UI button implementation, audit against these 9 non-negotiable checks:
+Before approving any UI button implementation, audit against these 10 non-negotiable checks:
 1. [ ] **Preset Integrity**: Is the button using an authentic preset from the 100 Hover or 100 Task catalog rather than an unverified custom class?
 2. [ ] **Zero Boring Spinners**: Is all generic spinning circle loading eliminated in favor of task-specific vectors?
-3. [ ] **9-State Compliance**: Does the button handle its active states without layout shifts or text overflow?
+3. [ ] **10-State Compliance**: Does the button handle its active states (including `rate-limited`) without layout shifts or text overflow?
 4. [ ] **Single Source of Truth**: Is the button bound directly to its Context API method, avoiding local state duplication?
 5. [ ] **Toast Synchronization**: Does the toast notification trigger according to the exact timing contract in Section 7?
 6. [ ] **Mac-Like Delete Sequence**: Do row/card deletions follow the strict Modal -> Toast -> Dustbin -> Fabric Fold sequence when animations are enabled?
 7. [ ] **Bulk Group Flight**: When multiple items are deleted, do they fly together into the dustbin simultaneously?
 8. [ ] **Feature Flag Fallback Audit**: When `feature:animations` is toggled OFF, does the button gracefully transition into clean, instant text swaps with zero vector lag or console warnings?
 9. [ ] **Accessibility & Touch**: Does the button behave properly with keyboard navigation, screen readers, and touch screens?
+10. [ ] **Rate-Limited Pre-Flight Protection**: When an action is rate-limited, does the button turn yellow/amber, display ticking seconds, block API requests completely, and show the animated bottom tooltip for 2 seconds upon click?
+
+---
+
+## ⚡ 12. The Global Rate-Limited Action Button & Bottom Animated Tooltip Popup
+
+### 12.1 The Universal Law of Rate-Limited Buttons
+Across the entire platform, whenever a backend API returns HTTP `429 Too Many Requests` with a `Retry-After` header or client-side cooldowns are active (Login lockout, OTP 60s resend, password reset lockout, form spam guard):
+1. **Yellow/Amber Visual Transform**:
+   - The button surface immediately adopts a high-contrast amber security state:
+     `border-amber-400 bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-glow-amber`.
+2. **In-Button Live Ticking Countdown**:
+   - The button label replaces resting text with real-time countdown:
+     `Try again in {secondsLeft}s` or `Cooldown ({secondsLeft}s)`.
+3. **Ironclad Pre-Flight Network Interception**:
+   - Clicking or pressing the button while in `rate-limited` state **STRICTLY BLOCKS API EXECUTION**. No network packets are sent.
+4. **Animated Bottom Tooltip Popup**:
+   - Clicking the disabled button displays a smooth, spring-animated bottom tooltip directly underneath the button center.
+   - Text updates in real-time second-by-second: *"Rate limit active. Please wait {secondsLeft}s before retrying."*
+   - Remains visible for **2 seconds** before smoothly fading out.
+
+```
+┌────────────────────────────────────────────────────────┐
+│   [ ⏳ Cooldown: 42s Remaining ] (Amber Yellow Button) │
+└──────────────────────────┬─────────────────────────────┘
+                           │ (User clicks or taps)
+                           ▼
+              ┌──────────────────────────┐
+              │            ▲             │ (Indicator Arrow)
+              │ 🛡️ Rate limit active.    │
+              │ Please wait 42s...       │ (Live second-by-second countdown)
+              │ (Fades out after 2s)     │
+              └──────────────────────────┘
+```
+
+---
+
+### 12.2 Production Custom Hook (`hooks/useRateLimitedAction.ts`)
+
+```typescript
+// hooks/useRateLimitedAction.ts
+"use client";
+
+import { useState, useEffect, useCallback, useRef } from "react";
+
+interface RateLimitRegistryEntry {
+  actionKey: string;
+  expiresAt: number; // UTC Epoch timestamp in milliseconds
+}
+
+class RateLimitRegistry {
+  private static STORAGE_KEY = "app_rate_limit_registry";
+  private static listeners = new Set<() => void>();
+
+  static getRemainingSeconds(actionKey: string): number {
+    const expiresAt = this.getExpiresAt(actionKey);
+    if (!expiresAt) return 0;
+    const diff = Math.ceil((expiresAt - Date.now()) / 1000);
+    return diff > 0 ? diff : 0;
+  }
+
+  static getExpiresAt(actionKey: string): number | null {
+    try {
+      const raw = typeof window !== "undefined" ? localStorage.getItem(this.STORAGE_KEY) : null;
+      if (!raw) return null;
+      const data: Record<string, number> = JSON.parse(raw);
+      const val = data[actionKey];
+      if (val && val > Date.now()) return val;
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  static setLockout(actionKey: string, cooldownSeconds: number): void {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      const data: Record<string, number> = raw ? JSON.parse(raw) : {};
+      data[actionKey] = Date.now() + cooldownSeconds * 1000;
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+      this.notifyListeners();
+    } catch {}
+  }
+
+  static clear(actionKey: string): void {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      if (!raw) return;
+      const data: Record<string, number> = JSON.parse(raw);
+      delete data[actionKey];
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+      this.notifyListeners();
+    } catch {}
+  }
+
+  static subscribe(listener: () => void): () => void {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  }
+
+  private static notifyListeners(): void {
+    this.listeners.forEach((fn) => fn());
+  }
+}
+
+export function useRateLimitedAction(actionKey: string, initialCooldownSeconds: number = 0) {
+  const [secondsLeft, setSecondsLeft] = useState<number>(() => {
+    const existing = RateLimitRegistry.getRemainingSeconds(actionKey);
+    return Math.max(existing, initialCooldownSeconds);
+  });
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
+  const tooltipTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Synchronize initial cooldown if supplied
+  useEffect(() => {
+    if (initialCooldownSeconds > 0) {
+      RateLimitRegistry.setLockout(actionKey, initialCooldownSeconds);
+      setSecondsLeft(initialCooldownSeconds);
+    }
+  }, [actionKey, initialCooldownSeconds]);
+
+  // Second-by-second countdown clock
+  useEffect(() => {
+    if (secondsLeft <= 0) return;
+
+    const interval = setInterval(() => {
+      const remaining = RateLimitRegistry.getRemainingSeconds(actionKey);
+      setSecondsLeft(remaining);
+      if (remaining <= 0) {
+        RateLimitRegistry.clear(actionKey);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [actionKey, secondsLeft]);
+
+  // Subscribe to cross-tab / cross-component registry updates
+  useEffect(() => {
+    return RateLimitRegistry.subscribe(() => {
+      const remaining = RateLimitRegistry.getRemainingSeconds(actionKey);
+      setSecondsLeft(remaining);
+    });
+  }, [actionKey]);
+
+  // Trigger tooltip popup with 2-second auto-dismiss
+  const triggerTooltip = useCallback(() => {
+    if (tooltipTimeoutRef.current) {
+      clearTimeout(tooltipTimeoutRef.current);
+    }
+    setShowTooltip(true);
+    tooltipTimeoutRef.current = setTimeout(() => {
+      setShowTooltip(false);
+      tooltipTimeoutRef.current = null;
+    }, 2000); // Strict 2-second display duration
+  }, []);
+
+  // Pre-flight wrapper guarding arbitrary async API calls
+  const executeWithGuard = useCallback(
+    async <T>(asyncAction: () => Promise<T>): Promise<T | null> => {
+      const currentSeconds = RateLimitRegistry.getRemainingSeconds(actionKey);
+      if (currentSeconds > 0) {
+        triggerTooltip();
+        return null; // PRE-FLIGHT BLOCKED: Zero network hits!
+      }
+
+      try {
+        return await asyncAction();
+      } catch (err: any) {
+        // Automatically intercept HTTP 429 Retry-After responses
+        if (err?.status === 429 || err?.response?.status === 429) {
+          const retryAfter =
+            Number(err?.retryAfter || err?.response?.headers?.["retry-after"]) || 60;
+          RateLimitRegistry.setLockout(actionKey, retryAfter);
+          setSecondsLeft(retryAfter);
+          triggerTooltip();
+        }
+        throw err;
+      }
+    },
+    [actionKey, triggerTooltip]
+  );
+
+  const applyLockout = useCallback(
+    (cooldownSeconds: number) => {
+      RateLimitRegistry.setLockout(actionKey, cooldownSeconds);
+      setSecondsLeft(cooldownSeconds);
+      triggerTooltip();
+    },
+    [actionKey, triggerTooltip]
+  );
+
+  return {
+    isRateLimited: secondsLeft > 0,
+    secondsLeft,
+    showTooltip,
+    triggerTooltip,
+    executeWithGuard,
+    applyLockout,
+  };
+}
+```
+
+---
+
+### 12.3 Master Production Component (`components/ui/RateLimitedButton.tsx`)
+
+```tsx
+// components/ui/RateLimitedButton.tsx
+"use client";
+
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { AlertCircle, Clock, Loader2 } from "lucide-react";
+import { useRateLimitedAction } from "@/hooks/useRateLimitedAction";
+
+interface RateLimitedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  actionKey: string;                          // Unique registry key (e.g. "auth:login", "auth:resend_otp")
+  initialCooldown?: number;                   // In seconds, if already known from server state
+  isLoading?: boolean;
+  activeLabel?: string;
+  children: React.ReactNode;
+  onExecute: () => Promise<void> | void;      // The real backend action
+  className?: string;
+}
+
+export const RateLimitedButton: React.FC<RateLimitedButtonProps> = ({
+  actionKey,
+  initialCooldown = 0,
+  isLoading = false,
+  activeLabel = "Processing...",
+  children,
+  onExecute,
+  className = "",
+  disabled,
+  ...props
+}) => {
+  const { isRateLimited, secondsLeft, showTooltip, triggerTooltip, executeWithGuard } =
+    useRateLimitedAction(actionKey, initialCooldown);
+
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (isRateLimited) {
+      triggerTooltip();
+      return; // STOPS API HIT COMPLETELY
+    }
+
+    if (isLoading || disabled) return;
+
+    await executeWithGuard(async () => {
+      await onExecute();
+    });
+  };
+
+  return (
+    <div className="relative inline-block w-full">
+      <button
+        {...props}
+        type="button"
+        onClick={handleClick}
+        disabled={disabled || isLoading}
+        aria-disabled={isRateLimited || disabled || isLoading}
+        className={`w-full relative flex items-center justify-center gap-2 px-5 py-3 rounded-2xl font-bold text-sm transition-all duration-200 select-none ${
+          isRateLimited
+            ? "border-2 border-amber-400 bg-amber-500/15 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 shadow-glow-amber cursor-not-allowed"
+            : className || "bg-sky-500 text-white hover:bg-sky-600 active:scale-[0.98] cursor-pointer shadow-md"
+        }`}
+      >
+        {isLoading ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin text-current" />
+            <span>{activeLabel}</span>
+          </>
+        ) : isRateLimited ? (
+          <>
+            <Clock className="w-4 h-4 text-amber-500 animate-pulse" />
+            <span>Try again in {secondsLeft}s</span>
+          </>
+        ) : (
+          children
+        )}
+      </button>
+
+      {/* Animated Bottom Tooltip Popup */}
+      <AnimatePresence>
+        {showTooltip && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 6, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 z-50 w-max max-w-[280px] p-2.5 px-3.5 rounded-xl bg-slate-900/95 dark:bg-black/95 text-white border border-amber-500/40 shadow-2xl backdrop-blur-md pointer-events-none"
+          >
+            {/* Top Indicator Arrow */}
+            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-900 dark:bg-black border-t border-l border-amber-500/40 rotate-45" />
+
+            <div className="relative flex items-center gap-2 text-xs">
+              <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0" />
+              <p className="leading-tight text-slate-200">
+                Rate limit active. Available in{" "}
+                <span className="font-mono font-bold text-amber-400">{secondsLeft}s</span>.
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+```
 

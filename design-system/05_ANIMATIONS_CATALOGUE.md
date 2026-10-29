@@ -429,6 +429,107 @@ Animations must **ONLY interpolate `transform` (`translate3d`, `scale`, `rotate`
 
 ---
 
+### ANIM-46: Apple macOS 3D Genie Origin-Morph Effect (`genie-morph`)
+- **Visual Behavior**: The modal, dropdown, or confirmation window unrolls and expands outward directly from the bounding rect of the trigger button in 3D perspective (`rotateX(12deg) scale(Sx, Sy) -> scale(1) rotateX(0deg)`). When closed, it reverses—twisting and funnels down into the origin button while the button elevates with an absorb bounce.
+- **Trigger Type**: Click on Trigger Button (Open) / Click on Close Button, Backdrop, or Cancel (Close).
+- **Start & End States**:
+  - *Eject*: `translate3d(ΔX, ΔY, 0) scale3d(Sx, Sy, 1) perspective(1000px) rotateX(12deg)` ➔ `translate3d(0, 0, 0) scale3d(1, 1, 1) perspective(1000px) rotateX(0deg)`.
+  - *Suck/Absorb*: `translate3d(0, 0, 0) scale3d(1, 1, 1)` ➔ `translate3d(ΔX, ΔY, 0) scale3d(Sx, Sy, 1) rotateX(14deg) opacity(0)`.
+- **Duration & Easing**: 
+  - *Open*: `340ms cubic-bezier(0.16, 1, 0.3, 1)` (Out-Expo Deceleration).
+  - *Close*: `280ms cubic-bezier(0.7, 0, 0.84, 0)` (Accelerating Gravitational Funnel).
+- **Compositor Safety**: 100% GPU offloaded using `transform` (`translate3d`, `scale3d`, `rotateX`) and `opacity`. Zero paint reflow overhead.
+- **Cross-Reference**: Master specification in [`design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`](./APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md).
+
+---
+
+### ANIM-47: Three.js 3D Model Exploded-View Disassembly & Scroll-Dolly (`3d-scroll-explode`)
+- **Visual Behavior**: As the user scrolls through product architecture sections, individual parts (chassis, circuit boards, batteries, lenses) systematically translate outward along their normal vectors in an exploded disassembly, while the camera smoothly orbits and dollies along a 3D Catmull-Rom spline curve.
+- **Trigger Type**: Scroll-Driven via GSAP ScrollTrigger linked to WebGL render loop.
+- **Start & End States**:
+  - *Resting Assemblage*: All child meshes at local position $(0, 0, 0)$ relative to their parent node; camera at $(0, 0, 4.5)$.
+  - *Exploded Disassembly*: Each sub-mesh translates outward along its radial unit vector $\mathbf{P}(t) = \mathbf{P}_{\text{orig}} + \mathbf{N}_{\text{part}} \cdot d(t)$; camera dollies to $(1.5, 0.8, 2.2)$ with FOV narrowing from $45^\circ$ to $32^\circ$.
+- **Duration & Easing**: Bound to scroll progress via `scrub: 1.2` with cubic-bezier smoothing. Zero frame drops via 60fps render loop.
+- **Compositor Safety**: GPU-accelerated WebGL vertex shader matrix computation; zero DOM reflows.
+- **Cross-Reference**: Master architecture in [`design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`](./THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md).
+
+---
+
+### ANIM-48: WhatsApp 3-Dot Staggered Typing Wave Bounce (`typing-dot-wave`)
+- **Visual Behavior**: Three circular dots bounce rhythmically up and down with staggered intervals, creating an infinite fluid wave conveying real-time opponent keystrokes until input ceases.
+- **Trigger Type**: Presence event `presence:activity` with action `'TYPING'`.
+- **Start & End States**:
+  - `0%, 60%, 100%`: `translateY(0)` with `opacity: 0.4`.
+  - `30%`: `translateY(-5px)` with `opacity: 1.0` in WhatsApp emerald/cyan (`#00a884`).
+- **Duration & Delays**: `1.2s infinite ease-in-out`; Dot 1: `0ms`, Dot 2: `150ms`, Dot 3: `300ms`.
+- **Compositor Safety**: 100% GPU offloaded using `transform: translateY()` and `opacity`.
+- **Cross-Reference**: Master specification in [`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`](../modules/CHAT_AND_COMMUNICATION_SYSTEM.md#42-whatsapp-grade-real-time-typing--audio-recording-presence-engine).
+
+---
+
+### ANIM-49: WhatsApp Crimson Voice Recording Radial Soundwave Pulse (`voice-recording-pulse`)
+- **Visual Behavior**: A tactile crimson-red microphone icon bounces in subtle scale accompanied by an expanding radial soundwave ring that emanates outward and dissipates, indicating active microphone audio capture.
+- **Trigger Type**: Presence event `presence:activity` with action `'RECORDING_AUDIO'`.
+- **Start & End States**:
+  - `0%`: `scale(1)` with `box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6)`.
+  - `50%`: `scale(1.18)` with `box-shadow: 0 0 0 8px rgba(239, 68, 68, 0)`.
+  - `100%`: `scale(1)` with `box-shadow: 0 0 0 0 rgba(239, 68, 68, 0)`.
+- **Duration & Easing**: `1.2s infinite ease-in-out` in studio crimson (`#ef4444`).
+- **Compositor Safety**: Hardware-accelerated CSS keyframe transforms and box-shadow dissipation.
+- **Cross-Reference**: Master specification in [`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`](../modules/CHAT_AND_COMMUNICATION_SYSTEM.md#42-whatsapp-grade-real-time-typing--audio-recording-presence-engine).
+
+---
+
+### ANIM-50: Profile Avatar Fast-Shift 360° Tactile Spin & Scale Bounce (`avatar-fast-shift`)
+- **Visual Behavior**: When the user double-taps the profile avatar button, the avatar scales down slightly to `0.9` before spinning 360° with a springy overshoot bounce to `1.08` and settling at `1.0`. Provides immediate physical confirmation that identity has rotated to the next enrolled account.
+- **Trigger Type**: Double-tap gesture (`< 300ms`) via `useDoubleTapAccountShift()`.
+- **Start & End States**:
+  - `0%`: `transform: rotate(0deg) scale(1)`.
+  - `30%`: `transform: rotate(120deg) scale(0.9)`.
+  - `75%`: `transform: rotate(360deg) scale(1.08)`.
+  - `100%`: `transform: rotate(360deg) scale(1)`.
+- **Duration & Easing**: `360ms cubic-bezier(0.34, 1.56, 0.64, 1)` (Back-Out Spring).
+- **Compositor Safety**: 100% GPU offloaded using `transform: rotate() scale()`.
+- **Cross-Reference**: Master specification in [`modules/AUTH_AND_FACELOCK.md`](../modules/AUTH_AND_FACELOCK.md#44-multi-account-fast-switcher--profile-button-double-tap-mechanics).
+
+---
+
+### ANIM-51: Nested Reply Accordion Expand & Connecting Thread Line Reveal (`reply-accordion-reveal`)
+- **Visual Behavior**: Tapping "Show Replies" triggers a smooth height expansion (`height: 0 -> auto`, `opacity: 0 -> 1`) accompanied by the sequential vertical stroke reveal of the slate thread guide line (`scaleY: 0 -> 1` origin top), visually anchoring the parent node to its newly loaded children.
+- **Trigger Type**: Click / Tap on "Show N replies" accordion button.
+- **Start & End States**:
+  - Container: `opacity: 0, height: 0, translateY: -6px` ➔ `opacity: 1, height: auto, translateY: 0`.
+  - Thread Line: `transform: scaleY(0)` with `transform-origin: top` ➔ `transform: scaleY(1)`.
+- **Duration & Easing**: `280ms cubic-bezier(0.16, 1, 0.3, 1)` (Out-Quart).
+- **Compositor Safety**: Hardware-accelerated GPU opacity and transform; height driven by Framer Motion layout / dynamic CSS grid.
+- **Cross-Reference**: Master specification in [`modules/INFINITE_COMMENTS_AND_REPLIES_SYSTEM.md`](../modules/INFINITE_COMMENTS_AND_REPLIES_SYSTEM.md#4-recursive-ui-component-architecture--connective-thread-guides).
+
+---
+
+### ANIM-52: AI Chat History Drawer Slide & Item Cascade Reveal (`ai-history-drawer-cascade`)
+- **Visual Behavior**: The history sidebar glides smoothly in from the left (`x: -100% -> 0%`), while individual conversation session items execute a staggered slide-and-fade reveal (`staggerChildren: 0.04s`, `translateY: 8px -> 0`, `opacity: 0 -> 1`), giving the user an instant, tactile overview of past work.
+- **Trigger Type**: Click on `[ 🕒 History ]` toggle in AI Copilot header.
+- **Start & End States**:
+  - Drawer Shell: `transform: translateX(-100%)` ➔ `transform: translateX(0)`.
+  - Staggered Items: `opacity: 0, transform: translateY(8px)` ➔ `opacity: 1, transform: translateY(0)`.
+- **Duration & Easing**: `320ms cubic-bezier(0.16, 1, 0.3, 1)` (Out-Quart Deceleration).
+- **Compositor Safety**: 100% GPU offloaded using `transform` and `opacity`.
+- **Cross-Reference**: Master specification in [`modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md`](../modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md#75-chat-history-architecture--client-single-fetch-caching).
+
+---
+
+### ANIM-53: AI Context Compaction Squeeze & Summary Unfold (`ai-summary-unfold`)
+- **Visual Behavior**: When older turns exceed the threshold, they smoothly collapse into an elegant frosted divider bar (`scaleY: 1 -> 0.95`, `opacity: 0.8`). Tapping the divider unrolls a frosted accordion card (`height: 0 -> auto`, `opacity: 0 -> 1`) displaying the exact structured summary the model is retaining.
+- **Trigger Type**: Threshold detection (turn 12 / 4,000 tokens) & Click on `<AiCompactedSummaryDivider />`.
+- **Start & End States**:
+  - Divider Reveal: `opacity: 0, scale: 0.96` ➔ `opacity: 1, scale: 1`.
+  - Accordion Card Unfold: `height: 0, opacity: 0` ➔ `height: auto, opacity: 1`.
+- **Duration & Easing**: `260ms cubic-bezier(0.2, 0.8, 0.2, 1)` (Smooth Expansion).
+- **Compositor Safety**: GPU opacity combined with Framer Motion layout hardware acceleration.
+- **Cross-Reference**: Master specification in [`modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md`](../modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md#3-client-compaction-divider-aicompactedsummarydivider-).
+
+---
+
 ## 7. Universal Accessibility: The Reduced-Motion Mandate
 
 Every web application built must strictly respect the user's operating system accessibility preferences. Users suffering from vestibular disorders, motion sensitivity, or epilepsy require animations to be neutralized.

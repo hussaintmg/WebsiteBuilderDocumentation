@@ -8,9 +8,9 @@
 ## 🛑 Rule Zero: The Absolute Prerequisite
 
 ```
-                       ┌─────────────────────────┐
-                       │  New User Request Received  │
-                       └────────────┬────────────┘
+                     ┌─────────────────────────────┐
+                     │  New User Request Received  │
+                     └──────────────┬──────────────┘
                                     │
                                     ▼
                       /───────────────────────────\
@@ -19,14 +19,14 @@
                       \───────────────────────────/
                                     │
                     NO              │            YES
-         ┌──────────────────────────┴─────────────┐
-         ▼                                        ▼
-┌───────────────────────────────┐     ┌──────────────────────────────┐
-│ STOP! DO NOT WRITE ANY CODE.  │     │ 1. Read .project/PLAN.md     │
-│ 1. Load DISCOVERY_QUESTIONNAIRE│     │ 2. Read .project/RULES.md    │
-│ 2. Ask user clarifying questions│    │ 3. Execute current Sprint    │
-│ 3. Generate .project/ plan    │     │ 4. Verify evidence & test    │
-└───────────────────────────────┘     └──────────────────────────────┘
+               ┌────────────────────┴───────────────────┐
+               ▼                                        ▼
+┌──────────────────────────────────┐     ┌──────────────────────────────┐
+│ STOP! DO NOT WRITE ANY CODE.     │     │ 1. Read .project/PLAN.md     │
+│ 1. Load DISCOVERY_QUESTIONNAIRE  │     │ 2. Read .project/RULES.md    │
+│ 2. Ask user clarifying questions │     │ 3. Execute current Sprint    │
+│ 3. Generate .project/ plan       │     │ 4. Verify evidence & test    │
+└──────────────────────────────────┘     └──────────────────────────────┘
 ```
 
 **Never start scaffolding or writing production code until the user approves the generated plan file!**  
@@ -68,10 +68,11 @@ Once answers are received:
 Once the plan is approved:
 1. Follow **Foundation-First rule**:
    - **Original & Bespoke Design Mandate (Design Apna Banana Hai)**: Documentation code examples and color palettes are technical architecture blueprints—**NEVER copy them verbatim into the project**. The agent must craft an original visual identity, bespoke color palette, tailored card layouts, and custom typography pairing for every single project.
-   - **Bespoke Brand Logo & Complete Favicon Suite**: The agent MUST design and integrate an authentic, high-resolution vector Brand Logo (both full wordmark and compact 32x32 glyph) and a complete real Favicon & PWA suite (`favicon.ico`, `icon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest`). Leaving default framework favicons (Next.js triangle, Vite bird, React atom) or generic unstyled text for a logo is strictly prohibited.
+   - **Bespoke Brand Logo & Complete Favicon Suite (With Canva Refinement Mandate)**: The agent MUST design and integrate an authentic, high-resolution vector Brand Logo (both full wordmark and compact 32x32 glyph) and a complete real Favicon & PWA suite (`favicon.ico`, `icon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest`). Leaving default framework favicons or generic unstyled text is strictly prohibited. **Canva Refinement Workflow**: If programmatic SVGs or generated logos/favicons do not meet state-of-the-art standards, developers/agents must leverage Canva to craft, refine, and export clean, high-resolution transparent vector/PNG brand assets.
+   - **Zero-Bar Draggable Modals & Apple Genie Origin-Morph System**: All modals, popup forms, confirmation boxes, and dropdowns must implement the Apple macOS 3D Genie Origin-Morph animation (unrolls from origin button, funnels back on close while origin button elevates and absorbs). Once open, dialogs are freely draggable via their top padding region with zero extra titlebar and zero grip icons per [`design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`](./design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md).
    - **Backend-Only Payment Safeguard Enforcement**: All licensing checks and payment verification calls must execute **strictly from the backend server**; the frontend browser must never call the licensing API directly.
    - Set up **Tailwind CSS** with dual-theme (`dark:`) configuration and bespoke typography imports per [`design-system/DESIGN_ARCHITECTURE.md`](./design-system/DESIGN_ARCHITECTURE.md) and [`design-system/FRONTEND_DESIGN_RULES.md`](./design-system/FRONTEND_DESIGN_RULES.md).
-   - Scaffold the foundational UI atoms: custom Floating Label Inputs (Text, Textarea, Select), `cursor-pointer` Buttons, and Resizable `h-dvh` Sidebar.
+   - Scaffold the foundational UI atoms: custom Floating Label Inputs (Text, Textarea, Select), `cursor-pointer` Buttons, Resizable `h-dvh` Sidebar, and Universal `AppleGenieModal`.
    - Set up the database schema and connection layer per [`rules/BACKEND_CONNECTION_RULES.md`](./rules/BACKEND_CONNECTION_RULES.md).
    - Set up the environment variables template (`.env.example`).
 2. Scaffold only the necessary components and routes specified in the approved sprint.
@@ -89,6 +90,8 @@ Whenever implementing a specific subsystem, the agent **MUST read the correspond
 | Production UI Component Library (Buttons, Nav, Forms, Overlays) | [`design-system/03_UI_COMPONENTS_LIBRARY.md`](./design-system/03_UI_COMPONENTS_LIBRARY.md) |
 | Card Patterns, Stacked Decks, Fan-Outs & Gesture Swipe Physics | [`design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md`](./design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md) |
 | Animation Catalogue, Transitions, Keyframes & ScrollTimeline | [`design-system/05_ANIMATIONS_CATALOGUE.md`](./design-system/05_ANIMATIONS_CATALOGUE.md) |
+| Apple macOS 3D Genie Origin-Morph & Zero-Bar Draggable Modals | [`design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`](./design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md) |
+| Three.js 3D Model Architecture, Parts Audit & Inspection Studio | [`design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`](./design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md) |
 | Full-Page Website Sections (Heroes, Bento Grids, Timelines, Footers) | [`design-system/06_WEBSITE_SECTIONS_LIBRARY.md`](./design-system/06_WEBSITE_SECTIONS_LIBRARY.md) |
 | Complete Website Design Patterns (SaaS, AI, Agency, E-Commerce) | [`design-system/07_WEBSITE_DESIGN_PATTERNS.md`](./design-system/07_WEBSITE_DESIGN_PATTERNS.md) |
 | Production React + Tailwind Recipes & Searchable Taxonomy Index | [`design-system/09_IMPLEMENTATION_RECIPES.md`](./design-system/09_IMPLEMENTATION_RECIPES.md) & [`design-system/10_SEARCHABLE_INDEX.md`](./design-system/10_SEARCHABLE_INDEX.md) |
@@ -110,6 +113,8 @@ Whenever implementing a specific subsystem, the agent **MUST read the correspond
 | Newsletter Canvas Studio, Blog Engine & Public CMS Loop | [`modules/NEWSLETTER_AND_BLOGS_SYSTEM.md`](./modules/NEWSLETTER_AND_BLOGS_SYSTEM.md) |
 | Principal Engineer Mindset, Non-Breaking Phased Planning & Line Decision Matrix | [`rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`](./rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md) |
 | Client Payment Tracking & 8th-Date Banner | [`rules/PAYMENT_SAFEGUARD_RULE.md`](./rules/PAYMENT_SAFEGUARD_RULE.md) |
+| Safe Development, Zero-Regression & FILE-MAP Synchronization | [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](./rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md) |
+| Payment Idempotency & Split-Brain Timeout Reconciliation | [`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`](./modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md) |
 
 ---
 
@@ -126,6 +131,7 @@ Before marking any task, file operation, or sprint as completed:
    - **Tier 7 (Visual, Responsive, Theme & Animations)**: Verify Light/Dark/CMS themes (zero rogue hex codes); ensure 60 FPS animations and mobile responsiveness (`390x844`).
 3. **Never claim success without actual terminal output or browser inspection logs.** Evidence must always precede assertions.
 4. Update `SPRINTS.md` marking completed tasks with `[x]` and logging complete tier-by-tier evidence notes.
+5. **Continuous FILE-MAP Synchronization**: Update the root `FILE-MAP.md` to reflect all newly created, updated, or removed files, routes, models, and critical execution flows per [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](./rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md).
 
 ---
 
@@ -143,6 +149,7 @@ Before marking any task, file operation, or sprint as completed:
 10. **Bespoke Logo & Favicon Suite Obligation**: Never launch or build an interface with default framework icons (Next.js, Vite, React) or placeholder typography logos. Every application must feature custom SVG vector branding and a full multi-resolution favicon/PWA suite matching the brand aesthetic.
 11. **The Ironclad Verification & Adversarial Chaos Law**: Any code addition, modification, or file deletion MUST undergo adversarial "Brainless User" chaos testing and line-by-line algorithmic review before marking done. Zero completion claims without fresh, concrete evidence.
 12. **The Principal Engineer Mindset & Open-Closed Phased Build Law**: Every project must follow the 6-Phase Non-Breaking Delivery sequence (Phase 1: Foundation & Auth -> Phase 2: Core Domain Purpose -> Phase 3: Visual Polish & Ergonomics -> Phase 4: Modular Subsystems -> Phase 5: Security & Edge Protection -> Phase 6: Universal Verification). Later phases MUST NOT break earlier phases: new capabilities must be implemented in dedicated new modular files (`modules/`, `context/`, `models/`, `components/`) and enhance existing surfaces through clean, open-closed boundaries. Before writing any line of code, the agent MUST run the 4-question line foresight matrix per [`rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`](./rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md).
+13. **The Zero-Regression, Anti-Bloat & Living FILE-MAP Mandate ("Cheezain Tore Baghair Kaam Karna")**: Never modify existing working code blindly. Always trace imports, models, and routes first. Additive-only changes; never rename/delete existing exports without migration. Strictly forbid duplicate utility functions or redundant npm packages. The root `FILE-MAP.md` is the living navigation map of the repository and must be kept 100% verified and synchronized after every sprint per [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](./rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md).
 
 
 

@@ -82,6 +82,7 @@ models/
 ├── ChatConversation.ts          # Real-time multi-tenant chat conversations
 ├── ChatMessage.ts               # Chat messages with ticks, reactions & media
 ├── AiCopilotSession.ts          # AI Copilot operational & CMS sessions
+├── AiUserMemory.ts              # Cross-chat persistent user memory, custom instructions & facts
 ├── AiCopilotMessage.ts          # Multimodal copilot conversation stream
 ├── AiActionExecution.ts         # Human-in-the-loop action proposals & diffs
 ├── Enquiry.ts                   # Inbound leads & public contact form submissions

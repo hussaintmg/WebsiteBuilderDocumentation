@@ -79,12 +79,20 @@ module.exports = {
 ### 2.2 GSAP & ScrollTrigger (Scroll Sequences & High-Performance Timelines)
 - Used for complex landing page reveals, timeline synchronizations, smooth parallax, and text scramble/reveal animations.
 
-### 2.3 Three.js & WebGL 3D Models (Strict User Permission & Free Models Rule)
+### 2.3 Three.js & WebGL 3D Models (High-Fidelity Standard, Parts Audit & Inspection Protocol)
 - **Hard Constraint**: Three.js 3D scenes are ONLY enabled with explicit user confirmation.
-- **Model Policy**:
-  - We can construct procedural lightweight 3D geometry (e.g. geometric wireframes, glowing particle clouds, floating glass shapes).
-  - External 3D models MUST be **100% free, animated, and lightweight** (`.gltf` / `.glb` format from verified free sources like Kenney, Three.js official assets, or Sketchfab CC0). Heavy or commercial paid models are strictly forbidden.
+- **The High-Quality 3D Model Law**: Every 3D model introduced—whether procedural in code or imported from verified sources—must be an exceptionally high-quality, complete 3D model with high-precision parameters. Unfinished or crude low-poly assets are strictly prohibited.
+- **Mandatory Multi-Part Decomposition**: Every 3D model must be broken down and audited into its constituent child meshes, nodes, and bones:
+  - Verify every part's geometry, world coordinates, pivot alignment, scale $(1, 1, 1)$, and surface normals.
+  - Audit PBR materials (`roughness`, `metalness`, `envMapIntensity`, soft shadows, and power-of-two textures).
+- **3D Staging & Inspection Tools**: All models must be inspected in the **Three.js Editor** (`threejs.org/editor`), Blender, or via our built-in `<ThreeModelInspector />` component before production integration.
+- **Scroll & Timeline Rigging**: GSAP ScrollTrigger camera dollies, exploded part disassemblies, and turntable rotations must strictly adhere to geometric motion instructions.
+- **Performance & Sourcing Budgets**:
+  - External models must be 100% free, lightweight, animated, and licensed under CC0/Open Source (`.glb` with Draco compression from Kenney, Three.js official assets, or Sketchfab CC0).
+  - Strict performance budgets: Desktop $\le 100\text{k}$ triangles; draw calls $\le 40$; mobile $\le 30\text{k}$ triangles.
+  - Strict GPU disposal: On React unmount, recursively traverse the scene to dispose geometries, materials, textures, and force WebGL context loss to prevent memory leaks.
   - Graceful fallback: If WebGL is unsupported or mobile battery is constrained, fallback to animated 2D SVGs or Lottie.
+- **Master Documentation**: See [`design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`](./THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md).
 
 ---
 

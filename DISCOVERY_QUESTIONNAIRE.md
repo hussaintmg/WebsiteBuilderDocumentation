@@ -453,3 +453,18 @@ How should settings behave across tenant companies?
   - Developer Super Console (`/system-console`) can inspect, manage, or override settings per tenant, or allow tenants to inherit platform defaults.
 - [ ] **Global Platform Credentials Shared for All Tenants**.
 
+---
+
+## 💳 Phase 11: Payment Idempotency & Split-Brain Timeout Reconciliation Engine
+
+### Q11.1: Customer Payment Timeout & Double-Debit Protection
+When a customer pays on the website and the connection between the backend and bank gateway times out (e.g. money debited from bank account, but client or server drops connection):
+- [x] **(Recommended) Enable Enterprise Idempotency & Inquire-Before-Charge (IBC) Engine**:
+  - **Pre-Created PaymentIntent & Idempotency Key**: Each checkout session creates a persistent `PaymentIntent` with a unique key (`idemp_<orderId>_attempt_1`).
+  - **Distributed Redis Mutex Lock**: 60-second atomic lock rejects concurrent clicks or rapid retries with `409 Conflict: Processing`.
+  - **Inquire-Before-Charge (IBC)**: Any retry or subsequent payment attempt queries the Bank Status API (`/bank/query-status`) before touching the gateway, guaranteeing the customer is never charged twice.
+  - **Passive Dual Reconciliation**: Webhook listener + BullMQ background cron worker (running every 2 minutes) automatically verifies and settles orphaned transactions if the customer closes their browser.
+  - **No-Panic UI State**: Frontend catches timeouts and displays an amber "Payment In Verification" status modal with auto-polling instead of "Payment Failed" (`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`).
+- [ ] **Standard Direct Payment (No Timeout Inquiry)**: Disables Inquire-Before-Charge; retries treat failed requests as new transactions.
+
+

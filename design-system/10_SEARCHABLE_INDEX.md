@@ -109,6 +109,15 @@ The link graph enables continuous discovery across all abstraction layers:
 - [Action Buttons & Microinteractions (Category B)](./03_UI_COMPONENTS_LIBRARY.md#category-b-buttons-action-controls--microinteractions)
 - [`align-items`, `align-content`, `align-self`](./01_CSS_PROPERTIES_REFERENCE.md#a8-alignment-models-align-items-justify-content-align-self-justify-self)
 - [`animation-timeline` (Scroll & View Timelines)](./01_CSS_PROPERTIES_REFERENCE.md#e4-modern-scroll-driven-animations-scroll-timeline-view-timeline-animation-timeline-animation-range)
+- [AI Chat History Sliding Drawer with Live Search (AI-1)](./03_UI_COMPONENTS_LIBRARY.md#ai-1-ai-chat-history-sliding-drawer-with-live-search-aichathistorydrawer)
+- [AI Chat History Drawer Slide & Item Cascade Reveal (ANIM-52)](./05_ANIMATIONS_CATALOGUE.md#anim-52-ai-chat-history-drawer-slide--item-cascade-reveal-ai-history-drawer-cascade)
+- [AI Context Compaction Squeeze & Summary Unfold (ANIM-53)](./05_ANIMATIONS_CATALOGUE.md#anim-53-ai-context-compaction-squeeze--summary-unfold-ai-summary-unfold)
+- [AI In-Session Compacted Summary Divider (AI-2)](./03_UI_COMPONENTS_LIBRARY.md#ai-2-in-session-compacted-summary-divider--inspection-card-aicompactedsummarydivider)
+- [AI Cross-Chat Persistent Memory Manager & Facts Editor (AI-3)](./03_UI_COMPONENTS_LIBRARY.md#ai-3-cross-chat-ai-memory-manager--facts-editor-aimemorymanagermodal)
+- [AI Copilot Context Window Compaction & User Memory Architecture](../modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md#25-context-window-auto-compaction--rolling-session-summarizer-engine)
+- [Apple macOS 3D Genie Origin-Morph Effect (ANIM-46)](./05_ANIMATIONS_CATALOGUE.md#anim-46-apple-macos-3d-genie-origin-morph-effect-genie-morph)
+- [Apple macOS Genie Origin-Morph Master Specification](./APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md)
+- [Apple Genie Modal & Origin Morph Recipe (Recipe 8)](./09_IMPLEMENTATION_RECIPES.md#recipe-8-universal-apple-genie-modal--origin-morph-system)
 - [Aurora Blurred Orbs (FX-3.1)](./02_VISUAL_EFFECTS_CATALOGUE.md#fx-31-ambient-blurred-aurora-orbs-css-only)
 
 ### B
@@ -124,6 +133,7 @@ The link graph enables continuous discovery across all abstraction layers:
 - [`clip-path` Geometric Reveals](./01_CSS_PROPERTIES_REFERENCE.md#b6-mask-image-mask-size-mask-position-clip-path)
 - [`color-mix()` Modern Blends](./01_CSS_PROPERTIES_REFERENCE.md#f3-modern-color-functions-color-mix-light-dark-and-oklch)
 - [Command Palette `Ctrl+K` (NAV-6)](./03_UI_COMPONENTS_LIBRARY.md#nav-6-command-palette-ctrl--k--cmd--k)
+- [Canva Refinement Workflow for Favicons & Logos](./FRONTEND_DESIGN_RULES.md#01-bespoke-logo--real-favicon-suite-mandate-never-leave-default-icons)
 - [`@container` Container Queries](./01_CSS_PROPERTIES_REFERENCE.md#a9-aspect-ratio-box-sizing-container-queries-container)
 
 ### D
@@ -145,13 +155,24 @@ The link graph enables continuous discovery across all abstraction layers:
 - [`:has()` Relational Parent Selector](./01_CSS_PROPERTIES_REFERENCE.md#f4-relational-and-modern-state-pseudo-classes-has-focus-visible-is-where)
 - [Horizontal Scroll Story Showcase (SEC-31)](./06_WEBSITE_SECTIONS_LIBRARY.md#sec-31-horizontal-scroll-project-case-studies)
 
+### I
+- [Infinite Nested Comments & Hierarchical Reply Engine (`INFINITE_COMMENTS_AND_REPLIES_SYSTEM.md`)](../modules/INFINITE_COMMENTS_AND_REPLIES_SYSTEM.md)
+- [Infinite Nested Comment Tree & Reply Accordion (COM-7)](./03_UI_COMPONENTS_LIBRARY.md#com-7-infinite-nested-comment-tree--reply-accordion-infinitecommentthread)
+
 ### K
 - [Ken Burns Cinematic Zoom (FX-5.3)](./02_VISUAL_EFFECTS_CATALOGUE.md#fx-53-cinematic-ken-burns-pan--zoom)
+
+### L
+- [LMS Live Streaming & Interactive Classroom Engine (`LMS_LIVE_STREAMING_AND_INTERACTIVE_CLASSES.md`)](../modules/LMS_LIVE_STREAMING_AND_INTERACTIVE_CLASSES.md)
+- [LMS Protected YouTube Live Classroom Player & Stage (LMS-1)](./03_UI_COMPONENTS_LIBRARY.md#lms-1-protected-youtube-live-classroom-player--stage-lmsliveclassstage)
+- [LMS Interactive Real-Time Classroom Live Chat & Q&A (LMS-2)](./03_UI_COMPONENTS_LIBRARY.md#lms-2-interactive-real-time-classroom-live-chat--qa-panel-lmslivechat)
 
 ### M
 - [`mask-image` Edge Fades](./01_CSS_PROPERTIES_REFERENCE.md#b6-mask-image-mask-size-mask-position-clip-path)
 - [Masked Infinite Logo Marquee (FX-7.1)](./02_VISUAL_EFFECTS_CATALOGUE.md#fx-71-seamless-masked-infinite-marquee-zero-jitter)
 - [Mobile Floating "Menu" Pill with Dual Close Controls (NAV-4)](./03_UI_COMPONENTS_LIBRARY.md#nav-4-dashboard-floating-menu-pill-with-dual-close-controls)
+- [Multi-Account Fast Switcher with Double-Tap Shift (NAV-7)](./03_UI_COMPONENTS_LIBRARY.md#nav-7-multi-account-avatar-dropdown-with-double-tap-fast-shift)
+- [Multi-Account Fast Switcher & Double-Tap Architecture](../modules/AUTH_AND_FACELOCK.md#44-multi-account-fast-switcher--profile-button-double-tap-mechanics)
 
 ### N
 - [Neumorphism & Inset Wells (Category 2)](./02_VISUAL_EFFECTS_CATALOGUE.md#category-2-neumorphism--tactile-inset-surfaces)
@@ -161,10 +182,12 @@ The link graph enables continuous discovery across all abstraction layers:
 
 ### P
 - [`perspective: 1000px` 3D Camera Projection](./01_CSS_PROPERTIES_REFERENCE.md#e2-3d-perspective-perspective-perspective-origin-backface-visibility)
+- [Profile Avatar Fast-Shift 360° Tactile Spin & Scale Bounce (ANIM-50)](./05_ANIMATIONS_CATALOGUE.md#anim-50-profile-avatar-fast-shift-360-tactile-spin--scale-bounce-avatar-fast-shift)
 - [`@property` CSS Custom Property Registration](./01_CSS_PROPERTIES_REFERENCE.md#f5-key-at-rules-media-supports-container-property-layer)
 
 ### R
 - [`@media (prefers-reduced-motion: reduce)` Accessible Safe Mode](./05_ANIMATIONS_CATALOGUE.md#7-universal-accessibility-the-reduced-motion-mandate)
+- [Nested Reply Accordion Expand & Connecting Thread Line Reveal (ANIM-51)](./05_ANIMATIONS_CATALOGUE.md#anim-51-nested-reply-accordion-expand--connecting-thread-line-reveal-reply-accordion-reveal)
 
 ### S
 - [Specular 3D Perspective Tilt Card (Recipe 3)](./09_IMPLEMENTATION_RECIPES.md#recipe-3-specular-3d-perspective-tilt-card)
@@ -173,11 +196,24 @@ The link graph enables continuous discovery across all abstraction layers:
 - [Swipeable Stacked Card Deck (Recipe 4)](./09_IMPLEMENTATION_RECIPES.md#recipe-4-gesture-driven-swipeable-stacked-card-deck-tinder-style)
 
 ### T
+- [Three.js 3D Model Architecture, Parts Decomposition & Inspection System](./THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md)
+- [Three.js 3D Model Studio & Parts Inspector Recipe (Recipe 9)](./09_IMPLEMENTATION_RECIPES.md#recipe-9-production-threejs-3d-model-viewer--parts-inspector-studio)
+- [Three.js 3D Model Exploded-View Disassembly & Scroll-Dolly (ANIM-47)](./05_ANIMATIONS_CATALOGUE.md#anim-47-threejs-3d-model-exploded-view-disassembly--scroll-dolly-3d-scroll-explode)
+- [Three.js 3D Model Studio & Parts Inspector Component (MED-7)](./03_UI_COMPONENTS_LIBRARY.md#med-7-production-threejs-3d-model-studio--parts-inspector)
 - [Tinder-Style Swipeable Deck (CARD-31)](./04_CARDS_AND_CARD_STACKS_LIBRARY.md#card-31-tinder-style-swipeable-card-stack-touch--pointer-physics)
 - [Toast Notification with Progress Bar (OVL-1)](./03_UI_COMPONENTS_LIBRARY.md#ovl-1-animated-toast-notification-with-linear-countdown-bar)
 
+### W
+- [WhatsApp 3-Dot Staggered Typing Wave Bounce (ANIM-48)](./05_ANIMATIONS_CATALOGUE.md#anim-48-whatsapp-3-dot-staggered-typing-wave-bounce-typing-dot-wave)
+- [WhatsApp Crimson Voice Recording Radial Soundwave Pulse (ANIM-49)](./05_ANIMATIONS_CATALOGUE.md#anim-49-whatsapp-crimson-voice-recording-radial-soundwave-pulse-voice-recording-pulse)
+- [WhatsApp Delivery Tick Indicator (CHAT-2)](./03_UI_COMPONENTS_LIBRARY.md#chat-2-whatsapp-delivery-tick-state-indicator)
+- [WhatsApp Real-Time Dual Presence Indicator System (CHAT-5)](./03_UI_COMPONENTS_LIBRARY.md#chat-5-whatsapp-real-time-dual-presence-indicator-system)
+- [WhatsApp Presence Master Specification & Group FIFO Queue](../modules/CHAT_AND_COMMUNICATION_SYSTEM.md#42-whatsapp-grade-real-time-typing--audio-recording-presence-engine)
+
 ### Z
 - [`z-index` Stacking Context Layering Rules](./01_CSS_PROPERTIES_REFERENCE.md#a3-z-index-overflow-visibility)
+- [Zero-Bar, Zero-Icon Top-Hold Draggable Modals & Popups](./FRONTEND_DESIGN_RULES.md#7-interactive-elements--layout-guardrails)
+- [Zero-Bar Draggable Component Specification](./APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md#4-zero-bar-zero-icon-top-hold-draggable-mechanics)
 
 ---
 
@@ -198,3 +234,52 @@ The link graph enables continuous discovery across all abstraction layers:
 1. Read [Category D: Forms & Inputs](./03_UI_COMPONENTS_LIBRARY.md#category-d-forms-validated-inputs--selection-controls).
 2. Copy [Recipe 1: Production Floating Label Input](./09_IMPLEMENTATION_RECIPES.md#recipe-1-production-floating-label-input-with-native-validation).
 3. Connect submit button to [Recipe 5: Strict Gated Action Button](./09_IMPLEMENTATION_RECIPES.md#recipe-5-strict-gated-action-button-idle--loading--verified-success).
+
+### Use-Case D: "I need to open an interactive modal form or confirmation dialog from a button"
+1. Read [Apple macOS 3D Genie Origin-Morph & Draggable Modal System](./APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md).
+2. Copy [Recipe 8: Universal Apple Genie Modal (`AppleGenieModal.tsx`)](./09_IMPLEMENTATION_RECIPES.md#recipe-8-universal-apple-genie-modal--origin-morph-system).
+3. Connect button using `useOriginMorph()`: modal emerges from button bounds, closes with button absorb bounce, and supports zero-bar top-hold draggability.
+
+### Use-Case E: "I need to build or integrate an interactive 3D model with scroll animation and parts inspection"
+1. Read [Three.js 3D Model Architecture, Parts Decomposition & Inspection System](./THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md).
+2. Decompose the model into parts; audit vertices, materials, pivots, and world transforms via `auditThreeModel()`.
+3. Test and inspect the model visually in [Recipe 9: Production Three.js 3D Model Viewer & Parts Inspector](./09_IMPLEMENTATION_RECIPES.md#recipe-9-production-threejs-3d-model-viewer--parts-inspector-studio).
+4. Rig scroll-driven exploded-view or turntable choreography via [ANIM-47](./05_ANIMATIONS_CATALOGUE.md#anim-47-threejs-3d-model-exploded-view-disassembly--scroll-dolly-3d-scroll-explode).
+5. Complete the 20-point automated and manual 3D verification checklist before deployment.
+
+### Use-Case F: "I need to build WhatsApp-style real-time typing indicators and voice recording presence for 1-on-1 or group chat"
+1. Read [WhatsApp Presence Master Specification](../modules/CHAT_AND_COMMUNICATION_SYSTEM.md#42-whatsapp-grade-real-time-typing--audio-recording-presence-engine).
+2. Wire the `useChatPresence()` hook with 2.0s heartbeats, 2.0s debounce, and auto-abort triggers.
+3. Apply [ANIM-48](./05_ANIMATIONS_CATALOGUE.md#anim-48-whatsapp-3-dot-staggered-typing-wave-bounce-typing-dot-wave) for 3-dot staggered wave bounce (`#00a884`) and [ANIM-49](./05_ANIMATIONS_CATALOGUE.md#anim-49-whatsapp-crimson-voice-recording-radial-soundwave-pulse-voice-recording-pulse) for pulsing crimson microphone (`#ef4444`).
+4. Mount `<ChatPresenceDock />` docked at the bottom above the message input and `<ChatHeaderPresence />` in the top header subtitle.
+5. In group chats, enforce the **First-2 FIFO Queue**; display active users 1 and 2, hold 3rd+ members in queue, and show the discreet `(+N others)` badge.
+
+### Use-Case G: "I need to build an infinite nested comments and replies system for courses, products, or blogs"
+1. Read [Infinite Comments & Replies Master Specification](../modules/INFINITE_COMMENTS_AND_REPLIES_SYSTEM.md).
+2. Store hierarchy in MongoDB using `parentId`, `rootCommentId`, `path` (`",rootId,childId,"`), and `depth`.
+3. Cache roots in Redis Sorted Set `comments:roots:{type}:{id}` and children in `comment:children:{parentId}` with payloads in Hashes.
+4. Render using recursive component `<CommentNode />` ([COM-7](./03_UI_COMPONENTS_LIBRARY.md#com-7-infinite-nested-comment-tree--reply-accordion-infinitecommentthread)) with `80px` maximum indentation cap and connective vertical thread guide lines.
+5. Expand sub-replies on demand via tactile "Show N replies" button with smooth accordion reveal ([ANIM-51](./05_ANIMATIONS_CATALOGUE.md#anim-51-nested-reply-accordion-expand--connecting-thread-line-reveal-reply-accordion-reveal)).
+
+### Use-Case H: "I need to build an LMS live class with YouTube Live and synchronized real-time chat"
+1. Read [LMS Live Streaming & Interactive Classroom Engine](../modules/LMS_LIVE_STREAMING_AND_INTERACTIVE_CLASSES.md).
+2. Set YouTube Studio stream to "Unlisted" and embed via domain-locked IFrame Player API ([LMS-1](./03_UI_COMPONENTS_LIBRARY.md#lms-1-protected-youtube-live-classroom-player--stage-lmsliveclassstage)) behind enrollment verification token gate.
+3. Embed synchronized WebSocket chat ([LMS-2](./03_UI_COMPONENTS_LIBRARY.md#lms-2-interactive-real-time-classroom-live-chat--qa-panel-lmslivechat)) using student LMS profile (zero Google login required).
+4. Enable Instructor Pinned Announcements, Student Q&A Filter Mode with Upvoting, and 10s Slow Mode anti-spam protection.
+
+### Use-Case I: "I need to build a multi-account fast switcher with profile double-tap auto-rotation"
+1. Read [Multi-Account Fast Switcher & Double-Tap Architecture](../modules/AUTH_AND_FACELOCK.md#44-multi-account-fast-switcher--profile-button-double-tap-mechanics).
+2. Attach `useDoubleTapAccountShift()` to the navigation avatar button ([NAV-7](./03_UI_COMPONENTS_LIBRARY.md#nav-7-multi-account-avatar-dropdown-with-double-tap-fast-shift)).
+3. Single tap opens frosted dropdown with active identity card, enrolled multi-session accounts list, and "+ Add Account".
+4. Double tap within 300ms triggers tactile 360° spin & scale bounce ([ANIM-50](./05_ANIMATIONS_CATALOGUE.md#anim-50-profile-avatar-fast-shift-360-tactile-spin--scale-bounce-avatar-fast-shift)), swaps `active_account_id` cookie to next account in circular FIFO order, clears React Query cache, and re-evaluates route permissions seamlessly.
+
+### Use-Case J: "I need to build an AI Copilot with auto-compacting context window, persistent cross-chat memory, and cached history"
+1. Read [AI Assistant, Multimodal Copilot & CMS Builder Engine](../modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md).
+2. Implement cross-chat persistent memory in `AiUserMemory` ([AI-3](./03_UI_COMPONENTS_LIBRARY.md#ai-3-cross-chat-ai-memory-manager--facts-editor-aimemorymanagermodal)) storing core identity, custom instructions, and learned facts injected into every prompt.
+3. Enforce context window sliding compaction at 12 turns / 4,000 tokens; older turns summarize into `AiCopilotSession.rollingSummary` and render an expandable summary divider in-chat ([AI-2](./03_UI_COMPONENTS_LIBRARY.md#ai-2-in-session-compacted-summary-divider--inspection-card-aicompactedsummarydivider), [ANIM-53](./05_ANIMATIONS_CATALOGUE.md#anim-53-ai-context-compaction-squeeze--summary-unfold-ai-summary-unfold)). New chats start with zero summary leakage.
+4. Wire `useAiChatHistory()` with React Query / SWR `staleTime: Infinity` to fetch session history strictly once, enabling instant `< 1ms` conversation swapping in `<AiChatHistoryDrawer />` ([AI-1](./03_UI_COMPONENTS_LIBRARY.md#ai-1-ai-chat-history-sliding-drawer-with-live-search-aichathistorydrawer), [ANIM-52](./05_ANIMATIONS_CATALOGUE.md#anim-52-ai-chat-history-drawer-slide--item-cascade-reveal-ai-history-drawer-cascade)) without repeat database hits.
+
+
+
+
+

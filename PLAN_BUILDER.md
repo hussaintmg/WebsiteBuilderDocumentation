@@ -10,6 +10,7 @@ Whenever an agent initializes a project, it must create a dedicated project fold
 
 ```
 <project_root>/
+├── FILE-MAP.md                        # Living verified navigation map & functional index
 └── .project/                          # Single-project app (OR /projects/<name>/ in a monorepo)
     ├── PLAN.md                        # Master scope, stack, requirements, and module selection
     ├── ARCHITECTURE.md                # System design, data models, API endpoints, component tree
@@ -44,6 +45,9 @@ The agent must generate `PLAN.md` using the following standardized layout:
 - **ODM / Query Driver**: **Mongoose (Next.js/Node) | Motor / Beanie (FastAPI Python)**
 - **Authentication**: [NextAuth/Auth.js | Supabase Auth | Custom JWT + Custom AI Face Models]
 - **State Management**: [Zustand | React Query (TanStack) | Context API]
+- **Capacity & Scaling Tier**: [Tier 1 (<10k Users, <100 RPS, Lightweight In-Memory) | Tier 2 (10k–100k Users, 100–1,000 RPS, ALB + Redis + BullMQ) | Tier 3 (100k–1M+ Users, 1,000–10,000+ RPS, Multi-AZ ALB + L1/L2 Pub/Sub Cache + Worker Pool)]
+- **Worker Queue & Failover**: [In-Process (Tier 1) | BullMQ Redis 30s Heartbeat Lease with Auto-Failover (Tier 2 & 3)]
+- **Circuit Breaker Engine**: [In-Memory | Distributed Redis Circuit Breaker for Payments & External Gateways]
 
 ## 3. Active Feature Modules
 | Module | Status | Configuration / Notes |
@@ -61,6 +65,9 @@ The agent must generate `PLAN.md` using the following standardized layout:
 | **Developer Payment Safeguard** | [Enabled/Disabled] | Grace period up to 8th of month, Owner-only banner |
 | **Universal 404 Game Page** | **Mandatory** | Standalone `app/not-found.tsx` with playable HTML5 Canvas arcade mini-game, high score counter & return CTAs |
 | **Root Models & Contexts Architecture** | **Mandatory** | Dedicated root `/models` (1 file per MongoDB model) + root `/context` (1 context per model + 3 global), context-first API encapsulation (Zero direct component API calls), in-place state mutation & single-fetch guarantee |
+| **Backend Scaling & Resilience Engine** | **Mandatory** | 3-Tier Progressive Capacity Matrix, BullMQ 30s Heartbeat Lease Worker Failover, Two-Tier L1/L2 Cache with Redis Pub/Sub Invalidation, Payment Circuit Breaker & Safe Add/Remove Adapter Protocol (`modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`) |
+| **Advanced System Designs & Hyper-Scale Patterns** | [Enabled/Disabled] | 20M Likes Buffer, Hybrid Push/Pull Feeds, Millions-Scale Reminders, Uber H3 Hexagonal Rides with Surge Pricing, CQRS Search, and 20 Production System Designs (`modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md`) |
+| **Payment Idempotency & Reconciliation Engine** | [Enabled/Disabled] | Order-bound idempotency keys, Redis Mutex locking, Inquire-Before-Charge (IBC) timeout recovery, dual webhooks + BullMQ poller reconciliation (`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`) |
 
 ## 4. Acceptance Criteria & Success Metrics
 - [ ] Users can authenticate via configured auth methods.
@@ -176,6 +183,8 @@ The agent must structure the implementation plan following the **6-Phase Non-Bre
   - [ ] Subsystem E: Newsletter Canvas Studio & Blog Engine with Dynamic CMS Loop (`modules/NEWSLETTER_AND_BLOGS_SYSTEM.md`)
   - [ ] Subsystem F: Automations, SMTP & WhatsApp Dispatches (`modules/AUTOMATIONS_AND_NOTIFICATIONS.md`)
   - [ ] Subsystem G: Keyboard Shortcuts Engine (`modules/SHORTCUT_KEYS_SYSTEM.md`)
+  - [ ] Subsystem H: Three.js 3D Model Architecture, Parts Inspection & Anatomy Engine (`design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`)
+  - [ ] Subsystem I: 24/7 Autonomous AI Lead Responder, Auto-Guide & Booking/Order Engine (`modules/AUTONOMOUS_AI_LEAD_RESPONDER_AND_BOOKING_SYSTEM.md`)
   - [ ] Verification Gate: Each modular subsystem functions smoothly and interacts strictly via context hooks
 
 - [ ] **Phase 5: Sovereign Security, Biometrics & Hardening**

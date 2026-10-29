@@ -310,6 +310,35 @@ Every message tracks its precise lifecycle through four deterministic states wit
    - When message enters recipient's active viewport (via `IntersectionObserver`), client emits `message:read`.
    - Double tick instantly transitions into **Double Blue / Cyan Tick** (`✓✓`).
 
+### 4.2 WhatsApp-Grade Real-Time Typing & Audio Recording Presence Engine
+The chat interface implements WhatsApp's signature dynamic presence feedback for both 1-on-1 and multi-participant group chats:
+
+#### 1. Differentiated Activity States
+- **Text Typing**:
+  - Displays `"typing"` paired with **3 animated bouncing dots** executing a staggered vertical wave (`animation-delay: 0ms, 150ms, 300ms`) in WhatsApp emerald/cyan (`#00a884`).
+- **Voice Note Recording**:
+  - Displays `"recording audio..."` paired with a **pulsing crimson-red microphone icon** (`#ef4444`, `scale: 1 -> 1.18`) surrounded by an expanding radial soundwave aura.
+
+#### 2. Dual Synchronized Indicator Locations
+1. **Top Conversation Header Subtitle**:
+   - In 1-on-1 chats, shifts seamlessly from `"Online"` or `"last seen today at..."` to emerald `"typing..."` or crimson `"recording audio..."`.
+   - In Group chats, displays `"Alice (typing), Bob (audio)..."` or appends `"+N more"`.
+2. **Bottom Floating Presence Dock (`<ChatPresenceDock />`)**:
+   - An ephemeral, frosted micro-capsule pill (`bg-slate-900/90 backdrop-blur-md rounded-full border border-white/10`) hovering directly above the message input box.
+   - Shows user avatar(s), active animation (3 bouncing wave dots or pulsing mic), and action text.
+
+#### 3. Group Chat First-2 Active Users FIFO Queue
+To eliminate visual clutter and chaotic layout jumps when 3, 5, or 20 group members type or record voice simultaneously:
+- **Maximum 2 Active Slots**: The dock and header display strictly the **first 2 users** who initiated the action.
+- **FIFO Waiting Queue**: The 3rd, 4th, and subsequent users enter an in-memory/Redis FIFO queue and are represented by a discreet, compact badge: `(+N others)`.
+- **Seamless Slot Promotion**: When any of the top 2 users stops (dispatches a message, stays idle for 2s, or releases the audio recorder), the vacated slot immediately promotes the next queued member via smooth layout crossfade.
+
+#### 4. Bandwidth Optimization & Ephemeral Redis TTL
+- **Client Heartbeat**: Initial keypress or mic-press emits immediately; ongoing activity is throttled to a **2,000ms recurring heartbeat**.
+- **Inactivity Debounce**: 2,000ms without a keypress transitions the user to `IDLE`.
+- **Instant Abort Triggers**: Pressing Enter, clicking Send, blurring an empty input box, or triggering the slide-to-cancel voice gesture dispatches `IDLE` instantly.
+- **Server Auto-Decay (3.5s TTL)**: Ephemeral presence states reside purely in Redis keys (`presence:{conversationId}:{userId}`) with an auto-expiring **3.5s TTL**. If a user abruptly closes their browser tab or suffers connection loss, their presence vanishes cleanly with zero ghost indicators and **zero MongoDB disk writes**.
+
 ---
 
 ## 🎙️ 5. Voice Notes Engine & Real-Time Audio Waveform Visualization
@@ -442,8 +471,25 @@ export interface ServerToClientEvents {
   "message:deleted": (data: { messageId: string; isDeletedForEveryone: boolean }) => void;
   "message:edited": (data: { messageId: string; newContent: string }) => void;
 
-  // Presence & Typing
-  "typing:status": (data: { conversationId: string; userId: string; isTyping: boolean }) => void;
+  // Presence & WhatsApp Typing / Voice Indicators
+  "presence:activity": (data: {
+    conversationId: string;
+    userId: string;
+    userName: string;
+    userAvatarUrl?: string;
+    action: "TYPING" | "RECORDING_AUDIO" | "IDLE";
+    timestamp: number;
+  }) => void;
+  "presence:room_state": (data: {
+    conversationId: string;
+    activeUsers: Array<{
+      userId: string;
+      userName: string;
+      userAvatarUrl?: string;
+      action: "TYPING" | "RECORDING_AUDIO";
+    }>;
+    overflowCount: number; // Queue overflow count for group chats (> 2 users)
+  }) => void;
   "user:presence": (data: { userId: string; status: "ONLINE" | "OFFLINE"; lastSeenAt: Date }) => void;
 }
 
@@ -463,7 +509,16 @@ export interface ClientToServerEvents {
   "message:react": (data: { messageId: string; emoji: string }) => void;
   "message:edit": (data: { messageId: string; newContent: string }) => void;
   "message:delete": (data: { messageId: string; mode: "FOR_ME" | "FOR_EVERYONE" }) => void;
-  "typing:indicator": (data: { conversationId: string; isTyping: boolean }) => void;
+  
+  // WhatsApp Presence Heartbeat & Voice Emitters
+  "presence:activity": (payload: {
+    conversationId: string;
+    userId: string;
+    userName: string;
+    userAvatarUrl?: string;
+    action: "TYPING" | "RECORDING_AUDIO" | "IDLE";
+    timestamp: number;
+  }) => void;
 }
 ```
 
@@ -477,11 +532,14 @@ export interface ClientToServerEvents {
 - **Context & Hooks**:
   - `ChatContext.tsx`: Single-source-of-truth React Context managing active conversations, message streams, and socket subscriptions.
   - `useChat()`: Consume messages, dispatch text/voice/media, and react to updates.
+  - `useChatPresence()`: Manages WhatsApp-grade typing heartbeats (2s), voice recording states, 2s inactivity debounce, and first-2 group FIFO queue state.
   - `useAudioRecorder()`: Captures microphone audio, computes live Web Audio API volume waveforms, and manages slide-to-cancel gestures.
   - `useMediaShortcuts()`: Binds keyboard hotkeys (`Space`, `K`, `F`, `M`, `J`, `L`) to in-chat media playback.
 - **Components**:
   - `ChatStudio`: Master two-column desktop and slide-in mobile chat application.
   - `ConversationList`: Dynamic directory listing customers/staff sorted by latest message timestamp with unread badges.
+  - `ChatPresenceDock`: Floating micro-capsule pill docked above input box rendering 3-dot wave dots, pulsing mic, and `+N others` overflow badge.
+  - `ChatHeaderPresence`: Synchronized top conversation header status renderer transitioning between `"Online"`, `"typing..."`, and `"recording audio..."`.
   - `ChatVideoPlayer`: Frosted glass video player with `2x` speed toggle and YouTube shortcut keys.
   - `ChatPdfViewer`: In-line interactive PDF reader with page navigation and zoom.
   - `ChatVoiceNoteBubble`: Interactive audio waveform player with `1x/1.5x/2x` speed pills.

@@ -195,6 +195,14 @@ export function PrimaryGlassButton({ onClick, loading, children }) {
 
 ---
 
+### NAV-7: Multi-Account Avatar Dropdown with Double-Tap Fast-Shift
+- **Visual Description**: Dual-action profile avatar component in the navigation header:
+  - *Single-Tap*: Opens frosted user dropdown showing active account card (avatar, email, role), list of enrolled multi-session accounts with one-tap switching, and "+ Add Account" link.
+  - *Double-Tap (< 300ms)*: Intercepts dropdown opening, executes a tactile **360° spin & scale bounce** (`ANIM-50`), rotates active identity to the next enrolled account in circular FIFO order, updates `active_account_id` cookie, and re-evaluates route permissions seamlessly without full page reload.
+- **Cross-Reference**: Master specification in [`modules/AUTH_AND_FACELOCK.md`](../modules/AUTH_AND_FACELOCK.md#44-multi-account-fast-switcher--profile-button-double-tap-mechanics).
+
+---
+
 ## Category D: Forms, Validated Inputs & Selection Controls
 
 ---
@@ -278,8 +286,14 @@ export function ToastNotification({ type = 'success', message, onDismiss, durati
 
 ---
 
-### OVL-2: Accessible Center Modal Dialog with Backdrop Blur
-- **Visual Description**: Dialog window with focus lock, escape key listener, `role="dialog" aria-modal="true"`, and smooth spring scale-up animation.
+### OVL-2: Accessible Center Modal Dialog with Apple Genie Origin-Morph & Top-Hold Draggability
+- **Visual Description**: Production dialog window featuring Apple macOS 3D Genie bi-directional origin morphing and zero-bar frictionless draggability:
+  - **Origin-Aware Emergence**: Window launches directly from the trigger button's bounding rect, unrolling with 3D perspective and spring physics into center screen.
+  - **Suck-to-Origin Return**: On close, the modal funnels back down into the exact origin button, while the button temporarily elevates in 3D space (`translate-y-[-3px] scale-105`), glows, and plays a tactile absorb/catch bounce.
+  - **Zero-Bar, Zero-Icon Top-Hold Drag**: Once settled, holding the top header region (top `48px-64px`) allows free dragging across the desktop viewport. **Zero extra titlebar or drag bar is rendered, and zero move/grip icons are displayed**. Cursor switches to `cursor-grab` on hover and `cursor-grabbing` on drag.
+  - **Safety Isolations**: Close button (`✕`), input fields, and tabs are excluded from drag events (`closest('button, a, input, textarea, select')`). Movement is clamped to viewport edges.
+  - **Accessibility**: Native focus lock, Escape key dismiss, `role="dialog" aria-modal="true"`.
+- **Master Documentation**: [`design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`](./APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md) & [`design-system/09_IMPLEMENTATION_RECIPES.md`](./09_IMPLEMENTATION_RECIPES.md#recipe-8-universal-apple-genie-modal--origin-morph-system).
 
 ---
 
@@ -371,6 +385,16 @@ export function ToastNotification({ type = 'success', message, onDismiss, durati
 
 ---
 
+### MED-7: Production Three.js 3D Model Studio & Parts Inspector
+- **Visual Description**: Production WebGL 3D model viewer and developer studio featuring:
+  - **OrbitControls & Studio Stage**: 60fps GPU render canvas with PCF soft shadows, ACES Filmic tone mapping, and ambient/fill lighting.
+  - **Parts Tree Explorer**: Decomposes the model into an interactive hierarchy list showing triangle counts, materials, and names. Clicking any part isolates it in 3D space.
+  - **Exploded View Disassembly Slider**: Dynamically explodes and separates sub-meshes outward along their radial normal vectors.
+  - **Wireframe & Telemetry HUD**: Live polygon count, vertex count, mesh count, and estimated VRAM usage readout.
+  - **Master Architecture**: [`design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`](./THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md) & [`design-system/09_IMPLEMENTATION_RECIPES.md`](./09_IMPLEMENTATION_RECIPES.md#recipe-9-production-threejs-3d-model-viewer--parts-inspector-studio).
+
+---
+
 ## Category H: Commerce, Cart Workflows & Status Timelines
 
 ---
@@ -436,3 +460,91 @@ export function ToastNotification({ type = 'success', message, onDismiss, durati
 
 ### CMS-6: Integration Status & Test Connection Card
 - **Visual Description**: Settings card for SMTP, WhatsApp, and AI providers with live "Test Connection" button providing real round-trip latency feedback.
+
+---
+
+## Category J: Real-Time Chat & Omnichannel Presence Components
+
+---
+
+### CHAT-1: Dynamic Conversation Thread Directory
+- **Visual Description**: High-speed list sorting threads dynamically by latest message timestamp with unread message badges, avatar status pips, and message preview snippets.
+- **Cross-Reference**: Master specification in [`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`](../modules/CHAT_AND_COMMUNICATION_SYSTEM.md).
+
+---
+
+### CHAT-2: WhatsApp Delivery Tick State Indicator
+- **Visual Description**: Micro-status icon transitioning through Clock (Pending), Single Gray Tick (Sent), Double Gray Tick (Delivered), and Double Blue/Cyan Tick (Read).
+- **Cross-Reference**: Master specification in [`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`](../modules/CHAT_AND_COMMUNICATION_SYSTEM.md#4-whatsapp-style-status-state-machine--delivery-ticks).
+
+---
+
+### CHAT-3: Interactive Voice Note Waveform Bubble Player
+- **Visual Description**: Voice note bubble featuring 35-50 scrubbable normalized waveform bars, playback progress fill, timecode readout, and `1x/1.5x/2x` speed toggle pills.
+- **Cross-Reference**: Master specification in [`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`](../modules/CHAT_AND_COMMUNICATION_SYSTEM.md#52-interactive-voice-note-bubble-playback).
+
+---
+
+### CHAT-4: Real-Time Audio Recording Bar with Waveform & Slide-to-Cancel
+- **Visual Description**: Active microphone recording dock displaying Web Audio API 60fps dynamic frequency waveforms, live elapsed timer, and tactile mobile thumb-drag "Slide to Cancel" action.
+- **Cross-Reference**: Master specification in [`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`](../modules/CHAT_AND_COMMUNICATION_SYSTEM.md#51-real-time-audio-capture--live-waveform-web-audio-api).
+
+---
+
+### CHAT-5: WhatsApp Real-Time Dual Presence Indicator System
+- **Visual Description**: WhatsApp-grade dual presence presentation:
+  1. **Bottom Floating Dock (`<ChatPresenceDock />`)**: A frosted micro-capsule pill docked directly above the input textarea showing active user avatars, animated 3-dot emerald wave (`ANIM-48`) for text typing, and pulsing crimson microphone icon (`ANIM-49`) for voice recording.
+  2. **Top Header Subtitle (`<ChatHeaderPresence />`)**: Synchronized navigation header subtitle shifting from `"Online"` to `"typing..."` or `"recording audio..."`.
+  3. **Group Chat First-2 FIFO Queue**: Displays strictly the first 2 users who initiated activity; 3rd+ active members enter a FIFO queue represented by a discreet `(+N others)` badge, promoting into view seamlessly upon vacancy.
+- **Cross-Reference**: Master blueprint in [`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`](../modules/CHAT_AND_COMMUNICATION_SYSTEM.md#42-whatsapp-grade-real-time-typing--audio-recording-presence-engine).
+
+---
+
+## Category K: Community Discussions & Infinite Comment Trees
+
+---
+
+### COM-7: Infinite Nested Comment Tree & Reply Accordion (`<InfiniteCommentThread />`)
+- **Visual Description**: Recursive discussion component supporting infinite-depth replies. Features a cap of `80px` on visual indentation to prevent mobile squishing, a tactile `"Show N replies"` accordion button with smooth expand animation (`ANIM-51`), a connective vertical thread guide line (`border-l-2 hover:border-cyan-500/60`), author role badges (`Instructor`, `Verified Buyer`), upvote counter, and inline quick-reply editor.
+- **Cross-Reference**: Master specification in [`modules/INFINITE_COMMENTS_AND_REPLIES_SYSTEM.md`](../modules/INFINITE_COMMENTS_AND_REPLIES_SYSTEM.md).
+
+---
+
+## Category L: LMS Live Education & Interactive Classrooms
+
+---
+
+### LMS-1: Protected YouTube Live Classroom Player & Stage (`<LmsLiveClassStage />`)
+- **Visual Description**: 16:9 widescreen video stage embedding an unlisted YouTube Live stream via domain-locked IFrame Player API. Token-gated by enrollment verification; unauthorized users see a frosted enrollment lock screen. Features live status badge, lecture metadata, and desktop/mobile layout switching.
+- **Cross-Reference**: Master specification in [`modules/LMS_LIVE_STREAMING_AND_INTERACTIVE_CLASSES.md`](../modules/LMS_LIVE_STREAMING_AND_INTERACTIVE_CLASSES.md).
+
+---
+
+### LMS-2: Interactive Real-Time Classroom Live Chat & Q&A Panel (`<LmsLiveChat />`)
+- **Visual Description**: Synchronized WebSocket live chat docked alongside the live stream. Includes top header tab toggle between "Live Chat" and "Q&A", an instructor pinned announcement bar, real-time question upvoting, slow-mode 10s cooldown timer, and student role badge highlights. Requires zero Google/YouTube login for students.
+- **Cross-Reference**: Master specification in [`modules/LMS_LIVE_STREAMING_AND_INTERACTIVE_CLASSES.md`](../modules/LMS_LIVE_STREAMING_AND_INTERACTIVE_CLASSES.md#3-bespoke-real-time-classroom-live-chat--qa).
+
+---
+
+## Category M: AI Assistant, Copilot Memory & Conversation Tools
+
+---
+
+### AI-1: AI Chat History Sliding Drawer with Live Search (`<AiChatHistoryDrawer />`)
+- **Visual Description**: Left-sliding frosted glass drawer (`w-80 bg-slate-950/95 backdrop-blur-xl border-r border-white/10`) embedded inside the AI Assistant. Groups sessions chronologically into "Today", "Yesterday", "Previous 7 Days", and "Older" with an instant real-time search input and "+ New Chat" button. Swapping conversations operates in `< 1ms` from client memory with zero redundant DB queries.
+- **Cross-Reference**: Master specification in [`modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md`](../modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md#75-chat-history-architecture--client-single-fetch-caching).
+
+---
+
+### AI-2: In-Session Compacted Summary Divider & Inspection Card (`<AiCompactedSummaryDivider />`)
+- **Visual Description**: An in-stream frosted divider card rendering `[ 📜 Older conversation compacted (N turns) — Click to inspect ]`. Clicking it smoothly expands an accordion revealing the exact structured summary the LLM is maintaining for the session, providing 100% context transparency to the user.
+- **Cross-Reference**: Master specification in [`modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md`](../modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md#3-client-compaction-divider-aicompactedsummarydivider-).
+
+---
+
+### AI-3: Cross-Chat AI Memory Manager & Facts Editor (`<AiMemoryManagerModal />`)
+- **Visual Description**: High-end frosted modal allowing users to view, edit, or delete persistent cross-chat memories. Displays Core Profile tags (Name, Role, Location), Custom Instructions editor, and a list of automatically learned facts with confidence badges and delete chips. Includes a global "Pause AI Memory" switch.
+- **Cross-Reference**: Master specification in [`modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md`](../modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md#24-aiusermemory-schema-modelsaiusermemoryts).
+
+
+

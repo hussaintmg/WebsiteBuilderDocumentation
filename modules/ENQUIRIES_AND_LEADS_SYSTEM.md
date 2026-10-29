@@ -5,6 +5,7 @@
 **Related Documents:**
 - [`rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`](../rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md) (Enquiry.ts / EnquiryContext.tsx)
 - [`rules/RBAC_SECURITY_RULES.md`](../rules/RBAC_SECURITY_RULES.md) (Enquiries Permissions & Staff Assignment)
+- [`modules/AUTONOMOUS_AI_LEAD_RESPONDER_AND_BOOKING_SYSTEM.md`](./AUTONOMOUS_AI_LEAD_RESPONDER_AND_BOOKING_SYSTEM.md) (24/7 AI Off-Hours Responder & Booking Engine)
 - [`modules/MULTI_TENANT_SYSTEM.md`](./MULTI_TENANT_SYSTEM.md) (Custom Domain & Subdomain Resolution)
 - [`modules/CMS_ENGINE.md`](./CMS_ENGINE.md) (Public Contact Form Section SDK & Variable Binding)
 - [`modules/AUTOMATIONS_AND_NOTIFICATIONS.md`](./AUTOMATIONS_AND_NOTIFICATIONS.md) (New Lead Alert Dispatches)
@@ -19,7 +20,8 @@
 5. [Dashboard Enquiries Studio UI & Mobile Card View (`/dashboard/enquiries`)](#5-dashboard-enquiries-studio-ui--mobile-card-view)
 6. [Workflow Lifecycle, Notes Timeline & CRM Lead Conversion](#6-workflow-lifecycle-notes-timeline--crm-lead-conversion)
 7. [RBAC Permissions & Audit Governance](#7-rbac-permissions--audit-governance)
-8. [Summary of Core Exported Symbols & API Endpoints](#8-summary-of-core-exported-symbols--api-endpoints)
+8. [24/7 Autonomous AI Lead Responder & Booking Engine Integration](#8-247-autonomous-ai-lead-responder--booking-engine-integration)
+9. [Summary of Core Exported Symbols & API Endpoints](#9-summary-of-core-exported-symbols--api-endpoints)
 
 ---
 
@@ -278,7 +280,25 @@ Access to the Enquiries Studio is strictly governed by granular RBAC permissions
 
 ---
 
-## 8. Summary of Core Exported Symbols & API Endpoints
+## 8. 24/7 Autonomous AI Lead Responder & Booking Engine Integration
+
+When an inbound enquiry arrives outside business operating hours (off-hours/night) or when human staff do not reply within the tenant's configured daytime SLA window (e.g. 3 minutes), the enquiry automatically binds to the **Autonomous AI Lead Responder Engine**.
+
+For the exhaustive specification covering:
+- **Dual-Window SLA Trigger (Night vs Day Off-Hours Gateway)**
+- **Omnichannel Live Chat + WhatsApp/Email Follow-up Protocol**
+- **Autonomous Tool Execution (`check_slot_availability`, `create_booking`, `create_draft_order`, `generate_payment_link`)**
+- **Dynamic Tenant RAG & Live Inventory/Calendar Grounding**
+- **Conflict-Free Staff Takeover & Interruption Protocol (Atomic State Machine)**
+- **Concrete Schemas (`LeadAiSession.ts`, `LeadAiMessage.ts`)**
+- **Production React Components (`<PublicChatAiLeadAssistant />` & `<StaffAiHandoverToggle />`)**
+
+Consult the dedicated master document:  
+👉 [`modules/AUTONOMOUS_AI_LEAD_RESPONDER_AND_BOOKING_SYSTEM.md`](./AUTONOMOUS_AI_LEAD_RESPONDER_AND_BOOKING_SYSTEM.md)
+
+---
+
+## 9. Summary of Core Exported Symbols & API Endpoints
 
 ### 8.1 MongoDB Models & Types
 - `Enquiry`: Root model for tenant inquiries and inbound leads.

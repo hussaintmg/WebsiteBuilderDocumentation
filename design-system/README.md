@@ -23,6 +23,7 @@ This folder is the single canonical home for design rules, CSS references, visua
 - [Premium Button Animation System](../design-system/PREMIUM_BUTTON_ANIMATION_SYSTEM.md)
 - [Task Animated Buttons System](./TASK_ANIMATED_BUTTONS_SYSTEM.md)
 - [Row/Card Delete Dustbin Animation](./ROW_CARD_DELETE_DUSTBIN_ANIMATION.md)
+- [Three.js 3D Model Architecture, Inspection & Anatomy Engine](./THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md)
 - [Missing Reference Image Recovery Ledger](./assets/MISSING_REFERENCE_ASSETS.md)
 
 ## Cross-system boundaries

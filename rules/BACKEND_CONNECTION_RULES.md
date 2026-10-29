@@ -288,4 +288,130 @@ Cross-referenced with [`rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`](../rules/MOD
    - Heavy domain contexts are excluded from public landing pages and root layouts.
    - Domain contexts are mounted only within their respective protected route segments (e.g. `<ProgramProvider>` mounted in `app/dashboard/programs/layout.tsx`).
 
+---
+
+## 🛑 7. Universal Client-Side Rate-Limit Interception & Pre-Flight Request Guard
+
+> ⚡ **THE ZERO-UNNECESSARY-NETWORK-HIT LAW**:
+> When an API endpoint or user action enters a rate-limited cooldown (whether triggered by HTTP `429 Too Many Requests`, a 60s OTP resend timer, a login lockout, or a password reset freeze), the frontend **MUST NEVER dispatch subsequent network requests** while the cooldown is active.
+>
+> All requests for that action must be intercepted at the client pre-flight phase, automatically morphing the invoking button into an **Amber Warning State** with an active ticking countdown, and presenting an animated 2-second bottom tooltip.
+
+### 7.1 Enhanced `apiRequest` with Automatic HTTP 429 Interception
+
+```typescript
+// lib/apiClient.ts
+import { ApiResponse } from "@/types/api";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
+
+export async function apiRequest<T>(
+  endpoint: string,
+  options: RequestInit = {},
+  actionKey?: string
+): Promise<T> {
+  // 1. PRE-FLIGHT GUARD: Check local registry before touching network
+  if (actionKey && typeof window !== "undefined") {
+    const raw = localStorage.getItem("app_rate_limit_registry");
+    if (raw) {
+      try {
+        const registry: Record<string, number> = JSON.parse(raw);
+        const expiresAt = registry[actionKey];
+        if (expiresAt && expiresAt > Date.now()) {
+          const secondsRemaining = Math.ceil((expiresAt - Date.now()) / 1000);
+          const error: any = new Error(`Action is rate-limited. Retry in ${secondsRemaining}s.`);
+          error.status = 429;
+          error.retryAfter = secondsRemaining;
+          error.isPreFlightBlocked = true;
+          throw error; // BLOCKS NETWORK CALL COMPLETELY!
+        }
+      } catch (err) {
+        if ((err as any).isPreFlightBlocked) throw err;
+      }
+    }
+  }
+
+  const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...options.headers,
+  };
+
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    ...options,
+    headers,
+  });
+
+  // 2. INTERCEPT HTTP 429: Extract Retry-After and record in registry
+  if (response.status === 429) {
+    const retryAfterHeader = response.headers.get("retry-after");
+    let cooldownSec = retryAfterHeader ? parseInt(retryAfterHeader, 10) : 60;
+    if (isNaN(cooldownSec) || cooldownSec <= 0) cooldownSec = 60;
+
+    let errorData: any = {};
+    try {
+      errorData = await response.json();
+    } catch {}
+
+    const effectiveCooldown = errorData?.retryAfter || cooldownSec;
+
+    // Persist in client registry so all related buttons switch to amber state immediately
+    if (actionKey && typeof window !== "undefined") {
+      try {
+        const raw = localStorage.getItem("app_rate_limit_registry");
+        const registry: Record<string, number> = raw ? JSON.parse(raw) : {};
+        registry[actionKey] = Date.now() + effectiveCooldown * 1000;
+        localStorage.setItem("app_rate_limit_registry", JSON.stringify(registry));
+        window.dispatchEvent(new Event("storage"));
+      } catch {}
+    }
+
+    const error: any = new Error(
+      errorData?.detail || errorData?.message || "Too many requests. Please wait before retrying."
+    );
+    error.status = 429;
+    error.retryAfter = effectiveCooldown;
+    throw error;
+  }
+
+  const json: ApiResponse<T> = await response.json();
+
+  if (!response.ok || !json.success) {
+    const errorMsg = json.error?.message || `Request failed with status ${response.status}`;
+    const error = new Error(errorMsg);
+    (error as any).code = json.error?.code;
+    (error as any).status = response.status;
+    throw error;
+  }
+
+  return json.data as T;
+}
+```
+
+### 7.2 UI Behavior Matrix During Cooldown
+| Feature | Active State | User Action | Visual & Network Reaction |
+|---|---|---|---|
+| **Login Button** | Cooldown after 10 failed attempts | User clicks button | Amber button, displays `Try again in 842s`. Network call blocked. Bottom popup appears for 2s: *"Rate limit active. Available in 842s."* |
+| **OTP Resend Button** | 60s cooldown | User clicks button | Displays `Resend in 48s`. Network call blocked. Bottom popup appears for 2s. |
+| **Password Reset Submit** | 30-min lockout after 3 strikes | User submits email | Amber button, displays `Locked (~29m)`. Network call blocked. Bottom popup appears for 2s. |
+| **General Site APIs** | Endpoint returns HTTP 429 | User clicks action | Button immediately transitions to amber state with ticking timer from `Retry-After`. Pre-flight guard active. |
+
+---
+
+## 🛡️ 8. Scaling, Queue Failover & Circuit Breaker Standards
+
+Cross-referenced with [`modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`](../modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md).
+
+All backend services, queues, and external gateway integrations must adhere to the 5 enterprise resilience mandates:
+1. **Capacity Scaling Governance**: System infrastructure scales across **3 Progressive Tiers** (Tier 1 `<10k` users ➔ Tier 2 `10k–100k` users ➔ Tier 3 `100k–1M+` users). Never run expensive worker clusters or Redis nodes for low-volume MVPs.
+2. **Worker Queue Crash Recovery**: Background jobs run on **BullMQ** with a **30-second heartbeat lease**. If a worker crashes mid-task, the unacknowledged lease expires and the job is automatically reassigned to a healthy worker node (capped at 3 retries before DLQ routing).
+3. **Two-Tier Distributed Cache Sync**: Multi-server deployments use an **L1 In-Memory LRU Cache** for sub-millisecond reads backed by **L2 Redis Cluster**. Cache mutations publish an eviction event across the `cache:invalidation:channel` Pub/Sub bus so all web nodes purge stale cache in `< 5ms`.
+4. **Order-to-Payment Circuit Breaker**: External payment gateways (Stripe, PayPal) are wrapped in a **3-State Circuit Breaker (Closed, Open, Half-Open)**. When failures exceed 50% or consecutive timeouts occur, the circuit fast-fails in `< 2ms`, reserves the order in `PENDING_PAYMENT_RETRY`, and renders a calm *"Payment service is temporarily busy. Your order is reserved; please try again shortly"* notice instead of `"Payment Failed"`.
+5. **Zero-Breakage Extensibility (Safe Add / Remove)**: All vendor integrations (Payments, WhatsApp, Emails, AI) strictly implement pluggable TypeScript/Python interfaces (`IPaymentProvider`). New services are added via adapters and toggled via feature flags; old modules are cleanly removed without touching core business routes.
+
+
+
 

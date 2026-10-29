@@ -34,6 +34,11 @@
      - `site.webmanifest`: Linked with project brand theme colors.
 3. **Design Quality Bar**:
    - Whether handcrafted directly in SVG code, designed with modern geometry, or generated using image/vector tools—the logo and favicon **MUST BE TOP-NOTCH, REAL, AND STATE-OF-THE-ART**. No blurry, generic, or stock icons are permitted!
+4. **The Mandatory Canva Refinement Workflow**:
+   - If programmatic SVGs or initially generated logos/favicons do not meet ultra-premium, crisp visual standards, the developer/agent MUST leverage **Canva** (or guide the workflow in Canva) to design, polish, and export clean, high-resolution transparent vector/PNG brand marks:
+     - Full Brand Logo (`variant="full"`) with bespoke typography.
+     - Compact Glyph / Favicon (`512x512` master, `180x180` Apple touch icon, and multi-res `favicon.ico`).
+   - Mediocre, misaligned, or blurry brand assets are strictly forbidden from entering production.
 
 ---
 
@@ -79,9 +84,16 @@ All card and surface elements should feel tactile, frosted, and alive:
    - Use `AnimatePresence` for exit animations.
 2. **GSAP & ScrollTrigger**:
    - For scroll-driven storytelling, parallax sections, and complex timeline sequences.
-3. **Three.js & 3D Models**:
-   - ONLY with user permission.
-   - External models MUST be **100% free, lightweight, and animated** (`.glb`/`.gltf` from Kenney, Three.js, Sketchfab CC0). Never load paid or unoptimized heavy assets.
+3. **Three.js & High-Fidelity 3D Models (Mandatory Parts Audit & Inspection Standard)**:
+   - **Explicit User Opt-In**: Three.js 3D scenes are enabled only with user confirmation.
+   - **The High-Quality 3D Model Law**: Every 3D model used in the application—whether procedural in code or imported from verified free/CC0 web sources—**must be an exceptionally high-quality, complete 3D model with high-precision parameters**. Low-poly accidental defaults or unverified crude assets are strictly forbidden.
+   - **Mandatory Parts Decomposition**: The developer/agent must systematically decompose the model into its individual sub-parts, meshes, and bone nodes:
+     - Audit every part's geometry, world coordinates, pivot alignment, scale $(1, 1, 1)$, and surface normals.
+     - Verify PBR materials (`roughness`, `metalness`, `envMapIntensity`, soft shadows, and power-of-two textures).
+   - **3D Staging & Inspection Tools**: Pre-inspect and validate models in the **Three.js Editor** (`threejs.org/editor`) or our built-in `<ThreeModelInspector />` component before deploying.
+   - **Rigorous Animation Instructions**: Scroll-driven storytelling (via GSAP ScrollTrigger), exploded-view choreography, and camera dollies must strictly follow exact geometric keyframe instructions.
+   - **Sourcing & Performance Budgets**: Exclusively use 100% free/CC0 models (`.glb` with Draco compression from Kenney, Three.js examples, Sketchfab CC0) or procedural geometry. Desktop polycount $\le 100\text{k}$ triangles; draw calls $\le 40$; strictly dispose GPU buffers on unmount.
+   - **Master Architecture**: Cross-referenced with [`design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`](./THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md).
 
 ---
 
@@ -121,6 +133,18 @@ All form fields must use custom Floating Label components (see [`DESIGN_ARCHITEC
 6. **Mobile Dashboard Navigation (Floating Bottom-Center "Menu" Pill & Dual Close Controls)**:
    - On mobile dashboards, navigation is triggered via a floating bottom-center obsidian glass pill with the label `"Menu"` (Vercel-inspired bespoke design).
    - **Dual Close Controls**: Opening the sidebar morphs the bottom floating pill into `"Close"` with an animated 'X', while the open sidebar header also features a dedicated top 'X' close button. Clicking either control or the backdrop dismisses the drawer.
+7. **Zero-Bar, Zero-Icon Top-Hold Draggable Modals & Popups**:
+   - Universal draggable support across all centered modal dialogs, entity forms, and confirmation boxes on desktop.
+   - **Strict Zero-Bar & Zero-Icon Mandate**: No dedicated drag titlebar or extra header strip is created, and zero move/grip icons (such as 6-dot grips or 4-way arrows) are displayed.
+   - **Top-Hold Grip Zone**: Users click and hold anywhere along the top region/header of the modal (top `48px-64px`) to drag.
+   - **Cursor Feedback**: Displays `cursor-grab` on hover and `cursor-grabbing` while held (`select-none`).
+   - **Interactive Isolation**: Clicks on inner controls (such as the '✕' close button, tabs, or input fields) are safely excluded from drag events (`closest('button, a, input, textarea, select')`).
+   - **Viewport Edge Clamping**: Window coordinates are clamped continuously to prevent modals from dragging off-screen.
+   - **Mobile Adaptation**: On mobile viewports (`< 768px`), modals remain fixed/centered or bottom sheets to prevent scroll conflicts.
+8. **Apple macOS 3D Genie Origin-Morph & Button Absorb Standard**:
+   - Cross-referenced with master specification [`design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`](./APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md).
+   - Contextual modals, forms, dropdowns, and confirmation boxes emerge from the exact coordinates of the clicked button (3D Genie unfold).
+   - On close, the modal rolls/sucks back down into that same button, while the source button visually elevates (`translate-y-[-3px]`), glows, and plays a tactile 'absorb/catch' bounce.
 
 ---
 
