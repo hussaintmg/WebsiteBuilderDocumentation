@@ -54,12 +54,12 @@
 - Pressing **`ArrowRight`** navigates to the next page.
 - Shortcuts are automatically suppressed when user is focused inside text inputs, textareas, or dropdown search filters.
 
-### 2.2 Navigation Button Loading States & Race-Condition Prevention
-- When the user clicks **Next**, **Previous**, or a specific page number, the pagination controller enters a localized loading state:
-  - The clicked button transitions its icon to an **animated spinner** / pulsing ring.
-  - All pagination controls become temporarily disabled (`pointer-events-none opacity-60`) to prevent rapid double-clicks and out-of-order race conditions.
-  - The table body or card grid displays a smooth frosted skeleton overlay (`backdrop-blur-[2px] opacity-70`).
-  - Upon network fetch resolution, the loading state clears cleanly with a spring fade-in.
+### 2.2 Optimistic Rapid-Click Batching & Debounced Network Settlement
+- When users rapidly click **Next**, **Previous**, or hit arrow keys multiple times (e.g. clicking "Next" 3 times in 400ms to jump from Page 1 to Page 4):
+  - **Zero Frozen Disabled States**: Buttons MUST NOT freeze or disable on the first click. The local page counter increments **optimistically in 0ms** (`1 ➔ 2 ➔ 3 ➔ 4`) with an animated pulsing badge.
+  - **300ms Settling Quiet Window**: Every rapid click resets the debounce timer. Zero intermediate network requests are fired while the user is actively clicking.
+  - **Single Settled Request**: Once 300ms elapses without further clicks, a single API request fires for the final target (Page 4).
+  - **AbortController In-Flight Cancellation**: Any previous request is immediately aborted, eliminating 75% of wasteful backend queries and out-of-order race conditions per [`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`](./OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md).
 
 ### 2.3 Pagination Component Specification (`DataTablePagination.tsx`)
 

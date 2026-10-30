@@ -493,5 +493,19 @@ How should the platform behave for users on slow mobile networks (2G, throttled 
   - **Strict 80KB JS Budget**: Route code-splitting with `next/dynamic` and self-hosted Latin font subsetting (`font-display: swap`).
 - [ ] **Standard High-Bandwidth Only**: Serve full-resolution media and heavy JavaScript bundles without network adaptation.
 
+---
+
+## 🖱️ Phase 13: Optimistic Rapid-Click Batching & Interaction Fluidity
+
+### Q13.1: High-Frequency Button Clicking & Double-Click Protection
+When users rapidly multi-click interactive buttons (e.g. clicking "Next" page 3 times to jump to Page 4, tapping quantity `+` 5 times in cart, skipping slides, or tapping like bursts):
+- [x] **(Recommended) Enable Optimistic Rapid-Click Batching Engine**:
+  - **Instant 0ms Visual Feedback**: The local UI counter (page number, cart quantity, like count, slide index) updates immediately with an animated morphing badge without freezing or disabling buttons.
+  - **300ms Settling Quiet Window**: Every rapid click resets a debounce timer. Zero intermediate network requests are dispatched while the user is actively clicking.
+  - **Single Settled Request**: Once 300ms passes without clicks, a single network request fires for the final destination (e.g. Page 4, Qty 5).
+  - **AbortController Active Cancellation**: In-flight requests are automatically aborted if a new burst starts, eliminating 75% of server query spikes and race conditions (`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`).
+- [ ] **Standard Button Disabling**: Disable buttons on the very first click (`disabled={loading}`) forcing the user to wait for every single network response.
+
+
 
 

@@ -62,9 +62,9 @@ Cross-referenced with [`modules/DATA_TABLE_AND_CARDS_SYSTEM.md`](./DATA_TABLE_AN
 - Intersecting orders are selected in real-time.
 - `Shift + Drag` adds to selection; `Ctrl + Drag` toggles selection; `Escape` clears selection.
 
-### 2.3 Smart Arrow Pagination with Loading Spinners
+### 2.3 Smart Arrow Pagination with Optimistic Multi-Click Batching
 - Hotkeys: `ArrowLeft` flips to previous page, `ArrowRight` flips to next page.
-- While fetching, navigation buttons show `Loader2 animate-spin` and are disabled to prevent double-click race conditions.
+- **Rapid Multi-Click Support**: Users can tap arrows or click Next/Prev multiple times in rapid succession. The page counter updates in 0ms optimistically while a 300ms settling quiet window debounces the network call, eliminating double-click freezes and network storms per [`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`](./OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md).
 
 ### 2.4 Floating Bulk Action Bar & Mandatory Animated Icons
 When orders are selected:

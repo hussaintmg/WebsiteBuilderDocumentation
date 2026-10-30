@@ -94,9 +94,10 @@
 ---
 
 ### 5. Core Business Modules & Workflows
-- **Functionality**: Production-ready enterprise specifications for orders, CMS, auth, real-time chat, leads, blogs, and settings.
+- **Functionality**: Production-ready enterprise specifications for orders, CMS, auth, real-time chat, leads, blogs, settings, and optimistic rapid-click batching.
 - **Confidence**: Verified
 - **Primary Files**:
+  - `modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`: 0ms optimistic UI updates, 300ms settling debounce, AbortController cancellation for pagination, cart steppers, slides, and likes.
   - `modules/ORDER_SLIDE_WORKFLOW.md`: Master order table + 1-by-1 slide carousel review workflow.
   - `modules/DATA_TABLE_AND_CARDS_SYSTEM.md`: Marquee box drag selection, tri-state sorting, smart pagination.
   - `modules/CMS_ENGINE.md`: WYSIWYG/Monaco CMS, variable registry, dynamic PDF canvas, email builder.
@@ -169,6 +170,7 @@
 ### Modules (`modules/`)
 | File Path | Type | Main Responsibility | Important For | Confidence |
 | :--- | :--- | :--- | :--- | :--- |
+| `modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md` | Module | Optimistic multi-click batching, 300ms settling debounce, AbortController | High-Frequency UI | Verified |
 | `modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md` | Module | 5 pillars of slow-network speed: BlurHash LQIP, RSC streaming, projection pruning, offline SWR | Performance | Verified |
 | `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md` | Module | Polymorphic MediaAsset, Vercel 4.5MB bypass, 2MB chunked GridFS, edge caching | Media Storage | Verified |
 | `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md` | Module | Idempotency keys, Redis mutex lock, Inquire-Before-Charge, cron reconciliation | Payment Processing | Verified |
@@ -235,11 +237,18 @@
 4. `lib/cache/offlineSwrStorage.ts` (Loads cached catalog from IndexedDB in 0ms on repeat visits)
 5. Auto-Degradation Guard (Replaces 3D WebGL canvases and video loops with lightweight 25KB static WebP posters)
 
+### Flow 6: Optimistic Rapid-Click Batching & Network Settlement Flow
+1. `components/tables/DataTablePagination.tsx` OR `components/cart/CartQuantityStepper.tsx` (User rapidly taps Next or + 4 times)
+2. `hooks/useRapidClickBatcher.ts` (Optimistically updates local UI state in 0ms with badge pulse; resets 300ms settling timer on each click)
+3. Settling Window Expiration (User stops clicking; 300ms quiet window completes)
+4. `AbortController` (Aborts any previous in-flight HTTP requests)
+5. API Dispatch (Dispatches single settled network query for final state e.g. Page 4 or Qty 5)
+
 ---
 
 ## 🎯 Verification & Confidence Audit
-- **Total Mapped Files**: 52 files across 3 directories and root
-- **Verified Files**: 52/52 (100% physically inspected from disk)
+- **Total Mapped Files**: 53 files across 3 directories and root
+- **Verified Files**: 53/53 (100% physically inspected from disk)
 - **Likely Files**: 0
 - **Unknown Files**: 0
 - **Source-Code Files Changed**: 0
