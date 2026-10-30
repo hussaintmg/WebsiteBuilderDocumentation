@@ -400,13 +400,14 @@ Who should have access to **System Settings**?
 
 ### Q10.2: Storage Integration Providers & Live Testing (Storage Kahan Rakhna Hai?)
 Which file storage providers should be configured in System Settings? *(Multiple providers can be configured; active provider chosen via dropdown)*
-- [x] **(Recommended Multi-Cloud Storage Suite)**:
+- [x] **(Recommended Multi-Cloud & Hybrid Storage Suite - Polymorphic Engine)**:
+  - [x] **MongoDB Native GridFS / Buffer Storage** (Zero third-party cloud subscription, stored directly inside MongoDB Atlas; supports 2MB chunked streaming to bypass Vercel Free-Plan 4.5MB limit, auto-caches via `/api/media/[id]`).
   - [x] **Vercel Blob** (Fast edge blob storage for Next.js deployments).
-  - [x] **Supabase Storage** (S3-compatible bucket with CDN).
-  - [x] **Firebase Storage** (Google Cloud Storage integration).
-  - [x] **Local File Storage** (Direct server filesystem storage for on-premise / VPS).
-  - [x] **Google Drive Storage** (OAuth 2.0 folder integration).
+  - [x] **Supabase Storage** (S3-compatible bucket with CDN, publicId metadata, and image transforms).
+  - [x] **Firebase Storage** (Google Cloud Storage integration with download tokens).
+  - [x] **Local File Storage** (Direct server filesystem storage for on-premise / VPS; automatically falls back to MongoDB GridFS when deployed on Vercel read-only serverless instances).
   - [x] **Cloudflare R2 / AWS S3 / MinIO** (Zero egress-fee R2 or enterprise S3 buckets).
+  - **Polymorphic Media Specification**: See [`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`](./modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md) for universal schema, presigned uploads, and `<UnifiedMedia />` resolver.
   - **Live Verification Requirement**: Every storage provider card **MUST include a "Test Connection & Upload" button** that executes a real 1KB dummy upload, verifies read access, auto-deletes the file, and displays roundtrip latency in ms.
 - [ ] **Single Dedicated Storage Provider Only** *(Specify provider)*.
 

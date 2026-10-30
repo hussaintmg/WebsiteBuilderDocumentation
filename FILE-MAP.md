@@ -77,17 +77,18 @@
 ---
 
 ### 4. Financial & High-Scale Resilience Engines
-- **Functionality**: Distributed idempotency, in-flight mutex locking, Inquire-Before-Charge timeout recovery, BullMQ worker crash failover, and hyper-scale patterns.
+- **Functionality**: Distributed idempotency, in-flight mutex locking, Inquire-Before-Charge timeout recovery, BullMQ worker crash failover, hyper-scale patterns, and universal polymorphic multi-storage architecture.
 - **Confidence**: Verified
-- **Entry Point**: `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md` & `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`
+- **Entry Point**: `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`, `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md` & `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`
 - **Primary Files**:
   - `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`: Order-bound idempotency keys, Redis mutex lock, Inquire-Before-Charge (IBC) protocol, dual reconciliation (webhooks + BullMQ poller), JazzCash/Stripe adapters, `useResilientPayment` Hook.
+  - `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`: Universal `MediaAsset` schema, polymorphic `<UnifiedMedia />` resolver, Direct-to-Storage presigned uploads (bypassing Vercel 4.5MB limits), 2MB chunked GridFS streaming, and edge caching (`/api/media/[id]`).
   - `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`: 3-tier capacity planning, BullMQ 30s heartbeat failover, L1/L2 Redis cache, payment circuit breakers.
   - `modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md`: 20 production high-scale blueprints (20M Likes buffer, feeds, reminders, Uber H3 rides).
 - **Flow**:
   `Customer "Pay" ➔ Redis Mutex Lock ➔ Pre-Persist PaymentIntent ➔ Bank Call ➔ [Timeout Catch] ➔ Inquire-Before-Charge ➔ Settlement`
-- **Dependencies**: Redis, BullMQ, MongoDB, Bank/Gateway APIs (Stripe, JazzCash, EasyPaisa, 1Link).
-- **Used By**: Checkout flows, billing systems, and background workers.
+- **Dependencies**: Redis, BullMQ, MongoDB GridFS, Supabase, Vercel Blob, Firebase, S3/R2, Gateway APIs.
+- **Used By**: Checkout flows, billing systems, media uploaders, CMS, and background workers.
 
 ---
 
@@ -166,6 +167,7 @@
 ### Modules (`modules/`)
 | File Path | Type | Main Responsibility | Important For | Confidence |
 | :--- | :--- | :--- | :--- | :--- |
+| `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md` | Module | Polymorphic MediaAsset, Vercel 4.5MB bypass, 2MB chunked GridFS, edge caching | Media Storage | Verified |
 | `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md` | Module | Idempotency keys, Redis mutex lock, Inquire-Before-Charge, cron reconciliation | Payment Processing | Verified |
 | `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md` | Module | 3-tier scaling matrix, BullMQ failover, L1/L2 Redis cache | High Scale Backend | Verified |
 | `modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md` | Module | 20 hyper-scale system blueprints (20M likes, reminders) | Architecture Design | Verified |
@@ -216,11 +218,18 @@
 5. `components/checkout/PaymentVerificationModal.tsx` (Displays amber `PENDING_VERIFICATION` modal; auto-polls)
 6. `workers/reconciliationWorker.ts` (BullMQ poller executes Inquire-Before-Charge to auto-settle orphaned debits)
 
+### Flow 4: Multi-Storage Presigned Upload & Polymorphic Resolution Flow
+1. `hooks/useMultiStorageUpload.ts` (Determines upload method based on provider & file size)
+2. `app/api/media/upload/presign/route.ts` (Generates client upload token in < 50ms, bypassing Vercel 4.5MB cap)
+3. Direct Cloud Upload OR `app/api/media/upload/chunk/route.ts` (Streams 2MB slices directly to MongoDB GridFS)
+4. `models/MediaAsset.ts` (Records exact provider, publicId, download token, dimensions, and mimeType)
+5. `components/media/UnifiedMedia.tsx` & `lib/storage/resolveMediaUrl.ts` (Transparently renders local, cloud, or GridFS assets with 1-year edge cache `/api/media/[id]`)
+
 ---
 
 ## 🎯 Verification & Confidence Audit
-- **Total Mapped Files**: 49 files across 3 directories and root
-- **Verified Files**: 49/49 (100% physically inspected from disk)
+- **Total Mapped Files**: 50 files across 3 directories and root
+- **Verified Files**: 50/50 (100% physically inspected from disk)
 - **Likely Files**: 0
 - **Unknown Files**: 0
 - **Source-Code Files Changed**: 0
