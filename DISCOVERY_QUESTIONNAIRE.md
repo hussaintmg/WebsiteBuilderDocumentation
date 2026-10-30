@@ -42,6 +42,17 @@ How should the backend be hosted?
 
 ---
 
+### Q1.4: Project Folder Hierarchy Standard (Root-Level `/app` Mandate)
+> **MANDATORY DIRECTORY RULE**: Framework standard strictly mandates the Next.js App Router directly at project root (`<root>/app/`). Wrapping folders in an unnecessary `src/` wrapper is strictly prohibited.
+Which directory structure should be scaffolded?
+- [x] **(Mandatory Framework Standard) Clean Root-Level `/app` Hierarchy (Zero `src/` Wrapper)**:
+  - `<root>/app/`: App Router pages, layouts, and `/api` route handlers directly at root.
+  - Sibling root directories: `/components`, `/context`, `/models`, `/hooks`, `/lib`, `/public`, `/styles`, and `/.project/`.
+  - TypeScript path aliases: `"@/*": ["./*"]`.
+- [ ] **Custom Directory Layout** *(Specify if explicit legacy compatibility requires src/)*.
+
+---
+
 ## 🎨 Phase 2: Design Aesthetics, UI/UX & Component Architecture
 
 ### Q2.0: Bespoke Brand Identity & Aesthetic Theme ("Design Apna Banana Hai")

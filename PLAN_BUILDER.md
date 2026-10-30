@@ -99,19 +99,45 @@ graph TD
     Backend -->|Webhooks / Notifications| External[WhatsApp / SMTP Services]
 \`\`\`
 
-## 2. Directory & Component Structure
-\`\`\`
-src/
-├── app/ (or pages/)           # Route handlers & UI pages
-├── components/
-│   ├── ui/                    # Reusable atom components (Button, Modal, Input, Badge)
-│   ├── layout/                # Sidebar, Navbar, PublicMobileFooterBar, DashboardMobileMenuPill, OwnerSafeguardBanner, Footer
-│   ├── orders/                # OrderTable, OrderSlideView, OrderActionPanel
-│   └── modules/               # Feature-specific components (CMS, Shortcuts, Facelock)
-├── hooks/                     # useAuth, useRBAC, useShortcuts, useTheme
-├── lib/                       # API clients, DB connection, utils, formatters
-└── styles/                    # tokens.css, globals.css, theme.css
-\`\`\`
+## 2. Directory & Component Structure (Mandatory Root-Level `/app`, Zero `src/` Wrapper)
+```
+<project_root>/
+├── app/                               # Next.js App Router (Root-level, NO src/ wrapper)
+│   ├── (auth)/                        # Grouped auth routes (login, register, facelock)
+│   ├── (dashboard)/                   # Protected dashboard routes (orders, cms, settings)
+│   ├── (public)/                      # Public marketing / storefront routes
+│   ├── api/                           # Serverless route handlers (REST endpoints, webhooks)
+│   │   ├── auth/                      # Authentication endpoints
+│   │   ├── payments/                  # Payment idempotency & webhook handlers
+│   │   ├── media/                     # Streaming cached media (/api/media/[id]) & chunked upload
+│   │   └── [resource]/                # Domain resource endpoints
+│   ├── favicon.ico                    # Favicon
+│   ├── globals.css                    # Tailwind CSS directives & theme variables
+│   ├── layout.tsx                     # Root HTML, Fonts, and Master Provider tree
+│   ├── not-found.tsx                  # Standalone 404 Canvas Mini-Game page
+│   └── page.tsx                       # Public Home Landing Page
+├── components/                        # Reusable React UI components
+│   ├── ui/                            # Atomic primitives (Button, AppleGenieModal, FloatingInput, Badge, Toast)
+│   ├── layout/                        # Sidebar, Navbar, PublicMobileBottomBar, DashboardMenuPill
+│   ├── media/                         # UnifiedMedia, AdaptiveImage, VideoPlayer
+│   └── modules/                       # Subsystem UI (OrderSlideView, CMSBuilder, FacelockScanner)
+├── context/                           # Root domain state contexts (1 per model + Auth, Theme, Settings)
+├── models/                            # Root MongoDB / Mongoose models (1 file per collection: User.ts, Order.ts, MediaAsset.ts)
+├── hooks/                             # Custom React hooks (useAuth, useNetworkQuality, useResilientPayment, useMultiStorageUpload)
+├── lib/                               # Server utilities, DB connection, storage adapters, payment locks
+│   ├── db/                            # MongoDB connection pool (dbConnect.ts)
+│   ├── storage/                       # Storage adapters (Supabase, Vercel Blob, GridFS, S3)
+│   ├── payments/                      # Payment adapters & mutex locks (paymentLock.ts, jazzCashAdapter.ts)
+│   └── utils/                         # Pure utility functions (formatting, CN helper)
+├── public/                            # Static public assets (SVGs, brand logos, favicons suite, manifest)
+├── styles/                            # Design tokens, keyframe animations, font definitions
+├── rules/                             # Project-specific rules (generated from framework)
+├── FILE-MAP.md                        # Living verified repository navigation map
+├── .env.example                       # Documented environment variables template
+├── next.config.ts                     # Next.js configuration (with edge image domains)
+├── tailwind.config.ts                 # Tailwind configuration (dark mode, custom fonts, plugins)
+└── tsconfig.json                      # Strict TypeScript configuration with root alias paths ("@/*": ["./*"])
+```
 
 ## 3. Database Schema Blueprint (MongoDB / NoSQL)
 Define core document collections (users, companies/tenants, roles, orders, cms_posts, audit_logs).

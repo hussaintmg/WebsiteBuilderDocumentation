@@ -53,8 +53,10 @@ Used when heavy compute, long-running processes, Python AI models, or persistent
 Used for streamlined full-stack apps where frontend and backend reside in the same repository.
 
 ```
-Next.js Application (/src/app)
-├── (ui)/page.tsx           <-- Client / Server Components
+Next.js Application (/app - Root Level, Zero src/)
+├── (auth)/page.tsx         <-- Login / Register Client Components
+├── (dashboard)/page.tsx    <-- Protected Admin / Owner Portal
+├── (public)/page.tsx       <-- Storefront / Marketing Pages
 └── api/
     ├── auth/[...nextauth]/route.ts
     ├── orders/route.ts     <-- Direct DB access via Mongoose / MongoDB
@@ -72,12 +74,12 @@ Used when a team desires the full power of Next.js App Router for the Frontend U
 ```
 Root Workspace /
 ├── frontend/               <-- Next.js UI Application (Port 3000 / app.domain.com)
-│   ├── src/app/            <-- Pages, Layouts, SSR & Client Components
+│   ├── app/                <-- Root-level App Router (Pages, Layouts, SSR)
 │   └── lib/apiClient.ts    <-- Typed fetcher targeting Backend URL
 │
 └── backend/                <-- Dedicated Next.js Backend API (Port 3001 / api.domain.com)
-    ├── src/app/api/        <-- Pure Route Handlers (GET, POST, PUT, DELETE)
-    ├── src/db/             <-- Database Schemas, Mongoose / Motor / MongoDB
+    ├── app/api/            <-- Pure Route Handlers (GET, POST, PUT, DELETE)
+    ├── models/             <-- Database Schemas, Mongoose / MongoDB
     └── middleware.ts       <-- CORS, Auth tokens, Rate Limiting
 ```
 

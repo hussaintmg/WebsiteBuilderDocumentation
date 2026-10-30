@@ -123,19 +123,19 @@ Every repository governed by this framework must have a root-level `FILE-MAP.md`
 
 | File / Module Path | Type | Main Responsibility | Important For | Confidence |
 | :--- | :--- | :--- | :--- | :--- |
-| `src/app/page.tsx` | Page Entry | Landing page layout and hero | Public Storefront | Verified |
-| `src/context/CartContext.tsx` | State | Cart state, optimistic updates | Checkout & Order | Verified |
+| `app/page.tsx` | Page Entry | Landing page layout and hero | Public Storefront | Verified |
+| `context/CartContext.tsx` | State | Cart state, optimistic updates | Checkout & Order | Verified |
 
 ---
 
 ## 🔄 Critical Business & User Execution Flows
 
 ### Flow 1: [Flow Name, e.g., User Checkout & Idempotent Payment]
-1. `src/components/checkout/PaymentModal.tsx` (User clicks Pay)
-2. `src/hooks/useResilientPayment.ts` (Manages lock & retry state)
-3. `src/app/api/payments/process/route.ts` (Acquires Redis lock, executes IBC)
-4. `src/lib/payments/adapters/jazzCashAdapter.ts` (Communicates with bank)
-5. `src/models/PaymentIntent.ts` (Settles ledger and marks order PAID)
+1. `components/checkout/PaymentModal.tsx` (User clicks Pay)
+2. `hooks/useResilientPayment.ts` (Manages lock & retry state)
+3. `app/api/payments/process/route.ts` (Acquires Redis lock, executes IBC)
+4. `lib/payments/adapters/jazzCashAdapter.ts` (Communicates with bank)
+5. `models/PaymentIntent.ts` (Settles ledger and marks order PAID)
 
 ---
 
