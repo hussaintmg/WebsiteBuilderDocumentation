@@ -101,7 +101,7 @@
   - `modules/ORDER_SLIDE_WORKFLOW.md`: Master order table + 1-by-1 slide carousel review workflow.
   - `modules/DATA_TABLE_AND_CARDS_SYSTEM.md`: Marquee box drag selection, tri-state sorting, smart pagination.
   - `modules/CMS_ENGINE.md`: WYSIWYG/Monaco CMS, variable registry, dynamic PDF canvas, email builder.
-  - `modules/AUTH_AND_FACELOCK.md`: Biometric face model embeddings (128-d vectors) & multi-account auth.
+  - `modules/AUTH_AND_FACELOCK.md`: Biometric face embeddings (128-d vectors), multi-account auth, strict zero-demo security policy & inter-auth navigation ergonomics.
   - `modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md`: Dual-tier settings (Normal & System), live test buttons, zero-leak flags.
   - `modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md`: Edge middleware, interception toasts, session cache invalidation.
   - `modules/CHAT_AND_COMMUNICATION_SYSTEM.md` & `CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md`: Omni-chat & socket compression.
@@ -179,7 +179,7 @@
 | `modules/ORDER_SLIDE_WORKFLOW.md` | Module | Master order table + 1-by-1 slide carousel review | Order Processing | Verified |
 | `modules/DATA_TABLE_AND_CARDS_SYSTEM.md` | Module | Marquee drag selection, smart pagination, column sorting | Data Exploration | Verified |
 | `modules/CMS_ENGINE.md` | Module | WYSIWYG/Monaco CMS, dynamic PDF canvas, email builder | Content Management | Verified |
-| `modules/AUTH_AND_FACELOCK.md` | Module | Biometric AI face embeddings & multi-account auth | Identity & Security | Verified |
+| `modules/AUTH_AND_FACELOCK.md` | Module | Biometric face embeddings, zero-demo policy, inter-auth nav ergonomics | Identity & Security | Verified |
 | `modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md` | Module | Dual-tier settings, live test buttons, zero-leak flags | Platform Settings | Verified |
 | `modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md` | Module | Edge middleware, interception toasts, session cache invalidation | Route Security | Verified |
 | `modules/CHAT_AND_COMMUNICATION_SYSTEM.md` | Module | Omni-chat portal, live threads, agent inbox | Customer Support | Verified |

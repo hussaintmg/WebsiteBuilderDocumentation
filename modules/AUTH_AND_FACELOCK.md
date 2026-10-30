@@ -1648,4 +1648,186 @@ export const AuthLayoutWrapper = async ({
 > - Inputs enforce a minimum tap target height of **48px (`h-12`)** and **16px base font size** to completely eliminate iOS Safari page-zooming artifacts.
 > - The 6-box OTP container dynamically adapts on small viewports, ensuring each digit box has sufficient touch margin (`gap-2`) without clipping or horizontal overflow.
 
+---
+
+## 🚫 12. Strict Zero-Demo Security Policy & Inter-Auth Navigation Ergonomics
+
+### 12.1 The Zero-Demo & Zero-Backdoor Security Law
+> 🛑 **MANDATORY PRODUCTION SECURITY DIRECTIVE**:  
+> Authentication screens (`/login`, `/signup`, `/forgot-password`, `/reset-password`) must **NEVER** contain demo credentials, mock login buttons, or quick-fill buttons (e.g. *"Click here to login as Owner"*, *"Demo Admin: admin@example.com / password123"*).
+
+1. **Zero Pre-Filled Credentials**: Inputs MUST initialize completely empty (`value={email}` with default `""`). Never pre-populate form state with test accounts.
+2. **Zero Quick-Login Buttons**: Forbid adding "One-Click Owner Login" or "Demo Staff Account" pills in the DOM. Such helper widgets frequently leak into production, bypass authentication audits, create backdoors, and confuse real users.
+3. **Genuine User Onboarding Only**: Real users must register via `/signup` and authenticate with verified credentials or legitimate AI Facelock biometrics.
+
+---
+
+### 12.2 Standardized Inter-Auth Navigation Layout
+
+Every authentication view must feature clear, accessible navigational links connecting the auth ecosystem:
+
+```
+┌────────────────────────────────────────────────────────┐
+│                        LOGIN PAGE                      │
+│                                                        │
+│   Email Input                                          │
+│   ┌────────────────────────────────────────────────┐   │
+│   │ name@company.com                               │   │
+│   └────────────────────────────────────────────────┘   │
+│                                                        │
+│   Password Header              [ Forgot password? ] ───┼──► Navigates to /forgot-password
+│   ┌────────────────────────────────────────────────┐   │
+│   │ •••••••••••••                                  │   │
+│   └────────────────────────────────────────────────┘   │
+│                                                        │
+│   [ Log In Button ]                                    │
+│                                                        │
+│   Don't have an account? [ Sign up ] ──────────────────┼──► Navigates to /signup
+└────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────┐
+│                       SIGNUP PAGE                      │
+│                                                        │
+│   Email Input                                          │
+│   [ Continue Button ]                                  │
+│                                                        │
+│   Already have an account? [ Log in ] ─────────────────┼──► Navigates to /login
+└────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────┐
+│                  FORGOT PASSWORD PAGE                  │
+│                                                        │
+│   Email Input                                          │
+│   [ Send Reset Link / OTP Button ]                     │
+│                                                        │
+│   [ ◄ Back to log in ] ────────────────────────────────┼──► Navigates to /login
+└────────────────────────────────────────────────────────┘
+```
+
+#### Placement Standards:
+1. **Login Page (`app/(auth)/login/page.tsx`)**:
+   - **"Forgot password?"**: Placed on the top-right above the password input, aligned with the label. Text style: subtle accent color with hover underline (`text-xs text-sky-500 hover:text-sky-400 transition-colors`).
+   - **"Don't have an account? Sign up"**: Placed at the bottom of the card below the primary submit button. Clean typography (`text-sm text-zinc-500`), with "Sign up" styled as a prominent accent link (`font-semibold text-zinc-900 dark:text-white hover:underline`).
+2. **Signup Page (`app/(auth)/signup/page.tsx`)**:
+   - **"Already have an account? Log in"**: Positioned in the card footer below the registration form.
+3. **Forgot Password Page (`app/(auth)/forgot-password/page.tsx`)**:
+   - **"Back to log in"**: Positioned below the submit button or in the card header with a left arrow icon (`<ArrowLeft className="w-4 h-4" />`), providing effortless escape back to `/login`.
+4. **Reset Password Page (`app/(auth)/reset-password/page.tsx`)**:
+   - Card footer and post-reset success screen feature a prominent **"Back to log in"** button.
+
+---
+
+### 12.3 Production Reference Component (`LoginForm.tsx`)
+
+```tsx
+// components/auth/LoginForm.tsx
+"use client";
+
+import React, { useState } from "react";
+import Link from "next/link";
+import { Loader2, Lock, Mail, Eye, EyeOff } from "lucide-react";
+
+export function LoginForm({ onSubmit }: { onSubmit: (data: any) => Promise<void> }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) return;
+    setIsLoading(true);
+    try {
+      await onSubmit({ email, password });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="w-full max-w-md p-8 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl">
+      {/* Header */}
+      <div className="mb-6 text-center">
+        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">Welcome back</h1>
+        <p className="text-sm text-zinc-500 mt-1">Please enter your credentials to access your account</p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Email Field */}
+        <div>
+          <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
+            Email address
+          </label>
+          <div className="relative">
+            <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="name@company.com"
+              className="w-full h-11 pl-10 pr-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-sm text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all"
+            />
+          </div>
+        </div>
+
+        {/* Password Field with Top-Right Forgot Link */}
+        <div>
+          <div className="flex items-center justify-between mb-1.5">
+            <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+              Password
+            </label>
+            <Link
+              href="/forgot-password"
+              className="text-xs font-medium text-sky-500 hover:text-sky-400 hover:underline transition-colors"
+            >
+              Forgot password?
+            </Link>
+          </div>
+          <div className="relative">
+            <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+            <input
+              type={showPassword ? "text" : "password"}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••••••"
+              className="w-full h-11 pl-10 pr-11 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-sm text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full h-11 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-semibold text-sm hover:opacity-90 active:scale-[0.99] transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-2"
+        >
+          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Sign In"}
+        </button>
+      </form>
+
+      {/* Footer Navigation Link */}
+      <div className="mt-6 text-center text-xs text-zinc-500 border-t border-zinc-100 dark:border-zinc-800/80 pt-4">
+        <span>Don&apos;t have an account? </span>
+        <Link
+          href="/signup"
+          className="font-semibold text-zinc-900 dark:text-white hover:underline transition-colors"
+        >
+          Sign up
+        </Link>
+      </div>
+    </div>
+  );
+}
+```
+
+
 

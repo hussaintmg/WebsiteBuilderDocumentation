@@ -196,6 +196,19 @@ Which authentication and identity workflows should be enabled?
 
 ---
 
+### Q3.5B: Zero-Demo Credentials Policy & Inter-Auth Navigation Ergonomics
+> **MANDATORY AUTH ERGONOMICS & SECURITY RULE**: Pre-filled demo credentials, mock accounts, or "Click to login as Admin/Owner" backdoor buttons are strictly prohibited in all environments. Input fields must initialize to clean empty strings (`""`). Additionally, all auth views must feature frictionless bidirectional navigation links so users never get trapped.
+Which auth form ergonomics and security standards must be enforced?
+- [x] **(Recommended Mandatory Standard) Strict Zero-Demo Security & Complete Navigation Ergonomics**:
+  - **Zero Demo Credentials & Backdoors**: Zero pre-filled values, zero mock click-to-login buttons in production and development. Prevents security audit failures and user confusion.
+  - **Password Header Navigation**: Login form features a right-aligned `"Forgot password?"` link placed directly above or alongside the password input label.
+  - **Cross-Auth Card Footers**: `/login` features `"Don't have an account? Sign up"`; `/signup` features `"Already have an account? Log in"`.
+  - **Recovery Backlinks**: `/forgot-password` and `/reset-password` feature an explicit `"← Back to log in"` return link.
+  - **State Cleanliness**: All input state initialized to `""`, with standard browser autocomplete hints (`autocomplete="email"`, `autocomplete="current-password"`).
+- [ ] **Custom Auth Ergonomics** *(Specify any specialized non-standard flow)*.
+
+---
+
 ### Q3.6: Edge Proxy Route Protection & Unauthorized Access Feedback (Proxy & Protected Routes)
 > **MANDATORY SECURITY PROXY RULE**: Protected routes must be strictly guarded via Next.js Edge Middleware (`middleware.ts`). Unauthorized or unauthenticated visitors must be immediately blocked, redirected to a safe view, and alerted via toast notification ("Aap is page pe nahi ja sakte hain").
 Which route protection and proxy behavior should be enforced?

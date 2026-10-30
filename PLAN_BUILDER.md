@@ -74,6 +74,7 @@ The agent must generate `PLAN.md` using the following standardized layout:
 
 ## 4. Acceptance Criteria & Success Metrics
 - [ ] Users can authenticate via configured auth methods.
+- [ ] Auth pages (`/login`, `/signup`, `/forgot-password`, `/reset-password`) feature ZERO demo credentials or quick-login buttons, and implement full bidirectional navigation ergonomics (Login ⇄ Signup ⇄ Forgot Password).
 - [ ] Strict role-based permissions prevent unauthorized page visits and button actions.
 - [ ] All forms feature robust validation with clear, responsive error toasts.
 - [ ] Zero layout shifts, high aesthetic standard (curated typography, dark mode, smooth transitions).
@@ -181,7 +182,7 @@ The agent must structure the implementation plan following the **6-Phase Non-Bre
   - [ ] Initialize repository with strict TypeScript config (`tsconfig.json`) and Next.js App Router / Vite
   - [ ] Configure database connection pool and environment variables template (`.env.example`)
   - [ ] Scaffold root `/models` and root `/context` directory structure
-  - [ ] Implement minimal robust Auth: User model, password hashing (bcrypt), JWT session cookies, and login/signup handlers
+  - [ ] Implement minimal robust Auth: User model, password hashing (bcrypt), JWT session cookies, and login/signup handlers with strict Zero-Demo credentials policy and full inter-auth navigation ergonomics
   - [ ] Mount root navigation shells (Topbar and Sidebar skeleton)
   - [ ] Verification Gate: User can signup, login, view empty authenticated dashboard, and logout with zero warnings
 
