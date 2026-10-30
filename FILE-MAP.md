@@ -124,6 +124,7 @@
 ### Root Orchestration
 | File Path | Type | Main Responsibility | Important For | Confidence |
 | :--- | :--- | :--- | :--- | :--- |
+| `SKILL.md` | Master Skill | Official Antigravity global skill definition & 5-phase orchestrator | Skill Invocation | Verified |
 | `README.md` | Doc Entry | Framework overview, golden rule, directory tree | Orientation | Verified |
 | `MAIN_AGENT_DIRECTIVE.md` | Directive | Master agent rules, 5-phase protocol, behavioral guardrails | Autonomous Execution | Verified |
 | `PLAN_BUILDER.md` | Generator | Blueprint specification for `.project/` and `FILE-MAP.md` | Project Onboarding | Verified |
@@ -237,8 +238,8 @@
 ---
 
 ## 🎯 Verification & Confidence Audit
-- **Total Mapped Files**: 51 files across 3 directories and root
-- **Verified Files**: 51/51 (100% physically inspected from disk)
+- **Total Mapped Files**: 52 files across 3 directories and root
+- **Verified Files**: 52/52 (100% physically inspected from disk)
 - **Likely Files**: 0
 - **Unknown Files**: 0
 - **Source-Code Files Changed**: 0
