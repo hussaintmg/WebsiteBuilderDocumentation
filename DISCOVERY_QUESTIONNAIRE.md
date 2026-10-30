@@ -468,4 +468,19 @@ When a customer pays on the website and the connection between the backend and b
   - **No-Panic UI State**: Frontend catches timeouts and displays an amber "Payment In Verification" status modal with auto-polling instead of "Payment Failed" (`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`).
 - [ ] **Standard Direct Payment (No Timeout Inquiry)**: Disables Inquire-Before-Charge; retries treat failed requests as new transactions.
 
+---
+
+## ⚡ Phase 12: Low-Bandwidth & Slow Network Performance Optimization
+
+### Q12.1: Slow 2G/3G Connection & Data Saver Optimization
+How should the platform behave for users on slow mobile networks (2G, throttled 3G, high-latency satellite, or limited mobile data)?
+- [x] **(Recommended) Enable 5-Pillar Low-Bandwidth Speed Engine**:
+  - **Adaptive Images & BlurHash LQIP**: Automatically serve WebP/AVIF images with compact 20-character BlurHash placeholders. On slow 2G/3G or Save-Data, dynamically request 60% smaller images and lower quality to cut data usage by 80%.
+  - **Server Streaming with Suspense & Projection Pruning**: Stream HTML shells in < 50ms TTFB while database queries stream asynchronously. Prune MongoDB listing payloads by 90% (exclude heavy unneeded fields).
+  - **Offline-First SWR Caching**: Persist API responses in IndexedDB so repeat visits and back/forward navigation render instantaneously (0ms lag).
+  - **Auto-Degradation & Data Saver Pill**: Auto-disable background video loops, replace heavy 3D WebGL canvases with 2D snapshots, and provide a manual "Data Saver" toggle pill in the UI (`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`).
+  - **Strict 80KB JS Budget**: Route code-splitting with `next/dynamic` and self-hosted Latin font subsetting (`font-display: swap`).
+- [ ] **Standard High-Bandwidth Only**: Serve full-resolution media and heavy JavaScript bundles without network adaptation.
+
+
 

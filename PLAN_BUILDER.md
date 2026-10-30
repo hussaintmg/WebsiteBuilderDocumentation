@@ -69,6 +69,7 @@ The agent must generate `PLAN.md` using the following standardized layout:
 | **Advanced System Designs & Hyper-Scale Patterns** | [Enabled/Disabled] | 20M Likes Buffer, Hybrid Push/Pull Feeds, Millions-Scale Reminders, Uber H3 Hexagonal Rides with Surge Pricing, CQRS Search, and 20 Production System Designs (`modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md`) |
 | **Payment Idempotency & Reconciliation Engine** | [Enabled/Disabled] | Order-bound idempotency keys, Redis Mutex locking, Inquire-Before-Charge (IBC) timeout recovery, dual webhooks + BullMQ poller reconciliation (`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`) |
 | **Multi-Storage Polymorphic Media Engine** | [Enabled/Disabled] | Heterogeneous storage (Local, Vercel Blob, Supabase, Firebase, S3/R2, GridFS), presigned uploads, 2MB chunked GridFS streaming for Vercel Free plan, polymorphic `<UnifiedMedia />` resolver (`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`) |
+| **Low-Bandwidth & Extreme Performance Engine** | **Mandatory** | 5 Pillars of Low-Bandwidth Speed: Adaptive WebP/AVIF images with BlurHash LQIP, React Server Component streaming (<50ms TTFB), MongoDB projection pruning, IndexedDB offline-first SWR cache, and 80KB JS budget (`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`) |
 
 ## 4. Acceptance Criteria & Success Metrics
 - [ ] Users can authenticate via configured auth methods.

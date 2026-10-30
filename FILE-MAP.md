@@ -83,6 +83,7 @@
 - **Primary Files**:
   - `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`: Order-bound idempotency keys, Redis mutex lock, Inquire-Before-Charge (IBC) protocol, dual reconciliation (webhooks + BullMQ poller), JazzCash/Stripe adapters, `useResilientPayment` Hook.
   - `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`: Universal `MediaAsset` schema, polymorphic `<UnifiedMedia />` resolver, Direct-to-Storage presigned uploads (bypassing Vercel 4.5MB limits), 2MB chunked GridFS streaming, and edge caching (`/api/media/[id]`).
+  - `modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`: 5 pillars of slow-network speed: Adaptive WebP/AVIF images, 20-char BlurHash LQIP, React Server Component streaming (<50ms TTFB), MongoDB projection pruning (90% JSON reduction), IndexedDB offline-first SWR cache, and auto-degradation.
   - `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`: 3-tier capacity planning, BullMQ 30s heartbeat failover, L1/L2 Redis cache, payment circuit breakers.
   - `modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md`: 20 production high-scale blueprints (20M Likes buffer, feeds, reminders, Uber H3 rides).
 - **Flow**:
@@ -167,6 +168,7 @@
 ### Modules (`modules/`)
 | File Path | Type | Main Responsibility | Important For | Confidence |
 | :--- | :--- | :--- | :--- | :--- |
+| `modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md` | Module | 5 pillars of slow-network speed: BlurHash LQIP, RSC streaming, projection pruning, offline SWR | Performance | Verified |
 | `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md` | Module | Polymorphic MediaAsset, Vercel 4.5MB bypass, 2MB chunked GridFS, edge caching | Media Storage | Verified |
 | `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md` | Module | Idempotency keys, Redis mutex lock, Inquire-Before-Charge, cron reconciliation | Payment Processing | Verified |
 | `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md` | Module | 3-tier scaling matrix, BullMQ failover, L1/L2 Redis cache | High Scale Backend | Verified |
@@ -225,11 +227,18 @@
 4. `models/MediaAsset.ts` (Records exact provider, publicId, download token, dimensions, and mimeType)
 5. `components/media/UnifiedMedia.tsx` & `lib/storage/resolveMediaUrl.ts` (Transparently renders local, cloud, or GridFS assets with 1-year edge cache `/api/media/[id]`)
 
+### Flow 5: Low-Bandwidth Adaptive Streaming & Degradation Flow
+1. `hooks/useNetworkQuality.ts` (Detects `navigator.connection` 2G/3G/Save-Data or manual Data Saver toggle)
+2. `app/layout.tsx` (RSC streams HTML shell + sub-22KB subsetted fonts in < 50ms)
+3. `components/media/AdaptiveImage.tsx` (Renders 20-char BlurHash placeholder instantly; requests 60% smaller WebP payload)
+4. `lib/cache/offlineSwrStorage.ts` (Loads cached catalog from IndexedDB in 0ms on repeat visits)
+5. Auto-Degradation Guard (Replaces 3D WebGL canvases and video loops with lightweight 25KB static WebP posters)
+
 ---
 
 ## 🎯 Verification & Confidence Audit
-- **Total Mapped Files**: 50 files across 3 directories and root
-- **Verified Files**: 50/50 (100% physically inspected from disk)
+- **Total Mapped Files**: 51 files across 3 directories and root
+- **Verified Files**: 51/51 (100% physically inspected from disk)
 - **Likely Files**: 0
 - **Unknown Files**: 0
 - **Source-Code Files Changed**: 0

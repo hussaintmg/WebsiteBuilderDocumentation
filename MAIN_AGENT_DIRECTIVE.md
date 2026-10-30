@@ -116,6 +116,7 @@ Whenever implementing a specific subsystem, the agent **MUST read the correspond
 | Safe Development, Zero-Regression & FILE-MAP Synchronization | [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](./rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md) |
 | Payment Idempotency & Split-Brain Timeout Reconciliation | [`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`](./modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md) |
 | Multi-Storage Polymorphic Media Engine & Vercel Free Workaround | [`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`](./modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md) |
+| Extreme Low-Bandwidth & Slow Network Performance Optimization | [`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`](./modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md) |
 
 ---
 
