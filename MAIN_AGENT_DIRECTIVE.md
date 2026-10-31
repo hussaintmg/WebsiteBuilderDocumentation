@@ -118,6 +118,7 @@ Whenever implementing a specific subsystem, the agent **MUST read the correspond
 | Multi-Storage Polymorphic Media Engine & Vercel Free Workaround | [`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`](./modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md) |
 | Extreme Low-Bandwidth & Slow Network Performance Optimization | [`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`](./modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md) |
 | Optimistic Rapid-Click Batching & Debounced Settlement | [`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`](./modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md) |
+| Existing Website Retrofit & Modernization Engine | [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md) |
 
 ---
 
@@ -133,8 +134,9 @@ Before marking any task, file operation, or sprint as completed:
    - **Tier 6 (UI Copywriting & UX Predictability)**: Never leak technical backend terms (database pipelines, Axios terms) on UI; pass the human predictability discovery test.
    - **Tier 7 (Visual, Responsive, Theme & Animations)**: Verify Light/Dark/CMS themes (zero rogue hex codes); ensure 60 FPS animations and mobile responsiveness (`390x844`).
 3. **Never claim success without actual terminal output or browser inspection logs.** Evidence must always precede assertions.
-4. Update `SPRINTS.md` marking completed tasks with `[x]` and logging complete tier-by-tier evidence notes.
-5. **Continuous FILE-MAP Synchronization**: Update the root `FILE-MAP.md` to reflect all newly created, updated, or removed files, routes, models, and critical execution flows per [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](./rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md).
+4. **Mandatory Audit Engine Execution**: Run `node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .`. The script must exit with Code 0 (Compliance Score >= 95%). If the score is below 95%, the agent is strictly prohibited from marking the task complete and must resolve all listed gaps.
+5. Update `SPRINTS.md` marking completed tasks with `[x]` and logging complete tier-by-tier evidence notes.
+6. **Continuous FILE-MAP Synchronization**: Update the root `FILE-MAP.md` to reflect all newly created, updated, or removed files, routes, models, and critical execution flows per [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](./rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md).
 
 ---
 
@@ -156,6 +158,7 @@ Before marking any task, file operation, or sprint as completed:
 14. **The Root-Level `/app` Directory Standard (Zero `src/` Wrapper)**: All Next.js projects governed by this framework MUST place the Next.js App Router directly at the project root (`<root>/app/`). Wrapping application files inside an unnecessary `src/` folder is strictly prohibited. Sibling root folders are strictly designated as: `/app`, `/components`, `/context`, `/models`, `/hooks`, `/lib`, `/public`, `/styles`, and `/.project/`. TypeScript path aliases in `tsconfig.json` MUST map `"@/*": ["./*"]`.
 15. **The Optimistic Rapid-Click Batching Mandate**: High-frequency interactive controls (pagination skipping, cart quantity steppers, slide carousels, like bursts, and tri-state table sorts) MUST implement `useRapidClickBatcher` with instant 0ms optimistic UI updates, 300ms settling debounce, and `AbortController` cancellation. Never freeze or disable interactive controls on the first click per [`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`](./modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md).
 16. **Zero Demo Credentials & Inter-Auth Navigation Ergonomics Mandate**: Authentication pages (`/login`, `/signup`, `/forgot-password`, `/reset-password`) MUST NEVER feature pre-filled demo credentials, mock accounts, or "Click to login as Owner/Admin" backdoor buttons in production or development environments. Forms must initialize input states to clean empty strings (`""`). Furthermore, every auth page MUST implement complete bidirectional navigation ergonomics: `/login` must feature a right-aligned "Forgot password?" link adjacent to the password input label and a bottom-card "Don't have an account? Sign up" link; `/signup` must feature an "Already have an account? Log in" footer link; and password recovery views must feature a "← Back to log in" link per [`modules/AUTH_AND_FACELOCK.md`](./modules/AUTH_AND_FACELOCK.md).
+17. **The Autonomous Retrofit & Universal 95%+ Audit Mandate**: When instructed to complete, upgrade, or modernize an existing website, the agent is strictly forbidden from doing partial cosmetic work, leaving screens unstyled, skipping animations, or stopping prematurely. The agent must execute the 6-stage protocol in [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md), refactor all screens with modern motion physics and glass depth, and verify compliance via `node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .`. Completion is only permitted when the audit exits with Code 0 (Score >= 95%).
 
 
 

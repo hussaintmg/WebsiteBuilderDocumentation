@@ -94,9 +94,11 @@
 ---
 
 ### 5. Core Business Modules & Workflows
-- **Functionality**: Production-ready enterprise specifications for orders, CMS, auth, real-time chat, leads, blogs, settings, and optimistic rapid-click batching.
+- **Functionality**: Production-ready enterprise specifications for orders, CMS, auth, real-time chat, leads, blogs, settings, optimistic rapid-click batching, and automated codebase retrofit.
 - **Confidence**: Verified
 - **Primary Files**:
+  - `scripts/audit-engine.js`: Standalone 30+ check compliance CLI; scores 0-100% and blocks completion if < 95%.
+  - `modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`: 6-stage end-to-end modernization protocol for existing websites.
   - `modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`: 0ms optimistic UI updates, 300ms settling debounce, AbortController cancellation for pagination, cart steppers, slides, and likes.
   - `modules/ORDER_SLIDE_WORKFLOW.md`: Master order table + 1-by-1 slide carousel review workflow.
   - `modules/DATA_TABLE_AND_CARDS_SYSTEM.md`: Marquee box drag selection, tri-state sorting, smart pagination.
@@ -131,6 +133,7 @@
 | `PLAN_BUILDER.md` | Generator | Blueprint specification for `.project/` and `FILE-MAP.md` | Project Onboarding | Verified |
 | `DISCOVERY_QUESTIONNAIRE.md` | Interview | 11-phase structured discovery questionnaire | Requirements Capture | Verified |
 | `FILE-MAP.md` | Living Map | Verified repository navigation and functional index | Codebase Navigation | Verified |
+| `scripts/audit-engine.js` | Audit CLI | Standalone 30+ check compliance validator, 0-100% scoring | Quality Gate | Verified |
 
 ### Rules & Engineering Standards (`rules/`)
 | File Path | Type | Main Responsibility | Important For | Confidence |
@@ -170,6 +173,7 @@
 ### Modules (`modules/`)
 | File Path | Type | Main Responsibility | Important For | Confidence |
 | :--- | :--- | :--- | :--- | :--- |
+| `modules/EXISTING_PROJECT_RETROFIT_ENGINE.md` | Module | 6-stage end-to-end modernization protocol for existing websites | Codebase Retrofit | Verified |
 | `modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md` | Module | Optimistic multi-click batching, 300ms settling debounce, AbortController | High-Frequency UI | Verified |
 | `modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md` | Module | 5 pillars of slow-network speed: BlurHash LQIP, RSC streaming, projection pruning, offline SWR | Performance | Verified |
 | `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md` | Module | Polymorphic MediaAsset, Vercel 4.5MB bypass, 2MB chunked GridFS, edge caching | Media Storage | Verified |

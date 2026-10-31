@@ -1,11 +1,26 @@
 ---
 name: website-builder-engine
-description: Use when planning, architecting, scaffolding, building, or modifying full-stack web applications, CMS, dashboards, APIs, or SaaS using Next.js, FastAPI, Node.js, and MongoDB
+description: Use when planning, architecting, scaffolding, building, retrofitting, modernizing, or modifying full-stack web applications, CMS, dashboards, APIs, or SaaS using Next.js, FastAPI, Node.js, and MongoDB. Enforces complete aesthetic glow-up, motion physics, and 95%+ audit score.
 ---
 
 # Website Builder & Autonomous Web Engineering Engine (`website-builder-engine`)
 
-> **PURPOSE**: Master production architecture and autonomous engineering engine for building complete, high-performance, non-breaking web applications in a single run. Enforces Rule Zero ("Plan First, Code Second"), bespoke visual branding, root-level `/app` directory standard (Zero `src/` wrapper), polymorphic multi-storage, split-brain payment resilience, 5-pillar low-bandwidth performance, optimistic rapid-click batching, and mandatory deep-documentation inspection.
+> **PURPOSE**: Master production architecture and autonomous engineering engine for building, modernizing, and retrofitting complete, high-performance, non-breaking web applications in a single run. Enforces Rule Zero ("Plan First, Code Second"), bespoke visual branding, root-level `/app` directory standard (Zero `src/` wrapper), polymorphic multi-storage, split-brain payment resilience, 5-pillar low-bandwidth performance, optimistic rapid-click batching, mandatory deep-documentation inspection, and automated 95%+ audit score gates.
+
+---
+
+## 🌐 GLOBAL REPOSITORY & PATH RESOLUTION LAW
+
+> 📌 **CROSS-WORKSPACE COMPLIANCE DIRECTIVE**:  
+> Regardless of which project directory or drive you are currently working in (e.g. `c:\MyClientApp`, `D:\work\storefront`), the canonical Website Builder Engine and its 50+ documentation specifications, design tokens, and scripts are permanently installed globally on your machine at:
+> 
+> **`C:/Users/lenovo/.gemini/config/skills/website-builder-engine/`**
+> 
+> You **MUST** read blueprints, guides, and run the audit engine directly from this global path:
+> - **Audit CLI Runner**: `node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .`
+> - **Module Specs**: `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/modules/<MODULE_NAME>.md`
+> - **Design System**: `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/design-system/<FILE_NAME>.md`
+> - **Rules & Standards**: `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/rules/<RULE_NAME>.md`
 
 ---
 
@@ -15,14 +30,16 @@ description: Use when planning, architecting, scaffolding, building, or modifyin
 > When the `/website-builder-engine` command or skill is activated, you **MUST NOT** provide shallow, generic, or off-the-cuff boilerplate code. You **MUST NOT** rely on vague memory or hallucinate patterns when canonical, battle-tested specifications exist in this framework.
 > 
 > **Every decision and architecture proposal MUST be grounded in the framework's actual documentation files:**
-> 1. **Scan the Living Map First**: Always consult [`FILE-MAP.md`](./FILE-MAP.md) to locate the exact module, rule, or design pattern needed.
+> 1. **Scan the Living Map First**: Always consult [`FILE-MAP.md`](./FILE-MAP.md) (or `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/FILE-MAP.md`) to locate the exact module, rule, or design pattern needed.
 > 2. **Read Before Designing or Coding**: You MUST explicitly read the canonical documentation files (`modules/`, `rules/`, `design-system/`) relevant to the user's task before proposing solutions or scaffolding code.
 > 3. **Cite & Link Specific Blueprints**: Explicitly reference the underlying module specification, models, hooks, and component recipes in your plan.
 > 4. **No Generic Fallbacks**: If the user asks for pagination, cart steppers, modals, auth, or storage, you MUST use the engine's canonical implementations (`useRapidClickBatcher`, `AppleGenieModal`, `useResilientPayment`, `useMultiStorageUpload`, `UnifiedMedia`, `useNetworkQuality`), NEVER generic un-optimized placeholders.
 
 ---
 
-## 🛑 Rule Zero: The Absolute Prerequisite
+## 🧭 DUAL WORKFLOW PROTOCOL: GREENFIELD VS EXISTING RETROFIT
+
+Choose your workflow based on the current workspace state:
 
 ```
                      ┌─────────────────────────────┐
@@ -31,35 +48,32 @@ description: Use when planning, architecting, scaffolding, building, or modifyin
                                     │
                                     ▼
                       /───────────────────────────\
-                     <  Does /.project/PLAN.md     >
-                     <  already exist & approved?  >
+                     <    Is this an EXISTING      >
+                     <    Website / Repository?    >
                       \───────────────────────────/
                                     │
-                    NO              │            YES
+                     YES            │            NO (Greenfield)
                ┌────────────────────┴───────────────────┐
                ▼                                        ▼
 ┌──────────────────────────────────┐     ┌──────────────────────────────┐
-│ STOP! DO NOT WRITE ANY CODE.     │     │ 1. Read .project/PLAN.md     │
-│ 1. Load DISCOVERY_QUESTIONNAIRE  │     │ 2. Read .project/RULES.md    │
-│ 2. Ask user clarifying questions │     │ 3. Execute current Sprint    │
-│ 3. Generate .project/ plan       │     │ 4. Verify evidence & test    │
+│ WORKFLOW B: RETROFIT ENGINE      │     │ WORKFLOW A: GREENFIELD BUILD │
+│ 1. Run audit-engine.js baseline  │     │ 1. Rule Zero: Discovery Qs   │
+│ 2. Read RETROFIT_ENGINE.md       │     │ 2. Generate /.project/PLAN   │
+│ 3. Upgrade UI, Motion, Security  │     │ 3. Scaffold Root /app & DB   │
+│ 4. Loop until score >= 95%       │     │ 4. Phased Sprints Execution  │
 └──────────────────────────────────┘     └──────────────────────────────┘
 ```
 
-**Never start scaffolding or writing production code until the user approves the generated plan file!** Doing otherwise results in architectural drift, token waste, and painful rework.
-
 ---
 
-## 📋 The 5-Phase Agent Execution Protocol
+## 🛠️ WORKFLOW A: GREENFIELD APPLICATION SCAFFOLDING
 
 ### Phase 1: Interactive Discovery Interview
-When the user presents an idea or starts a new project:
+When starting a brand new project:
 1. Open [`DISCOVERY_QUESTIONNAIRE.md`](./DISCOVERY_QUESTIONNAIRE.md).
-2. Ask questions in structured, digestible batches (grouped logically: Scope -> UI/UX -> RBAC -> Features -> Safeguards -> Storage -> Performance).
-3. **Explicit Backend Placement Inquiry**: Ask whether backend is Unified Monolith, Dual Next.js (`frontend/` + `backend/`), FastAPI (Python), or Node.js.
+2. Ask questions in structured, digestible batches (Scope -> UI/UX -> RBAC -> Features -> Safeguards -> Storage -> Performance).
+3. **Backend Placement Inquiry**: Ask whether backend is Unified Monolith, Dual Next.js (`frontend/` + `backend/`), FastAPI (Python), or Node.js.
 4. Support the user in their preferred language (English, Urdu, or Roman Urdu).
-
----
 
 ### Phase 2: Project Workspace Initialization
 Once answers are received:
@@ -71,8 +85,6 @@ Once answers are received:
    - `SPRINTS.md`: Phased task list with clear checkboxes and test gates.
    - `FILE-MAP.md`: Living repository navigation map per [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](./rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md).
 3. Present the plan summary to the user and request explicit confirmation to proceed.
-
----
 
 ### Phase 3: Scaffolding & Foundation First
 Once the plan is approved:
@@ -92,12 +104,43 @@ Once the plan is approved:
 
 ---
 
-### Phase 4: Master Modular Subsystems Library
+## ⚡ WORKFLOW B: EXISTING PROJECT RETROFIT & MODERNIZATION
+
+> 🛡️ **THE AUTONOMOUS UPGRADE MANDATE**:  
+> When instructed to *"complete this existing website according to the skill"*, *"modernize this project"*, or *"is website ko theek karo"*, you **MUST NOT** exit prematurely after doing 1 or 2 cosmetic edits. You must follow the 6-stage protocol in [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md):
+
+1. **Run Automated Baseline Audit**:
+   ```bash
+   node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .
+   ```
+2. **Generate Gap Checklist (`.project/RETROFIT_PLAN.md`)**:
+   Record all failing items (missing animations, plain HTML inputs, direct component API calls, demo buttons, missing edge proxy).
+3. **Harmonize Packages**: Install `framer-motion`, `lucide-react`, `clsx`, `tailwind-merge` if missing.
+4. **Execute End-to-End Visual Overhaul Across ALL Pages**:
+   - Wrap page containers with Framer Motion entry transitions (`initial={{ opacity: 0, y: 16 }}`).
+   - Elevate cards and dialogs to frosted glassmorphism (`backdrop-blur-xl bg-neutral-900/60 border border-white/10`).
+   - Add micro-animations (`transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]`) to interactive elements.
+   - Upgrade flat inputs to Floating Label inputs per [`design-system/03_UI_COMPONENTS_LIBRARY.md`](./design-system/03_UI_COMPONENTS_LIBRARY.md).
+   - Implement public mobile bottom bar & dashboard floating menu pill (`"Menu"` / `"Close"`).
+5. **Security & Context Law Retrofit**:
+   - Purge all demo accounts / "Click to login as Admin" backdoor buttons from `/login`, `/signup`, `/forgot-password`.
+   - Add inter-auth navigation links (`"Forgot password?"`, `"Don't have an account? Sign up"`, `"Already have an account? Log in"`).
+   - Move direct page component `fetch`/`axios` calls into dedicated domain Contexts (`/context/`).
+   - Deploy Next.js Edge Middleware (`middleware.ts`).
+6. **Continuous Audit Loop**:
+   - Re-run `audit-engine.js`.
+   - **DO NOT STOP** until the script exits with Code 0 (Score >= 95%).
+   - Verify `npm run build` succeeds with zero errors.
+
+---
+
+## 📚 Master Modular Subsystems Library
 
 Before designing or implementing any subsystem, the agent **MUST read the canonical specification**:
 
 | Domain | Capability | Canonical Framework Specification |
 | :--- | :--- | :--- |
+| **Retrofit** | Existing Website Modernization & 95%+ Audit Protocol | [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md) |
 | **Interactive UI** | Optimistic Rapid-Click Batching (Pagination, Steppers, Slides, Likes) | [`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`](./modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md) |
 | **Performance** | Low-Bandwidth 2G/3G & 5-Pillar Speed (BlurHash LQIP, RSC, SWR) | [`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`](./modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md) |
 | **Storage** | Multi-Storage Polymorphic & Vercel Free Bypass (Presigned, 2MB GridFS) | [`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`](./modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md) |
@@ -127,21 +170,6 @@ Before designing or implementing any subsystem, the agent **MUST read the canoni
 
 ---
 
-### Phase 5: Verification, Quality Gate & Synchronization
-Before marking any task, sprint, or PR as complete:
-1. Execute the **7-Tier Universal Verification Lifecycle** per [`rules/TESTING_AND_VERIFICATION.md`](./rules/TESTING_AND_VERIFICATION.md):
-   - Tier 1: Static TypeScript Gate (`npx tsc --noEmit` & `npm run build` exit code 0).
-   - Tier 2: Adversarial "Brainless User" Chaos Testing.
-   - Tier 3: API Contracts & DB Mutation Fidelity.
-   - Tier 4: Single Source of Truth & Context Law (zero direct component API calls).
-   - Tier 5: Line-by-Line Algorithmic Audit & Dead Code Purge.
-   - Tier 6: UI Copywriting & UX Predictability (no technical leaks).
-   - Tier 7: Visual, Responsive, Theme & 60 FPS Animations.
-2. Synchronize the repository's root [`FILE-MAP.md`](./FILE-MAP.md) to record all verified entry points, routes, and execution flows.
-3. Mark completed items in `.project/SPRINTS.md` with concrete verification evidence.
-
----
-
 ## ⚡ Non-Negotiable Engineering Guardrails
 
 1. **The Zero-Regression & Anti-Bloat Law ("Cheezain Tore Baghair Kaam Karna")**: Never modify existing working code blindly. Always trace imports, models, and routes first. Additive-only changes; never rename/delete existing exports without migration. Strictly forbid duplicate utility functions or redundant npm packages (`fetch` vs `axios`, `date-fns` vs `moment`).
@@ -152,3 +180,4 @@ Before marking any task, sprint, or PR as complete:
 6. **Direct-to-Storage Presigned Uploads**: Bypass Vercel Free plan's 4.5MB limit by streaming large files directly to cloud storage buckets or using 2MB chunked GridFS streaming.
 7. **Low-Bandwidth 5-Pillar Speed**: Auto-transcode uploads to WebP/AVIF with 20-char BlurHash LQIP, stream RSC shells in < 50ms, prune MongoDB listing payloads by 90%, and auto-downgrade heavy 3D/video assets on slow 2G/Save-Data.
 8. **Strict Zero-Demo Security & Inter-Auth Navigation Ergonomics**: All authentication views (`/login`, `/signup`, `/forgot-password`, `/reset-password`) must NEVER include pre-filled demo accounts or "Click to login as Admin/Owner" demo buttons. Form input states must initialize to clean empty strings (`""`). Additionally, ensure full bidirectional navigation ergonomics: `/login` must feature a right-aligned "Forgot password?" link adjacent to the password input label and a bottom-card "Don't have an account? Sign up" link; `/signup` must feature an "Already have an account? Log in" footer link; and password recovery views must feature a "← Back to log in" link per [`modules/AUTH_AND_FACELOCK.md`](./modules/AUTH_AND_FACELOCK.md).
+9. **Autonomous Retrofit & 95%+ Audit Mandate**: When instructed to complete, upgrade, or modernize an existing website, the agent is strictly forbidden from doing partial cosmetic work or stopping prematurely. The agent must execute the 6-stage protocol in [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md), refactor all screens with modern motion physics and glass depth, and verify compliance via `node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .`. Completion is only permitted when the audit exits with Code 0 (Score >= 95%).

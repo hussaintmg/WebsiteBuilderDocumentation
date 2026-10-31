@@ -555,3 +555,4 @@ export function SortableColumnHeader({ columnKey, label, initialDirection = "NON
 - [x] **Zero Out-of-Order Race Conditions**: Previous requests are cancelled via `AbortController` before the settled request fires.
 - [x] **Automatic Error Rollback**: If the settled server request fails, the hook automatically rolls back to the last confirmed server value.
 - [x] **Universal Portability**: Identical hook powers Pagination, Cart Quantity, Slides, Zoom, Sorts, and Like Bursts.
+

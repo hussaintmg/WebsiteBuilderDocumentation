@@ -71,6 +71,7 @@ The agent must generate `PLAN.md` using the following standardized layout:
 | **Multi-Storage Polymorphic Media Engine** | [Enabled/Disabled] | Heterogeneous storage (Local, Vercel Blob, Supabase, Firebase, S3/R2, GridFS), presigned uploads, 2MB chunked GridFS streaming for Vercel Free plan, polymorphic `<UnifiedMedia />` resolver (`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`) |
 | **Low-Bandwidth & Extreme Performance Engine** | **Mandatory** | 5 Pillars of Low-Bandwidth Speed: Adaptive WebP/AVIF images with BlurHash LQIP, React Server Component streaming (<50ms TTFB), MongoDB projection pruning, IndexedDB offline-first SWR cache, and 80KB JS budget (`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`) |
 | **Optimistic Rapid-Click Batching Engine** | **Mandatory** | 0ms local optimistic UI updates with 300ms settling debounce & AbortController cancellation for pagination, cart quantity steppers, slide carousels, like bursts, and tri-state sorting (`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`) |
+| **Existing Project Retrofit Engine** | [Enabled/Disabled] | 6-stage autonomous retrofit, packages harmonization, motion physics, glass depth, and 95%+ audit gate (`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`) |
 
 ## 4. Acceptance Criteria & Success Metrics
 - [ ] Users can authenticate via configured auth methods.
@@ -78,6 +79,7 @@ The agent must generate `PLAN.md` using the following standardized layout:
 - [ ] Strict role-based permissions prevent unauthorized page visits and button actions.
 - [ ] All forms feature robust validation with clear, responsive error toasts.
 - [ ] Zero layout shifts, high aesthetic standard (curated typography, dark mode, smooth transitions).
+- [ ] Codebase achieves >= 95% compliance score on the automated audit engine (`node <skill-path>/scripts/audit-engine.js .`).
 - [ ] Production build passes with zero lint, type, or runtime errors.
 ```
 
@@ -234,6 +236,7 @@ The agent must structure the implementation plan following the **6-Phase Non-Bre
   - [ ] Tier 5: Verify zero leaked backend technical jargon on UI
   - [ ] Tier 6: Verify 60 FPS animations and multi-viewport layout
   - [ ] Tier 7: Perform Principal Code Review using 8-point inspection checklist
+  - [ ] Execute Automated Audit Engine (`node <skill-path>/scripts/audit-engine.js .`) and achieve >= 95% compliance score (Exit Code 0)
   - [ ] Verification Gate: Fresh terminal output evidence recorded; final build signed off
 ```
 
