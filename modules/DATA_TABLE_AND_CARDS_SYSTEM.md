@@ -750,8 +750,12 @@ export const ProgramManagementView: React.FC = () => {
         />
       )}
 
-      {/* 4. Canvas Dustbin Portal (Emerges from right viewport edge during deletion) */}
-      <DustbinPortal isActive={isDustbinActive} itemCount={animatingDeleteIds.length} />
+      {/* 4. Screen-Level Apple Genie Trash Bin Portal (Emerges from right viewport edge during deletion) */}
+      <GenieTrashBinPortal
+        isActive={isDustbinActive}
+        items={animatingDeleteSnapshots}
+        onAnimationComplete={handleGenieAnimationComplete}
+      />
 
       {/* 5. Delete Confirmation Modal with In-Modal Task Animation */}
       <DeleteConfirmationModal
@@ -769,7 +773,8 @@ export const ProgramManagementView: React.FC = () => {
 
 ### 10.2 Architectural Benefits & Deletion Synchronization:
 1. **Single Source of Truth**: Both the Desktop Table and Mobile Card views subscribe to the same `programs` array in memory.
-2. **Coordinated Physical Deletion**: Clicking delete opens `<DeleteConfirmationModal />`. On confirm, the modal's button loops its task animation. Upon API confirmation, the Success Toast fires, the modal dismisses, the right-side **Dustbin emerges**, and the selected rows/cards **fold like fabric** into the dustbin before being removed from the context array.
-3. **Immediate In-Place Re-Rendering**: When the dustbin lid snaps shut, `ProgramContext` mutates its state immutably (`setPrograms`). **Both table rows and mobile cards vanish, and remaining items glide into position via Framer Motion FLIP (`layout`) with ZERO page reloading**.
-4. **No Redundant Fetching**: Switching views, opening detail drawers, or navigating between tabs reuses the existing context state without firing repeated API calls. Subsequent new records created or fetched immediately reflect in this same array.
+2. **Screen-Coordinate Elevation**: To bypass the table's `overflow: hidden` and `overflow-x: auto` boundary clipping, deleting rows/cards are elevated into a fixed Screen-Level Portal (`fixed inset-0 z-[99999]`) via `getBoundingClientRect()`.
+3. **Coordinated Physical Deletion**: Clicking delete opens `<DeleteConfirmationModal />`. On confirm, the modal's button loops its task animation. Upon API confirmation, the Success Toast fires, the modal dismisses, the right-side **Genie Trash Bin rushes in from the screen edge with spring kinetic velocity**, its motorized lid swings open (`rotate: -55deg`), and the elevated rows/cards **execute a 3D vacuum squeeze (`scaleX: 0.1, rotateX: 65deg`) directly into the glowing bin aperture** per [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](../design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
+4. **Immediate In-Place Re-Rendering**: When the bin lid slams shut with elastic bounce, `ProgramContext` mutates its state immutably (`setPrograms`). **Both table rows and mobile cards vanish, and remaining items glide up into position via Framer Motion FLIP (`layout`) with ZERO page reloading**.
+5. **No Redundant Fetching**: Switching views, opening detail drawers, or navigating between tabs reuses the existing context state without firing repeated API calls. Subsequent new records created or fetched immediately reflect in this same array.
 

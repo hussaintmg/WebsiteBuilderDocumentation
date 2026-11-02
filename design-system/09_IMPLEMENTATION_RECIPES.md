@@ -21,6 +21,7 @@
 7. [Recipe 7: Pure CSS Scroll Progress Bar (Zero-JS ScrollTimeline)](#recipe-7-pure-css-scroll-progress-bar-zero-js-scrolltimeline)
 8. [Recipe 8: Universal Apple Genie Modal & Origin Morph System (`AppleGenieModal.tsx`)](#recipe-8-universal-apple-genie-modal--origin-morph-system)
 9. [Recipe 9: Production Three.js 3D Model Viewer & Parts Inspector Studio](#recipe-9-production-threejs-3d-model-viewer--parts-inspector-studio)
+10. [Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System (GenieTrashBinPortal.tsx & useGenieTrashDelete.ts)](#recipe-10-screen-level-apple-genie-trash-bin--3d-vacuum-deletion-system)
 
 ---
 

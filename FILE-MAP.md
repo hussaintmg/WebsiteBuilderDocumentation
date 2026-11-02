@@ -60,6 +60,7 @@
   - `design-system/DESIGN_ARCHITECTURE.md`: Master design tokens, typography, layout architecture, dark mode palette.
   - `design-system/FRONTEND_DESIGN_RULES.md`: Core UI laws (floating label inputs, resizable sidebar, zero-bar dialogs).
   - `design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`: Apple macOS 3D Genie Origin-Morph unrolling animation & zero-bar draggable dialogs.
+  - `design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`: Screen-level Genie Trash Bin, portal coordinate elevation, 3D vacuum siphon drop & layout glide-up.
   - `design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`: Three.js model viewer, GLTF loader, parts audit studio.
   - `design-system/01_CSS_PROPERTIES_REFERENCE.md` through `07_WEBSITE_DESIGN_PATTERNS.md`: Modern CSS clamp math, visual effects, components, cards, animations, sections, and patterns.
   - `design-system/09_IMPLEMENTATION_RECIPES.md` & `10_SEARCHABLE_INDEX.md`: Production React/Tailwind recipes and searchable index.
@@ -155,6 +156,7 @@
 | `design-system/DESIGN_ARCHITECTURE.md` | Tokens | Typography, color palette, viewport layout rules | Visual Foundations | Verified |
 | `design-system/FRONTEND_DESIGN_RULES.md` | UI Rules | Floating inputs, resizable dvh sidebar, theme rules | Core UI Mechanics | Verified |
 | `design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md` | Animation | 3D Genie Origin-Morph unroll & zero-bar draggable dialogs | Modal Windows | Verified |
+| `design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md` | Animation | Screen-level Genie Trash Bin, portal elevation, 3D vacuum drop | Deletion Physics | Verified |
 | `design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md` | 3D Graphics | Three.js GLTF model viewer and inspection studio | 3D Interactive UI | Verified |
 | `design-system/01_CSS_PROPERTIES_REFERENCE.md` | Reference | Modern CSS properties, clamp math, layout reference | Styling | Verified |
 | `design-system/02_VISUAL_EFFECTS_CATALOGUE.md` | Effects | Glass, neumorphism, aurora, spotlight effects | Visual Polish | Verified |

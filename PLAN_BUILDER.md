@@ -72,6 +72,7 @@ The agent must generate `PLAN.md` using the following standardized layout:
 | **Low-Bandwidth & Extreme Performance Engine** | **Mandatory** | 5 Pillars of Low-Bandwidth Speed: Adaptive WebP/AVIF images with BlurHash LQIP, React Server Component streaming (<50ms TTFB), MongoDB projection pruning, IndexedDB offline-first SWR cache, and 80KB JS budget (`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`) |
 | **Optimistic Rapid-Click Batching Engine** | **Mandatory** | 0ms local optimistic UI updates with 300ms settling debounce & AbortController cancellation for pagination, cart quantity steppers, slide carousels, like bursts, and tri-state sorting (`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`) |
 | **Existing Project Retrofit Engine** | [Enabled/Disabled] | 6-stage autonomous retrofit, packages harmonization, motion physics, glass depth, and 95%+ audit gate (`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`) |
+| **Screen-Level Genie Trash Bin Deletion** | [Enabled/Disabled] | Kinetic right-edge bin entrance, screen portal elevation via getBoundingClientRect, 3D vacuum siphon drop, and layout glide re-flow (`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`) |
 
 ## 4. Acceptance Criteria & Success Metrics
 - [ ] Users can authenticate via configured auth methods.

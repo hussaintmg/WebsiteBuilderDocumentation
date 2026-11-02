@@ -48,6 +48,7 @@ const sections = [
       'design-system/DESIGN_ARCHITECTURE.md',
       'design-system/FRONTEND_DESIGN_RULES.md',
       'design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md',
+      'design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md',
       'design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md',
       'design-system/01_CSS_PROPERTIES_REFERENCE.md',
       'design-system/02_VISUAL_EFFECTS_CATALOGUE.md',
@@ -158,3 +159,4 @@ console.log(`${bold}${green}✔ Successfully compiled Master Brain!${reset}`);
 console.log(`  Output Path: ${outputFile}`);
 console.log(`  Total Files Ingested: ${fileCount}`);
 console.log(`  Total Size: ${sizeMB} MB (${lineCount} lines)`);
+

@@ -322,6 +322,17 @@ async function runAudit() {
     'Implement adaptive WebP/AVIF and BlurHash LQIP per modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md'
   );
 
+  // Check Screen-Level Apple Genie Trash Bin Deletion
+  let hasGenieTrash = /GenieTrashBinPortal|useGenieTrashDelete|DustbinPortal|createPortal.*Trash/i.test(allCodeContent);
+  evaluateCheck(
+    'Skill Modules',
+    'Screen-Level Apple Genie Trash Bin Deletion System',
+    5,
+    hasGenieTrash,
+    hasGenieTrash ? 'Screen-level Genie Trash Bin and vacuum siphon detected' : 'Standard instant table/card row removal without screen portal',
+    'Implement GenieTrashBinPortal with screen coordinates elevation per design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md'
+  );
+
   // --------------------------------------------------------------------------
   // SUITE 5: UI/UX EXCELLENCE, ANIMATIONS & GLASS DEPTH
   // --------------------------------------------------------------------------
