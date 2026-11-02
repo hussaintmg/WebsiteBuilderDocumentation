@@ -588,3 +588,4 @@ export function OrdersTable({ orders, onDeleteOrder }: { orders: any[]; onDelete
   );
 }
 ```
+

@@ -5254,6 +5254,7 @@ export function OrdersTable({ orders, onDeleteOrder }: { orders: any[]; onDelete
 ```
 
 
+
 ---
 
 
@@ -10546,6 +10547,7 @@ Every archetype in this catalogue documents:
 8. [Recipe 8: Universal Apple Genie Modal & Origin Morph System (`AppleGenieModal.tsx`)](#recipe-8-universal-apple-genie-modal--origin-morph-system)
 9. [Recipe 9: Production Three.js 3D Model Viewer & Parts Inspector Studio](#recipe-9-production-threejs-3d-model-viewer--parts-inspector-studio)
 10. [Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System (GenieTrashBinPortal.tsx & useGenieTrashDelete.ts)](#recipe-10-screen-level-apple-genie-trash-bin--3d-vacuum-deletion-system)
+10. [Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System (`GenieTrashBinPortal.tsx` & `useGenieTrashDelete.ts`)](#recipe-10-screen-level-apple-genie-trash-bin--3d-vacuum-deletion-system)
 
 ---
 
@@ -10618,6 +10620,288 @@ export function FloatingInput({
 
 ---
 
+## Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System
+
+### Overview & Mechanics
+- **Components**: `GenieTrashBinPortal.tsx` + `useGenieTrashDelete.ts`
+- **Technique**: Screen-level elevation via `createPortal` to escape table/card `overflow: hidden` containers. Kinetic entrance spring from right viewport edge (`x: 260 -> 0`).
+- **Genie Vacuum Physics**: Cloned rows/cards deform (`scaleX: 0.12`, `scaleY: 0.05`, `rotateX: 65deg`, `rotateZ: 15deg`) and are sucked directly into the open mouth of the trash bin.
+- **Physical Impact**: Hinged motorized lid pops open (`rotate: -55deg`), slams shut with elastic bounce (`rotate: 0deg, y: [0, 6, -2, 0]`), and pulses a count pill (`"-N Deleted"`).
+- **Master Documentation**: [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
+
+### Complete Copy-Paste Code:
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trash2 } from 'lucide-react';
+
+export interface DeletingItemSnapshot {
+  id: string;
+  rect: DOMRect;
+  renderPreview: () => React.ReactNode;
+}
+
+export interface GenieTrashBinPortalProps {
+  isActive: boolean;
+  items: DeletingItemSnapshot[];
+  onAnimationComplete: () => void;
+}
+
+export function GenieTrashBinPortal({
+  isActive,
+  items,
+  onAnimationComplete
+}: GenieTrashBinPortalProps) {
+  const [mounted, setMounted] = useState(false);
+  const [phase, setPhase] = useState<'ENTERING' | 'OPEN' | 'SIPHONING' | 'SLAM' | 'EXITING'>('ENTERING');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isActive || items.length === 0) {
+      setPhase('ENTERING');
+      return;
+    }
+
+    const t1 = setTimeout(() => setPhase('OPEN'), 280);
+    const t2 = setTimeout(() => setPhase('SIPHONING'), 450);
+    const t3 = setTimeout(() => setPhase('SLAM'), 950);
+    const t4 = setTimeout(() => setPhase('EXITING'), 1500);
+    const t5 = setTimeout(() => onAnimationComplete(), 1850);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
+  }, [isActive, items, onAnimationComplete]);
+
+  if (!mounted || !isActive) return null;
+
+  const targetX = typeof window !== 'undefined' ? window.innerWidth - 140 : 1200;
+  const targetY = typeof window !== 'undefined' ? window.innerHeight - 180 : 700;
+
+  return createPortal(
+    <div className="fixed inset-0 pointer-events-none z-[99999] overflow-hidden">
+      {/* 1. Flying Elevated Clones in Screen Coordinate Space */}
+      <AnimatePresence>
+        {phase === 'SIPHONING' &&
+          items.map((item, index) => {
+            const startX = item.rect.left;
+            const startY = item.rect.top;
+            const deltaX = targetX - startX;
+
+            return (
+              <motion.div
+                key={item.id}
+                initial={{
+                  x: startX,
+                  y: startY,
+                  width: item.rect.width,
+                  height: item.rect.height,
+                  scale: 1,
+                  opacity: 0.95,
+                  rotateX: 0,
+                  rotateZ: 0
+                }}
+                animate={{
+                  x: [startX, startX + deltaX * 0.6, targetX],
+                  y: [startY, startY - 40, targetY],
+                  scaleX: [1, 0.6, 0.12],
+                  scaleY: [1, 0.4, 0.05],
+                  rotateX: [0, 30, 65],
+                  rotateZ: [0, -8, 15],
+                  opacity: [0.95, 0.85, 0]
+                }}
+                transition={{
+                  duration: 0.52,
+                  delay: index * 0.08,
+                  ease: [0.35, 0.05, 0.85, 0.95]
+                }}
+                style={{
+                  position: 'fixed',
+                  left: 0,
+                  top: 0,
+                  transformOrigin: 'center bottom',
+                  boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(239, 68, 68, 0.25)'
+                }}
+                className="rounded-xl border border-rose-500/40 bg-neutral-900/90 backdrop-blur-xl overflow-hidden pointer-events-none"
+              >
+                {item.renderPreview()}
+              </motion.div>
+            );
+          })}
+      </AnimatePresence>
+
+      {/* 2. Animated Kinetic Trash Bin (Rushes from right screen edge) */}
+      <motion.div
+        initial={{ x: 260, y: targetY, opacity: 0, rotate: 14 }}
+        animate={
+          phase === 'EXITING'
+            ? { x: 280, opacity: 0, rotate: 10 }
+            : {
+                x: targetX - 30,
+                y: phase === 'SLAM' ? [targetY, targetY + 6, targetY - 2, targetY] : targetY,
+                opacity: 1,
+                rotate: 0
+              }
+        }
+        transition={{
+          type: 'spring',
+          stiffness: 260,
+          damping: 20
+        }}
+        className="fixed left-0 top-0 pointer-events-auto flex flex-col items-center select-none"
+      >
+        {/* Count Pill */}
+        <AnimatePresence>
+          {(phase === 'SIPHONING' || phase === 'SLAM') && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.8 }}
+              animate={{ opacity: 1, y: -12, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.8 }}
+              className="mb-2 flex items-center gap-1.5 rounded-full border border-rose-500/40 bg-rose-500/20 px-3 py-0.5 text-xs font-bold text-rose-300 backdrop-blur-md shadow-lg shadow-rose-500/20"
+            >
+              <Trash2 className="h-3 w-3 text-rose-400" />
+              <span>-{items.length} Deleted</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Can Container */}
+        <div className="relative flex flex-col items-center">
+          {/* Motorized Hinged Lid */}
+          <motion.div
+            style={{ transformOrigin: 'bottom right' }}
+            animate={
+              phase === 'OPEN' || phase === 'SIPHONING'
+                ? { rotate: -55, y: -8, x: -4 }
+                : { rotate: 0, y: 0, x: 0 }
+            }
+            transition={{
+              type: 'spring',
+              stiffness: 450,
+              damping: 16
+            }}
+            className="z-20 h-4 w-24 rounded-t-lg border border-white/20 bg-gradient-to-b from-neutral-700 to-neutral-800 shadow-md"
+          >
+            <div className="mx-auto h-1.5 w-6 -translate-y-1.5 rounded-t-md bg-neutral-600 border-t border-white/20" />
+          </motion.div>
+
+          {/* Siphon Vortex Portal Glow (Inside Opening) */}
+          <div className="relative -mt-1 h-28 w-20 rounded-b-2xl border border-white/15 bg-gradient-to-b from-neutral-800/95 via-neutral-900/95 to-black/95 p-2 backdrop-blur-2xl shadow-2xl shadow-black/80 flex flex-col items-center justify-between">
+            <div
+              className={`absolute inset-x-2 top-0 h-4 rounded-full transition-all duration-300 ${
+                phase === 'OPEN' || phase === 'SIPHONING'
+                  ? 'bg-cyan-500/40 blur-sm shadow-[0_0_18px_rgba(34,211,238,0.7)]'
+                  : 'bg-transparent'
+              }`}
+            />
+
+            <div className="my-auto flex flex-col items-center justify-center gap-1 text-neutral-500">
+              <motion.div
+                animate={
+                  phase === 'SIPHONING'
+                    ? { rotate: 360, scale: [1, 1.2, 1] }
+                    : { rotate: 0, scale: 1 }
+                }
+                transition={{ duration: 1.5, repeat: phase === 'SIPHONING' ? Infinity : 0, ease: 'linear' }}
+              >
+                <Trash2
+                  className={`h-7 w-7 transition-colors duration-300 ${
+                    phase === 'SIPHONING'
+                      ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]'
+                      : 'text-neutral-500'
+                  }`}
+                />
+              </motion.div>
+              <span className="text-[9px] font-mono tracking-widest uppercase text-neutral-400">
+                VACUUM
+              </span>
+            </div>
+
+            <div className="flex w-full justify-around px-1 opacity-25">
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>,
+    document.body
+  );
+}
+
+export function useGenieTrashDelete() {
+  const [isActive, setIsActive] = useState(false);
+  const [snapshots, setSnapshots] = useState<DeletingItemSnapshot[]>([]);
+  const [pendingIds, setPendingIds] = useState<string[]>([]);
+  const [completionResolver, setCompletionResolver] = useState<(() => void) | null>(null);
+
+  const triggerGenieDelete = useCallback(
+    (
+      items: { id: string; element?: HTMLElement | null; previewNode?: React.ReactNode }[],
+      onSettled: (deletedIds: string[]) => void | Promise<void>
+    ) => {
+      const ids = items.map((i) => i.id);
+      setPendingIds(ids);
+
+      const capturedSnapshots: DeletingItemSnapshot[] = items
+        .map((item) => {
+          if (!item.element) return null;
+          const rect = item.element.getBoundingClientRect();
+          return {
+            id: item.id,
+            rect,
+            renderPreview: () => item.previewNode || <div className="p-4 text-xs font-medium text-white">{item.id}</div>
+          };
+        })
+        .filter(Boolean) as DeletingItemSnapshot[];
+
+      setSnapshots(capturedSnapshots);
+      setIsActive(true);
+
+      return new Promise<void>((resolve) => {
+        setCompletionResolver(() => async () => {
+          await onSettled(ids);
+          setIsActive(false);
+          setSnapshots([]);
+          setPendingIds([]);
+          resolve();
+        });
+      });
+    },
+    []
+  );
+
+  const handleAnimationComplete = useCallback(() => {
+    if (completionResolver) {
+      completionResolver();
+      setCompletionResolver(null);
+    }
+  }, [completionResolver]);
+
+  return {
+    isActive,
+    snapshots,
+    pendingIds,
+    triggerGenieDelete,
+    handleAnimationComplete
+  };
+}
+```
+
+---
+
 ## Recipe 2: Cursor-Tracking Spotlight Card with Radial Illumination
 
 ### Overview & Mechanics
@@ -10682,6 +10966,288 @@ export function SpotlightCard({
 
 ---
 
+## Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System
+
+### Overview & Mechanics
+- **Components**: `GenieTrashBinPortal.tsx` + `useGenieTrashDelete.ts`
+- **Technique**: Screen-level elevation via `createPortal` to escape table/card `overflow: hidden` containers. Kinetic entrance spring from right viewport edge (`x: 260 -> 0`).
+- **Genie Vacuum Physics**: Cloned rows/cards deform (`scaleX: 0.12`, `scaleY: 0.05`, `rotateX: 65deg`, `rotateZ: 15deg`) and are sucked directly into the open mouth of the trash bin.
+- **Physical Impact**: Hinged motorized lid pops open (`rotate: -55deg`), slams shut with elastic bounce (`rotate: 0deg, y: [0, 6, -2, 0]`), and pulses a count pill (`"-N Deleted"`).
+- **Master Documentation**: [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
+
+### Complete Copy-Paste Code:
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trash2 } from 'lucide-react';
+
+export interface DeletingItemSnapshot {
+  id: string;
+  rect: DOMRect;
+  renderPreview: () => React.ReactNode;
+}
+
+export interface GenieTrashBinPortalProps {
+  isActive: boolean;
+  items: DeletingItemSnapshot[];
+  onAnimationComplete: () => void;
+}
+
+export function GenieTrashBinPortal({
+  isActive,
+  items,
+  onAnimationComplete
+}: GenieTrashBinPortalProps) {
+  const [mounted, setMounted] = useState(false);
+  const [phase, setPhase] = useState<'ENTERING' | 'OPEN' | 'SIPHONING' | 'SLAM' | 'EXITING'>('ENTERING');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isActive || items.length === 0) {
+      setPhase('ENTERING');
+      return;
+    }
+
+    const t1 = setTimeout(() => setPhase('OPEN'), 280);
+    const t2 = setTimeout(() => setPhase('SIPHONING'), 450);
+    const t3 = setTimeout(() => setPhase('SLAM'), 950);
+    const t4 = setTimeout(() => setPhase('EXITING'), 1500);
+    const t5 = setTimeout(() => onAnimationComplete(), 1850);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
+  }, [isActive, items, onAnimationComplete]);
+
+  if (!mounted || !isActive) return null;
+
+  const targetX = typeof window !== 'undefined' ? window.innerWidth - 140 : 1200;
+  const targetY = typeof window !== 'undefined' ? window.innerHeight - 180 : 700;
+
+  return createPortal(
+    <div className="fixed inset-0 pointer-events-none z-[99999] overflow-hidden">
+      {/* 1. Flying Elevated Clones in Screen Coordinate Space */}
+      <AnimatePresence>
+        {phase === 'SIPHONING' &&
+          items.map((item, index) => {
+            const startX = item.rect.left;
+            const startY = item.rect.top;
+            const deltaX = targetX - startX;
+
+            return (
+              <motion.div
+                key={item.id}
+                initial={{
+                  x: startX,
+                  y: startY,
+                  width: item.rect.width,
+                  height: item.rect.height,
+                  scale: 1,
+                  opacity: 0.95,
+                  rotateX: 0,
+                  rotateZ: 0
+                }}
+                animate={{
+                  x: [startX, startX + deltaX * 0.6, targetX],
+                  y: [startY, startY - 40, targetY],
+                  scaleX: [1, 0.6, 0.12],
+                  scaleY: [1, 0.4, 0.05],
+                  rotateX: [0, 30, 65],
+                  rotateZ: [0, -8, 15],
+                  opacity: [0.95, 0.85, 0]
+                }}
+                transition={{
+                  duration: 0.52,
+                  delay: index * 0.08,
+                  ease: [0.35, 0.05, 0.85, 0.95]
+                }}
+                style={{
+                  position: 'fixed',
+                  left: 0,
+                  top: 0,
+                  transformOrigin: 'center bottom',
+                  boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(239, 68, 68, 0.25)'
+                }}
+                className="rounded-xl border border-rose-500/40 bg-neutral-900/90 backdrop-blur-xl overflow-hidden pointer-events-none"
+              >
+                {item.renderPreview()}
+              </motion.div>
+            );
+          })}
+      </AnimatePresence>
+
+      {/* 2. Animated Kinetic Trash Bin (Rushes from right screen edge) */}
+      <motion.div
+        initial={{ x: 260, y: targetY, opacity: 0, rotate: 14 }}
+        animate={
+          phase === 'EXITING'
+            ? { x: 280, opacity: 0, rotate: 10 }
+            : {
+                x: targetX - 30,
+                y: phase === 'SLAM' ? [targetY, targetY + 6, targetY - 2, targetY] : targetY,
+                opacity: 1,
+                rotate: 0
+              }
+        }
+        transition={{
+          type: 'spring',
+          stiffness: 260,
+          damping: 20
+        }}
+        className="fixed left-0 top-0 pointer-events-auto flex flex-col items-center select-none"
+      >
+        {/* Count Pill */}
+        <AnimatePresence>
+          {(phase === 'SIPHONING' || phase === 'SLAM') && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.8 }}
+              animate={{ opacity: 1, y: -12, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.8 }}
+              className="mb-2 flex items-center gap-1.5 rounded-full border border-rose-500/40 bg-rose-500/20 px-3 py-0.5 text-xs font-bold text-rose-300 backdrop-blur-md shadow-lg shadow-rose-500/20"
+            >
+              <Trash2 className="h-3 w-3 text-rose-400" />
+              <span>-{items.length} Deleted</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Can Container */}
+        <div className="relative flex flex-col items-center">
+          {/* Motorized Hinged Lid */}
+          <motion.div
+            style={{ transformOrigin: 'bottom right' }}
+            animate={
+              phase === 'OPEN' || phase === 'SIPHONING'
+                ? { rotate: -55, y: -8, x: -4 }
+                : { rotate: 0, y: 0, x: 0 }
+            }
+            transition={{
+              type: 'spring',
+              stiffness: 450,
+              damping: 16
+            }}
+            className="z-20 h-4 w-24 rounded-t-lg border border-white/20 bg-gradient-to-b from-neutral-700 to-neutral-800 shadow-md"
+          >
+            <div className="mx-auto h-1.5 w-6 -translate-y-1.5 rounded-t-md bg-neutral-600 border-t border-white/20" />
+          </motion.div>
+
+          {/* Siphon Vortex Portal Glow (Inside Opening) */}
+          <div className="relative -mt-1 h-28 w-20 rounded-b-2xl border border-white/15 bg-gradient-to-b from-neutral-800/95 via-neutral-900/95 to-black/95 p-2 backdrop-blur-2xl shadow-2xl shadow-black/80 flex flex-col items-center justify-between">
+            <div
+              className={`absolute inset-x-2 top-0 h-4 rounded-full transition-all duration-300 ${
+                phase === 'OPEN' || phase === 'SIPHONING'
+                  ? 'bg-cyan-500/40 blur-sm shadow-[0_0_18px_rgba(34,211,238,0.7)]'
+                  : 'bg-transparent'
+              }`}
+            />
+
+            <div className="my-auto flex flex-col items-center justify-center gap-1 text-neutral-500">
+              <motion.div
+                animate={
+                  phase === 'SIPHONING'
+                    ? { rotate: 360, scale: [1, 1.2, 1] }
+                    : { rotate: 0, scale: 1 }
+                }
+                transition={{ duration: 1.5, repeat: phase === 'SIPHONING' ? Infinity : 0, ease: 'linear' }}
+              >
+                <Trash2
+                  className={`h-7 w-7 transition-colors duration-300 ${
+                    phase === 'SIPHONING'
+                      ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]'
+                      : 'text-neutral-500'
+                  }`}
+                />
+              </motion.div>
+              <span className="text-[9px] font-mono tracking-widest uppercase text-neutral-400">
+                VACUUM
+              </span>
+            </div>
+
+            <div className="flex w-full justify-around px-1 opacity-25">
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>,
+    document.body
+  );
+}
+
+export function useGenieTrashDelete() {
+  const [isActive, setIsActive] = useState(false);
+  const [snapshots, setSnapshots] = useState<DeletingItemSnapshot[]>([]);
+  const [pendingIds, setPendingIds] = useState<string[]>([]);
+  const [completionResolver, setCompletionResolver] = useState<(() => void) | null>(null);
+
+  const triggerGenieDelete = useCallback(
+    (
+      items: { id: string; element?: HTMLElement | null; previewNode?: React.ReactNode }[],
+      onSettled: (deletedIds: string[]) => void | Promise<void>
+    ) => {
+      const ids = items.map((i) => i.id);
+      setPendingIds(ids);
+
+      const capturedSnapshots: DeletingItemSnapshot[] = items
+        .map((item) => {
+          if (!item.element) return null;
+          const rect = item.element.getBoundingClientRect();
+          return {
+            id: item.id,
+            rect,
+            renderPreview: () => item.previewNode || <div className="p-4 text-xs font-medium text-white">{item.id}</div>
+          };
+        })
+        .filter(Boolean) as DeletingItemSnapshot[];
+
+      setSnapshots(capturedSnapshots);
+      setIsActive(true);
+
+      return new Promise<void>((resolve) => {
+        setCompletionResolver(() => async () => {
+          await onSettled(ids);
+          setIsActive(false);
+          setSnapshots([]);
+          setPendingIds([]);
+          resolve();
+        });
+      });
+    },
+    []
+  );
+
+  const handleAnimationComplete = useCallback(() => {
+    if (completionResolver) {
+      completionResolver();
+      setCompletionResolver(null);
+    }
+  }, [completionResolver]);
+
+  return {
+    isActive,
+    snapshots,
+    pendingIds,
+    triggerGenieDelete,
+    handleAnimationComplete
+  };
+}
+```
+
+---
+
 ## Recipe 3: Specular 3D Perspective Tilt Card
 
 ### Overview & Mechanics
@@ -10739,6 +11305,288 @@ export function TiltCard3D({
       {children}
     </div>
   );
+}
+```
+
+---
+
+## Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System
+
+### Overview & Mechanics
+- **Components**: `GenieTrashBinPortal.tsx` + `useGenieTrashDelete.ts`
+- **Technique**: Screen-level elevation via `createPortal` to escape table/card `overflow: hidden` containers. Kinetic entrance spring from right viewport edge (`x: 260 -> 0`).
+- **Genie Vacuum Physics**: Cloned rows/cards deform (`scaleX: 0.12`, `scaleY: 0.05`, `rotateX: 65deg`, `rotateZ: 15deg`) and are sucked directly into the open mouth of the trash bin.
+- **Physical Impact**: Hinged motorized lid pops open (`rotate: -55deg`), slams shut with elastic bounce (`rotate: 0deg, y: [0, 6, -2, 0]`), and pulses a count pill (`"-N Deleted"`).
+- **Master Documentation**: [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
+
+### Complete Copy-Paste Code:
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trash2 } from 'lucide-react';
+
+export interface DeletingItemSnapshot {
+  id: string;
+  rect: DOMRect;
+  renderPreview: () => React.ReactNode;
+}
+
+export interface GenieTrashBinPortalProps {
+  isActive: boolean;
+  items: DeletingItemSnapshot[];
+  onAnimationComplete: () => void;
+}
+
+export function GenieTrashBinPortal({
+  isActive,
+  items,
+  onAnimationComplete
+}: GenieTrashBinPortalProps) {
+  const [mounted, setMounted] = useState(false);
+  const [phase, setPhase] = useState<'ENTERING' | 'OPEN' | 'SIPHONING' | 'SLAM' | 'EXITING'>('ENTERING');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isActive || items.length === 0) {
+      setPhase('ENTERING');
+      return;
+    }
+
+    const t1 = setTimeout(() => setPhase('OPEN'), 280);
+    const t2 = setTimeout(() => setPhase('SIPHONING'), 450);
+    const t3 = setTimeout(() => setPhase('SLAM'), 950);
+    const t4 = setTimeout(() => setPhase('EXITING'), 1500);
+    const t5 = setTimeout(() => onAnimationComplete(), 1850);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
+  }, [isActive, items, onAnimationComplete]);
+
+  if (!mounted || !isActive) return null;
+
+  const targetX = typeof window !== 'undefined' ? window.innerWidth - 140 : 1200;
+  const targetY = typeof window !== 'undefined' ? window.innerHeight - 180 : 700;
+
+  return createPortal(
+    <div className="fixed inset-0 pointer-events-none z-[99999] overflow-hidden">
+      {/* 1. Flying Elevated Clones in Screen Coordinate Space */}
+      <AnimatePresence>
+        {phase === 'SIPHONING' &&
+          items.map((item, index) => {
+            const startX = item.rect.left;
+            const startY = item.rect.top;
+            const deltaX = targetX - startX;
+
+            return (
+              <motion.div
+                key={item.id}
+                initial={{
+                  x: startX,
+                  y: startY,
+                  width: item.rect.width,
+                  height: item.rect.height,
+                  scale: 1,
+                  opacity: 0.95,
+                  rotateX: 0,
+                  rotateZ: 0
+                }}
+                animate={{
+                  x: [startX, startX + deltaX * 0.6, targetX],
+                  y: [startY, startY - 40, targetY],
+                  scaleX: [1, 0.6, 0.12],
+                  scaleY: [1, 0.4, 0.05],
+                  rotateX: [0, 30, 65],
+                  rotateZ: [0, -8, 15],
+                  opacity: [0.95, 0.85, 0]
+                }}
+                transition={{
+                  duration: 0.52,
+                  delay: index * 0.08,
+                  ease: [0.35, 0.05, 0.85, 0.95]
+                }}
+                style={{
+                  position: 'fixed',
+                  left: 0,
+                  top: 0,
+                  transformOrigin: 'center bottom',
+                  boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(239, 68, 68, 0.25)'
+                }}
+                className="rounded-xl border border-rose-500/40 bg-neutral-900/90 backdrop-blur-xl overflow-hidden pointer-events-none"
+              >
+                {item.renderPreview()}
+              </motion.div>
+            );
+          })}
+      </AnimatePresence>
+
+      {/* 2. Animated Kinetic Trash Bin (Rushes from right screen edge) */}
+      <motion.div
+        initial={{ x: 260, y: targetY, opacity: 0, rotate: 14 }}
+        animate={
+          phase === 'EXITING'
+            ? { x: 280, opacity: 0, rotate: 10 }
+            : {
+                x: targetX - 30,
+                y: phase === 'SLAM' ? [targetY, targetY + 6, targetY - 2, targetY] : targetY,
+                opacity: 1,
+                rotate: 0
+              }
+        }
+        transition={{
+          type: 'spring',
+          stiffness: 260,
+          damping: 20
+        }}
+        className="fixed left-0 top-0 pointer-events-auto flex flex-col items-center select-none"
+      >
+        {/* Count Pill */}
+        <AnimatePresence>
+          {(phase === 'SIPHONING' || phase === 'SLAM') && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.8 }}
+              animate={{ opacity: 1, y: -12, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.8 }}
+              className="mb-2 flex items-center gap-1.5 rounded-full border border-rose-500/40 bg-rose-500/20 px-3 py-0.5 text-xs font-bold text-rose-300 backdrop-blur-md shadow-lg shadow-rose-500/20"
+            >
+              <Trash2 className="h-3 w-3 text-rose-400" />
+              <span>-{items.length} Deleted</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Can Container */}
+        <div className="relative flex flex-col items-center">
+          {/* Motorized Hinged Lid */}
+          <motion.div
+            style={{ transformOrigin: 'bottom right' }}
+            animate={
+              phase === 'OPEN' || phase === 'SIPHONING'
+                ? { rotate: -55, y: -8, x: -4 }
+                : { rotate: 0, y: 0, x: 0 }
+            }
+            transition={{
+              type: 'spring',
+              stiffness: 450,
+              damping: 16
+            }}
+            className="z-20 h-4 w-24 rounded-t-lg border border-white/20 bg-gradient-to-b from-neutral-700 to-neutral-800 shadow-md"
+          >
+            <div className="mx-auto h-1.5 w-6 -translate-y-1.5 rounded-t-md bg-neutral-600 border-t border-white/20" />
+          </motion.div>
+
+          {/* Siphon Vortex Portal Glow (Inside Opening) */}
+          <div className="relative -mt-1 h-28 w-20 rounded-b-2xl border border-white/15 bg-gradient-to-b from-neutral-800/95 via-neutral-900/95 to-black/95 p-2 backdrop-blur-2xl shadow-2xl shadow-black/80 flex flex-col items-center justify-between">
+            <div
+              className={`absolute inset-x-2 top-0 h-4 rounded-full transition-all duration-300 ${
+                phase === 'OPEN' || phase === 'SIPHONING'
+                  ? 'bg-cyan-500/40 blur-sm shadow-[0_0_18px_rgba(34,211,238,0.7)]'
+                  : 'bg-transparent'
+              }`}
+            />
+
+            <div className="my-auto flex flex-col items-center justify-center gap-1 text-neutral-500">
+              <motion.div
+                animate={
+                  phase === 'SIPHONING'
+                    ? { rotate: 360, scale: [1, 1.2, 1] }
+                    : { rotate: 0, scale: 1 }
+                }
+                transition={{ duration: 1.5, repeat: phase === 'SIPHONING' ? Infinity : 0, ease: 'linear' }}
+              >
+                <Trash2
+                  className={`h-7 w-7 transition-colors duration-300 ${
+                    phase === 'SIPHONING'
+                      ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]'
+                      : 'text-neutral-500'
+                  }`}
+                />
+              </motion.div>
+              <span className="text-[9px] font-mono tracking-widest uppercase text-neutral-400">
+                VACUUM
+              </span>
+            </div>
+
+            <div className="flex w-full justify-around px-1 opacity-25">
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>,
+    document.body
+  );
+}
+
+export function useGenieTrashDelete() {
+  const [isActive, setIsActive] = useState(false);
+  const [snapshots, setSnapshots] = useState<DeletingItemSnapshot[]>([]);
+  const [pendingIds, setPendingIds] = useState<string[]>([]);
+  const [completionResolver, setCompletionResolver] = useState<(() => void) | null>(null);
+
+  const triggerGenieDelete = useCallback(
+    (
+      items: { id: string; element?: HTMLElement | null; previewNode?: React.ReactNode }[],
+      onSettled: (deletedIds: string[]) => void | Promise<void>
+    ) => {
+      const ids = items.map((i) => i.id);
+      setPendingIds(ids);
+
+      const capturedSnapshots: DeletingItemSnapshot[] = items
+        .map((item) => {
+          if (!item.element) return null;
+          const rect = item.element.getBoundingClientRect();
+          return {
+            id: item.id,
+            rect,
+            renderPreview: () => item.previewNode || <div className="p-4 text-xs font-medium text-white">{item.id}</div>
+          };
+        })
+        .filter(Boolean) as DeletingItemSnapshot[];
+
+      setSnapshots(capturedSnapshots);
+      setIsActive(true);
+
+      return new Promise<void>((resolve) => {
+        setCompletionResolver(() => async () => {
+          await onSettled(ids);
+          setIsActive(false);
+          setSnapshots([]);
+          setPendingIds([]);
+          resolve();
+        });
+      });
+    },
+    []
+  );
+
+  const handleAnimationComplete = useCallback(() => {
+    if (completionResolver) {
+      completionResolver();
+      setCompletionResolver(null);
+    }
+  }, [completionResolver]);
+
+  return {
+    isActive,
+    snapshots,
+    pendingIds,
+    triggerGenieDelete,
+    handleAnimationComplete
+  };
 }
 ```
 
@@ -10834,6 +11682,288 @@ export function SwipeableCardDeck({ items }: { items: { id: string; title: strin
 
 ---
 
+## Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System
+
+### Overview & Mechanics
+- **Components**: `GenieTrashBinPortal.tsx` + `useGenieTrashDelete.ts`
+- **Technique**: Screen-level elevation via `createPortal` to escape table/card `overflow: hidden` containers. Kinetic entrance spring from right viewport edge (`x: 260 -> 0`).
+- **Genie Vacuum Physics**: Cloned rows/cards deform (`scaleX: 0.12`, `scaleY: 0.05`, `rotateX: 65deg`, `rotateZ: 15deg`) and are sucked directly into the open mouth of the trash bin.
+- **Physical Impact**: Hinged motorized lid pops open (`rotate: -55deg`), slams shut with elastic bounce (`rotate: 0deg, y: [0, 6, -2, 0]`), and pulses a count pill (`"-N Deleted"`).
+- **Master Documentation**: [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
+
+### Complete Copy-Paste Code:
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trash2 } from 'lucide-react';
+
+export interface DeletingItemSnapshot {
+  id: string;
+  rect: DOMRect;
+  renderPreview: () => React.ReactNode;
+}
+
+export interface GenieTrashBinPortalProps {
+  isActive: boolean;
+  items: DeletingItemSnapshot[];
+  onAnimationComplete: () => void;
+}
+
+export function GenieTrashBinPortal({
+  isActive,
+  items,
+  onAnimationComplete
+}: GenieTrashBinPortalProps) {
+  const [mounted, setMounted] = useState(false);
+  const [phase, setPhase] = useState<'ENTERING' | 'OPEN' | 'SIPHONING' | 'SLAM' | 'EXITING'>('ENTERING');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isActive || items.length === 0) {
+      setPhase('ENTERING');
+      return;
+    }
+
+    const t1 = setTimeout(() => setPhase('OPEN'), 280);
+    const t2 = setTimeout(() => setPhase('SIPHONING'), 450);
+    const t3 = setTimeout(() => setPhase('SLAM'), 950);
+    const t4 = setTimeout(() => setPhase('EXITING'), 1500);
+    const t5 = setTimeout(() => onAnimationComplete(), 1850);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
+  }, [isActive, items, onAnimationComplete]);
+
+  if (!mounted || !isActive) return null;
+
+  const targetX = typeof window !== 'undefined' ? window.innerWidth - 140 : 1200;
+  const targetY = typeof window !== 'undefined' ? window.innerHeight - 180 : 700;
+
+  return createPortal(
+    <div className="fixed inset-0 pointer-events-none z-[99999] overflow-hidden">
+      {/* 1. Flying Elevated Clones in Screen Coordinate Space */}
+      <AnimatePresence>
+        {phase === 'SIPHONING' &&
+          items.map((item, index) => {
+            const startX = item.rect.left;
+            const startY = item.rect.top;
+            const deltaX = targetX - startX;
+
+            return (
+              <motion.div
+                key={item.id}
+                initial={{
+                  x: startX,
+                  y: startY,
+                  width: item.rect.width,
+                  height: item.rect.height,
+                  scale: 1,
+                  opacity: 0.95,
+                  rotateX: 0,
+                  rotateZ: 0
+                }}
+                animate={{
+                  x: [startX, startX + deltaX * 0.6, targetX],
+                  y: [startY, startY - 40, targetY],
+                  scaleX: [1, 0.6, 0.12],
+                  scaleY: [1, 0.4, 0.05],
+                  rotateX: [0, 30, 65],
+                  rotateZ: [0, -8, 15],
+                  opacity: [0.95, 0.85, 0]
+                }}
+                transition={{
+                  duration: 0.52,
+                  delay: index * 0.08,
+                  ease: [0.35, 0.05, 0.85, 0.95]
+                }}
+                style={{
+                  position: 'fixed',
+                  left: 0,
+                  top: 0,
+                  transformOrigin: 'center bottom',
+                  boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(239, 68, 68, 0.25)'
+                }}
+                className="rounded-xl border border-rose-500/40 bg-neutral-900/90 backdrop-blur-xl overflow-hidden pointer-events-none"
+              >
+                {item.renderPreview()}
+              </motion.div>
+            );
+          })}
+      </AnimatePresence>
+
+      {/* 2. Animated Kinetic Trash Bin (Rushes from right screen edge) */}
+      <motion.div
+        initial={{ x: 260, y: targetY, opacity: 0, rotate: 14 }}
+        animate={
+          phase === 'EXITING'
+            ? { x: 280, opacity: 0, rotate: 10 }
+            : {
+                x: targetX - 30,
+                y: phase === 'SLAM' ? [targetY, targetY + 6, targetY - 2, targetY] : targetY,
+                opacity: 1,
+                rotate: 0
+              }
+        }
+        transition={{
+          type: 'spring',
+          stiffness: 260,
+          damping: 20
+        }}
+        className="fixed left-0 top-0 pointer-events-auto flex flex-col items-center select-none"
+      >
+        {/* Count Pill */}
+        <AnimatePresence>
+          {(phase === 'SIPHONING' || phase === 'SLAM') && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.8 }}
+              animate={{ opacity: 1, y: -12, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.8 }}
+              className="mb-2 flex items-center gap-1.5 rounded-full border border-rose-500/40 bg-rose-500/20 px-3 py-0.5 text-xs font-bold text-rose-300 backdrop-blur-md shadow-lg shadow-rose-500/20"
+            >
+              <Trash2 className="h-3 w-3 text-rose-400" />
+              <span>-{items.length} Deleted</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Can Container */}
+        <div className="relative flex flex-col items-center">
+          {/* Motorized Hinged Lid */}
+          <motion.div
+            style={{ transformOrigin: 'bottom right' }}
+            animate={
+              phase === 'OPEN' || phase === 'SIPHONING'
+                ? { rotate: -55, y: -8, x: -4 }
+                : { rotate: 0, y: 0, x: 0 }
+            }
+            transition={{
+              type: 'spring',
+              stiffness: 450,
+              damping: 16
+            }}
+            className="z-20 h-4 w-24 rounded-t-lg border border-white/20 bg-gradient-to-b from-neutral-700 to-neutral-800 shadow-md"
+          >
+            <div className="mx-auto h-1.5 w-6 -translate-y-1.5 rounded-t-md bg-neutral-600 border-t border-white/20" />
+          </motion.div>
+
+          {/* Siphon Vortex Portal Glow (Inside Opening) */}
+          <div className="relative -mt-1 h-28 w-20 rounded-b-2xl border border-white/15 bg-gradient-to-b from-neutral-800/95 via-neutral-900/95 to-black/95 p-2 backdrop-blur-2xl shadow-2xl shadow-black/80 flex flex-col items-center justify-between">
+            <div
+              className={`absolute inset-x-2 top-0 h-4 rounded-full transition-all duration-300 ${
+                phase === 'OPEN' || phase === 'SIPHONING'
+                  ? 'bg-cyan-500/40 blur-sm shadow-[0_0_18px_rgba(34,211,238,0.7)]'
+                  : 'bg-transparent'
+              }`}
+            />
+
+            <div className="my-auto flex flex-col items-center justify-center gap-1 text-neutral-500">
+              <motion.div
+                animate={
+                  phase === 'SIPHONING'
+                    ? { rotate: 360, scale: [1, 1.2, 1] }
+                    : { rotate: 0, scale: 1 }
+                }
+                transition={{ duration: 1.5, repeat: phase === 'SIPHONING' ? Infinity : 0, ease: 'linear' }}
+              >
+                <Trash2
+                  className={`h-7 w-7 transition-colors duration-300 ${
+                    phase === 'SIPHONING'
+                      ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]'
+                      : 'text-neutral-500'
+                  }`}
+                />
+              </motion.div>
+              <span className="text-[9px] font-mono tracking-widest uppercase text-neutral-400">
+                VACUUM
+              </span>
+            </div>
+
+            <div className="flex w-full justify-around px-1 opacity-25">
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>,
+    document.body
+  );
+}
+
+export function useGenieTrashDelete() {
+  const [isActive, setIsActive] = useState(false);
+  const [snapshots, setSnapshots] = useState<DeletingItemSnapshot[]>([]);
+  const [pendingIds, setPendingIds] = useState<string[]>([]);
+  const [completionResolver, setCompletionResolver] = useState<(() => void) | null>(null);
+
+  const triggerGenieDelete = useCallback(
+    (
+      items: { id: string; element?: HTMLElement | null; previewNode?: React.ReactNode }[],
+      onSettled: (deletedIds: string[]) => void | Promise<void>
+    ) => {
+      const ids = items.map((i) => i.id);
+      setPendingIds(ids);
+
+      const capturedSnapshots: DeletingItemSnapshot[] = items
+        .map((item) => {
+          if (!item.element) return null;
+          const rect = item.element.getBoundingClientRect();
+          return {
+            id: item.id,
+            rect,
+            renderPreview: () => item.previewNode || <div className="p-4 text-xs font-medium text-white">{item.id}</div>
+          };
+        })
+        .filter(Boolean) as DeletingItemSnapshot[];
+
+      setSnapshots(capturedSnapshots);
+      setIsActive(true);
+
+      return new Promise<void>((resolve) => {
+        setCompletionResolver(() => async () => {
+          await onSettled(ids);
+          setIsActive(false);
+          setSnapshots([]);
+          setPendingIds([]);
+          resolve();
+        });
+      });
+    },
+    []
+  );
+
+  const handleAnimationComplete = useCallback(() => {
+    if (completionResolver) {
+      completionResolver();
+      setCompletionResolver(null);
+    }
+  }, [completionResolver]);
+
+  return {
+    isActive,
+    snapshots,
+    pendingIds,
+    triggerGenieDelete,
+    handleAnimationComplete
+  };
+}
+```
+
+---
+
 ## Recipe 5: Strict Gated Action Button (Idle ➔ Loading ➔ Verified Success)
 
 ### Overview & Mechanics
@@ -10906,6 +12036,288 @@ export function GatedActionButton({
 
 ---
 
+## Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System
+
+### Overview & Mechanics
+- **Components**: `GenieTrashBinPortal.tsx` + `useGenieTrashDelete.ts`
+- **Technique**: Screen-level elevation via `createPortal` to escape table/card `overflow: hidden` containers. Kinetic entrance spring from right viewport edge (`x: 260 -> 0`).
+- **Genie Vacuum Physics**: Cloned rows/cards deform (`scaleX: 0.12`, `scaleY: 0.05`, `rotateX: 65deg`, `rotateZ: 15deg`) and are sucked directly into the open mouth of the trash bin.
+- **Physical Impact**: Hinged motorized lid pops open (`rotate: -55deg`), slams shut with elastic bounce (`rotate: 0deg, y: [0, 6, -2, 0]`), and pulses a count pill (`"-N Deleted"`).
+- **Master Documentation**: [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
+
+### Complete Copy-Paste Code:
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trash2 } from 'lucide-react';
+
+export interface DeletingItemSnapshot {
+  id: string;
+  rect: DOMRect;
+  renderPreview: () => React.ReactNode;
+}
+
+export interface GenieTrashBinPortalProps {
+  isActive: boolean;
+  items: DeletingItemSnapshot[];
+  onAnimationComplete: () => void;
+}
+
+export function GenieTrashBinPortal({
+  isActive,
+  items,
+  onAnimationComplete
+}: GenieTrashBinPortalProps) {
+  const [mounted, setMounted] = useState(false);
+  const [phase, setPhase] = useState<'ENTERING' | 'OPEN' | 'SIPHONING' | 'SLAM' | 'EXITING'>('ENTERING');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isActive || items.length === 0) {
+      setPhase('ENTERING');
+      return;
+    }
+
+    const t1 = setTimeout(() => setPhase('OPEN'), 280);
+    const t2 = setTimeout(() => setPhase('SIPHONING'), 450);
+    const t3 = setTimeout(() => setPhase('SLAM'), 950);
+    const t4 = setTimeout(() => setPhase('EXITING'), 1500);
+    const t5 = setTimeout(() => onAnimationComplete(), 1850);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
+  }, [isActive, items, onAnimationComplete]);
+
+  if (!mounted || !isActive) return null;
+
+  const targetX = typeof window !== 'undefined' ? window.innerWidth - 140 : 1200;
+  const targetY = typeof window !== 'undefined' ? window.innerHeight - 180 : 700;
+
+  return createPortal(
+    <div className="fixed inset-0 pointer-events-none z-[99999] overflow-hidden">
+      {/* 1. Flying Elevated Clones in Screen Coordinate Space */}
+      <AnimatePresence>
+        {phase === 'SIPHONING' &&
+          items.map((item, index) => {
+            const startX = item.rect.left;
+            const startY = item.rect.top;
+            const deltaX = targetX - startX;
+
+            return (
+              <motion.div
+                key={item.id}
+                initial={{
+                  x: startX,
+                  y: startY,
+                  width: item.rect.width,
+                  height: item.rect.height,
+                  scale: 1,
+                  opacity: 0.95,
+                  rotateX: 0,
+                  rotateZ: 0
+                }}
+                animate={{
+                  x: [startX, startX + deltaX * 0.6, targetX],
+                  y: [startY, startY - 40, targetY],
+                  scaleX: [1, 0.6, 0.12],
+                  scaleY: [1, 0.4, 0.05],
+                  rotateX: [0, 30, 65],
+                  rotateZ: [0, -8, 15],
+                  opacity: [0.95, 0.85, 0]
+                }}
+                transition={{
+                  duration: 0.52,
+                  delay: index * 0.08,
+                  ease: [0.35, 0.05, 0.85, 0.95]
+                }}
+                style={{
+                  position: 'fixed',
+                  left: 0,
+                  top: 0,
+                  transformOrigin: 'center bottom',
+                  boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(239, 68, 68, 0.25)'
+                }}
+                className="rounded-xl border border-rose-500/40 bg-neutral-900/90 backdrop-blur-xl overflow-hidden pointer-events-none"
+              >
+                {item.renderPreview()}
+              </motion.div>
+            );
+          })}
+      </AnimatePresence>
+
+      {/* 2. Animated Kinetic Trash Bin (Rushes from right screen edge) */}
+      <motion.div
+        initial={{ x: 260, y: targetY, opacity: 0, rotate: 14 }}
+        animate={
+          phase === 'EXITING'
+            ? { x: 280, opacity: 0, rotate: 10 }
+            : {
+                x: targetX - 30,
+                y: phase === 'SLAM' ? [targetY, targetY + 6, targetY - 2, targetY] : targetY,
+                opacity: 1,
+                rotate: 0
+              }
+        }
+        transition={{
+          type: 'spring',
+          stiffness: 260,
+          damping: 20
+        }}
+        className="fixed left-0 top-0 pointer-events-auto flex flex-col items-center select-none"
+      >
+        {/* Count Pill */}
+        <AnimatePresence>
+          {(phase === 'SIPHONING' || phase === 'SLAM') && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.8 }}
+              animate={{ opacity: 1, y: -12, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.8 }}
+              className="mb-2 flex items-center gap-1.5 rounded-full border border-rose-500/40 bg-rose-500/20 px-3 py-0.5 text-xs font-bold text-rose-300 backdrop-blur-md shadow-lg shadow-rose-500/20"
+            >
+              <Trash2 className="h-3 w-3 text-rose-400" />
+              <span>-{items.length} Deleted</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Can Container */}
+        <div className="relative flex flex-col items-center">
+          {/* Motorized Hinged Lid */}
+          <motion.div
+            style={{ transformOrigin: 'bottom right' }}
+            animate={
+              phase === 'OPEN' || phase === 'SIPHONING'
+                ? { rotate: -55, y: -8, x: -4 }
+                : { rotate: 0, y: 0, x: 0 }
+            }
+            transition={{
+              type: 'spring',
+              stiffness: 450,
+              damping: 16
+            }}
+            className="z-20 h-4 w-24 rounded-t-lg border border-white/20 bg-gradient-to-b from-neutral-700 to-neutral-800 shadow-md"
+          >
+            <div className="mx-auto h-1.5 w-6 -translate-y-1.5 rounded-t-md bg-neutral-600 border-t border-white/20" />
+          </motion.div>
+
+          {/* Siphon Vortex Portal Glow (Inside Opening) */}
+          <div className="relative -mt-1 h-28 w-20 rounded-b-2xl border border-white/15 bg-gradient-to-b from-neutral-800/95 via-neutral-900/95 to-black/95 p-2 backdrop-blur-2xl shadow-2xl shadow-black/80 flex flex-col items-center justify-between">
+            <div
+              className={`absolute inset-x-2 top-0 h-4 rounded-full transition-all duration-300 ${
+                phase === 'OPEN' || phase === 'SIPHONING'
+                  ? 'bg-cyan-500/40 blur-sm shadow-[0_0_18px_rgba(34,211,238,0.7)]'
+                  : 'bg-transparent'
+              }`}
+            />
+
+            <div className="my-auto flex flex-col items-center justify-center gap-1 text-neutral-500">
+              <motion.div
+                animate={
+                  phase === 'SIPHONING'
+                    ? { rotate: 360, scale: [1, 1.2, 1] }
+                    : { rotate: 0, scale: 1 }
+                }
+                transition={{ duration: 1.5, repeat: phase === 'SIPHONING' ? Infinity : 0, ease: 'linear' }}
+              >
+                <Trash2
+                  className={`h-7 w-7 transition-colors duration-300 ${
+                    phase === 'SIPHONING'
+                      ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]'
+                      : 'text-neutral-500'
+                  }`}
+                />
+              </motion.div>
+              <span className="text-[9px] font-mono tracking-widest uppercase text-neutral-400">
+                VACUUM
+              </span>
+            </div>
+
+            <div className="flex w-full justify-around px-1 opacity-25">
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>,
+    document.body
+  );
+}
+
+export function useGenieTrashDelete() {
+  const [isActive, setIsActive] = useState(false);
+  const [snapshots, setSnapshots] = useState<DeletingItemSnapshot[]>([]);
+  const [pendingIds, setPendingIds] = useState<string[]>([]);
+  const [completionResolver, setCompletionResolver] = useState<(() => void) | null>(null);
+
+  const triggerGenieDelete = useCallback(
+    (
+      items: { id: string; element?: HTMLElement | null; previewNode?: React.ReactNode }[],
+      onSettled: (deletedIds: string[]) => void | Promise<void>
+    ) => {
+      const ids = items.map((i) => i.id);
+      setPendingIds(ids);
+
+      const capturedSnapshots: DeletingItemSnapshot[] = items
+        .map((item) => {
+          if (!item.element) return null;
+          const rect = item.element.getBoundingClientRect();
+          return {
+            id: item.id,
+            rect,
+            renderPreview: () => item.previewNode || <div className="p-4 text-xs font-medium text-white">{item.id}</div>
+          };
+        })
+        .filter(Boolean) as DeletingItemSnapshot[];
+
+      setSnapshots(capturedSnapshots);
+      setIsActive(true);
+
+      return new Promise<void>((resolve) => {
+        setCompletionResolver(() => async () => {
+          await onSettled(ids);
+          setIsActive(false);
+          setSnapshots([]);
+          setPendingIds([]);
+          resolve();
+        });
+      });
+    },
+    []
+  );
+
+  const handleAnimationComplete = useCallback(() => {
+    if (completionResolver) {
+      completionResolver();
+      setCompletionResolver(null);
+    }
+  }, [completionResolver]);
+
+  return {
+    isActive,
+    snapshots,
+    pendingIds,
+    triggerGenieDelete,
+    handleAnimationComplete
+  };
+}
+```
+
+---
+
 ## Recipe 6: Liquid Glassmorphic Floating Pill Navbar with Scroll Observer
 
 ### Overview & Mechanics
@@ -10953,6 +12365,288 @@ export function FloatingPillNavbar() {
       </nav>
     </header>
   );
+}
+```
+
+---
+
+## Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System
+
+### Overview & Mechanics
+- **Components**: `GenieTrashBinPortal.tsx` + `useGenieTrashDelete.ts`
+- **Technique**: Screen-level elevation via `createPortal` to escape table/card `overflow: hidden` containers. Kinetic entrance spring from right viewport edge (`x: 260 -> 0`).
+- **Genie Vacuum Physics**: Cloned rows/cards deform (`scaleX: 0.12`, `scaleY: 0.05`, `rotateX: 65deg`, `rotateZ: 15deg`) and are sucked directly into the open mouth of the trash bin.
+- **Physical Impact**: Hinged motorized lid pops open (`rotate: -55deg`), slams shut with elastic bounce (`rotate: 0deg, y: [0, 6, -2, 0]`), and pulses a count pill (`"-N Deleted"`).
+- **Master Documentation**: [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
+
+### Complete Copy-Paste Code:
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trash2 } from 'lucide-react';
+
+export interface DeletingItemSnapshot {
+  id: string;
+  rect: DOMRect;
+  renderPreview: () => React.ReactNode;
+}
+
+export interface GenieTrashBinPortalProps {
+  isActive: boolean;
+  items: DeletingItemSnapshot[];
+  onAnimationComplete: () => void;
+}
+
+export function GenieTrashBinPortal({
+  isActive,
+  items,
+  onAnimationComplete
+}: GenieTrashBinPortalProps) {
+  const [mounted, setMounted] = useState(false);
+  const [phase, setPhase] = useState<'ENTERING' | 'OPEN' | 'SIPHONING' | 'SLAM' | 'EXITING'>('ENTERING');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isActive || items.length === 0) {
+      setPhase('ENTERING');
+      return;
+    }
+
+    const t1 = setTimeout(() => setPhase('OPEN'), 280);
+    const t2 = setTimeout(() => setPhase('SIPHONING'), 450);
+    const t3 = setTimeout(() => setPhase('SLAM'), 950);
+    const t4 = setTimeout(() => setPhase('EXITING'), 1500);
+    const t5 = setTimeout(() => onAnimationComplete(), 1850);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
+  }, [isActive, items, onAnimationComplete]);
+
+  if (!mounted || !isActive) return null;
+
+  const targetX = typeof window !== 'undefined' ? window.innerWidth - 140 : 1200;
+  const targetY = typeof window !== 'undefined' ? window.innerHeight - 180 : 700;
+
+  return createPortal(
+    <div className="fixed inset-0 pointer-events-none z-[99999] overflow-hidden">
+      {/* 1. Flying Elevated Clones in Screen Coordinate Space */}
+      <AnimatePresence>
+        {phase === 'SIPHONING' &&
+          items.map((item, index) => {
+            const startX = item.rect.left;
+            const startY = item.rect.top;
+            const deltaX = targetX - startX;
+
+            return (
+              <motion.div
+                key={item.id}
+                initial={{
+                  x: startX,
+                  y: startY,
+                  width: item.rect.width,
+                  height: item.rect.height,
+                  scale: 1,
+                  opacity: 0.95,
+                  rotateX: 0,
+                  rotateZ: 0
+                }}
+                animate={{
+                  x: [startX, startX + deltaX * 0.6, targetX],
+                  y: [startY, startY - 40, targetY],
+                  scaleX: [1, 0.6, 0.12],
+                  scaleY: [1, 0.4, 0.05],
+                  rotateX: [0, 30, 65],
+                  rotateZ: [0, -8, 15],
+                  opacity: [0.95, 0.85, 0]
+                }}
+                transition={{
+                  duration: 0.52,
+                  delay: index * 0.08,
+                  ease: [0.35, 0.05, 0.85, 0.95]
+                }}
+                style={{
+                  position: 'fixed',
+                  left: 0,
+                  top: 0,
+                  transformOrigin: 'center bottom',
+                  boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(239, 68, 68, 0.25)'
+                }}
+                className="rounded-xl border border-rose-500/40 bg-neutral-900/90 backdrop-blur-xl overflow-hidden pointer-events-none"
+              >
+                {item.renderPreview()}
+              </motion.div>
+            );
+          })}
+      </AnimatePresence>
+
+      {/* 2. Animated Kinetic Trash Bin (Rushes from right screen edge) */}
+      <motion.div
+        initial={{ x: 260, y: targetY, opacity: 0, rotate: 14 }}
+        animate={
+          phase === 'EXITING'
+            ? { x: 280, opacity: 0, rotate: 10 }
+            : {
+                x: targetX - 30,
+                y: phase === 'SLAM' ? [targetY, targetY + 6, targetY - 2, targetY] : targetY,
+                opacity: 1,
+                rotate: 0
+              }
+        }
+        transition={{
+          type: 'spring',
+          stiffness: 260,
+          damping: 20
+        }}
+        className="fixed left-0 top-0 pointer-events-auto flex flex-col items-center select-none"
+      >
+        {/* Count Pill */}
+        <AnimatePresence>
+          {(phase === 'SIPHONING' || phase === 'SLAM') && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.8 }}
+              animate={{ opacity: 1, y: -12, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.8 }}
+              className="mb-2 flex items-center gap-1.5 rounded-full border border-rose-500/40 bg-rose-500/20 px-3 py-0.5 text-xs font-bold text-rose-300 backdrop-blur-md shadow-lg shadow-rose-500/20"
+            >
+              <Trash2 className="h-3 w-3 text-rose-400" />
+              <span>-{items.length} Deleted</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Can Container */}
+        <div className="relative flex flex-col items-center">
+          {/* Motorized Hinged Lid */}
+          <motion.div
+            style={{ transformOrigin: 'bottom right' }}
+            animate={
+              phase === 'OPEN' || phase === 'SIPHONING'
+                ? { rotate: -55, y: -8, x: -4 }
+                : { rotate: 0, y: 0, x: 0 }
+            }
+            transition={{
+              type: 'spring',
+              stiffness: 450,
+              damping: 16
+            }}
+            className="z-20 h-4 w-24 rounded-t-lg border border-white/20 bg-gradient-to-b from-neutral-700 to-neutral-800 shadow-md"
+          >
+            <div className="mx-auto h-1.5 w-6 -translate-y-1.5 rounded-t-md bg-neutral-600 border-t border-white/20" />
+          </motion.div>
+
+          {/* Siphon Vortex Portal Glow (Inside Opening) */}
+          <div className="relative -mt-1 h-28 w-20 rounded-b-2xl border border-white/15 bg-gradient-to-b from-neutral-800/95 via-neutral-900/95 to-black/95 p-2 backdrop-blur-2xl shadow-2xl shadow-black/80 flex flex-col items-center justify-between">
+            <div
+              className={`absolute inset-x-2 top-0 h-4 rounded-full transition-all duration-300 ${
+                phase === 'OPEN' || phase === 'SIPHONING'
+                  ? 'bg-cyan-500/40 blur-sm shadow-[0_0_18px_rgba(34,211,238,0.7)]'
+                  : 'bg-transparent'
+              }`}
+            />
+
+            <div className="my-auto flex flex-col items-center justify-center gap-1 text-neutral-500">
+              <motion.div
+                animate={
+                  phase === 'SIPHONING'
+                    ? { rotate: 360, scale: [1, 1.2, 1] }
+                    : { rotate: 0, scale: 1 }
+                }
+                transition={{ duration: 1.5, repeat: phase === 'SIPHONING' ? Infinity : 0, ease: 'linear' }}
+              >
+                <Trash2
+                  className={`h-7 w-7 transition-colors duration-300 ${
+                    phase === 'SIPHONING'
+                      ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]'
+                      : 'text-neutral-500'
+                  }`}
+                />
+              </motion.div>
+              <span className="text-[9px] font-mono tracking-widest uppercase text-neutral-400">
+                VACUUM
+              </span>
+            </div>
+
+            <div className="flex w-full justify-around px-1 opacity-25">
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>,
+    document.body
+  );
+}
+
+export function useGenieTrashDelete() {
+  const [isActive, setIsActive] = useState(false);
+  const [snapshots, setSnapshots] = useState<DeletingItemSnapshot[]>([]);
+  const [pendingIds, setPendingIds] = useState<string[]>([]);
+  const [completionResolver, setCompletionResolver] = useState<(() => void) | null>(null);
+
+  const triggerGenieDelete = useCallback(
+    (
+      items: { id: string; element?: HTMLElement | null; previewNode?: React.ReactNode }[],
+      onSettled: (deletedIds: string[]) => void | Promise<void>
+    ) => {
+      const ids = items.map((i) => i.id);
+      setPendingIds(ids);
+
+      const capturedSnapshots: DeletingItemSnapshot[] = items
+        .map((item) => {
+          if (!item.element) return null;
+          const rect = item.element.getBoundingClientRect();
+          return {
+            id: item.id,
+            rect,
+            renderPreview: () => item.previewNode || <div className="p-4 text-xs font-medium text-white">{item.id}</div>
+          };
+        })
+        .filter(Boolean) as DeletingItemSnapshot[];
+
+      setSnapshots(capturedSnapshots);
+      setIsActive(true);
+
+      return new Promise<void>((resolve) => {
+        setCompletionResolver(() => async () => {
+          await onSettled(ids);
+          setIsActive(false);
+          setSnapshots([]);
+          setPendingIds([]);
+          resolve();
+        });
+      });
+    },
+    []
+  );
+
+  const handleAnimationComplete = useCallback(() => {
+    if (completionResolver) {
+      completionResolver();
+      setCompletionResolver(null);
+    }
+  }, [completionResolver]);
+
+  return {
+    isActive,
+    snapshots,
+    pendingIds,
+    triggerGenieDelete,
+    handleAnimationComplete
+  };
 }
 ```
 
@@ -11653,6 +13347,288 @@ export function ThreeModelInspector({
       </div>
     </div>
   );
+}
+```
+
+---
+
+## Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System
+
+### Overview & Mechanics
+- **Components**: `GenieTrashBinPortal.tsx` + `useGenieTrashDelete.ts`
+- **Technique**: Screen-level elevation via `createPortal` to escape table/card `overflow: hidden` containers. Kinetic entrance spring from right viewport edge (`x: 260 -> 0`).
+- **Genie Vacuum Physics**: Cloned rows/cards deform (`scaleX: 0.12`, `scaleY: 0.05`, `rotateX: 65deg`, `rotateZ: 15deg`) and are sucked directly into the open mouth of the trash bin.
+- **Physical Impact**: Hinged motorized lid pops open (`rotate: -55deg`), slams shut with elastic bounce (`rotate: 0deg, y: [0, 6, -2, 0]`), and pulses a count pill (`"-N Deleted"`).
+- **Master Documentation**: [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
+
+### Complete Copy-Paste Code:
+
+```tsx
+'use client';
+
+import React, { useEffect, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trash2 } from 'lucide-react';
+
+export interface DeletingItemSnapshot {
+  id: string;
+  rect: DOMRect;
+  renderPreview: () => React.ReactNode;
+}
+
+export interface GenieTrashBinPortalProps {
+  isActive: boolean;
+  items: DeletingItemSnapshot[];
+  onAnimationComplete: () => void;
+}
+
+export function GenieTrashBinPortal({
+  isActive,
+  items,
+  onAnimationComplete
+}: GenieTrashBinPortalProps) {
+  const [mounted, setMounted] = useState(false);
+  const [phase, setPhase] = useState<'ENTERING' | 'OPEN' | 'SIPHONING' | 'SLAM' | 'EXITING'>('ENTERING');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isActive || items.length === 0) {
+      setPhase('ENTERING');
+      return;
+    }
+
+    const t1 = setTimeout(() => setPhase('OPEN'), 280);
+    const t2 = setTimeout(() => setPhase('SIPHONING'), 450);
+    const t3 = setTimeout(() => setPhase('SLAM'), 950);
+    const t4 = setTimeout(() => setPhase('EXITING'), 1500);
+    const t5 = setTimeout(() => onAnimationComplete(), 1850);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
+  }, [isActive, items, onAnimationComplete]);
+
+  if (!mounted || !isActive) return null;
+
+  const targetX = typeof window !== 'undefined' ? window.innerWidth - 140 : 1200;
+  const targetY = typeof window !== 'undefined' ? window.innerHeight - 180 : 700;
+
+  return createPortal(
+    <div className="fixed inset-0 pointer-events-none z-[99999] overflow-hidden">
+      {/* 1. Flying Elevated Clones in Screen Coordinate Space */}
+      <AnimatePresence>
+        {phase === 'SIPHONING' &&
+          items.map((item, index) => {
+            const startX = item.rect.left;
+            const startY = item.rect.top;
+            const deltaX = targetX - startX;
+
+            return (
+              <motion.div
+                key={item.id}
+                initial={{
+                  x: startX,
+                  y: startY,
+                  width: item.rect.width,
+                  height: item.rect.height,
+                  scale: 1,
+                  opacity: 0.95,
+                  rotateX: 0,
+                  rotateZ: 0
+                }}
+                animate={{
+                  x: [startX, startX + deltaX * 0.6, targetX],
+                  y: [startY, startY - 40, targetY],
+                  scaleX: [1, 0.6, 0.12],
+                  scaleY: [1, 0.4, 0.05],
+                  rotateX: [0, 30, 65],
+                  rotateZ: [0, -8, 15],
+                  opacity: [0.95, 0.85, 0]
+                }}
+                transition={{
+                  duration: 0.52,
+                  delay: index * 0.08,
+                  ease: [0.35, 0.05, 0.85, 0.95]
+                }}
+                style={{
+                  position: 'fixed',
+                  left: 0,
+                  top: 0,
+                  transformOrigin: 'center bottom',
+                  boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(239, 68, 68, 0.25)'
+                }}
+                className="rounded-xl border border-rose-500/40 bg-neutral-900/90 backdrop-blur-xl overflow-hidden pointer-events-none"
+              >
+                {item.renderPreview()}
+              </motion.div>
+            );
+          })}
+      </AnimatePresence>
+
+      {/* 2. Animated Kinetic Trash Bin (Rushes from right screen edge) */}
+      <motion.div
+        initial={{ x: 260, y: targetY, opacity: 0, rotate: 14 }}
+        animate={
+          phase === 'EXITING'
+            ? { x: 280, opacity: 0, rotate: 10 }
+            : {
+                x: targetX - 30,
+                y: phase === 'SLAM' ? [targetY, targetY + 6, targetY - 2, targetY] : targetY,
+                opacity: 1,
+                rotate: 0
+              }
+        }
+        transition={{
+          type: 'spring',
+          stiffness: 260,
+          damping: 20
+        }}
+        className="fixed left-0 top-0 pointer-events-auto flex flex-col items-center select-none"
+      >
+        {/* Count Pill */}
+        <AnimatePresence>
+          {(phase === 'SIPHONING' || phase === 'SLAM') && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.8 }}
+              animate={{ opacity: 1, y: -12, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.8 }}
+              className="mb-2 flex items-center gap-1.5 rounded-full border border-rose-500/40 bg-rose-500/20 px-3 py-0.5 text-xs font-bold text-rose-300 backdrop-blur-md shadow-lg shadow-rose-500/20"
+            >
+              <Trash2 className="h-3 w-3 text-rose-400" />
+              <span>-{items.length} Deleted</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Can Container */}
+        <div className="relative flex flex-col items-center">
+          {/* Motorized Hinged Lid */}
+          <motion.div
+            style={{ transformOrigin: 'bottom right' }}
+            animate={
+              phase === 'OPEN' || phase === 'SIPHONING'
+                ? { rotate: -55, y: -8, x: -4 }
+                : { rotate: 0, y: 0, x: 0 }
+            }
+            transition={{
+              type: 'spring',
+              stiffness: 450,
+              damping: 16
+            }}
+            className="z-20 h-4 w-24 rounded-t-lg border border-white/20 bg-gradient-to-b from-neutral-700 to-neutral-800 shadow-md"
+          >
+            <div className="mx-auto h-1.5 w-6 -translate-y-1.5 rounded-t-md bg-neutral-600 border-t border-white/20" />
+          </motion.div>
+
+          {/* Siphon Vortex Portal Glow (Inside Opening) */}
+          <div className="relative -mt-1 h-28 w-20 rounded-b-2xl border border-white/15 bg-gradient-to-b from-neutral-800/95 via-neutral-900/95 to-black/95 p-2 backdrop-blur-2xl shadow-2xl shadow-black/80 flex flex-col items-center justify-between">
+            <div
+              className={`absolute inset-x-2 top-0 h-4 rounded-full transition-all duration-300 ${
+                phase === 'OPEN' || phase === 'SIPHONING'
+                  ? 'bg-cyan-500/40 blur-sm shadow-[0_0_18px_rgba(34,211,238,0.7)]'
+                  : 'bg-transparent'
+              }`}
+            />
+
+            <div className="my-auto flex flex-col items-center justify-center gap-1 text-neutral-500">
+              <motion.div
+                animate={
+                  phase === 'SIPHONING'
+                    ? { rotate: 360, scale: [1, 1.2, 1] }
+                    : { rotate: 0, scale: 1 }
+                }
+                transition={{ duration: 1.5, repeat: phase === 'SIPHONING' ? Infinity : 0, ease: 'linear' }}
+              >
+                <Trash2
+                  className={`h-7 w-7 transition-colors duration-300 ${
+                    phase === 'SIPHONING'
+                      ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.6)]'
+                      : 'text-neutral-500'
+                  }`}
+                />
+              </motion.div>
+              <span className="text-[9px] font-mono tracking-widest uppercase text-neutral-400">
+                VACUUM
+              </span>
+            </div>
+
+            <div className="flex w-full justify-around px-1 opacity-25">
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+              <div className="h-6 w-0.5 bg-white/40 rounded-full" />
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>,
+    document.body
+  );
+}
+
+export function useGenieTrashDelete() {
+  const [isActive, setIsActive] = useState(false);
+  const [snapshots, setSnapshots] = useState<DeletingItemSnapshot[]>([]);
+  const [pendingIds, setPendingIds] = useState<string[]>([]);
+  const [completionResolver, setCompletionResolver] = useState<(() => void) | null>(null);
+
+  const triggerGenieDelete = useCallback(
+    (
+      items: { id: string; element?: HTMLElement | null; previewNode?: React.ReactNode }[],
+      onSettled: (deletedIds: string[]) => void | Promise<void>
+    ) => {
+      const ids = items.map((i) => i.id);
+      setPendingIds(ids);
+
+      const capturedSnapshots: DeletingItemSnapshot[] = items
+        .map((item) => {
+          if (!item.element) return null;
+          const rect = item.element.getBoundingClientRect();
+          return {
+            id: item.id,
+            rect,
+            renderPreview: () => item.previewNode || <div className="p-4 text-xs font-medium text-white">{item.id}</div>
+          };
+        })
+        .filter(Boolean) as DeletingItemSnapshot[];
+
+      setSnapshots(capturedSnapshots);
+      setIsActive(true);
+
+      return new Promise<void>((resolve) => {
+        setCompletionResolver(() => async () => {
+          await onSettled(ids);
+          setIsActive(false);
+          setSnapshots([]);
+          setPendingIds([]);
+          resolve();
+        });
+      });
+    },
+    []
+  );
+
+  const handleAnimationComplete = useCallback(() => {
+    if (completionResolver) {
+      completionResolver();
+      setCompletionResolver(null);
+    }
+  }, [completionResolver]);
+
+  return {
+    isActive,
+    snapshots,
+    pendingIds,
+    triggerGenieDelete,
+    handleAnimationComplete
+  };
 }
 ```
 

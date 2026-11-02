@@ -133,6 +133,7 @@
 | `MAIN_AGENT_DIRECTIVE.md` | Directive | Master agent rules, 5-phase protocol, behavioral guardrails | Autonomous Execution | Verified |
 | `PLAN_BUILDER.md` | Generator | Blueprint specification for `.project/` and `FILE-MAP.md` | Project Onboarding | Verified |
 | `DISCOVERY_QUESTIONNAIRE.md` | Interview | 11-phase structured discovery questionnaire | Requirements Capture | Verified |
+| `MASTER_SUMMONING_PROMPT.md` | Master Prompt | High-impact executive prompt template and action matrix | Fast Invocation & Pilot | Verified |
 | `FILE-MAP.md` | Living Map | Verified repository navigation and functional index | Codebase Navigation | Verified |
 | `BRAIN.md` | Master Brain | Compiled high-density synthesis of all 49 framework specifications | Instant Context Ingestion | Verified |
 | `scripts/audit-engine.js` | Audit CLI | Standalone 9-suite compliance & testing validator, 0-100% scoring | Quality Gate & Testing | Verified |
