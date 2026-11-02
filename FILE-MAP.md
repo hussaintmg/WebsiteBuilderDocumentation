@@ -137,6 +137,7 @@
 | `FILE-MAP.md` | Living Map | Verified repository navigation and functional index | Codebase Navigation | Verified |
 | `BRAIN.md` | Master Brain | Compiled high-density synthesis of all 49 framework specifications | Instant Context Ingestion | Verified |
 | `scripts/audit-engine.js` | Audit CLI | Standalone 9-suite compliance & testing validator, 0-100% scoring | Quality Gate & Testing | Verified |
+| `scripts/scaffold-engine.js` | Scaffolder CLI | Automated zero-dependency generator for core framework files & packages | Fast Foundation Scaffolding | Verified |
 | `scripts/compile-brain.js` | Compiler | Automated build script compiling all specs into unified BRAIN.md | Knowledge Compilation | Verified |
 
 ### Rules & Engineering Standards (`rules/`)
