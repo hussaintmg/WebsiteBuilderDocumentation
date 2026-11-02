@@ -133,7 +133,9 @@
 | `PLAN_BUILDER.md` | Generator | Blueprint specification for `.project/` and `FILE-MAP.md` | Project Onboarding | Verified |
 | `DISCOVERY_QUESTIONNAIRE.md` | Interview | 11-phase structured discovery questionnaire | Requirements Capture | Verified |
 | `FILE-MAP.md` | Living Map | Verified repository navigation and functional index | Codebase Navigation | Verified |
-| `scripts/audit-engine.js` | Audit CLI | Standalone 30+ check compliance validator, 0-100% scoring | Quality Gate | Verified |
+| `BRAIN.md` | Master Brain | Compiled high-density synthesis of all 49 framework specifications | Instant Context Ingestion | Verified |
+| `scripts/audit-engine.js` | Audit CLI | Standalone 9-suite compliance & testing validator, 0-100% scoring | Quality Gate & Testing | Verified |
+| `scripts/compile-brain.js` | Compiler | Automated build script compiling all specs into unified BRAIN.md | Knowledge Compilation | Verified |
 
 ### Rules & Engineering Standards (`rules/`)
 | File Path | Type | Main Responsibility | Important For | Confidence |

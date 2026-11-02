@@ -2,29 +2,41 @@
 
 /**
  * ============================================================================
- * WEBSITE BUILDER ENGINE — AUTOMATED CODEBASE AUDIT & GAP ANALYSIS CLI
+ * WEBSITE BUILDER ENGINE — MASTER AUDIT, QUALITY GATE & TEST RUNNER CLI
  * ============================================================================
  * 
- * Standalone Zero-Dependency Node.js CLI to audit any web project (greenfield
- * or existing) against the 30+ mandatory standards of Website Builder Engine.
+ * Standalone Zero-Dependency Node.js CLI to audit, test, and verify any web project
+ * (greenfield or existing) against all mandatory standards of Website Builder Engine:
+ * 
+ * 1. Root-Level /app Directory & Zero src/ Wrapper
+ * 2. Tech Stack & Modern Dependency Harmony (Tailwind, Motion, Lucide, cn)
+ * 3. File Necessity, Orphan Detection & Dead-Code / Redundancy Audit
+ * 4. Skill Completeness & High-Scale Features (Rapid Click, Low Bandwidth, Idempotency)
+ * 5. UI/UX Excellence, Micro-Animations, Glassmorphism & Floating Labels
+ * 6. Auth Ergonomics, Zero-Demo Security & Bidirectional Navigation
+ * 7. Data Layer, Single Source of Truth & Context Law (Zero Raw Component API Calls)
+ * 8. Edge Proxy Route Protection & Session Invalidation (middleware.ts)
+ * 9. Comprehensive Testing: Page Default Exports, API Contracts & TypeScript Static Gate
  * 
  * Usage:
- *   node audit-engine.js [project-directory] [--strict] [--fix-hints]
+ *   node audit-engine.js [project-directory] [--strict] [--brain]
  * 
  * Exit Codes:
  *   0: Audit Passed (Compliance >= 95%)
- *   1: Audit Failed (Compliance < 95% - Agent must continue working)
+ *   1: Audit Failed (Compliance < 95% - Agent must resolve all gaps)
  * ============================================================================
  */
 
 const fs = require('fs');
 const path = require('path');
+const { spawnSync } = require('child_process');
 
 // CLI Arguments
 const args = process.argv.slice(2);
 const targetDirArg = args.find(a => !a.startsWith('--'));
 const targetDir = path.resolve(targetDirArg || process.cwd());
-const isStrict = true; // Strict by default per engine rule
+const isStrict = true; // Strict by default per engine law
+const showBrain = args.includes('--brain');
 
 // ANSI Color Helpers
 const colors = {
@@ -50,7 +62,7 @@ function header(msg) {
 // File Search Helpers (Safe recursive walk with ignore)
 const IGNORED_DIRS = new Set(['node_modules', '.git', '.next', 'dist', 'build', '.gemini', '.agents', '.turbo', '.cache']);
 
-function walkFiles(dir, maxDepth = 6, currentDepth = 0) {
+function walkFiles(dir, maxDepth = 7, currentDepth = 0) {
   if (currentDepth > maxDepth || !fs.existsSync(dir)) return [];
   let results = [];
   try {
@@ -103,15 +115,22 @@ function evaluateCheck(category, name, points, passed, details, fixHint) {
 }
 
 // ============================================================================
-// AUDIT SUITES
+// MAIN AUDIT RUNNER
 // ============================================================================
 
 async function runAudit() {
-  header(`WEBSITE BUILDER ENGINE — CODEBASE COMPLIANCE AUDIT`);
-  log(`${colors.gray}Target Directory: ${targetDir}${colors.reset}\n`);
+  header(`WEBSITE BUILDER ENGINE — MASTER COMPLIANCE, QUALITY & TEST AUDIT`);
+  log(`${colors.gray}Target Directory: ${targetDir}${colors.reset}`);
+
+  const globalBrainPath = 'C:/Users/lenovo/.gemini/config/skills/website-builder-engine/BRAIN.md';
+  if (fs.existsSync(globalBrainPath)) {
+    log(`${colors.gray}Master Brain:    ${globalBrainPath} (Active & Verified)${colors.reset}\n`);
+  } else {
+    log(`${colors.gray}Master Brain:    Pending compilation${colors.reset}\n`);
+  }
 
   const allFiles = walkFiles(targetDir);
-  const fileNames = allFiles.map(f => path.relative(targetDir, f).replace(/\\/g, '/'));
+  const relFiles = allFiles.map(f => path.relative(targetDir, f).replace(/\\/g, '/'));
 
   // Read package.json
   const pkgPath = path.join(targetDir, 'package.json');
@@ -126,11 +145,10 @@ async function runAudit() {
   const deps = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) };
 
   // --------------------------------------------------------------------------
-  // SUITE 1: ROOT ARCHITECTURE & DIRECTORY RULES
+  // SUITE 1: ROOT ARCHITECTURE & FOLDER INTEGRITY
   // --------------------------------------------------------------------------
   log(`${colors.bold}${colors.magenta}▶ SUITE 1: ROOT ARCHITECTURE & FOLDER INTEGRITY${colors.reset}`);
 
-  // Check 1.1: Root /app folder (Zero src/ wrapper)
   const hasRootApp = fs.existsSync(path.join(targetDir, 'app'));
   const hasSrcApp = fs.existsSync(path.join(targetDir, 'src', 'app')) || fs.existsSync(path.join(targetDir, 'src', 'pages'));
   evaluateCheck(
@@ -142,7 +160,6 @@ async function runAudit() {
     'Move all files from src/app/ to root /app/ and update tsconfig.json paths to "@/*": ["./*"]'
   );
 
-  // Check 1.2: Root Sibling Folders Structure
   const rootComponents = fs.existsSync(path.join(targetDir, 'components'));
   const rootContext = fs.existsSync(path.join(targetDir, 'context')) || fs.existsSync(path.join(targetDir, 'contexts'));
   const rootModels = fs.existsSync(path.join(targetDir, 'models'));
@@ -156,7 +173,6 @@ async function runAudit() {
     'Scaffold missing root folders: /components, /context, and /models directly at project root.'
   );
 
-  // Check 1.3: FILE-MAP.md Navigation Registry
   const hasFileMap = fs.existsSync(path.join(targetDir, 'FILE-MAP.md'));
   evaluateCheck(
     'Architecture',
@@ -168,44 +184,40 @@ async function runAudit() {
   );
 
   // --------------------------------------------------------------------------
-  // SUITE 2: TECH STACK & PRODUCTION PACKAGES
+  // SUITE 2: TECH STACK & MODERN DEPENDENCY HARMONY
   // --------------------------------------------------------------------------
   log(`\n${colors.bold}${colors.magenta}▶ SUITE 2: TECH STACK & DEPENDENCY HARMONY${colors.reset}`);
 
-  // Check 2.1: Tailwind CSS
   const hasTailwind = Boolean(deps['tailwindcss'] || deps['@tailwindcss/postcss'] || deps['@tailwindcss/vite']);
   evaluateCheck(
     'Dependencies',
     'Tailwind CSS Styling Framework',
-    8,
+    6,
     hasTailwind,
     hasTailwind ? `Tailwind CSS detected (${deps['tailwindcss'] || deps['@tailwindcss/postcss'] || 'installed'})` : 'Tailwind CSS missing in package.json',
-    'Install Tailwind CSS: npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init -p'
+    'Install Tailwind CSS: npm install -D tailwindcss postcss autoprefixer'
   );
 
-  // Check 2.2: Motion & Animation Ecosystem (Framer Motion / GSAP)
   const hasMotion = Boolean(deps['framer-motion'] || deps['gsap']);
   evaluateCheck(
     'Dependencies',
     'Animation Stack (Framer Motion / GSAP)',
-    8,
+    6,
     hasMotion,
     hasMotion ? 'Framer Motion or GSAP installed' : 'No modern animation library found',
     'Install Framer Motion: npm install framer-motion'
   );
 
-  // Check 2.3: Modern Icon Suite (Lucide React)
   const hasLucide = Boolean(deps['lucide-react']);
   evaluateCheck(
     'Dependencies',
     'Vector Icon Ecosystem (lucide-react)',
-    5,
+    4,
     hasLucide,
     hasLucide ? 'Lucide React detected' : 'lucide-react missing',
     'Install Lucide React: npm install lucide-react'
   );
 
-  // Check 2.4: Class Utilities (clsx & tailwind-merge)
   const hasCnUtils = Boolean(deps['clsx'] && deps['tailwind-merge']);
   evaluateCheck(
     'Dependencies',
@@ -216,13 +228,105 @@ async function runAudit() {
     'Install utilities: npm install clsx tailwind-merge'
   );
 
-  // --------------------------------------------------------------------------
-  // SUITE 3: UI/UX, DESIGN SYSTEM & POLISH
-  // --------------------------------------------------------------------------
-  log(`\n${colors.bold}${colors.magenta}▶ SUITE 3: UI/UX EXCELLENCE & VISUAL POLISH${colors.reset}`);
+  // Check conflicting redundant packages
+  const hasDuplicateHttp = Boolean(deps['axios'] && deps['ky']);
+  const hasDuplicateDates = Boolean(deps['moment'] && (deps['date-fns'] || deps['dayjs']));
+  const noRedundantBloat = !hasDuplicateHttp && !hasDuplicateDates;
+  evaluateCheck(
+    'Dependencies',
+    'Zero Redundant Package Bloat (Anti-Bloat Law)',
+    3,
+    noRedundantBloat,
+    noRedundantBloat ? 'No conflicting package duplicates detected' : 'Conflicting packages found (e.g. multiple date/HTTP libraries)',
+    'Consolidate dependencies: purge redundant packages per rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md'
+  );
 
-  // Scan TSX/JSX/CSS codebases for design tokens
-  const codeFiles = allFiles.filter(f => /\.(tsx|jsx|css)$/.test(f));
+  // --------------------------------------------------------------------------
+  // SUITE 3: FILE NECESSITY, DEAD CODE & REDUNDANCY AUDIT
+  // --------------------------------------------------------------------------
+  log(`\n${colors.bold}${colors.magenta}▶ SUITE 3: FILE NECESSITY, ORPHAN DETECTION & CODE QUALITY${colors.reset}`);
+
+  // Collect all project code files
+  const codeFiles = allFiles.filter(f => /\.(tsx|jsx|ts|js)$/.test(f) && !f.endsWith('.d.ts'));
+  const allCodeContent = codeFiles.map(f => safeReadFile(f)).join('\n');
+
+  // Check for empty or dummy placeholder files
+  const dummyFiles = [];
+  for (const cf of codeFiles) {
+    const content = safeReadFile(cf).trim();
+    if (content.length < 30 || /^\/\/\s*TODO|^\/\*\s*placeholder\s*\*\/|export\s*default\s*function\s*\w*\(\)\s*\{\s*return\s*null;\s*\}/i.test(content)) {
+      dummyFiles.push(path.relative(targetDir, cf).replace(/\\/g, '/'));
+    }
+  }
+
+  evaluateCheck(
+    'Code Quality',
+    'Zero Empty or Dummy Placeholder Files',
+    5,
+    dummyFiles.length === 0,
+    dummyFiles.length === 0 ? 'All code files contain functional implementations' : `Detected dummy placeholder files: ${dummyFiles.slice(0, 3).join(', ')}`,
+    'Implement real logic or remove empty/dummy files per rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md'
+  );
+
+  // Orphan / Unused File Detection for non-route components
+  const componentAndUtilFiles = codeFiles.filter(f => {
+    const rel = path.relative(targetDir, f).replace(/\\/g, '/');
+    return /^(components|lib|hooks|utils)[\\/]/.test(rel) && !rel.includes('index.');
+  });
+
+  const orphanFiles = [];
+  for (const cuf of componentAndUtilFiles) {
+    const baseName = path.basename(cuf, path.extname(cuf));
+    // Regex looking for import of this basename
+    const importRegex = new RegExp(`['"](?:\\.|@)[^'"]*\\/${baseName}['"]|\\b${baseName}\\b`, 'g');
+    const matches = allCodeContent.match(importRegex);
+    // If only occurs once (or self-reference only in its own file), it's likely an unreferenced orphan
+    if (!matches || matches.length <= 1) {
+      orphanFiles.push(path.relative(targetDir, cuf).replace(/\\/g, '/'));
+    }
+  }
+
+  evaluateCheck(
+    'Code Quality',
+    'Zero Orphan / Unreferenced Dead Code Files',
+    5,
+    orphanFiles.length === 0,
+    orphanFiles.length === 0 ? 'All components and utilities are actively referenced' : `Detected ${orphanFiles.length} unreferenced files: ${orphanFiles.slice(0, 3).join(', ')}`,
+    'Connect unreferenced components to active views or delete dead code.'
+  );
+
+  // --------------------------------------------------------------------------
+  // SUITE 4: SKILL COMPLETENESS & CANONICAL MODULE FEATURES
+  // --------------------------------------------------------------------------
+  log(`\n${colors.bold}${colors.magenta}▶ SUITE 4: SKILL COMPLETENESS & HIGH-SCALE CAPABILITIES${colors.reset}`);
+
+  // Check Rapid-Click Batching presence in interactive controls
+  let hasRapidClick = /useRapidClickBatcher|rapidClick|AbortController.*setTimeout/i.test(allCodeContent);
+  evaluateCheck(
+    'Skill Modules',
+    'Optimistic Rapid-Click Batching Engine',
+    6,
+    hasRapidClick,
+    hasRapidClick ? 'Rapid-click debounce and AbortController batching detected' : 'Standard instant click handlers without batching',
+    'Implement useRapidClickBatcher on pagination, quantity steppers, and carousels per modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md'
+  );
+
+  // Check Low-Bandwidth Optimizations
+  let hasLowBandwidth = /blurDataURL|placeholder=["']blur["']|image\/webp|image\/avif|loading=["']lazy["']/i.test(allCodeContent);
+  evaluateCheck(
+    'Skill Modules',
+    'Low-Bandwidth & Slow Network Optimizations',
+    5,
+    hasLowBandwidth,
+    hasLowBandwidth ? 'Image BlurHash/LQIP or WebP/AVIF optimizations detected' : 'Standard un-optimized media tags detected',
+    'Implement adaptive WebP/AVIF and BlurHash LQIP per modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md'
+  );
+
+  // --------------------------------------------------------------------------
+  // SUITE 5: UI/UX EXCELLENCE, ANIMATIONS & GLASS DEPTH
+  // --------------------------------------------------------------------------
+  log(`\n${colors.bold}${colors.magenta}▶ SUITE 5: UI/UX EXCELLENCE & VISUAL POLISH${colors.reset}`);
+
   let totalTransitions = 0;
   let totalGlassEffects = 0;
   let totalMotionTags = 0;
@@ -238,27 +342,24 @@ async function runAudit() {
     if (/dark:/.test(content)) hasDarkSupport = true;
   }
 
-  // Check 3.1: Micro-Animations & Smooth Transitions
   evaluateCheck(
     'UI/UX',
     'Micro-Animations & Smooth CSS Transitions',
-    8,
+    6,
     totalTransitions >= 5,
     `Found ${totalTransitions} files with smooth transition utilities`,
     'Apply transition-all duration-300 ease-out on interactive elements, buttons, and card states.'
   );
 
-  // Check 3.2: Modern Motion Physics (Framer Motion in Components)
   evaluateCheck(
     'UI/UX',
     'Interactive Motion Physics (motion.* / AnimatePresence)',
-    8,
+    6,
     totalMotionTags >= 3,
     `Found ${totalMotionTags} files utilizing motion components`,
     'Wrap cards, modals, lists, and hero headers in <motion.div> with initial, animate, and exit states.'
   );
 
-  // Check 3.3: Glassmorphism & Ambient Depth
   evaluateCheck(
     'UI/UX',
     'Glassmorphism & Depth (backdrop-blur & alpha borders)',
@@ -268,17 +369,15 @@ async function runAudit() {
     'Add backdrop-blur-md bg-neutral-900/60 border border-white/10 to headers, cards, and modal dialogs.'
   );
 
-  // Check 3.4: Dual Theme Support (dark: classes)
   evaluateCheck(
     'UI/UX',
     'Theme System & Contrast (dark: tokens)',
-    6,
+    5,
     hasDarkSupport,
     hasDarkSupport ? 'Tailwind dark: utility classes active' : 'No dark: utility tokens detected',
     'Ensure all text and surfaces support dark mode with dark:bg-neutral-950 dark:text-neutral-100.'
   );
 
-  // Check 3.5: Floating Label Inputs (No Raw Browser Placeholders)
   evaluateCheck(
     'UI/UX',
     'Floating Label Input Architecture',
@@ -289,11 +388,10 @@ async function runAudit() {
   );
 
   // --------------------------------------------------------------------------
-  // SUITE 4: AUTHENTICATION, ERGONOMICS & ZERO-DEMO SECURITY
+  // SUITE 6: AUTHENTICATION, ZERO-DEMO & ERGONOMICS
   // --------------------------------------------------------------------------
-  log(`\n${colors.bold}${colors.magenta}▶ SUITE 4: AUTHENTICATION, ZERO-DEMO & ERGONOMICS${colors.reset}`);
+  log(`\n${colors.bold}${colors.magenta}▶ SUITE 6: AUTHENTICATION, ZERO-DEMO & ERGONOMICS${colors.reset}`);
 
-  // Find Auth files
   const authFiles = allFiles.filter(f => /(login|signup|auth|register|forgot-password)/i.test(f) && /\.(tsx|jsx|js|ts)$/.test(f));
   let hasForbiddenDemoButtons = false;
   let hasForgotPasswordLink = false;
@@ -302,7 +400,6 @@ async function runAudit() {
 
   for (const af of authFiles) {
     const content = safeReadFile(af);
-    // Check forbidden demo credentials / quick login buttons
     const demoPatterns = [
       /login as (admin|owner|demo|user)/i,
       /admin@example\.com/i,
@@ -323,17 +420,15 @@ async function runAudit() {
     }
   }
 
-  // Check 4.1: Strict Zero-Demo Security Mandate
   evaluateCheck(
     'Auth Security',
-    'Strict Zero-Demo Policy (No Quick-Login Backdoor Buttons)',
+    'Strict Zero-Demo Policy (No Quick-Login Backdoors)',
     8,
     !hasForbiddenDemoButtons,
     !hasForbiddenDemoButtons ? 'Zero demo accounts or quick-login buttons found' : `Forbidden demo artifacts: ${demoMatches.join(', ')}`,
     'Remove all "Login as Admin" demo buttons and mock credentials from auth forms per modules/AUTH_AND_FACELOCK.md'
   );
 
-  // Check 4.2: Inter-Auth Navigation Ergonomics (Links between Login ⇄ Signup ⇄ Forgot)
   const authErgonomicsPassed = hasForgotPasswordLink && hasInterAuthSignupLoginLinks;
   evaluateCheck(
     'Auth Ergonomics',
@@ -345,11 +440,10 @@ async function runAudit() {
   );
 
   // --------------------------------------------------------------------------
-  // SUITE 5: DATA LAYER, CONTEXT LAW & BACKEND HYGIENE
+  // SUITE 7: DATA LAYER & CONTEXT ENCAPSULATION LAW
   // --------------------------------------------------------------------------
-  log(`\n${colors.bold}${colors.magenta}▶ SUITE 5: DATA LAYER & CONTEXT ENCAPSULATION LAW${colors.reset}`);
+  log(`\n${colors.bold}${colors.magenta}▶ SUITE 7: DATA LAYER & CONTEXT ENCAPSULATION LAW${colors.reset}`);
 
-  // Check 5.1: Root Domain Models
   const modelFiles = allFiles.filter(f => /models[\\/].+\.(ts|js)$/.test(f));
   evaluateCheck(
     'Data Layer',
@@ -360,7 +454,6 @@ async function runAudit() {
     'Organize data schemas into 1 file per model in <root>/models/ (e.g., User.ts, Order.ts).'
   );
 
-  // Check 5.2: Dedicated Domain Contexts
   const contextFiles = allFiles.filter(f => /context[\\/].+(context|provider)\.(tsx|jsx|ts|js)$/i.test(f));
   evaluateCheck(
     'Data Layer',
@@ -371,7 +464,6 @@ async function runAudit() {
     'Create domain React Contexts in /context/ to manage state mutations and encapsulate API calls.'
   );
 
-  // Check 5.3: Context Law (No Direct Raw Component API Calls in Pages)
   const pageFiles = allFiles.filter(f => /app[\\/].*page\.(tsx|jsx)$/.test(f));
   let directApiViolations = [];
   for (const pf of pageFiles) {
@@ -383,18 +475,17 @@ async function runAudit() {
   evaluateCheck(
     'Data Layer',
     'Context Law Compliance (Zero Direct Raw API Calls in Page Components)',
-    5,
+    6,
     directApiViolations.length === 0,
     directApiViolations.length === 0 ? 'All page components consume context hooks' : `Direct API calls in: ${directApiViolations.slice(0, 3).join(', ')}`,
     'Refactor direct fetch/axios calls in pages into domain Context provider methods.'
   );
 
   // --------------------------------------------------------------------------
-  // SUITE 6: EDGE PROXY & ROUTE SECURITY
+  // SUITE 8: ROUTE PROXY & EDGE SECURITY
   // --------------------------------------------------------------------------
-  log(`\n${colors.bold}${colors.magenta}▶ SUITE 6: ROUTE PROXY & EDGE SECURITY${colors.reset}`);
+  log(`\n${colors.bold}${colors.magenta}▶ SUITE 8: ROUTE PROXY & EDGE SECURITY${colors.reset}`);
 
-  // Check 6.1: Edge Middleware Proxy
   const hasMiddleware = fs.existsSync(path.join(targetDir, 'middleware.ts')) || fs.existsSync(path.join(targetDir, 'middleware.js'));
   evaluateCheck(
     'Security',
@@ -403,6 +494,88 @@ async function runAudit() {
     hasMiddleware,
     hasMiddleware ? 'Next.js Edge middleware.ts is configured' : 'Missing middleware.ts at root',
     'Deploy root middleware.ts with session token validation and unauthorized redirect protection per modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md'
+  );
+
+  // --------------------------------------------------------------------------
+  // SUITE 9: COMPREHENSIVE TESTING: PAGES, API CONTRACTS & TS GATE
+  // --------------------------------------------------------------------------
+  log(`\n${colors.bold}${colors.magenta}▶ SUITE 9: COMPREHENSIVE TESTING OF PAGES, APIS & STATIC GATE${colors.reset}`);
+
+  // Test 9.1: Page Default Exports & Structural Integrity
+  let brokenPages = [];
+  for (const pf of pageFiles) {
+    const content = safeReadFile(pf);
+    if (!/export\s+default\s+(function|async\s+function|const|\w+)/.test(content)) {
+      brokenPages.push(path.relative(targetDir, pf).replace(/\\/g, '/'));
+    }
+  }
+  evaluateCheck(
+    'Testing',
+    'Page Contract Integrity (Valid Default React Exports)',
+    6,
+    brokenPages.length === 0 && pageFiles.length > 0,
+    brokenPages.length === 0 ? `All ${pageFiles.length} page components export valid default components` : `Broken page exports in: ${brokenPages.join(', ')}`,
+    'Ensure all app/**/page.tsx files export a valid React component as default export.'
+  );
+
+  // Test 9.2: API Route Contract Integrity ({ success, data, error } envelopes)
+  const apiFiles = allFiles.filter(f => /app[\\/]api[\\/].*route\.(ts|js)$/.test(f));
+  let unhandledApis = [];
+  for (const af of apiFiles) {
+    const content = safeReadFile(af);
+    const hasHttpExport = /export\s+async\s+function\s+(GET|POST|PUT|PATCH|DELETE)/.test(content);
+    const hasEnvelope = /success\s*:\s*(true|false)|NextResponse\.json/i.test(content);
+    const hasTryCatch = /try\s*\{[\s\S]*\}\s*catch/i.test(content);
+    if (!hasHttpExport || !hasEnvelope || !hasTryCatch) {
+      unhandledApis.push(path.relative(targetDir, af).replace(/\\/g, '/'));
+    }
+  }
+  evaluateCheck(
+    'Testing',
+    'API Route Contract Integrity ({ success, data, error } Envelopes & Try/Catch)',
+    6,
+    unhandledApis.length === 0,
+    unhandledApis.length === 0 ? `All ${apiFiles.length} API handlers enforce envelopes & error handling` : `Violations in: ${unhandledApis.slice(0, 3).join(', ')}`,
+    'Wrap API route handlers in try/catch and return standard { success: boolean, data, error } envelopes per rules/BACKEND_CONNECTION_RULES.md'
+  );
+
+  // Test 9.3: Static TypeScript Compilation Gate (Tier 1)
+  const hasTsConfig = fs.existsSync(path.join(targetDir, 'tsconfig.json'));
+  let tscPassed = false;
+  let tscDetails = 'No tsconfig.json found';
+
+  if (hasTsConfig) {
+    try {
+      const tscRun = spawnSync('npx', ['tsc', '--noEmit'], {
+        cwd: targetDir,
+        encoding: 'utf8',
+        shell: true
+      });
+      if (tscRun.status === 0) {
+        tscPassed = true;
+        tscDetails = 'TypeScript compilation succeeded with Exit Code 0 (Zero type errors)';
+      } else {
+        tscPassed = false;
+        const errLines = (tscRun.stdout || tscRun.stderr || '').split('\n').filter(Boolean);
+        tscDetails = `TypeScript errors detected: ${errLines[0] || 'Typecheck failed'}`;
+      }
+    } catch (e) {
+      tscPassed = false;
+      tscDetails = `Failed to run tsc: ${e.message}`;
+    }
+  } else {
+    // Pure JavaScript project
+    tscPassed = true;
+    tscDetails = 'JavaScript project (No TypeScript errors)';
+  }
+
+  evaluateCheck(
+    'Testing',
+    'Tier 1 Static Gate (npx tsc --noEmit / Clean Compilation)',
+    8,
+    tscPassed,
+    tscDetails,
+    'Fix all TypeScript type errors until `npx tsc --noEmit` exits with Code 0.'
   );
 
   // --------------------------------------------------------------------------

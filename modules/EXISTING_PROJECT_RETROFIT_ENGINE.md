@@ -33,18 +33,27 @@ flowchart TD
 
 ---
 
-### 📦 Stage 1: Safety Inventory & Codebase Mapping
-**Rule: Never touch code before mapping dependencies.**
+### 📦 Stage 1: Safety Inventory, File Necessity & Dead-Code Mapping
+**Rule: Never touch code before mapping dependencies and purging dead weight.**
 
-1. **Perform Read-Only Codebase Survey**:
+1. **Mandatory Brain Ingestion**:
+   Before modifying anything, read `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/BRAIN.md`. This loads all 49 specifications, code recipes, and design tokens into context.
+2. **Perform Read-Only Codebase Survey**:
    - Inspect all folders, routes, components, and package manifests.
    - Identify existing business logic (forms, checkout, database models, payment routes).
-2. **Generate / Update `FILE-MAP.md`**:
+3. **File Necessity & Dead-Code Audit**:
+   - Audit every single file in the project:
+     - **Is this file necessary?** Does it serve an active route, model, context, or layout?
+     - **Is it an orphan file?** (Components or utilities never imported anywhere).
+     - **Is it a dummy placeholder?** (Empty files, `// TODO`, or non-functional stubs).
+     - **Is there redundant bloat?** (Multiple conflicting libraries like `axios` AND `fetch`, or `moment` AND `date-fns`).
+   - Flag unreferenced files for removal or integration per [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](../rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md).
+4. **Generate / Update `FILE-MAP.md`**:
    - Create or update the living `FILE-MAP.md` at project root documenting:
      - Entry points (e.g. `app/layout.tsx`, `app/page.tsx`).
      - Primary routes and corresponding controller/context files.
      - Database models and external integrations.
-   - Follow [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](../rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md).
+     - Marked confidence: "Verified", "Likely", "Unknown".
 
 ---
 
@@ -167,24 +176,28 @@ The agent must systematically upgrade **EVERY** existing page and component:
 
 ---
 
-### ✅ Stage 6: Universal Verification & 95%+ Audit Exit Gate
-**Rule: You cannot claim completion until the audit script exits with Code 0.**
+### ✅ Stage 6: Universal Verification, Page/API Test Suite & 95%+ Audit Gate
+**Rule: You cannot claim completion until the audit script exits with Code 0 and all tests pass.**
 
-1. **Run the Audit Engine**:
+1. **Comprehensive Page & API Contract Testing**:
+   - **Page Component Tests**: Every `app/**/page.tsx` MUST export a valid React component as default export, include an animated `<PageWrapper>`, and use zero raw component API calls.
+   - **API Route Handler Tests**: Every `app/api/**/route.ts` MUST export HTTP handler methods (`GET`, `POST`, `PUT`, `DELETE`), enforce `{ success, data, error }` response envelopes, and wrap operations in robust `try/catch` error blocks.
+   - **Static TypeScript Gate**: Run `npx tsc --noEmit` and assert zero type errors (Exit code 0).
+2. **Execute the Audit Engine**:
    ```bash
    node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .
    ```
-2. **Evaluate the Verdict**:
+3. **Evaluate the Verdict**:
    - If **Score < 95%** (Exit Code 1):  
      **THE AGENT MUST NOT STOP.** Read each failing item in the terminal output, locate the offending files, apply the remediation fixes, and re-run.
    - If **Score >= 95%** (Exit Code 0):  
      Compliance standard achieved!
-3. **Execute Static Build Check**:
+4. **Execute Static Production Build**:
    ```bash
    npm run build
    ```
-   Assert zero TypeScript or build errors.
-4. **Synchronize `FILE-MAP.md`**:
+   Assert zero TypeScript, lint, or build errors.
+5. **Synchronize `FILE-MAP.md`**:
    Update `FILE-MAP.md` with all new components, contexts, and modified routes.
 
 ---
@@ -193,13 +206,17 @@ The agent must systematically upgrade **EVERY** existing page and component:
 
 Whenever summoned to refactor or complete an existing site, execute:
 
-- [ ] `[ ]` **Step 1**: Run `node <skill-path>/scripts/audit-engine.js .` to establish baseline failure score.
-- [ ] `[ ]` **Step 2**: Create `.project/RETROFIT_PLAN.md` with every failing item categorized.
-- [ ] `[ ]` **Step 3**: Install missing packages (`framer-motion`, `lucide-react`, `clsx`, `tailwind-merge`).
-- [ ] `[ ]` **Step 4**: Upgrade all page shells with Framer Motion entry transitions and dark mode canvas.
-- [ ] `[ ]` **Step 5**: Elevate cards, modals, and headers to glassmorphism (`backdrop-blur-xl border-white/10`).
-- [ ] `[ ]` **Step 6**: Purge all demo login buttons from auth views; connect bidirectional auth links.
-- [ ] `[ ]` **Step 7**: Migrate direct page component API calls into `/context/` domain providers.
-- [ ] `[ ]` **Step 8**: Deploy `middleware.ts` for Edge route proxy and session protection.
-- [ ] `[ ]` **Step 9**: Re-run `audit-engine.js` until compliance score reaches **>= 95%**.
-- [ ] `[ ]` **Step 10**: Verify `npm run build` succeeds with zero errors; update `FILE-MAP.md`.
+- [ ] `[ ]` **Step 1**: Ingest Master Brain (`C:/Users/lenovo/.gemini/config/skills/website-builder-engine/BRAIN.md`).
+- [ ] `[ ]` **Step 2**: Run `node <skill-path>/scripts/audit-engine.js .` to establish baseline failure score.
+- [ ] `[ ]` **Step 3**: Audit file necessity, purge dead orphan files and duplicate packages (`axios` vs `fetch`).
+- [ ] `[ ]` **Step 4**: Create `.project/RETROFIT_PLAN.md` with every failing item categorized.
+- [ ] `[ ]` **Step 5**: Install missing modern packages (`framer-motion`, `lucide-react`, `clsx`, `tailwind-merge`).
+- [ ] `[ ]` **Step 6**: Upgrade all page shells with Framer Motion entry transitions and dark mode canvas.
+- [ ] `[ ]` **Step 7**: Elevate cards, modals, and headers to glassmorphism (`backdrop-blur-xl border-white/10`).
+- [ ] `[ ]` **Step 8**: Purge all demo login buttons from auth views; connect bidirectional auth links.
+- [ ] `[ ]` **Step 9**: Migrate direct page component API calls into `/context/` domain providers.
+- [ ] `[ ]` **Step 10**: Deploy `middleware.ts` for Edge route proxy and session protection.
+- [ ] `[ ]` **Step 11**: Test all page exports, verify API `{ success, data, error }` envelopes and try/catch.
+- [ ] `[ ]` **Step 12**: Re-run `audit-engine.js` until compliance score reaches **>= 95%**.
+- [ ] `[ ]` **Step 13**: Verify `npm run build` succeeds with zero errors; update `FILE-MAP.md`.
+

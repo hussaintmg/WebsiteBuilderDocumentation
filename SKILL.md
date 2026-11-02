@@ -17,10 +17,22 @@ description: Use when planning, architecting, scaffolding, building, retrofittin
 > **`C:/Users/lenovo/.gemini/config/skills/website-builder-engine/`**
 > 
 > You **MUST** read blueprints, guides, and run the audit engine directly from this global path:
+> - **Master Compiled Brain**: `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/BRAIN.md`
 > - **Audit CLI Runner**: `node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .`
 > - **Module Specs**: `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/modules/<MODULE_NAME>.md`
 > - **Design System**: `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/design-system/<FILE_NAME>.md`
 > - **Rules & Standards**: `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/rules/<RULE_NAME>.md`
+
+---
+
+## 🧠 MANDATORY MASTER BRAIN INGESTION LAW
+
+> ⚡ **CRITICAL FIRST ACTION FOR THE AGENT**:  
+> Before formulating any proposal, scaffolding a project, modifying files, or answering the user, you **MUST IMMEDIATELY READ** the compiled master knowledge base:  
+> 
+> 👉 **`C:/Users/lenovo/.gemini/config/skills/website-builder-engine/BRAIN.md`**  
+> 
+> Reading this single file loads the full actionable specifications, code recipes, design tokens, security rules, and testing standards of all 49 framework files directly into your active working context. If `BRAIN.md` is missing, compile it via `node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/compile-brain.js`.
 
 ---
 
