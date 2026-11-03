@@ -23,6 +23,9 @@
 - [design-system/FRONTEND_DESIGN_RULES.md](#file-design-system-frontend-design-rules-md)
 - [design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md](#file-design-system-apple-genie-origin-morph-system-md)
 - [design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md](#file-design-system-apple-genie-trash-bin-deletion-system-md)
+- [design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md](#file-design-system-button-in-flight-task-animations-specification-md)
+- [design-system/TASK_ANIMATED_BUTTONS_SYSTEM.md](#file-design-system-task-animated-buttons-system-md)
+- [design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md](#file-design-system-row-card-delete-dustbin-animation-md)
 - [design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md](#file-design-system-threejs-3d-model-architecture-and-inspection-system-md)
 - [design-system/01_CSS_PROPERTIES_REFERENCE.md](#file-design-system-01-css-properties-reference-md)
 - [design-system/02_VISUAL_EFFECTS_CATALOGUE.md](#file-design-system-02-visual-effects-catalogue-md)
@@ -237,6 +240,7 @@ Before marking any task, file operation, or sprint as completed:
 16. **Zero Demo Credentials & Inter-Auth Navigation Ergonomics Mandate**: Authentication pages (`/login`, `/signup`, `/forgot-password`, `/reset-password`) MUST NEVER feature pre-filled demo credentials, mock accounts, or "Click to login as Owner/Admin" backdoor buttons in production or development environments. Forms must initialize input states to clean empty strings (`""`). Furthermore, every auth page MUST implement complete bidirectional navigation ergonomics: `/login` must feature a right-aligned "Forgot password?" link adjacent to the password input label and a bottom-card "Don't have an account? Sign up" link; `/signup` must feature an "Already have an account? Log in" footer link; and password recovery views must feature a "← Back to log in" link per [`modules/AUTH_AND_FACELOCK.md`](./modules/AUTH_AND_FACELOCK.md).
 17. **The Autonomous Retrofit & Universal 95%+ Audit Mandate**: When instructed to complete, upgrade, or modernize an existing website, the agent is strictly forbidden from doing partial cosmetic work, leaving screens unstyled, skipping animations, or stopping prematurely. The agent must execute the 6-stage protocol in [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md), refactor all screens with modern motion physics and glass depth, and verify compliance via `node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .`. Completion is only permitted when the audit exits with Code 0 (Score >= 95%).
 18. **Screen-Level Genie Trash Bin & Vacuum Deletion Mandate**: In table views, data grids, and card decks, deletions MUST NEVER be restricted to local container divs with `overflow: hidden`. Deleting items MUST be elevated to a fixed screen-level portal overlay (`fixed inset-0 z-[99999]`) using `getBoundingClientRect()` snapshots. The animated Trash Bin MUST rush onto the screen from the right edge with kinetic spring physics (`x: 260 -> 0`), its motorized lid MUST swing open (`rotate: -55deg`), and deleting items MUST be sucked into the glowing can aperture via a 3D Genie vacuum deform (`scaleX: 0.12, rotateX: 65deg`). The lid MUST slam shut with elastic bounce, and remaining table rows MUST glide up smoothly via Framer Motion `layout` FLIP animations per [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
+19. **Task-Specific In-Flight Button Animations Mandate (Zero Generic Spinners)**: Generic circular loading spinners (`animate-spin` borders) on action buttons are strictly forbidden across all public pages, dashboard tables, and modal dialogs. Every interactive action button triggering an asynchronous API operation MUST display a task-specific vector micro-animation inside its icon frame during network transit ($T_{\text{api}}$). For deletion, the button MUST display the in-button dustbin loop (bin glides in from right, lid pops open, document drops in, lid snaps shut, bin departs left; repeats smoothly until API settles). For orders/dispatch, it MUST display a delivery truck driving along an animated road with spinning tyres ($\omega = 360^\circ$), moving dashed road strip, and trailing tyre dust lines. For live synchronization/refresh, it MUST display a communications tower with an apex blinking beacon, radiating RF wave arcs, and an animated live pulsing status badge with audio equalizer bars. Toast notifications MUST be strictly deferred until the full animation cycle and completion morph finish per [`design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`](./design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md).
 
 
 
@@ -5252,6 +5256,2330 @@ export function OrdersTable({ orders, onDeleteOrder }: { orders: any[]; onDelete
   );
 }
 ```
+
+
+
+---
+
+
+<a id="file-design-system-button-in-flight-task-animations-specification-md"></a>
+## 📄 Specification: `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`
+
+# 🎬 Master Specification: In-Flight Button Task Micro-Animations
+
+> **FILE:** `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`  
+> **CLASSIFICATION:** Visual Engineering & Micro-Interaction Standard  
+> **COMPANION RECIPES:** [`design-system/09_IMPLEMENTATION_RECIPES.md#recipe-11`](./09_IMPLEMENTATION_RECIPES.md#recipe-11)  
+> **PARENT DIRECTIVE:** [`design-system/TASK_ANIMATED_BUTTONS_SYSTEM.md`](./TASK_ANIMATED_BUTTONS_SYSTEM.md)  
+>
+> 👑 **THE IN-FLIGHT MICRO-NARRATIVE LAW**:  
+> Generic, boring circular loading spinners (`animate-spin` borders) are **STRICTLY PROHIBITED** on action buttons across the entire platform.  
+> When any button is clicked and an asynchronous API request is in-flight, the button's icon frame MUST execute a **task-specific vector micro-animation** that tells the physical story of that operation in an unbroken loop, transitioning into a verified checkmark or success morph upon resolution.
+
+---
+
+## 📑 Table of Contents
+
+1. [Architectural Principles & The In-Flight Lifecycle](#1-architectural-principles--the-in-flight-lifecycle)
+2. [Button 1: Delete Record — The In-Button Dustbin Loop](#button-1-delete-record--the-in-button-dustbin-loop)
+3. [Button 2: Place Order & Dispatch — The Delivery Truck on Animated Road with Dust Lines](#button-2-place-order--dispatch--the-delivery-truck-on-animated-road-with-dust-lines)
+4. [Button 3: Live Sync & Refresh — The Broadcast Tower Beacon & Concentric Radio Waves with Live Text](#button-3-live-sync--refresh--the-broadcast-tower-beacon--concentric-radio-waves-with-live-text)
+5. [Button 4: Complete Payment — Credit Card Chip Insertion & Contactless NFC Waves](#button-4-complete-payment--credit-card-chip-insertion--contactless-nfc-waves)
+6. [Button 5: Download PDF — Laser Scanner Beam & Tray Drop](#button-5-download-pdf--laser-scanner-beam--tray-drop)
+7. [Button 6: Send Email & Inquiry — Origami Jet Plane Takeoff with Contrail Lines](#button-6-send-email--inquiry--origami-jet-plane-takeoff-with-contrail-lines)
+8. [Button 7: Edit & Update — Stylus Line Tracing & Wax Seal Press](#button-7-edit--update--stylus-line-tracing--wax-seal-press)
+9. [Button 8: Create & Add New — Isometric 3D Construction Bricks Assembly](#button-8-create--add-new--isometric-3d-construction-bricks-assembly)
+10. [Button 9: Upload File — Antigravity Tractor Beam Suction with Cloud Puffs](#button-9-upload-file--antigravity-tractor-beam-suction-with-cloud-puffs)
+11. [Button 10: Archive Record — Filing Cabinet Slide & Mechanical Latch](#button-10-archive-record--filing-cabinet-slide--mechanical-latch)
+12. [Button 11: Undo & Restore — Reverse Time-Travel Clock & Paper Uncrumple](#button-11-undo--restore--reverse-time-travel-clock--paper-uncrumple)
+13. [Button 12: Security Lock / FaceLock — Biometric Hexagon Sweep & Shackle Snap](#button-12-security-lock--facelock--biometric-hexagon-sweep--shackle-snap)
+14. [Timing Mathematics & Fluid Looping Curves](#14-timing-mathematics--fluid-looping-curves)
+15. [Verification & Compliance Checklist](#15-verification--compliance-checklist)
+
+---
+
+## 1. Architectural Principles & The In-Flight Lifecycle
+
+### 1.1 The Dual-Phase Distinction: In-Button vs. Screen-Level
+It is critical to distinguish between two separate animation systems:
+1. **Screen-Level Portal Animation** (e.g. `GenieTrashBinPortal.tsx`): Runs across the whole screen *after* the confirmation modal closes, elevating the deleted table row or card via `getBoundingClientRect()` and sucking it into an offscreen bin.
+2. **In-Button Micro-Animation** (The subject of this specification): Runs *inside the button itself* during the in-flight asynchronous network request ($T_{\text{api}}$), keeping the user visually mesmerized while waiting for the server's HTTP response.
+
+```
++-------------------------------------------------------------------------------+
+| User Clicks Button                                                            |
+|       |                                                                       |
+|       v                                                                       |
+| [ IN-FLIGHT STATE: T_api ] ──> Button Icon plays Task-Specific Micro-Loop    |
+|                                (e.g. Truck driving with tyres & dust lines;   |
+|                                 or Bin sliding in, lid opening, file drop)    |
+|       |                                                                       |
+|       v                                                                       |
+| [ API RESOLUTION ] ──────────> Graceful Completion of Current Loop            |
+|       |                                                                       |
+|       v                                                                       |
+| [ SUCCESS / SETTLED ] ───────> Morph to Verified Checkmark / Final State      |
+|       |                                                                       |
+|       v                                                                       |
+| [ POST-ANIMATION TOAST ] ────> Toast notification triggers STRICTLY AFTER     |
++-------------------------------------------------------------------------------+
+```
+
+---
+
+## Button 1: Delete Record — The In-Button Dustbin Loop
+
+### 1.1 Visual Choreography & Micro-Story
+When user clicks "Delete" (or confirms deletion inside a modal), while the backend API is processing the removal:
+1. **Dustbin Entry (0ms – 250ms)**: A miniature trash bin cylinder enters from the right edge of the icon bounding box (`x: 24px -> 0px`).
+2. **Lid Pop (200ms – 380ms)**: The top lid rotates open around its left hinge (`rotate: 0deg -> -55deg`).
+3. **File Drop (350ms – 600ms)**: A mini document sheet icon floats into view above the bin and drops directly inside (`y: -12px -> 4px`, `scale: 1.0 -> 0.4`, `opacity: 1 -> 0`).
+4. **Lid Slam (580ms – 720ms)**: The bin lid snaps shut with an elastic rebound (`rotate: -55deg -> 0deg`).
+5. **Dustbin Exit & Re-loop (700ms – 950ms)**: The closed bin glides out toward the left edge (`x: 0px -> -24px`, `opacity: 1 -> 0`).
+6. **Continuous Loop**: If $T_{\text{api}} > 950\text{ms}$, another bin immediately enters from the right in an unbroken rhythm.
+7. **Settled State**: On HTTP 200, the bin settles centrally and smoothly cross-morphs into a vibrant emerald checkmark with a circular shockwave pulse.
+
+```
+Step 1: Bin enters right   Step 2: Lid pops open   Step 3: File drops in   Step 4: Lid slams shut
+   [       ] -> [_|]          [       ]  _--/        [   |__]                [       ]  _---_
+                                          [_|]            |  [_|]                    [_|]
+```
+
+### 1.2 Framer Motion SVG Motion Specification
+```tsx
+// Inside TaskAnimatedDeleteButton Icon Frame (24x24px)
+<motion.div className="relative w-6 h-6 flex items-center justify-center overflow-hidden">
+  {/* Bin Body + Lid Assembly */}
+  <motion.div
+    animate={{
+      x: [24, 0, 0, 0, -24],
+      opacity: [0, 1, 1, 1, 0]
+    }}
+    transition={{
+      duration: 0.95,
+      repeat: Infinity,
+      ease: [0.25, 1, 0.5, 1],
+      times: [0, 0.25, 0.65, 0.8, 1]
+    }}
+    className="relative flex flex-col items-center"
+  >
+    {/* Animated Lid */}
+    <motion.div
+      animate={{
+        rotate: [0, 0, -55, -55, 0, 0],
+        y: [0, 0, -2, -2, 0, 0]
+      }}
+      transition={{
+        duration: 0.95,
+        repeat: Infinity,
+        ease: "easeInOut",
+        times: [0, 0.2, 0.35, 0.6, 0.72, 1]
+      }}
+      style={{ originX: 0.1, originY: 1 }}
+      className="w-4 h-1 bg-red-400 rounded-t-sm shadow-sm"
+    />
+    
+    {/* Bin Container */}
+    <div className="w-3.5 h-4 bg-gradient-to-b from-red-500 to-red-700 rounded-b-sm flex items-center justify-center border-t border-red-300/40">
+      <div className="w-1.5 h-2 border-x border-white/40" />
+    </div>
+  </motion.div>
+
+  {/* Dropping Document Icon */}
+  <motion.div
+    animate={{
+      y: [-14, -14, 2, 2],
+      scale: [1, 1, 0.4, 0],
+      opacity: [0, 1, 1, 0]
+    }}
+    transition={{
+      duration: 0.95,
+      repeat: Infinity,
+      ease: "easeIn",
+      times: [0, 0.3, 0.6, 0.65]
+    }}
+    className="absolute w-2.5 h-3 bg-white/90 rounded-[2px] shadow-sm border border-neutral-300"
+  />
+</motion.div>
+```
+
+---
+
+## Button 2: Place Order & Dispatch — The Delivery Truck on Animated Road with Dust Lines
+
+### 2.1 Visual Choreography & Micro-Story
+When user clicks "Place Order", "Confirm Dispatch", or "Ship Package":
+1. **Box Packaging Phase (0ms – 300ms)**: A cardboard carton box wraps shut with a central seal tape line.
+2. **Loading Phase (300ms – 500ms)**: The parcel slides smoothly onto the cargo flatbed of an isometric delivery truck.
+3. **High-Speed Transit Phase (500ms – 1100ms)**:
+   - **Spinning Tyres**: The front and rear truck wheels spin continuously at high angular velocity ($\omega = 360^\circ$ every 200ms).
+   - **Moving Road Dashes**: A dotted road strip beneath the truck scrolls continuously from right to left (`x: 0px -> -24px`), creating an exhilarating sense of forward highway motion.
+   - **Trailing Dust Lines & Exhaust Puffs**: Two delicate dynamic dust particle puffs and exhaust vapor streaks emit from the rear tyre contact patch, billowing outward and fading away (`x: 0 -> -16px, scale: 0.5 -> 1.4, opacity: 0.8 -> 0`).
+   - **Suspension Vibration**: The truck body undergoes micro-suspension bounce (`y: [0, -1, 0, 1, 0]`), mimicking realistic pavement contact.
+4. **Settled State**: On HTTP 200 confirmation, the truck eases to a smooth stop, and transforms into a shining emerald checkmark with the label morphing to `"Order Dispatched!"`.
+
+```
+        __________________
+       |  PACKAGE LOADED  | \
+     ==|__________________|__\__   <--- Subtle suspension bounce: y: [-1, 1]
+    ( * )                    ( * ) <--- Spinning Tyres: rotate: 360deg
+ ~~~  ~~~                          <--- Trailing Dust & Exhaust Lines (x: -16px, fade)
+================================== <--- Road Line Dashes Moving Left: x: 0 -> -24px
+```
+
+### 2.2 Framer Motion SVG Motion Specification
+```tsx
+// Inside TaskAnimatedOrderTruckButton Icon/Canvas Frame (40x24px)
+<div className="relative w-10 h-6 flex items-center justify-center overflow-hidden">
+  {/* The Moving Delivery Truck Body */}
+  <motion.div
+    animate={{ y: [0, -1, 0, 0.8, 0] }}
+    transition={{ duration: 0.35, repeat: Infinity, ease: "linear" }}
+    className="relative flex items-end"
+  >
+    {/* Cargo Container + Cab */}
+    <div className="relative flex items-end">
+      {/* Cargo Box */}
+      <div className="w-5 h-3.5 bg-cyan-600 rounded-tl-sm border-t border-l border-cyan-300/40 flex items-center justify-center">
+        {/* Package Icon in Cargo */}
+        <div className="w-2.5 h-2 bg-amber-500 rounded-[1px] border border-amber-300/50" />
+      </div>
+      {/* Driver Cab */}
+      <div className="w-2.5 h-2.5 bg-cyan-500 rounded-tr-md border-t border-r border-cyan-300/40 relative">
+        <div className="w-1 h-1 bg-cyan-950/80 rounded-tr-sm ml-1 mt-0.5" />
+      </div>
+    </div>
+
+    {/* Front & Rear Wheels (Spinning Tyres) */}
+    <div className="absolute -bottom-1 left-0.5 right-0.5 flex justify-between pointer-events-none">
+      {/* Rear Wheel */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
+        className="w-2 h-2 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center"
+      >
+        <div className="w-0.5 h-0.5 bg-neutral-200 rounded-full" />
+      </motion.div>
+      {/* Front Wheel */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
+        className="w-2 h-2 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center"
+      >
+        <div className="w-0.5 h-0.5 bg-neutral-200 rounded-full" />
+      </motion.div>
+    </div>
+  </motion.div>
+
+  {/* Trailing Tyre Dust & Exhaust Streamers */}
+  <div className="absolute bottom-1 left-0 pointer-events-none">
+    <motion.div
+      animate={{
+        x: [0, -14],
+        scale: [0.6, 1.4],
+        opacity: [0.9, 0]
+      }}
+      transition={{ duration: 0.45, repeat: Infinity, ease: "easeOut" }}
+      className="w-1.5 h-1 rounded-full bg-neutral-300/70 blur-[0.5px]"
+    />
+    <motion.div
+      animate={{
+        x: [0, -10],
+        scale: [0.4, 1.2],
+        opacity: [0.7, 0]
+      }}
+      transition={{ duration: 0.35, delay: 0.15, repeat: Infinity, ease: "easeOut" }}
+      className="w-1 h-0.5 rounded-full bg-cyan-300/60 blur-[0.5px] -mt-0.5"
+    />
+  </div>
+
+  {/* Moving Road Surface Dashes */}
+  <div className="absolute -bottom-0.5 left-0 right-0 h-[1.5px] overflow-hidden">
+    <motion.div
+      animate={{ x: [0, -20] }}
+      transition={{ duration: 0.25, repeat: Infinity, ease: "linear" }}
+      className="w-20 h-full border-b border-dashed border-cyan-400/80"
+    />
+  </div>
+</div>
+```
+
+---
+
+## Button 3: Live Sync & Refresh — The Broadcast Tower Beacon & Concentric Radio Waves with Live Text
+
+### 3.1 Visual Choreography & Micro-Story
+When user clicks "Sync Data", "Live Connect", or viewing a real-time streaming status:
+1. **Broadcast Radio Tower Antenna**: A high-tech communications tower icon with lattice cross-struts.
+2. **Pinnacle Transmitter Beacon**: At the very needle apex of the tower, a miniature red/amber transmitter LED beacon blinks rhythmically (`opacity: [0.2, 1, 0.2]`, duration: 400ms).
+3. **Concentric RF Radio Wave Arcs**: Concentric semi-circular radio waves radiate outward into the air from the beacon (`scale: 0.8 -> 2.2, opacity: 1 -> 0, strokeWidth: 1.5 -> 0.5`).
+4. **The Live Text Component**:
+   - The button or badge label displays active status: `"SYNCING LIVE..."` or `"BROADCASTING..."`.
+   - Accompanied by an animated green/amber pulsing status orb (`relative flex h-2 w-2` with `animate-ping`).
+   - A soft sweeping radar beam gradient sweeps horizontally across the letters of the text (`background-position: -200% -> 200%`).
+   - Animated miniature soundwave / signal equalizer bars jump next to the text.
+5. **Settled State**: On synchronization complete, the tower beacon turns solid emerald green, radio waves lock into a circular protective perimeter, and label morphs to `"Synchronized"`.
+
+```
+         (())         <--- Radiating Concentric Radio Wave Arcs: scale: 0.8 -> 2.2
+          /\          <--- Blinking Beacon Dot at Tower Needle
+         /  \
+        /____\        <--- Lattice Cross-Struts
+       / |  | \
+      
+   [ (•) SYNCING LIVE... ||||| ]  <--- Pulsing Live Dot + Radar Shimmer + Signal Bars
+```
+
+### 3.2 Framer Motion SVG Motion Specification
+```tsx
+// Inside TaskAnimatedLiveSyncButton
+<div className="flex items-center gap-2.5">
+  {/* Broadcast Tower Icon with Wave Arcs */}
+  <div className="relative w-6 h-6 flex items-center justify-center">
+    {/* Concentric Radiating RF Waves */}
+    {[0, 0.35, 0.7].map((delay, idx) => (
+      <motion.div
+        key={idx}
+        animate={{
+          scale: [0.7, 1.8],
+          opacity: [0.9, 0]
+        }}
+        transition={{
+          duration: 1.1,
+          repeat: Infinity,
+          delay: delay,
+          ease: "easeOut"
+        }}
+        className="absolute top-0.5 w-3.5 h-3.5 rounded-full border border-emerald-400/80 pointer-events-none"
+      />
+    ))}
+
+    {/* Tower Vector SVG */}
+    <svg viewBox="0 0 24 24" className="w-5 h-5 text-emerald-400 relative z-10" fill="none" stroke="currentColor" strokeWidth="2">
+      {/* Tower Mast */}
+      <path d="M12 2v20M8 22h8M9 15h6M10 9h4" />
+      {/* Tower Legs */}
+      <path d="M7 22l5-18 5 18" />
+    </svg>
+
+    {/* Blinking Beacon Tip */}
+    <motion.div
+      animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.3, 0.8] }}
+      transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
+      className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444] z-20"
+    />
+  </div>
+
+  {/* Live Text with Radar Beam & Equalizer Bars */}
+  <div className="flex items-center gap-1.5">
+    {/* Pulsing Live Dot */}
+    <span className="relative flex h-2 w-2">
+      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+    </span>
+
+    {/* Sweeping Shimmer Text */}
+    <span className="font-mono text-xs font-semibold tracking-wider uppercase text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-white to-emerald-200 bg-[length:200%_auto] animate-shimmer">
+      Syncing Live
+    </span>
+
+    {/* Mini Signal Transmission Equalizer Bars */}
+    <div className="flex items-end gap-0.5 h-3 ml-1">
+      {[0.4, 0.8, 0.5, 1.0].map((h, i) => (
+        <motion.div
+          key={i}
+          animate={{ height: [`${h * 40}%`, `${h * 100}%`, `${h * 40}%`] }}
+          transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
+          className="w-0.5 bg-emerald-400/90 rounded-full"
+        />
+      ))}
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## Button 4: Complete Payment — Credit Card Chip Insertion & Contactless NFC Waves
+
+### 4.1 Visual Choreography
+1. **Card Insertion (0ms – 400ms)**: An obsidian-gold bank card drops smoothly into an POS reader slot.
+2. **Contactless Radio Frequency Pulse (400ms – 1100ms)**: 3 concentric NFC wave arcs radiate from the chip reader.
+3. **Holographic Security Shimmer**: A metallic light ray glints diagonally across the card's security hologram.
+4. **Settled State**: Reader flashes an emerald verification LED ring and stamps `"PAID"` with a checkmark.
+
+---
+
+## Button 5: Download PDF — Laser Scanner Beam & Tray Drop
+
+### 5.1 Visual Choreography
+1. **Document Page Rendering (0ms – 400ms)**: A miniature document sheet with schematic lines appears.
+2. **Neon Laser Scanline (400ms – 800ms)**: A vibrant cyan laser beam sweeps downward across the sheet from top to bottom, illuminating blueprint technical diagrams.
+3. **Tray Drop (800ms – 1100ms)**: The scanned sheet folds into a red PDF badge, sliding down an arrow into a delivery tray.
+4. **Settled State**: Tray ejects with a green checkmark stamp.
+
+---
+
+## Button 6: Send Email & Inquiry — Origami Jet Plane Takeoff with Contrail Lines
+
+### 6.1 Visual Choreography
+1. **Envelope Folding (0ms – 300ms)**: An envelope flap lifts and folds sharply into a supersonic origami jet plane.
+2. **Takeoff & Vapor Trail (300ms – 800ms)**: The plane rotates 35 degrees upward and accelerates forward, leaving dynamic segmented contrail lines that ripple behind the fuselage.
+3. **Looping**: If network is delayed, the supersonic jet cruises effortlessly through soft cloud layers.
+4. **Settled State**: Hits a bullseye target with circular emerald shockwave.
+
+---
+
+## Button 7: Edit & Update — Stylus Line Tracing & Wax Seal Press
+
+### 7.1 Visual Choreography
+1. **Stylus Motion (0ms – 400ms)**: A fountain pen/stylus tilts and rapidly draws 3 dynamic cursive lines on a paper sheet.
+2. **Laser Verification Scan (400ms – 750ms)**: An amber audit scanline scans across the drawn strokes.
+3. **Seal Press (750ms – 1000ms)**: A warm wax stamp drops with elastic squash and stamps a verified seal.
+4. **Settled State**: Document rolls into a tied scroll with a green ribbon knot.
+
+---
+
+## Button 8: Create & Add New — Isometric 3D Construction Bricks Assembly
+
+### 8.1 Visual Choreography
+1. **Plus Morphing (0ms – 300ms)**: The standard `+` icon spins and splits into 3 isometric geometric building blocks.
+2. **Brick Stacking (300ms – 750ms)**: The blocks snap together with mechanical precision and subtle construction spark particles.
+3. **Bloom (750ms – 1000ms)**: The stacked blocks blossom outward into a fresh new record card.
+4. **Settled State**: Settles with an emerald checkmark and label `"Created Successfully!"`.
+
+---
+
+## Button 9: Upload File — Antigravity Tractor Beam Suction with Cloud Puffs
+
+### 9.1 Visual Choreography
+1. **Tractor Beam Emission (0ms – 300ms)**: A soft cyan laser cone shines downward from an open cloud glyph.
+2. **Suction Lift (300ms – 800ms)**: The target file card is pulled upward against gravity, shrinking as it ascends into the cloud core.
+3. **Cloud Squash & Stretch (800ms – 1000ms)**: The cloud absorbs the file with an elastic squash, emitting 3 miniature puffy vapor rings.
+4. **Settled State**: Cloud locks with a padlock checkmark.
+
+---
+
+## Button 10: Archive Record — Filing Cabinet Slide & Mechanical Latch
+
+### 10.1 Visual Choreography
+1. **Drawer Ejection (0ms – 350ms)**: An industrial steel filing cabinet drawer glides open toward the user.
+2. **Folder Drop (350ms – 700ms)**: A manila folder drops into the hanging file rack.
+3. **Latch Slam (700ms – 950ms)**: The drawer kicks firmly shut with a metallic latch click and lock glint.
+4. **Settled State**: Front cabinet plate displays an emerald archived badge.
+
+---
+
+## Button 11: Undo & Restore — Reverse Time-Travel Clock & Paper Uncrumple
+
+### 11.1 Visual Choreography
+1. **Reverse Time Warp (0ms – 400ms)**: Clock hands spin counter-clockwise at high velocity with rewind sparkles.
+2. **Paper Uncrumpling (400ms – 800ms)**: A crumpled paper ball expands outward, smoothing its wrinkles into a pristine flat document.
+3. **Settled State**: The restored document illuminates with green checkmark.
+
+---
+
+## Button 12: Security Lock / FaceLock — Biometric Hexagon Sweep & Shackle Snap
+
+### 12.1 Visual Choreography
+1. **Biometric Grid Sweep (0ms – 450ms)**: A glowing cyan hexagon grid sweeps vertically over an iris/face silhouette.
+2. **Shackle Slam (450ms – 850ms)**: A heavy titanium padlock top shackle slams down into the lock body with electric spark arcs.
+3. **Settled State**: Lock glows solid emerald with a verified security shield.
+
+---
+
+## 14. Timing Mathematics & Fluid Looping Curves
+
+Every animated button interaction satisfies the strict mathematical timing relation:
+
+$$\text{Loop Duration } T_{\text{cycle}} \in [800\text{ms}, 1200\text{ms}]$$
+
+$$\text{Total Animation Time } T_{\text{total}} = N \cdot T_{\text{cycle}} + T_{\text{morph}}$$
+
+Where:
+- $N = \max\left(1, \left\lceil \frac{T_{\text{api}}}{T_{\text{cycle}}} \right\rceil\right)$
+- $T_{\text{morph}} \approx 350\text{ms} - 450\text{ms}$
+- **Angular Wheel Velocity**: $\omega = \frac{v_{\text{apparent}}}{r_{\text{wheel}}} = \frac{2\pi}{0.3\text{s}} \approx 20.94\text{ rad/s}$
+- **Dust Particle Dispersion**: $x(t) = -v_0 t - \frac{1}{2} a t^2$, with opacity decay $\alpha(t) = 1 - \left(\frac{t}{T_{\text{puff}}}\right)^{1.5}$
+
+---
+
+## 15. Verification & Compliance Checklist
+
+- [ ] **Zero Circle Spinners**: Button NEVER uses generic circular borders or rotating dots.
+- [ ] **Delete In-Button Loop**: Delete button displays trash bin entering from right, lid opening, file dropping in, lid closing, and bin exiting in a smooth loop.
+- [ ] **Order Truck Loop**: Order/dispatch button displays delivery truck with spinning tyres, moving road dashes, and trailing tyre dust lines.
+- [ ] **Live Sync Tower & Text**: Sync/refresh button displays communications tower with blinking apex beacon, radiating RF waves, and live text badge with pulsing orb and signal bars.
+- [ ] **Seamless Seams**: If network latency exceeds 3000ms, loops transition without jump cuts or visual jitter.
+- [ ] **Minimum 1-Cycle Completion**: If network latency is 50ms, animation continues to 100% of cycle duration before showing success.
+- [ ] **Toast Deferral**: Toast notifications fire STRICTLY AFTER the completion morph finishes.
+
+
+---
+
+
+<a id="file-design-system-task-animated-buttons-system-md"></a>
+## 📄 Specification: `design-system/TASK_ANIMATED_BUTTONS_SYSTEM.md`
+
+# Master Architecture: Task-Specific Animated Buttons System
+
+> **EXPANDED MASTER SPECIFICATION**:  
+> For the comprehensive enterprise catalog containing **100 Unique Hover Presets**, **100 Unique Task Presets**, the **9-State Finite State Machine**, and the central component architecture, see:  
+> 🔗 **[`design-system/PREMIUM_BUTTON_ANIMATION_SYSTEM.md`](../design-system/PREMIUM_BUTTON_ANIMATION_SYSTEM.md)**.
+>
+> **CORE MANDATE**: Generic, boring circle loading spinners (e.g. `animate-spin` circular borders) on action buttons are **STRICTLY PROHIBITED** across all applications—whether on Public Marketing Pages, CMS Studio, Dashboard Tables, Modals, or Drawers.
+>
+> Every interactive action button that triggers an asynchronous API call or complex client task MUST display a **Task-Specific Micro-Animation** directly representing the nature of that task.
+>
+> 👑 **THE SYNCHRONIZATION LAW**:
+> 1. If the API response takes longer than the animation cycle, the animation **seamlessly loops** without stuttering.
+> 2. If the API responds faster than the animation cycle (e.g. 150ms response on a 1000ms animation), the animation **MUST complete its full ongoing cycle gracefully** before transitioning.
+> 3. Toast notifications **MUST ONLY trigger AFTER the animation and completion morph finish completely**—never mid-flight!
+
+---
+
+## 🚫 1. The Zero-Boring-Spinner Law ("No Generic Circular Loaders")
+
+### 1.1 The UX Psychological Problem with Generic Spinners
+Generic circle spinners provide zero task context:
+- They make every action feel like a dull system lag rather than purposeful computation.
+- They fail to reinforce user agency or give visual feedback on what the system is physically executing (e.g., printing an invoice, sealing an envelope, compressing a file, routing a webhook).
+- When buttons simply show a spinning ring, users perceive the application as an off-the-shelf template.
+
+### 1.2 The Task-Specific Animation Standard
+Every button click must deliver a bespoke, delightfully animated micro-story:
+- **Download PDF**: The document icon folds, passes under a laser scanline, and drops into a physical tray.
+- **Send Email**: The envelope flaps open, folds into a sleek paper jet, and accelerates forward with a supersonic vapor trail.
+- **Delete Record**: The trash bin lid flips open, the target record crumples into a ball, drops into the bin, and the lid snaps closed with a gentle shudder.
+- **Pay Now / Checkout**: A miniature credit card dips into an obsidian chip reader, waves pulse outward, and a green verification beam illuminates the card edge.
+- **Save Draft**: A quill pen dips in ink, scribes two glowing lines on parchment, and drops a warm wax seal.
+
+---
+
+## ⏱️ 2. The Animation Synchronization & Timing Contract
+
+### 2.1 The Two-Phase Lifecycle & Minimum Cycle Math
+
+Every animated button interaction operates on a strict mathematical timing contract governed by:
+- $T_{cycle}$: The fundamental natural duration of one full animation loop (typically 800ms – 1200ms).
+- $T_{api}$: The actual network latency and server response time.
+- $T_{morph}$: The terminal success or error morph transition (typically 350ms – 500ms).
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle: User views button
+    Idle --> Animating: User clicks button (t = 0)
+    
+    state Animating {
+        [*] --> CycleExecution: Start task vector motion
+        CycleExecution --> CheckAPIDone: Cycle completes (T_cycle)
+        CheckAPIDone --> CycleExecution: API still pending (Loop next cycle)
+        CheckAPIDone --> GracefulExit: API already resolved
+    }
+    
+    Animating --> MorphSuccess: API OK & current cycle completed
+    Animating --> MorphError: API Failed & current cycle completed
+    
+    MorphSuccess --> FireSuccessToast: Morph transition finishes (T_morph)
+    MorphError --> FireErrorToast: Morph transition finishes (T_morph)
+    
+    FireSuccessToast --> Settled: Settle to idle or locked state
+    FireErrorToast --> Idle: Return to retryable idle state
+```
+
+### 2.2 Case A: Slow API Response ($T_{api} > T_{cycle}$)
+- The task-specific micro-animation loops smoothly with zero visual stutter at cycle seams.
+- Loop count $N = \lceil T_{api} / T_{cycle} \rceil$.
+- When the API resolves during cycle $N$, the animation continues running until the exact completion of cycle $N$.
+
+### 2.3 Case B: Fast API Response ($T_{api} < T_{cycle}$)
+- If the API call completes in 180ms, but $T_{cycle} = 1000\text{ms}$, the system calculates the remaining time:
+  $$\Delta t_{\text{remainder}} = T_{cycle} - (T_{api} \pmod{T_{cycle}})$$
+- The system **waits $\Delta t_{\text{remainder}}$** before triggering the success morph.
+- **The animation is never abruptly cut off, snapped, or aborted.**
+
+### 2.4 The Post-Animation Toast Trigger Guarantee
+> ⚠️ **STRICT ARCHITECTURAL RULE**:
+> Toast notifications (`toast.success()`, `toast.error()`, etc.) **MUST NEVER** be invoked inside the API promise callback immediately upon HTTP resolution.
+>
+> Doing so causes the toast to pop into view while the button is still in mid-animation, breaking the visual narrative and confusing the user.
+>
+> The toast trigger callback must be executed **strictly after**:
+> 1. The full animation cycle has completed.
+> 2. The terminal success/error morph animation ($T_{morph}$) has completed.
+
+---
+
+## 🛠️ 3. Reusable React Core Implementation
+
+### 3.1 The Universal Synchronization Hook (`useTaskAnimationSync.ts`)
+
+```typescript
+// src/hooks/useTaskAnimationSync.ts
+import { useState, useRef, useCallback } from 'react';
+
+export type TaskStatus = 'idle' | 'animating' | 'success' | 'error';
+
+interface TaskAnimationOptions<TData> {
+  cycleDuration?: number;    // Duration of one complete animation loop in ms (default: 1000ms)
+  morphDuration?: number;    // Duration of completion morph in ms (default: 400ms)
+  onSuccess?: (data: TData) => void;
+  onError?: (error: unknown) => void;
+  onSuccessToast?: (data: TData) => void; // Guaranteed to fire AFTER animation finishes
+  onErrorToast?: (error: unknown) => void;
+}
+
+export function useTaskAnimationSync<TData = any>(options: TaskAnimationOptions<TData> = {}) {
+  const {
+    cycleDuration = 1000,
+    morphDuration = 400,
+    onSuccess,
+    onError,
+    onSuccessToast,
+    onErrorToast,
+  } = options;
+
+  const [status, setStatus] = useState<TaskStatus>('idle');
+  const startTimeRef = useRef<number>(0);
+  const isExecutingRef = useRef<boolean>(false);
+
+  const execute = useCallback(
+    async (taskPromise: Promise<TData>): Promise<TData | undefined> => {
+      if (isExecutingRef.current) return;
+
+      isExecutingRef.current = true;
+      setStatus('animating');
+      startTimeRef.current = performance.now();
+
+      let taskResult: TData | undefined = undefined;
+      let taskError: unknown = null;
+      let isSuccess = false;
+
+      try {
+        taskResult = await taskPromise;
+        isSuccess = true;
+      } catch (err) {
+        taskError = err;
+        isSuccess = false;
+      }
+
+      // Compute elapsed execution time
+      const elapsed = performance.now() - startTimeRef.current;
+      
+      // Calculate remaining duration required to complete the current cycle gracefully
+      const remainderInCycle = cycleDuration - (elapsed % cycleDuration);
+      const waitTime = remainderInCycle === cycleDuration ? 0 : remainderInCycle;
+
+      // Allow the active animation cycle to complete 100%
+      if (waitTime > 0) {
+        await new Promise((resolve) => setTimeout(resolve, waitTime));
+      }
+
+      // Transition to terminal morph state
+      setStatus(isSuccess ? 'success' : 'error');
+
+      // Wait for the terminal morph transition to complete
+      await new Promise((resolve) => setTimeout(resolve, morphDuration));
+
+      // Trigger user-defined callbacks and STRICTLY DEFERRED toasts
+      if (isSuccess) {
+        onSuccess?.(taskResult as TData);
+        onSuccessToast?.(taskResult as TData);
+      } else {
+        onError?.(taskError);
+        onErrorToast?.(taskError);
+      }
+
+      // Reset execution lock
+      isExecutingRef.current = false;
+      
+      return taskResult;
+    },
+    [cycleDuration, morphDuration, onSuccess, onError, onSuccessToast, onErrorToast]
+  );
+
+  const reset = useCallback(() => {
+    setStatus('idle');
+    isExecutingRef.current = false;
+  }, []);
+
+  return {
+    status,
+    isLoading: status === 'animating',
+    isSuccess: status === 'success',
+    isError: status === 'error',
+    execute,
+    reset,
+  };
+}
+```
+
+---
+
+### 3.2 The Master Component Blueprint (`<TaskAnimatedButton />`)
+
+```tsx
+// src/components/ui/TaskAnimatedButton.tsx
+import React, { ReactNode } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useTaskAnimationSync, TaskStatus } from '@/hooks/useTaskAnimationSync';
+import { Check, AlertCircle } from 'lucide-react';
+
+export interface TaskAnimatedButtonProps {
+  id?: string;
+  label: string;
+  activeLabel?: string;
+  successLabel?: string;
+  errorLabel?: string;
+  idleIcon: ReactNode;
+  animatingVector: ReactNode; // Bespoke task-specific motion graphics
+  successIcon?: ReactNode;
+  onClick: () => Promise<any>;
+  cycleDuration?: number;
+  onSuccessToast?: (data: any) => void;
+  onErrorToast?: (error: any) => void;
+  variant?: 'primary' | 'secondary' | 'destructive' | 'glass' | 'emerald';
+  className?: string;
+  disabled?: boolean;
+}
+
+export const TaskAnimatedButton: React.FC<TaskAnimatedButtonProps> = ({
+  id,
+  label,
+  activeLabel,
+  successLabel = 'Completed',
+  errorLabel = 'Failed',
+  idleIcon,
+  animatingVector,
+  successIcon = <Check className="w-5 h-5 text-emerald-400" />,
+  onClick,
+  cycleDuration = 1000,
+  onSuccessToast,
+  onErrorToast,
+  variant = 'primary',
+  className = '',
+  disabled = false,
+}) => {
+  const { status, isLoading, isSuccess, isError, execute } = useTaskAnimationSync({
+    cycleDuration,
+    onSuccessToast,
+    onErrorToast,
+  });
+
+  const handleClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (disabled || isLoading) return;
+    await execute(onClick());
+  };
+
+  // Variant styling
+  const variantStyles = {
+    primary: 'bg-brand-500 hover:bg-brand-600 text-white shadow-glow-sky border-transparent',
+    secondary: 'bg-slate-800 hover:bg-slate-700 text-slate-100 border-slate-700',
+    destructive: 'bg-rose-600 hover:bg-rose-700 text-white shadow-lg shadow-rose-950/40 border-transparent',
+    glass: 'bg-white/10 dark:bg-slate-900/40 backdrop-blur-xl border-white/20 text-white hover:bg-white/20',
+    emerald: 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-950/40 border-transparent',
+  }[variant];
+
+  return (
+    <motion.button
+      id={id}
+      whileTap={{ scale: disabled || isLoading ? 1 : 0.97 }}
+      onClick={handleClick}
+      disabled={disabled || isLoading}
+      className={`relative inline-flex items-center justify-center gap-3 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 border cursor-pointer overflow-hidden ${variantStyles} ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+    >
+      {/* Background Active Energy Pulse (Active when animating) */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 dark:via-cyan-400/15 to-transparent pointer-events-none"
+            style={{
+              backgroundSize: '200% 100%',
+              animation: `shimmerFlow ${cycleDuration}ms infinite linear`,
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Dynamic Icon & Vector Representation */}
+      <div className="relative w-5 h-5 flex items-center justify-center flex-shrink-0">
+        <AnimatePresence mode="wait">
+          {status === 'idle' && (
+            <motion.div
+              key="idle"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {idleIcon}
+            </motion.div>
+          )}
+
+          {status === 'animating' && (
+            <motion.div
+              key="animating"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="w-full h-full flex items-center justify-center"
+            >
+              {animatingVector}
+            </motion.div>
+          )}
+
+          {status === 'success' && (
+            <motion.div
+              key="success"
+              initial={{ scale: 0.5, rotate: -45, opacity: 0 }}
+              animate={{ scale: 1.1, rotate: 0, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+            >
+              {successIcon}
+            </motion.div>
+          )}
+
+          {status === 'error' && (
+            <motion.div
+              key="error"
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1, x: [0, -4, 4, -4, 4, 0] }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <AlertCircle className="w-5 h-5 text-rose-400" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Button Text Transition */}
+      <span className="relative z-10 font-medium tracking-wide">
+        {status === 'idle' && label}
+        {status === 'animating' && (activeLabel || label)}
+        {status === 'success' && successLabel}
+        {status === 'error' && errorLabel}
+      </span>
+    </motion.button>
+  );
+};
+```
+
+---
+
+## 🌟 4. The 30 Master Task-Specific Animated Button Specifications
+
+Below are the 30 concrete, real-world task buttons designed across Public Marketing, Billing/Checkout, CMS Studio, Automations, Asset Management, and Dashboard Security.
+
+---
+
+### 📂 CATEGORY 1: Public Pages & Customer Journey (Examples 1–6)
+
+#### Example 1: "Send Inquiry / Contact Us" (Paper Plane Takeoff & Jet Vapor Trail)
+- **Surface / Context**: Public Contact Page & Lead Magnet Drawer.
+- **Triggered Action**: Submits contact form payload via `usePublicInquiry().submitInquiry(formData)`.
+- **Idle State**:
+  - Icon: Minimalist diagonal paper plane (`lucide-react` `Send`).
+  - Label: `"Send Message"`.
+  - Style: Vibrant Brand Cyan button with soft outer glow.
+- **Task-Specific Animation Mechanics**:
+  - Vector: An SVG paper plane folds its wings downward (0ms–200ms), rotates 35 degrees upward (200ms–400ms), and accelerates across the button boundary to the top-right (400ms–800ms).
+  - Trailing Effect: A segmented cyan vapor trail dots behind the fuselage and loops through a mini looping orbit if the API is delayed ($T_{cycle} = 900\text{ms}$).
+  - Loop Seam: As the plane flies off the right edge, a second miniature supersonic dart emerges from the bottom-left to maintain unbroken motion until the network responds.
+- **Fast vs. Slow API Handling**:
+  - Fast response (120ms): Plane finishes its flight across the screen to 900ms.
+  - Slow response (2400ms): Plane completes 2.66 loops; gracefully lands on loop 3 at 2700ms.
+- **Completion Morph & Success State**:
+  - The plane glides into a central bullseye target, collapsing into an emerald checkmark with a circular shockwave pulse.
+  - Label morphs to `"Message Delivered!"`.
+- **Post-Animation Toast Contract**:
+  - Fired strictly AFTER the 900ms flight + 400ms target morph:
+  - `toast.success("Inquiry received! Our team will contact you within 2 hours.", { icon: '✈️' })`.
+
+---
+
+#### Example 2: "Subscribe to Newsletter" (Envelope Seal & Postbox Slot Drop)
+- **Surface / Context**: Public Footer & Blog Sidebar.
+- **Triggered Action**: `useNewsletter().subscribe(email)`.
+- **Idle State**:
+  - Icon: Closed envelope (`Mail`).
+  - Label: `"Subscribe"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: The envelope flap lifts up (0ms–300ms), a newsletter page with miniature text lines slides deep inside (300ms–600ms), and a golden wax seal drops and presses shut (600ms–1000ms, $T_{cycle} = 1000\text{ms}$).
+  - Looping: If API is slow, the sealed letter glides into a brass mail slot, and another letter preps for sealing in rhythm.
+- **Completion Morph & Success State**:
+  - The envelope morphs into a green heart emblem with sparkling particles.
+  - Label morphs to `"You're On The List!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1000ms cycle:
+  - `toast.success("Welcome aboard! Please verify your inbox.", { icon: '📬' })`.
+
+---
+
+#### Example 3: "Download Brochure / Whitepaper" (PDF Document Laser Scan & Tray Eject)
+- **Surface / Context**: Enterprise Landing Page Hero / Product Features.
+- **Triggered Action**: `useBrochure().downloadPdf(brochureId)`.
+- **Idle State**:
+  - Icon: Document with downward arrow (`FileDown`).
+  - Label: `"Download Enterprise Deck"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A crisp white PDF document card appears. An animated horizontal neon-blue laser line scans downward across the sheet from top to bottom (0ms–600ms), revealing blueprint technical diagrams.
+  - At 600ms–1000ms ($T_{cycle} = 1000\text{ms}$), the scanned sheet slides downward into a physical document tray slot.
+  - Looping: Laser oscillates up and down scanning continuous pages if network bandwidth is limited.
+- **Completion Morph & Success State**:
+  - The tray ejects a PDF badge with a glowing green checkmark.
+  - Label morphs to `"Brochure Ready!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after full scan cycle completes:
+  - `toast.success("Enterprise Deck downloaded successfully.", { icon: '📄' })`.
+
+---
+
+#### Example 4: "Schedule Demo / Book Meeting" (Calendar Page Flip & Fast-Forward Clock)
+- **Surface / Context**: SaaS Demo Booking Modal / Sales Funnel.
+- **Triggered Action**: `useBooking().reserveSlot({ date, time, timezone })`.
+- **Idle State**:
+  - Icon: Calendar grid with clock badge (`CalendarClock`).
+  - Label: `"Confirm Demo Slot"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A dual-leaf desk calendar flips its front page smoothly over its ring binder (0ms–450ms). Inside, an analog clock face rotates its minute hand 360 degrees in rapid fast-forward motion (450ms–900ms, $T_{cycle} = 900\text{ms}$).
+  - Looping: Calendar pages continue flipping gently like days passing in a time-lapse until calendar slot reservation locks in MongoDB.
+- **Completion Morph & Success State**:
+  - The calendar page pins firmly with a golden thumbtack and a checkmark stamp.
+  - Label morphs to `"Slot Reserved!"`.
+- **Post-Animation Toast Contract**:
+  - Fired strictly after flip cycle:
+  - `toast.success("Demo scheduled! Calendar invite dispatched to your email.", { icon: '🗓️' })`.
+
+---
+
+#### Example 5: "Add to Wishlist / Bookmark" (Heart Vector Pop & Sparkle Float)
+- **Surface / Context**: Public Catalog Card & Course Detail Page.
+- **Triggered Action**: `useWishlist().toggleBookmark(productId)`.
+- **Idle State**:
+  - Icon: Clean outline heart (`Heart`).
+  - Label: `"Save to Wishlist"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: The heart contracts slightly to 85% scale (anticipation, 0ms–200ms), then explodes outward to 125% with glowing ruby-red fill (200ms–500ms).
+  - Floating Effect: 4 tiny golden stars emit from the vertex of the heart and float upward with gentle physics sway (500ms–800ms, $T_{cycle} = 800\text{ms}$).
+  - Looping: Stars orbit in an ethereal halo around the pulsating heart if network sync is delayed.
+- **Completion Morph & Success State**:
+  - The heart settles into solid crimson red with a miniature golden lock badge.
+  - Label morphs to `"Saved!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 800ms:
+  - `toast.success("Item saved to your private collection.", { icon: '💖' })`.
+
+---
+
+#### Example 6: "Submit Feedback / Rating" (Shooting Star Orbit & Gold Shimmer)
+- **Surface / Context**: Net Promoter Score (NPS) Dialog & Public Review Bar.
+- **Triggered Action**: `useReviews().submitRating({ score, comment })`.
+- **Idle State**:
+  - Icon: Empty star outline (`Star`).
+  - Label: `"Post Review"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A golden star shoots in from bottom-left, executing an elliptical 3D orbit around the button text (0ms–600ms).
+  - As it orbits, it leaves a sparkling comet tail that coats the star in metallic molten gold (600ms–1000ms, $T_{cycle} = 1000\text{ms}$).
+  - Looping: The comet continues orbiting fluidly without interruption.
+- **Completion Morph & Success State**:
+  - The star clicks into the center, bursting into five smaller stars that align horizontally.
+  - Label morphs to `"Review Published!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after orbit completes:
+  - `toast.success("Thank you for your valuable feedback!", { icon: '⭐' })`.
+
+---
+
+### 💳 CATEGORY 2: E-Commerce, Billing & Checkout (Examples 7–12)
+
+#### Example 7: "Pay Now / Complete Checkout" (Credit Card Chip Dip & Soundwave Terminal)
+- **Surface / Context**: E-Commerce Checkout Drawer & Subscription Modal.
+- **Triggered Action**: `usePayment().processStripeIntent(paymentMethodId)`.
+- **Idle State**:
+  - Icon: Credit card with chip graphic (`CreditCard`).
+  - Label: `"Pay $149.00"`.
+  - Style: Dark Obsidian Glass with ambient violet glow.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A miniature 3D isometric credit card slides vertically down into an obsidian POS chip terminal slot (0ms–400ms).
+  - As the chip makes contact, 3 concentric NFC radio wave arcs emanate from the terminal reader (400ms–1100ms, $T_{cycle} = 1100\text{ms}$).
+  - Looping: Radio waves pulse rhythmically (ping... ping...) while Stripe/Bank 3D-Secure processes the transaction.
+- **Fast vs. Slow API Handling**:
+  - Fast authorization (300ms): NFC waves finish their full 1100ms cycle.
+  - Slow authorization (3200ms): Completes 3 full wave pulses; resolves cleanly on cycle 3.
+- **Completion Morph & Success State**:
+  - An authentic emerald LED ring flashes on the POS terminal with a checkmark.
+  - Label morphs to `"Payment Approved!"`.
+- **Post-Animation Toast Contract**:
+  - Fired strictly after 1100ms cycle + 400ms LED flash:
+  - `toast.success("Transaction #9842 confirmed! Receipt emailed.", { icon: '💳' })`.
+
+---
+
+#### Example 8: "Apply Coupon Code" (Scissors Snipping Ticket Notch & Tag Bounce)
+- **Surface / Context**: Cart Summary & Checkout Discount Box.
+- **Triggered Action**: `useCart().applyPromoCode(code)`.
+- **Idle State**:
+  - Icon: Discount coupon tag (`Tag`).
+  - Label: `"Apply Code"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A pair of stainless steel scissors glides across a dotted discount coupon line, snipping the edge notch with a crisp 2-frame snip (0ms–400ms).
+  - The detached ticket stub bounces joyfully on an elastic spring physics curve (400ms–900ms, $T_{cycle} = 900\text{ms}$).
+  - Looping: Dotted lines reel continuously like a ticketing machine if server validates complex discount rules.
+- **Completion Morph & Success State**:
+  - Ticket transforms into a glowing badge displaying `"-20% APPLIED"`.
+  - Label morphs to `"Discount Applied!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 900ms:
+  - `toast.success("Promo code 'VIP20' applied: You saved $38.00!", { icon: '🏷️' })`.
+
+---
+
+#### Example 9: "Generate Invoice / Receipt" (Thermal Cash Register Printout Sliding Down)
+- **Surface / Context**: Dashboard Billing History & Order Detail.
+- **Triggered Action**: `useOrder().generateReceipt(orderId)`.
+- **Idle State**:
+  - Icon: Printer receipt (`Receipt`).
+  - Label: `"Generate Tax Invoice"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A stylized thermal cash register slot ejects a paper receipt sliding downward line-by-line with rhythmic micro-ratchets (0ms–700ms).
+  - A serrated tear-line blade trims the top margin with a horizontal flash (700ms–1000ms, $T_{cycle} = 1000\text{ms}$).
+  - Looping: Receipt paper feeds smoothly like a real printing press while server compiles PDF headers and tax totals.
+- **Completion Morph & Success State**:
+  - Receipt detaches cleanly, folding into a verified official invoice stamp.
+  - Label morphs to `"Invoice Generated!"`.
+- **Post-Animation Toast Contract**:
+  - Fired strictly after print cycle:
+  - `toast.success("Tax Invoice #INV-2026-88 ready for download.", { icon: '🧾' })`.
+
+---
+
+#### Example 10: "Refund Transaction" (Money Bag / Coin Orbit Reversing Flow)
+- **Surface / Context**: Admin Dashboard Order Management & Dispute Drawer.
+- **Triggered Action**: `useBilling().issueRefund(transactionId, amount)`.
+- **Idle State**:
+  - Icon: Undo currency symbol (`RotateCcw`).
+  - Label: `"Issue Full Refund"`.
+  - Style: Subtle Slate Amber border with dark backdrop.
+- **Task-Specific Animation Mechanics**:
+  - Vector: Two gold coins leave a central wallet and follow a counter-clockwise curved orbit back into a bank vault vault-portal (0ms–600ms).
+  - A reverse spiral arrow trails behind the coins with glowing amber particles (600ms–1100ms, $T_{cycle} = 1100\text{ms}$).
+  - Looping: Continuous reverse orbital flow while gateway initiates reversal handshake.
+- **Completion Morph & Success State**:
+  - The vault door locks shut with an amber padlock and checkmark.
+  - Label morphs to `"Refund Issued!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1100ms cycle:
+  - `toast.success("$149.00 refunded back to customer's Visa.", { icon: '💸' })`.
+
+---
+
+#### Example 11: "Upgrade Subscription Tier" (Rocket Launch with Thruster Plume & Orbit Ring)
+- **Surface / Context**: SaaS Pricing Table & Plan Switcher Modal.
+- **Triggered Action**: `useSubscription().upgradeTier('enterprise')`.
+- **Idle State**:
+  - Icon: Rocket vessel (`Rocket`).
+  - Label: `"Upgrade to Enterprise"`.
+  - Style: Radiant Indigo-Cyan Gradient with dynamic border beam.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A sleek space rocket tilts 45 degrees, ignites its dual plasma thrusters with animated orange-cyan flame particles (0ms–400ms).
+  - The rocket launches upward out of the button, while an orbital ring traces around the button perimeter (400ms–1000ms, $T_{cycle} = 1000\text{ms}$).
+  - Looping: Plasma flame oscillates and cosmic stars stream past the fuselage during Stripe billing prorations.
+- **Completion Morph & Success State**:
+  - The rocket hits warp speed, breaking into a shimmering diamond Crown icon.
+  - Label morphs to `"Plan Upgraded!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1000ms:
+  - `toast.success("Welcome to Enterprise! Unlimited access unlocked.", { icon: '🚀' })`.
+
+---
+
+#### Example 12: "Connect Bank Account (Stripe/Plaid)" (Vault Wheel Spin & Interlocking Plugs)
+- **Surface / Context**: Tenant Payout Settings & FinTech Onboarding.
+- **Triggered Action**: `useBanking().linkPlaidAccount(publicToken)`.
+- **Idle State**:
+  - Icon: Bank pillars with link chain (`Landmark`).
+  - Label: `"Link Business Bank"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A high-security circular bank vault door wheel rotates 360 degrees with tactile clicking gears (0ms–500ms).
+  - Two heavy industrial electrical cables glide from opposite sides and snap together with an electric cyan spark (500ms–1000ms, $T_{cycle} = 1000\text{ms}$).
+  - Looping: Electrical pulse currents flow smoothly along the linked cable.
+- **Completion Morph & Success State**:
+  - The link locks into an emerald shield with verified checkmark.
+  - Label morphs to `"Bank Account Connected!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1000ms:
+  - `toast.success("Chase Business Checking linked for instant payouts.", { icon: '🏦' })`.
+
+---
+
+### 🎨 CATEGORY 3: CMS Studio, Page Builder & Content (Examples 13–18)
+
+#### Example 13: "Publish Live Page" (Satellite Dish Beam Pulsing to Cloud)
+- **Surface / Context**: CMS Public Pages Studio & Section Editor Header.
+- **Triggered Action**: `useCMS().publishPage(pageId)`.
+- **Idle State**:
+  - Icon: Globe with broadcast radio waves (`Globe`).
+  - Label: `"Publish to Production"`.
+  - Style: High-gloss Emerald / Brand Cyan with live status pill.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A ground satellite dish tilts toward an illuminated cloud glyph (0ms–350ms).
+  - A concentrated neon-green microwave beam shoots upward in 3 rhythmic laser pulses, lighting up the cloud's perimeter with edge highlights (350ms–1000ms, $T_{cycle} = 1000\text{ms}$).
+  - Looping: Microwave pulses continuously stream data packets to the cloud while Edge CDN invalidates caches across global nodes.
+- **Completion Morph & Success State**:
+  - Cloud turns solid emerald with a green glowing dot and `"LIVE"` badge.
+  - Label morphs to `"Page Published!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1000ms cycle:
+  - `toast.success("Page published worldwide across 320 CDN edge locations.", { icon: '🌐' })`.
+
+---
+
+#### Example 14: "Save Draft" (Quill Pen Inking Paper & Wax Seal Press)
+- **Surface / Context**: CMS Blog Post & Email Template Designer.
+- **Triggered Action**: `useCMS().saveDraft({ id, jsonContent })`.
+- **Idle State**:
+  - Icon: Traditional floppy disk with magnetic slider (`Save`).
+  - Label: `"Save Draft"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: An old-world fountain pen dips into a glowing glass inkwell (0ms–300ms), moves across a parchment sheet writing 3 horizontal wavy script lines (300ms–700ms).
+  - A warm circular wax seal stamps the bottom right corner with a gentle hydraulic squash (700ms–1000ms, $T_{cycle} = 1000\text{ms}$).
+  - Looping: Quill pen continues scribing fine typographic lines smoothly.
+- **Completion Morph & Success State**:
+  - Parchment rolls into a tied scroll with a green ribbon knot.
+  - Label morphs to `"Draft Saved!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1000ms:
+  - `toast.success("All changes autosaved to MongoDB draft revision #14.", { icon: '🖋️' })`.
+
+---
+
+#### Example 15: "Generate AI Section / Copy" (Magic Wand Sparkle Swirl & Neural Constellation)
+- **Surface / Context**: CMS AI Copywriter & Section Generator Modal.
+- **Triggered Action**: `useAI().generateSectionPrompt(promptParams)`.
+- **Idle State**:
+  - Icon: Sparkle wand with neural stars (`Sparkles`).
+  - Label: `"Generate with AI"`.
+  - Style: Iridescent Purple-Violet Gradient with starlight shimmer.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A glowing crystal magic wand swivels in a circular figure-8 infinity arc (0ms–500ms).
+  - As it traces, 5 neural constellation nodes illuminate and connect with energetic laser lines, pulsating like an organic brain network (500ms–1200ms, $T_{cycle} = 1200\text{ms}$).
+  - Looping: Neural network pulses and redistributes node weights in real time while LLM streams output tokens.
+- **Completion Morph & Success State**:
+  - Constellation nodes converge into a brilliant gold starburst.
+  - Label morphs to `"Section Generated!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1200ms:
+  - `toast.success("AI layout and marketing copy created successfully.", { icon: '✨' })`.
+
+---
+
+#### Example 16: "Download Custom PDF Template" (Blueprint Grid Unrolling & PDF Stamp Press)
+- **Surface / Context**: CMS PDF Editor & Certificate Designer Studio.
+- **Triggered Action**: `usePdfEditor().exportActiveTemplate(templateId)`.
+- **Idle State**:
+  - Icon: PDF document with stamp seal (`FileText`).
+  - Label: `"Export PDF Template"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A technical cyan blueprint grid roll unrolls horizontally across the button surface (0ms–400ms).
+  - A heavy industrial brass stamp drops from above, imprinting `"PDF CERTIFIED"` onto the sheet with mechanical rebound (400ms–1000ms, $T_{cycle} = 1000\text{ms}$).
+  - Looping: Stamp hovers and stamps rhythmic sheets while server compiles Puppeteer canvas rendering.
+- **Completion Morph & Success State**:
+  - Blueprint roll folds into a crisp red Adobe-style PDF icon with download arrow.
+  - Label morphs to `"Template Exported!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1000ms:
+  - `toast.success("Custom PDF template exported with all active key bindings.", { icon: '📐' })`.
+
+---
+
+#### Example 17: "Deploy Site / Push to Production" (Vercel Container Crane & Freight Cargo Loading)
+- **Surface / Context**: Global Settings & Tenant Release Management.
+- **Triggered Action**: `useDeployment().triggerRelease(tenantId, 'production')`.
+- **Idle State**:
+  - Icon: Shipping container with up-arrow (`UploadCloud`).
+  - Label: `"Deploy Production Release"`.
+  - Style: Matte Obsidian with glowing hazard yellow accents.
+- **Task-Specific Animation Mechanics**:
+  - Vector: An overhead industrial gantry crane lowers a high-tech shipping container box marked `"BUILD 2.0"` onto a moving cargo deck (0ms–500ms).
+  - Container locks into the deck with dual steam releases and twin yellow hazard beacon rotations (500ms–1100ms, $T_{cycle} = 1100\text{ms}$).
+  - Looping: Gantry cranes load containers in continuous conveyor motion during webpack build and edge bundling.
+- **Completion Morph & Success State**:
+  - Hazard beacons turn emerald green with a rocket emblem.
+  - Label morphs to `"Deployment Active!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1100ms cycle:
+  - `toast.success("Production deployment #release-419 is now live on custom domain.", { icon: '🚢' })`.
+
+---
+
+#### Example 18: "Duplicate Page / Clone Layout" (Dual Layers Splitting Apart & Stamping Clone)
+- **Surface / Context**: CMS Public Pages List & Dashboard Template Selector.
+- **Triggered Action**: `useCMS().duplicatePage(sourcePageId)`.
+- **Idle State**:
+  - Icon: Overlapping duplicate cards (`Copy`).
+  - Label: `"Duplicate Page"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A single UI page canvas card splits horizontally into two identical translucent glass sheets (0ms–400ms).
+  - The second sheet elevates upward in 3D perspective and stamps down with an ink duplicate watermark (400ms–900ms, $T_{cycle} = 900\text{ms}$).
+  - Looping: Layers hover and shuffle smoothly like a deck of playing cards during database cloning.
+- **Completion Morph & Success State**:
+  - Two crisp stacked cards settle side-by-side with emerald checkmarks.
+  - Label morphs to `"Page Cloned!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 900ms:
+  - `toast.success("Page duplicated as 'Home Page (Copy)' in your draft folder.", { icon: '📑' })`.
+
+---
+
+### 💬 CATEGORY 4: Communications, Messaging & Automations (Examples 19–22)
+
+#### Example 19: "Send WhatsApp Broadcast" (Chat Bubble Wave & Double Blue Checkmark)
+- **Surface / Context**: CMS WhatsApp Campaign Studio & Customer CRM.
+- **Triggered Action**: `useWhatsApp().sendBroadcast({ campaignId, recipients })`.
+- **Idle State**:
+  - Icon: Official WhatsApp speech bubble (`MessageCircle`).
+  - Label: `"Send WhatsApp Broadcast"`.
+  - Style: Dark Forest Obsidian with emerald neon glow.
+- **Task-Specific Animation Mechanics**:
+  - Vector: An emerald speech bubble pulses outward with 2 concentric acoustic wave rings (0ms–400ms).
+  - Inside the bubble, two faint grey checkmarks appear, slide diagonally, and illuminate into glowing WhatsApp cyan-blue double ticks (400ms–950ms, $T_{cycle} = 950\text{ms}$).
+  - Looping: Soundwaves expand continuously across the bubble perimeter while Meta Cloud API confirms message delivery receipts.
+- **Completion Morph & Success State**:
+  - Double ticks glow bright cyan-blue with a delivered message ping.
+  - Label morphs to `"Broadcast Sent!"`.
+- **Post-Animation Toast Contract**:
+  - Fired strictly after double-tick animation:
+  - `toast.success("Broadcast dispatched to 1,420 verified WhatsApp numbers.", { icon: '💬' })`.
+
+---
+
+#### Example 20: "Send Email Campaign" (Airmail Envelope Jet Gliding Through Clouds)
+- **Surface / Context**: CMS Email Studio & Marketing Broadcast Drawer.
+- **Triggered Action**: `useEmail().sendCampaign(campaignId)`.
+- **Idle State**:
+  - Icon: Postcard with wings / send symbol (`SendHorizontal`).
+  - Label: `"Launch Email Campaign"`.
+  - Style: Brand Cyan / Indigo gradient.
+- **Task-Specific Animation Mechanics**:
+  - Vector: An airmail envelope with classic red and blue diagonal border stripes sprouts mini jet wings (0ms–300ms).
+  - The envelope jet swoops horizontally through two soft white fluffy clouds, dipping and banking with dynamic inertia (300ms–1000ms, $T_{cycle} = 1000\text{ms}$).
+  - Looping: Clouds drift by smoothly while the jet cruises effortlessly during SES batch dispatching.
+- **Completion Morph & Success State**:
+  - The jet soars into a mailbox target with a green checkmark.
+  - Label morphs to `"Emails Dispatched!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1000ms:
+  - `toast.success("Email blast queued for 8,500 subscribers via Amazon SES.", { icon: '📧' })`.
+
+---
+
+#### Example 21: "Trigger Webhook / Zapier Flow" (Electric Lightning Along PCB Trace)
+- **Surface / Context**: Developer Webhooks & API Integration Hub.
+- **Triggered Action**: `useWebhooks().triggerTestPayload(endpointId)`.
+- **Idle State**:
+  - Icon: Lightning bolt with circuit node (`Zap`).
+  - Label: `"Test Webhook Payload"`.
+  - Style: Electric Yellow / Amber glow.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A high-voltage electric spark ignites at the left node of a gold printed circuit board (PCB) trace line (0ms–300ms).
+  - The lightning bolt races along the angular 90-degree circuit traces, pulsing through mini resistors and capacitors (300ms–900ms, $T_{cycle} = 900\text{ms}$).
+  - Looping: Electricity arcs continuously in a high-tech energetic loop while awaiting remote HTTP 200 acknowledgment.
+- **Completion Morph & Success State**:
+  - The circuit endpoint lights up with a solid green LED and `"200 OK"` micro-badge.
+  - Label morphs to `"Payload Delivered!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 900ms cycle:
+  - `toast.success("Remote server responded: HTTP 200 OK (Roundtrip: 142ms).", { icon: '⚡' })`.
+
+---
+
+#### Example 22: "Sync Cloud Database" (Bi-Directional Spinning Helix Rings & Data Packets)
+- **Surface / Context**: System Health Dashboard & Multi-Tenant Sync Center.
+- **Triggered Action**: `useDatabase().syncReplicas(clusterId)`.
+- **Idle State**:
+  - Icon: Database cylinders with sync arrows (`DatabaseZap`).
+  - Label: `"Sync Replica Clusters"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: Two cylindrical database nodes hover at opposite sides. Between them, two interlocking helical DNA-style rings rotate in opposite directions (0ms–600ms).
+  - Glowing turquoise data packets leap across the helix rungs from primary to secondary nodes (600ms–1100ms, $T_{cycle} = 1100\text{ms}$).
+  - Looping: Helix spins smoothly in unbroken 3D rotation while MongoDB replica set logs synchronize.
+- **Completion Morph & Success State**:
+  - Both database cylinders light up in solid synchronized emerald with a padlock.
+  - Label morphs to `"Databases In Sync!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1100ms:
+  - `toast.success("All 3 replica nodes synchronized with zero replication lag.", { icon: '🔄' })`.
+
+---
+
+### 📁 CATEGORY 5: Asset & Media Management (Examples 23–26)
+
+#### Example 23: "Upload High-Res Video / Image" (Cloud Suction Vortex Drawing File)
+- **Surface / Context**: CMS Digital Asset Management (DAM) Studio & Media Gallery.
+- **Triggered Action**: `useAssets().uploadFile(filePayload)`.
+- **Idle State**:
+  - Icon: Media card with upward arrow (`Upload`).
+  - Label: `"Upload Asset to Cloud"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A translucent media file card (showing a picture/video play icon) floats directly underneath an open cloud portal (0ms–350ms).
+  - The cloud emits an upward gravitational suction cone (soft cyan gradient beam) that draws the media card smoothly upward into the cloud's center with progressive scale shrinkage (350ms–1000ms, $T_{cycle} = 1000\text{ms}$).
+  - Looping: New files float into the tractor beam in rhythmic succession during chunked S3 multipart uploading.
+- **Completion Morph & Success State**:
+  - Cloud closes with a satisfying magnetic lock and bright emerald checkmark.
+  - Label morphs to `"Upload Complete!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1000ms:
+  - `toast.success("Asset 'hero-banner-4k.mp4' uploaded and indexed.", { icon: '☁️' })`.
+
+---
+
+#### Example 24: "Compress & Optimize Image" (Hydraulic Vice Press Squeezing File Size)
+- **Surface / Context**: Asset Detail Drawer & Image Compression Inspector.
+- **Triggered Action**: `useAssets().optimizeImage(assetId, { format: 'webp', quality: 85 })`.
+- **Idle State**:
+  - Icon: Squeeze arrows pointing inward (`Minimize2`).
+  - Label: `"Compress & Optimize"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: Two heavy industrial steel vice jaws slide inward from top and bottom toward an oversized image block marked `"12.4 MB"` (0ms–400ms).
+  - The vice jaws squeeze tightly with an elastic clamp compression, compressing the file block into a razor-thin wafer displaying `"-78%"` in glowing cyan (400ms–950ms, $T_{cycle} = 950\text{ms}$).
+  - Looping: Vice jaws pulse with hydraulic power pressure if sharp server-side image processing takes additional time.
+- **Completion Morph & Success State**:
+  - The thin wafer pops out as a lightweight feather icon with green checkmark.
+  - Label morphs to `"Optimized (-78%)!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 950ms:
+  - `toast.success("Image compressed from 12.4 MB to 2.7 MB with zero loss.", { icon: '🗜️' })`.
+
+---
+
+#### Example 25: "Extract Audio / Transcribe" (Waveform Equalizer Transforming into Text Scroll)
+- **Surface / Context**: Video Asset Inspector & Subtitle Generator.
+- **Triggered Action**: `useAssets().transcribeAudio(assetId)`.
+- **Idle State**:
+  - Icon: Audio soundwave bars (`AudioWaveform`).
+  - Label: `"Generate AI Transcript"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: 5 vertical audio equalizer bars dance and jump up and down to an invisible rhythm (0ms–500ms).
+  - At 500ms–1000ms ($T_{cycle} = 1000\text{ms}$), the vibrating soundwave peaks flatten and curl into a flowing papyrus text scroll with crisp miniature typography lines.
+  - Looping: Soundwaves morph into words and back in a continuous fluid dance while Whisper AI transcribes speech chunks.
+- **Completion Morph & Success State**:
+  - Text scroll pins open with an emerald checkmark and timecode badge.
+  - Label morphs to `"Transcript Ready!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1000ms:
+  - `toast.success("Full audio transcript and SRT subtitles ready for export.", { icon: '🎙️' })`.
+
+---
+
+#### Example 26: "Bulk Export Assets (ZIP Archive)" (Collapsing Folders & Zipper Clamping)
+- **Surface / Context**: DAM Media Table Bulk Action Bar.
+- **Triggered Action**: `useAssets().exportZipArchive(selectedAssetIds)`.
+- **Idle State**:
+  - Icon: Zip folder with padlock (`Archive`).
+  - Label: `"Download All as ZIP"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: 3 colorful folder cards collapse into a unified stack (0ms–400ms).
+  - A heavy metallic zipper slider glides diagonally across the stacked folders, interlocking heavy brass teeth together with mechanical clicks (400ms–1000ms, $T_{cycle} = 1000\text{ms}$).
+  - Looping: Zipper teeth interlock in a continuous smooth loop during cloud compression of multi-gigabyte archives.
+- **Completion Morph & Success State**:
+  - Zipper pulls tightly shut, stamping a glowing gold `".ZIP"` emblem on the archive.
+  - Label morphs to `"Archive Ready!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1000ms:
+  - `toast.success("48 media assets bundled into 'assets-bundle.zip' (1.4 GB).", { icon: '📦' })`.
+
+---
+
+### 🛡️ CATEGORY 6: Dashboard, RBAC & Security (Examples 27–30)
+
+#### Example 27: "Delete Item / Trash Record" (In-Button Dustbin Loop + Screen Canvas Fabric-Fold)
+- **Surface / Context**: Master Data Table Rows, Mobile Card Grid, CMS Content Rows, User Management.
+- **Master Rule References**:
+  - In-Button Micro-Animation: [`design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`](./BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md)
+  - Screen-Level Fabric-Fold Deletion: [`design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`](./ROW_CARD_DELETE_DUSTBIN_ANIMATION.md)
+  - Code Recipe: [`design-system/09_IMPLEMENTATION_RECIPES.md#recipe-11`](./09_IMPLEMENTATION_RECIPES.md) (`TaskAnimatedDeleteButton`)
+- **Triggered Action**: `useProgram().deleteProgram(programId)`.
+- **Two-Phase Interaction Architecture**:
+  1. **Phase 1: In-Button Processing Loop**:
+     - Clicking "Delete" on a row or card triggers deletion (or opens confirmation modal).
+     - During in-flight network transit ($T_{\text{api}}$), the button icon executes the **In-Button Dustbin Loop** ($T_{cycle} = 950\text{ms}$):
+       a. A miniature trash bin cylinder enters from the right edge (`x: 20 -> 0`).
+       b. Its motorized lid pops open upward (`rotate: -55deg`).
+       c. A mini document/file icon floats from above and drops directly into the bin (`y: -12 -> 2`, `scale: 1.0 -> 0.4`, `opacity: 1 -> 0`).
+       d. The bin lid snaps shut with an elastic bounce (`rotate: 0`).
+       e. The closed bin glides out toward the left (`x: 0 -> -20`).
+       f. If the API is still pending, the next bin enters from the right in seamless rhythm.
+     - Upon HTTP 200: The button settles and morphs into an emerald checkmark, and the **Success Toast triggers**.
+  2. **Phase 2: Post-Confirmation Canvas Dustbin & Fabric Fold**:
+     - As the modal closes, a high-tech obsidian **Dustbin emerges from the right side of the screen/viewport**.
+     - The deleted row or card undergoes a **3D Fabric Folding Wave**: curling from its right edge like flowing silk, horizontally compressing (`scaleX: 1.0 -> 0.0`), and getting pulled into the open mouth of the dustbin.
+     - The dustbin lid snaps shut with an elastic bounce, and the dustbin retreats offscreen to the right.
+     - The item is removed from the existing Context state array (`programs`), and all remaining rows/cards glide seamlessly into their new positions using Framer Motion `layout` animation.
+  3. **Strict Error Immunity**:
+     - If backend API fails (HTTP 4xx/5xx/network error), Error Toast displays.
+     - **The canvas dustbin animation NEVER executes**, and the item remains 100% visible and untouched.
+- **Post-Animation Toast Contract**:
+  - Success Toast is triggered upon API completion before modal unmount:
+  - `toast.success("Program permanently deleted from MongoDB and search index.", { icon: '🗑️' })`.
+
+---
+
+#### Example 28: "Invite Team Member" (Silhouette Multiplying & Flying Ticket Invite)
+- **Surface / Context**: RBAC Team Management & Workspace Settings.
+- **Triggered Action**: `useTeam().inviteMember({ email, role: 'Editor' })`.
+- **Idle State**:
+  - Icon: User with plus badge (`UserPlus`).
+  - Label: `"Send Workspace Invite"`.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A single user silhouette avatar splits and multiplies into a collaborative group of 3 avatars (0ms–400ms).
+  - From the group, a golden VIP ticket with an airplane stamp lifts into the air and glides toward the screen (400ms–950ms, $T_{cycle} = 950\text{ms}$).
+  - Looping: Golden tickets take flight one-by-one if multiple team email invites are being batched.
+- **Completion Morph & Success State**:
+  - The ticket lands in a silver envelope sealed with an emerald checkmark.
+  - Label morphs to `"Invite Dispatched!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 950ms:
+  - `toast.success("Invitation link sent to sarah@company.com with Editor permissions.", { icon: '🎟️' })`.
+
+---
+
+#### Example 29: "Revoke API Key / Lock Tenant" (Padlock Shackle Snap & Red Security Shield)
+- **Surface / Context**: API Security Dashboard & Tenant Emergency Lockdown.
+- **Triggered Action**: `useSecurity().revokeApiKey(keyId)`.
+- **Idle State**:
+  - Icon: Open padlock with key (`ShieldAlert`).
+  - Label: `"Revoke API Access"`.
+  - Style: Dark Ruby Glass with pulsing danger outline.
+- **Task-Specific Animation Mechanics**:
+  - Vector: A heavy titanium padlock has its top shackle suspended open (0ms–300ms).
+  - The shackle slams down into the lock body with high velocity, accompanied by a glowing crimson security forcefield barrier spreading outwards (300ms–900ms, $T_{cycle} = 900\text{ms}$).
+  - Looping: Forcefield waves pulse around the lock while JWT tokens and Redis session caches are purged globally.
+- **Completion Morph & Success State**:
+  - Padlock glows solid protective obsidian-red with a slash across the keyway.
+  - Label morphs to `"Access Revoked!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 900ms:
+  - `toast.success("API key immediately invalidated. All active sessions terminated.", { icon: '🔒' })`.
+
+---
+
+#### Example 30: "Transfer Ownership / Handover Project" (Two Hands Exchanging Golden Key)
+- **Surface / Context**: Workspace Danger Zone & Organization Settings.
+- **Triggered Action**: `useOrganization().transferOwnership(newOwnerId)`.
+- **Idle State**:
+  - Icon: Key being passed / handshake (`KeyRound`).
+  - Label: `"Transfer Ownership"`.
+  - Style: Deep Amber / Bronze with gold shimmer border.
+- **Task-Specific Animation Mechanics**:
+  - Vector: Two elegant minimalist hand silhouettes appear from left and right edges (0ms–400ms).
+  - An ornate antique golden master key floats in 3D perspective from the left hand and glides smoothly across the space into the palm of the right hand (400ms–1000ms, $T_{cycle} = 1000\text{ms}$).
+  - Looping: The key gleams with light rays hovering in steady transit until 2FA authorization token is verified.
+- **Completion Morph & Success State**:
+  - The right hand closes securely around the key with a golden coronet crown.
+  - Label morphs to `"Ownership Transferred!"`.
+- **Post-Animation Toast Contract**:
+  - Fired after 1000ms cycle:
+  - `toast.success("Organization master ownership transferred to alex@acme.com.", { icon: '🔑' })`.
+
+---
+
+## 📊 Summary Matrix: 30 Task-Specific Animated Buttons
+
+| # | Button Action | Domain | Core Vector Motion | Cycle ($T_{cycle}$) | Post-Animation Toast |
+|---|---|---|---|---|---|
+| **1** | Send Inquiry | Public Pages | Paper plane folding, takeoff & jet vapor trail | 900ms | `"Inquiry received! Our team will contact you..."` |
+| **2** | Subscribe Newsletter | Public Pages | Letter sliding into envelope & wax seal drop | 1000ms | `"Welcome aboard! Please verify your inbox."` |
+| **3** | Download Brochure | Public Pages | Blueprint laser scan & document tray eject | 1000ms | `"Enterprise Deck downloaded successfully."` |
+| **4** | Schedule Demo | Public Pages | Calendar page flip & fast-forward clock hands | 900ms | `"Demo scheduled! Calendar invite dispatched..."` |
+| **5** | Add to Wishlist | Public Pages | Heart expansion pop & floating starlight halo | 800ms | `"Item saved to your private collection."` |
+| **6** | Submit Feedback | Public Pages | Shooting star orbit & gold comet shimmer | 1000ms | `"Thank you for your valuable feedback!"` |
+| **7** | Complete Checkout | E-Commerce | Credit card chip dip & NFC soundwave pulse | 1100ms | `"Transaction #9842 confirmed! Receipt emailed."` |
+| **8** | Apply Coupon | E-Commerce | Scissors snip ticket notch & spring tag bounce | 900ms | `"Promo code 'VIP20' applied: You saved $38!"` |
+| **9** | Generate Invoice | Billing | Thermal register printout & serrated tear | 1000ms | `"Tax Invoice #INV-2026-88 ready for download."` |
+| **10** | Refund Transaction | Billing | Coins in counter-clockwise reverse vault flow | 1100ms | `"$149.00 refunded back to customer's Visa."` |
+| **11** | Upgrade Tier | SaaS Billing | Rocket launch with plasma thruster flame | 1000ms | `"Welcome to Enterprise! Unlimited access..."` |
+| **12** | Link Bank Account | FinTech | Vault door wheel rotation & plug connection | 1000ms | `"Chase Business Checking linked for payouts."` |
+| **13** | Publish Live Page | CMS Studio | Satellite dish beam pulsing to glowing cloud | 1000ms | `"Page published across 320 CDN edge locations."` |
+| **14** | Save Draft | CMS Content | Quill fountain pen script & wax seal press | 1000ms | `"Draft autosaved to MongoDB revision #14."` |
+| **15** | Generate AI Section | CMS Studio | Crystal wand infinity swirl & neural network | 1200ms | `"AI layout and marketing copy created."` |
+| **16** | Export PDF Template | CMS Studio | Blueprint grid unrolling & brass PDF stamp | 1000ms | `"Custom PDF template exported with keys."` |
+| **17** | Deploy Release | CMS / DevOps | Gantry crane lowering shipping cargo container | 1100ms | `"Production release #419 is now live."` |
+| **18** | Duplicate Page | CMS Studio | UI canvas card splitting & copy watermark | 900ms | `"Page duplicated as 'Home Page (Copy)'."` |
+| **19** | Send WhatsApp | Messaging | Speech bubble acoustic wave & blue double-tick | 950ms | `"Broadcast dispatched to 1,420 numbers."` |
+| **20** | Send Email Campaign | Marketing | Airmail jet envelope gliding through clouds | 1000ms | `"Email blast queued for 8,500 subscribers."` |
+| **21** | Trigger Webhook | Integrations | Lightning bolt tracing PCB circuit path | 900ms | `"Remote server responded: HTTP 200 OK."` |
+| **22** | Sync Database | Architecture | Interlocking 3D DNA helix rings & data packet | 1100ms | `"All 3 replica nodes synchronized."` |
+| **23** | Upload Asset | Media DAM | Gravitational cloud suction beam drawing file | 1000ms | `"Asset 'hero-banner-4k.mp4' uploaded."` |
+| **24** | Compress Image | Media DAM | Hydraulic vice jaws squeezing file size block | 950ms | `"Image compressed from 12.4 MB to 2.7 MB."` |
+| **25** | Transcribe Audio | Media DAM | Audio equalizer bars dancing into text scroll | 1000ms | `"Full audio transcript ready for export."` |
+| **26** | Bulk ZIP Export | Media DAM | Stacked folders collapsing into metallic zipper | 1000ms | `"48 media assets bundled into .ZIP archive."` |
+| **27** | Delete Record | Dashboard | Trash bin lid flip & rotary shredder teeth | 850ms | `"Record permanently deleted from MongoDB."` |
+| **28** | Invite Team Member | RBAC Security | Avatar silhouette multiplying & flying VIP ticket | 950ms | `"Invite link sent to sarah@company.com."` |
+| **29** | Revoke API Key | RBAC Security | Titanium padlock shackle slamming & red shield | 900ms | `"API key immediately invalidated."` |
+| **30** | Transfer Ownership | Security | Two hands exchanging ornate golden master key | 1000ms | `"Organization ownership transferred to Alex."` |
+
+---
+
+## 🗑️ 6. The Delete Lifecycle & Canvas Dustbin Orchestration Contract
+
+Cross-referenced with master specification [`design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`](./ROW_CARD_DELETE_DUSTBIN_ANIMATION.md).
+
+### 6.1 Two-Phase Architecture (Modal Button -> Canvas Dustbin)
+Unlike standard action buttons that resolve purely in-place, table row and card deletion follows an orchestrated **Two-Phase Lifecycle**:
+1. **Phase 1: In-Modal Processing Loop**:
+   - The user triggers deletion on a row or card.
+   - `<DeleteConfirmationModal />` opens with the modal delete button in idle.
+   - When the user confirms, the modal button executes `useTaskAnimationSync`, looping its shredder task animation during network transmission.
+   - On HTTP 200 success: The button morphs to a checkmark, the **Success Toast triggers**, and the modal closes gracefully.
+2. **Phase 2: Post-Confirmation Canvas Dustbin & Fabric Fold**:
+   - As the modal dismisses, the **Canvas Dustbin emerges from the right side of the screen/viewport**.
+   - The deleted row or card undergoes a **3D Fabric Folding Wave**: it curls from its right edge like silk fabric, horizontally collapses, and is suctioned directly into the dustbin mouth.
+   - The dustbin lid snaps shut with an elastic bounce and retreats offscreen to the right.
+   - The existing Context API state array filters out the record, and all remaining rows/cards glide seamlessly into their new positions using Framer Motion `layout` animation.
+
+### 6.2 Bulk Deletion Multi-Item Synchronous Flight
+- When multiple items are selected via checkboxes or marquee drag and deleted:
+- All selected rows/cards lift simultaneously with elevation drop-shadows.
+- All items fold and fly into the right-side emerging dustbin **together at the exact same time** (sequential deletion is strictly banned).
+- The dustbin lid closes, exits right, and unselected items smoothly fill the space.
+
+### 6.3 Strict Error Immunity
+- If the backend API call fails:
+  - Error Toast displays.
+  - The canvas dustbin animation **NEVER EXECUTES**.
+  - The item remains 100% visible and intact in the table/card grid.
+
+---
+
+## 🔒 7. Verification Checklist & Enforcement
+
+Before approving any UI button implementation, audit against these 6 non-negotiable checks:
+1. [ ] **No Generic Spinner**: Does the button use a task-specific vector motion instead of a spinning circle?
+2. [ ] **Natural Looping**: If the network request is intentionally delayed (throttled to 3G / 3000ms), does the animation loop fluidly without jump cuts?
+3. [ ] **Cycle Completion Integrity**: If the network request resolves instantaneously (e.g. 50ms mock), does the animation play to the full completion of its active cycle instead of instantly aborting?
+4. [ ] **Post-Animation Toast**: Is the toast notification strictly delayed until after the animation cycle and terminal morph transition finish?
+5. [ ] **Confirmation & Dustbin Sequence**: For table row/card deletions, does the flow strictly follow: Modal Confirm -> In-Modal Task Loop -> Success Toast -> Modal Close -> Dustbin slides in from right -> Fabric Fold -> State Cleanup?
+6. [ ] **Context-First Integration**: Is the button action bound directly to its respective model context method (e.g. `useProgram().deleteProgram`), leaving component state clean and unified?
+
+
+---
+
+
+<a id="file-design-system-row-card-delete-dustbin-animation-md"></a>
+## 📄 Specification: `design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`
+
+# Master Architecture: Table Row & Card Deletion Orchestration (Fabric-Fold & Dustbin System)
+
+> **CORE MANDATE**: When a table row or card is deleted, it must NEVER simply vanish, blink out of existence, or play a generic in-place fade. 
+> 
+> Instead, the application executes a **choreographed physical micro-story**:
+> 1. A sleek, high-tech **Dustbin** emerges from the right side of the screen.
+> 2. The deleted table row or card folds from its right end like **flowing silk/fabric** (origami wave & suction curl) and glides directly into the mouth of the dustbin.
+> 3. The dustbin lid snaps closed with a tactile latch, and the dustbin retreats back offscreen to the right.
+> 4. All remaining rows and cards glide smoothly into their new positions using Framer Motion FLIP layout transitions.
+>
+> 👑 **THE STRICT TIMING & STATE INTEGRITY LAWS**:
+> - **Confirmation Modal First**: Clicking delete always prompts a Confirmation Modal.
+> - **In-Modal Processing Loop**: The modal's Delete button plays its task-specific animation while awaiting the backend API.
+> - **Strict Success Gate**: If the API call fails, the Dustbin animation **MUST NEVER RUN**. Error toast displays, and data stays intact.
+> - **Toast -> Modal Close -> Dustbin Sequence**: Upon API confirmation, the Success Toast fires, the modal dismisses, and the Dustbin Fabric-Fold animation initiates.
+> - **Bulk Deletion Together**: When deleting multiple rows/cards, all selected items lift and enter the dustbin **simultaneously**, never one by one.
+> - **Zero-Duplicate-Variable Law**: Backend updates mutate the existing React Context array in-place. All subscribed views update instantly, and future new records seamlessly render in the same state.
+
+---
+
+## 🎭 1. Visual Mechanics: The "Fabric Fold into Dustbin" Animation
+
+### 1.1 The Visual Narrative
+Traditional web apps delete data abruptly. This system treats UI cards and table rows as tangible digital surfaces:
+- **Phase 1: Dustbin Arrival (0ms – 250ms)**:
+  - An obsidian/metallic dustbin cylinder with an articulated swinging lid slides in from the right edge of the viewport (`translateX(100%) -> translateX(0)`), positioning its open mouth aligned with the deleted row or table container.
+  - The dustbin lid pops open at a 45-degree angle.
+- **Phase 2: The Fabric Fold & Suction Glide (200ms – 650ms)**:
+  - The deleted row or card elevates slightly on the Z-axis (`scale: 1.02, shadow-2xl`).
+  - Beginning from its right edge, the element undergoes a non-linear 3D origami wave:
+    - Right edge curls inward (`rotateY: -25deg`, `skewY: -4deg`).
+    - The body compresses horizontally (`scaleX: 1.0 -> 0.05`, `originX: 1.0`).
+    - The element pulls rightward toward the mouth of the dustbin as if being drawn into a vacuum suction funnel.
+- **Phase 3: Lid Snap & Departure (650ms – 900ms)**:
+  - The instant the card/row vanishes into the dustbin interior, the dustbin lid snaps shut (`rotate: 0deg`) with an elastic micro-rebound.
+  - The dustbin accelerates offscreen to the right (`translateX(0) -> translateX(120%)`).
+- **Phase 4: Automatic Layout Collapse (700ms – 1000ms)**:
+  - As the row collapses in height (`height: 0, opacity: 0, margin: 0`), all rows/cards underneath glide upward smoothly via Framer Motion's `layout` engine with zero layout jump.
+
+```
+[ Row Content: Program #104 | Active | $1,200 ]  ──> [ Dustbin emerges from right ]
+       │
+       ▼  (Right-edge fabric curl)
+[ Row Content: Program ~~~~~~~\ ]               ──> [ Dustbin Lid Open: \___/ ]
+       │
+       ▼  (Horizontal fold & suction)
+[                     ~~~~==> ]                  ──> [ Enters mouth of Dustbin ]
+       │
+       ▼  (Lid snaps shut & departs)
+[ (Space smoothly collapses)  ]                  ──> [ Dustbin exits right ──> ]
+```
+
+### 1.2 Execution Constraints
+- **Single-Run Only**: The Dustbin Fabric-Fold animation executes **EXACTLY ONCE** per deletion event. It NEVER loops.
+- **Duration**: Total choreography takes **750ms – 900ms**, remaining snappy and professional without delaying the user.
+
+---
+
+## 🛑 2. The Confirmation Modal & Two-Phase Button Lifecycle
+
+Every destructive deletion must be safeguarded by a two-phase confirmation protocol:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant Row as Table Row / Card
+    participant Modal as Confirmation Modal
+    participant API as Backend API (Context)
+    participant Toast as Toast Notification
+    participant Dustbin as Canvas Dustbin Engine
+
+    User->>Row: Clicks "Delete"
+    Row->>Modal: Opens with target item details
+    Note over Modal: Delete Button shows idle animated icon
+
+    User->>Modal: Clicks "Confirm Delete"
+    Modal->>API: Calls context delete method (e.g. deleteProgram(id))
+    Note over Modal: Delete button loops task animation (shredder/trash)
+
+    alt API Call Succeeds (HTTP 200)
+        API-->>Modal: Success response confirmed
+        Modal->>Toast: Trigger Success Toast ("Record permanently deleted")
+        Modal->>Modal: Close / Unmount Modal
+        Modal->>Dustbin: Dispatch "START_DUSTBIN_DELETION"
+        Dustbin->>Row: Dustbin slides in from right
+        Row->>Dustbin: Row folds like fabric into dustbin
+        Dustbin->>Dustbin: Lid snaps shut & exits right
+        Dustbin->>Row: Mutate Context State (remove item from array)
+        Note over Row: Remaining rows/cards smoothly slide into new positions
+    else API Call Fails (HTTP 4xx / 5xx / Network Error)
+        API-->>Modal: Error response received
+        Modal->>Toast: Trigger Error Toast ("Failed to delete record")
+        Note over Modal: Button morphs to Error Shake
+        Note over Row: DUSTBIN ANIMATION NEVER RUNS. Data stays intact!
+    end
+```
+
+### 2.1 Confirmation Modal States
+1. **Modal Mount**:
+   - The modal appears with high-depth glassmorphism (`backdrop-blur-2xl bg-slate-950/80`).
+   - The Delete button inside the modal displays in **Idle State**:
+     - Icon: Minimalist trash/shredder glyph.
+     - Label: `"Yes, Permanently Delete"`.
+     - Styling: `bg-rose-600 hover:bg-rose-700 text-white shadow-lg shadow-rose-950/50`.
+2. **In-Flight Processing**:
+   - When the user clicks `"Yes, Permanently Delete"`:
+     - The button immediately enters its **Processing State**, running the task-specific shredder micro-animation in a continuous loop via `useTaskAnimationSync`.
+     - The modal's Cancel button is disabled to prevent duplicate submissions.
+3. **Success Handshake**:
+   - The API completes successfully.
+   - The button plays a brief 300ms success morph.
+   - **Step A**: The Success Toast is triggered immediately.
+   - **Step B**: The Confirmation Modal animates closed (`opacity: 0, scale: 0.95`).
+   - **Step C**: The deleted row/card on the underlying page initiates the Dustbin Fabric-Fold sequence.
+4. **Error Safeguard**:
+   - If the backend rejects the deletion (e.g. 403 Forbidden, 409 Conflict, network failure):
+     - The modal's delete button shakes with an error alert icon.
+     - The Error Toast is fired: `"Unable to delete record: Dependent relations exist."`
+     - The modal remains open or can be dismissed by the user.
+     - **The row/card remains 100% visible and active. The Dustbin animation NEVER fires.**
+
+---
+
+## 📦 3. Bulk Deletion Orchestration (Simultaneous Multi-Item Flight)
+
+When a user selects 5, 20, or 100 rows/cards via checkboxes or marquee drag and triggers Bulk Delete:
+
+### 3.1 The Anti-Pattern: Sequential Animation Ban
+> ⚠️ **STRICT PROHIBITION**:
+> Never animate bulk-deleted items one by one sequentially! (e.g. Item 1 folds, then Item 2 folds, then Item 3 folds...). Doing so causes tedious 10-second delays that ruin the user experience.
+
+### 3.2 The Group-Flight Standard
+1. **Confirmation Modal**:
+   - Modal shows total count: `"Permanently delete 14 selected records?"`.
+   - Lists preview chips of selected titles.
+2. **Synchronous Lift & Flight**:
+   - Upon API confirmation, the Dustbin emerges from the right side of the screen, scaling slightly larger to represent bulk capacity.
+   - **All 14 selected rows/cards simultaneously**:
+     - Lift with elevation shadows (`scale: 1.03`, `shadow-2xl`, `zIndex: 50`).
+     - Begin folding from their right edges like layered fabric sheets.
+     - Glide along parabolic trajectory curves directly into the open mouth of the dustbin.
+3. **Simultaneous Departure**:
+   - The dustbin lid snaps shut with an authoritative metallic sound and dual smoke particles.
+   - Dustbin slides offscreen right.
+   - The Context array filters out all 14 IDs at once.
+   - All unselected rows/cards smoothly slide together into a compact list.
+
+---
+
+## 🔄 4. Backend Data & Context State Synchronization
+
+Cross-referenced with [`rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`](../rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md).
+
+### 4.1 The Single Variable Mandate (Zero Duplicate State)
+```tsx
+// ❌ WRONG: Creating local state duplicates causes split-brain desynchronization
+const [localRows, setLocalRows] = useState(programs);
+
+// ✅ CORRECT: Consume context state directly
+const { programs, deleteProgram, bulkDeletePrograms } = useProgram();
+```
+
+### 4.2 Synchronization Sequence & State Cleanup
+To guarantee zero visual flicker:
+1. **Visual Hold during Animation**:
+   - When the deletion starts, the orchestrator sets `deletingIds: Set<string>`.
+   - The items remain in the React Context array for the ~750ms duration of the fabric-fold animation so Framer Motion can render their folding motion.
+2. **Context Array Mutation**:
+   - The exact millisecond the dustbin lid snaps shut and the items are inside, the context method commits the immutable filter:
+     ```tsx
+     setPrograms((prev) => prev.filter((item) => !deletingIds.has(item._id)));
+     ```
+3. **Seamless Handling of Subsequent Records**:
+   - Because `programs` remains the single canonical state variable:
+     - Any new records created via `createProgram(payload)` prepend or append directly to this same array.
+     - Fresh server-side refetches update this exact array.
+     - Deleted records **NEVER flash back or reappear**.
+     - All subscribed components (Table view, Mobile card view, metrics badges, counters) automatically re-render in perfect unison.
+
+---
+
+## 💻 5. Complete Production React Implementation
+
+### 5.1 The Deletion Orchestrator Hook (`useDeleteOrchestrator.ts`)
+
+```typescript
+// src/hooks/useDeleteOrchestrator.ts
+import { useState, useCallback } from 'react';
+
+export interface DeleteTarget {
+  id: string;
+  title: string;
+  type: 'single' | 'bulk';
+  bulkIds?: string[];
+}
+
+export function useDeleteOrchestrator<TData = any>(
+  onPerformDelete: (target: DeleteTarget) => Promise<TData>,
+  onSuccessCleanup: (target: DeleteTarget) => void
+) {
+  const [modalTarget, setModalTarget] = useState<DeleteTarget | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [animatingDeleteIds, setAnimatingDeleteIds] = useState<string[]>([]);
+  const [isDustbinActive, setIsDustbinActive] = useState(false);
+
+  // 1. Trigger confirmation modal
+  const requestDelete = useCallback((target: DeleteTarget) => {
+    setModalTarget(target);
+    setIsModalOpen(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setIsModalOpen(false);
+    setModalTarget(null);
+  }, []);
+
+  // 2. Execute deletion upon modal confirmation
+  const confirmDelete = useCallback(async () => {
+    if (!modalTarget) return;
+
+    // Call backend API
+    await onPerformDelete(modalTarget);
+
+    // API succeeded: Close modal
+    setIsModalOpen(false);
+
+    // Determine target IDs
+    const targetIds = modalTarget.type === 'bulk' && modalTarget.bulkIds 
+      ? modalTarget.bulkIds 
+      : [modalTarget.id];
+
+    // Trigger Canvas Dustbin & Fabric Fold Animation
+    setAnimatingDeleteIds(targetIds);
+    setIsDustbinActive(true);
+
+    // Wait for fabric fold into dustbin + lid snap (750ms)
+    await new Promise((resolve) => setTimeout(resolve, 750));
+
+    // Commit state cleanup in Context
+    onSuccessCleanup(modalTarget);
+
+    // Wait for dustbin to exit offscreen (250ms)
+    await new Promise((resolve) => setTimeout(resolve, 250));
+
+    // Reset orchestrator state
+    setAnimatingDeleteIds([]);
+    setIsDustbinActive(false);
+    setModalTarget(null);
+  }, [modalTarget, onPerformDelete, onSuccessCleanup]);
+
+  return {
+    modalTarget,
+    isModalOpen,
+    animatingDeleteIds,
+    isDustbinActive,
+    requestDelete,
+    closeModal,
+    confirmDelete,
+  };
+}
+```
+
+---
+
+### 5.2 The Confirmation Modal Component (`<DeleteConfirmationModal />`)
+
+```tsx
+// src/components/ui/DeleteConfirmationModal.tsx
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { AlertTriangle, Trash2, X } from 'lucide-react';
+import { TaskAnimatedButton } from './TaskAnimatedButton';
+import { DeleteTarget } from '@/hooks/useDeleteOrchestrator';
+
+interface DeleteConfirmationModalProps {
+  isOpen: boolean;
+  target: DeleteTarget | null;
+  onClose: () => void;
+  onConfirm: () => Promise<any>;
+  onSuccessToast: () => void;
+  onErrorToast: (error: any) => void;
+}
+
+export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
+  isOpen,
+  target,
+  onClose,
+  onConfirm,
+  onSuccessToast,
+  onErrorToast,
+}) => {
+  if (!target) return null;
+
+  const isBulk = target.type === 'bulk';
+  const itemCount = isBulk ? target.bulkIds?.length || 0 : 1;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-md"
+          />
+
+          {/* Modal Card */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 8 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-rose-500/20 bg-slate-900/95 p-6 shadow-2xl shadow-rose-950/40 backdrop-blur-2xl z-10"
+          >
+            {/* Header */}
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                <AlertTriangle className="h-6 w-6" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-white tracking-tight">
+                  {isBulk ? `Delete ${itemCount} Records?` : `Delete "${target.title}"?`}
+                </h3>
+                <p className="mt-1 text-sm leading-relaxed text-slate-400">
+                  {isBulk
+                    ? `This will permanently delete ${itemCount} selected records from the database. This action cannot be undone.`
+                    : `Are you sure you want to delete this record? This action will permanently remove it from the database.`}
+                </p>
+              </div>
+              <button
+                onClick={onClose}
+                className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Actions */}
+            <div className="mt-6 flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-sm font-semibold text-slate-200 transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+
+              {/* Task-Animated Confirm Button */}
+              <TaskAnimatedButton
+                id="btn-confirm-delete"
+                label={isBulk ? `Delete ${itemCount} Items` : "Yes, Delete"}
+                activeLabel="Deleting Record..."
+                successLabel="Deleted!"
+                variant="destructive"
+                idleIcon={<Trash2 className="w-4 h-4" />}
+                animatingVector={<ShredderBladesVector />}
+                cycleDuration={850}
+                onClick={onConfirm}
+                onSuccessToast={onSuccessToast}
+                onErrorToast={onErrorToast}
+              />
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+// Shredder Vector Micro-Animation
+const ShredderBladesVector = () => (
+  <motion.div
+    animate={{ rotate: 360 }}
+    transition={{ repeat: Infinity, duration: 0.85, ease: 'linear' }}
+    className="w-4 h-4 border-2 border-dashed border-white rounded-full flex items-center justify-center"
+  >
+    <div className="w-1.5 h-1.5 bg-white rounded-full" />
+  </motion.div>
+);
+```
+
+---
+
+### 5.3 The Right-Sliding Canvas Dustbin (`<DustbinPortal />`)
+
+```tsx
+// src/components/ui/DustbinPortal.tsx
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+interface DustbinPortalProps {
+  isActive: boolean;
+  itemCount?: number;
+}
+
+export const DustbinPortal: React.FC<DustbinPortalProps> = ({ isActive, itemCount = 1 }) => {
+  return (
+    <AnimatePresence>
+      {isActive && (
+        <motion.div
+          key="dustbin-portal"
+          initial={{ x: 180, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: 220, opacity: 0 }}
+          transition={{ type: 'spring', damping: 20, stiffness: 220 }}
+          className="fixed right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center pointer-events-none"
+        >
+          {/* Suction Vortex Glow */}
+          <div className="absolute -inset-8 bg-rose-500/20 blur-2xl rounded-full animate-pulse" />
+
+          {/* High-Tech Metallic Dustbin */}
+          <div className="relative w-28 h-36 flex flex-col items-center">
+            {/* Animated Lid */}
+            <motion.div
+              initial={{ rotate: 0, y: 0 }}
+              animate={{
+                rotate: [-45, -45, 0], // Open, hold during entry, snap shut
+                y: [-8, -8, 0],
+              }}
+              transition={{
+                times: [0, 0.7, 1],
+                duration: 0.75,
+                ease: 'easeInOut',
+              }}
+              className="origin-bottom-right w-24 h-5 rounded-t-lg bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800 border-t border-slate-500 shadow-md flex items-center justify-center"
+            >
+              <div className="w-8 h-1 rounded-full bg-slate-400" />
+            </motion.div>
+
+            {/* Dustbin Body */}
+            <div className="relative w-24 flex-1 rounded-b-2xl bg-gradient-to-b from-slate-900 via-slate-950 to-black border border-slate-700 shadow-2xl overflow-hidden flex flex-col items-center justify-center p-2">
+              {/* Internal Suction Funnel Light */}
+              <div className="absolute inset-0 bg-gradient-to-b from-rose-500/15 via-transparent to-black" />
+
+              {/* Vertical Fluted Metal Grooves */}
+              <div className="flex gap-1.5 opacity-30">
+                <div className="w-1 h-16 bg-slate-400 rounded-full" />
+                <div className="w-1 h-16 bg-slate-400 rounded-full" />
+                <div className="w-1 h-16 bg-slate-400 rounded-full" />
+                <div className="w-1 h-16 bg-slate-400 rounded-full" />
+              </div>
+
+              {/* Multi-Item Badge (Shown during Bulk Delete) */}
+              {itemCount > 1 && (
+                <div className="absolute bottom-2 px-2 py-0.5 rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-lg">
+                  {itemCount} Items
+                </div>
+              )}
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+```
+
+---
+
+### 5.4 The Fabric-Fold Table Row Wrapper (`<FabricFoldRow />`)
+
+```tsx
+// src/components/ui/FabricFoldRow.tsx
+import React, { ReactNode } from 'react';
+import { motion } from 'framer-motion';
+
+interface FabricFoldRowProps {
+  id: string;
+  isDeleting: boolean;
+  children: ReactNode;
+  className?: string;
+}
+
+export const FabricFoldRow: React.FC<FabricFoldRowProps> = ({
+  id,
+  isDeleting,
+  children,
+  className = '',
+}) => {
+  return (
+    <motion.tr
+      layout
+      key={id}
+      data-row-id={id}
+      initial={false}
+      animate={
+        isDeleting
+          ? {
+              // The 3D Fabric Folding Wave into the Right-Side Dustbin
+              scaleX: [1, 0.85, 0.35, 0],
+              scaleY: [1, 1.05, 0.6, 0],
+              rotateY: [0, -18, -35, -50],
+              skewY: [0, -3, -8, -12],
+              x: [0, 40, 160, 320],      // Pulls rightward into dustbin mouth
+              opacity: [1, 0.9, 0.6, 0],
+              filter: ['blur(0px)', 'blur(0px)', 'blur(1px)', 'blur(4px)'],
+              transition: {
+                duration: 0.7,
+                ease: [0.32, 0, 0.67, 0], // Cubic bezier vacuum suction curve
+              },
+            }
+          : {
+              scaleX: 1,
+              scaleY: 1,
+              rotateY: 0,
+              skewY: 0,
+              x: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+            }
+      }
+      style={{ originX: 1.0, transformStyle: 'preserve-3d' }}
+      className={`border-b transition-colors ${className}`}
+    >
+      {children}
+    </motion.tr>
+  );
+};
+```
+
+---
+
+### 5.5 The Fabric-Fold Card Wrapper (`<FabricFoldCard />`)
+
+```tsx
+// src/components/ui/FabricFoldCard.tsx
+import React, { ReactNode } from 'react';
+import { motion } from 'framer-motion';
+
+interface FabricFoldCardProps {
+  id: string;
+  isDeleting: boolean;
+  children: ReactNode;
+  className?: string;
+  onClick?: () => void;
+}
+
+export const FabricFoldCard: React.FC<FabricFoldCardProps> = ({
+  id,
+  isDeleting,
+  children,
+  className = '',
+  onClick,
+}) => {
+  return (
+    <motion.div
+      layout
+      key={id}
+      data-card-id={id}
+      onClick={onClick}
+      initial={false}
+      animate={
+        isDeleting
+          ? {
+              // The 3D Fabric Folding Wave for Mobile Cards
+              scaleX: [1, 0.8, 0.3, 0],
+              scaleY: [1, 1.08, 0.5, 0],
+              rotateY: [0, -22, -45, -60],
+              skewY: [0, -4, -10, -15],
+              x: [0, 50, 180, 350],
+              opacity: [1, 0.9, 0.5, 0],
+              boxShadow: [
+                '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                '0 20px 25px -5px rgba(244, 63, 94, 0.3)',
+                '0 10px 15px -3px rgba(244, 63, 94, 0.1)',
+                'none',
+              ],
+              transition: {
+                duration: 0.7,
+                ease: [0.32, 0, 0.67, 0],
+              },
+            }
+          : {
+              scaleX: 1,
+              scaleY: 1,
+              rotateY: 0,
+              skewY: 0,
+              x: 0,
+              opacity: 1,
+            }
+      }
+      style={{ originX: 1.0, transformStyle: 'preserve-3d' }}
+      className={`relative overflow-hidden rounded-2xl border transition-all ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+};
+```
+
+---
+
+## 🔗 6. Integration Blueprint in Data Table & Mobile Cards
+
+Below is the verified pattern showing how `useProgram()` context, `useDeleteOrchestrator`, `<DustbinPortal />`, `<DeleteConfirmationModal />`, and `<FabricFoldRow />` / `<FabricFoldCard />` combine seamlessly:
+
+```tsx
+// src/components/programs/ProgramTableAndCardsView.tsx
+import React, { useState } from 'react';
+import { useProgram } from '@/context/ProgramContext';
+import { useDeleteOrchestrator } from '@/hooks/useDeleteOrchestrator';
+import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal';
+import { DustbinPortal } from '@/components/ui/DustbinPortal';
+import { FabricFoldRow } from '@/components/ui/FabricFoldRow';
+import { FabricFoldCard } from '@/components/ui/FabricFoldCard';
+import { toast } from 'react-hot-toast';
+
+export const ProgramTableAndCardsView: React.FC = () => {
+  const { programs, deleteProgram, bulkDeletePrograms, setPrograms } = useProgram();
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  // Initialize Delete Orchestrator
+  const {
+    modalTarget,
+    isModalOpen,
+    animatingDeleteIds,
+    isDustbinActive,
+    requestDelete,
+    closeModal,
+    confirmDelete,
+  } = useDeleteOrchestrator(
+    // 1. Perform backend deletion via Context
+    async (target) => {
+      if (target.type === 'bulk' && target.bulkIds) {
+        return await bulkDeletePrograms(target.bulkIds);
+      }
+      return await deleteProgram(target.id);
+    },
+    // 2. Commit immutable state update in Context (Zero duplicate variable)
+    (target) => {
+      const idsToRemove = new Set(
+        target.type === 'bulk' && target.bulkIds ? target.bulkIds : [target.id]
+      );
+      setPrograms((prev) => prev.filter((p) => !idsToRemove.has(p._id)));
+      setSelectedIds([]); // Clear selection
+    }
+  );
+
+  return (
+    <div className="relative w-full">
+      {/* 1. Dustbin Portal (Emerges from right during deletion) */}
+      <DustbinPortal
+        isActive={isDustbinActive}
+        itemCount={animatingDeleteIds.length}
+      />
+
+      {/* 2. Confirmation Modal */}
+      <DeleteConfirmationModal
+        isOpen={isModalOpen}
+        target={modalTarget}
+        onClose={closeModal}
+        onConfirm={confirmDelete}
+        onSuccessToast={() => toast.success("Record permanently removed from database.")}
+        onErrorToast={(err) => toast.error(err?.message || "Failed to delete record.")}
+      />
+
+      {/* 3. Desktop Master Table */}
+      <div className="hidden lg:block overflow-x-auto">
+        <table className="w-full text-left">
+          <tbody>
+            {programs.map((prog) => {
+              const isDeleting = animatingDeleteIds.includes(prog._id);
+              return (
+                <FabricFoldRow
+                  key={prog._id}
+                  id={prog._id}
+                  isDeleting={isDeleting}
+                >
+                  <td className="p-4">{prog.title}</td>
+                  <td className="p-4">{prog.code}</td>
+                  <td className="p-4 font-bold">${prog.price}</td>
+                  <td className="p-4">
+                    <button
+                      onClick={() =>
+                        requestDelete({ id: prog._id, title: prog.title, type: 'single' })
+                      }
+                      className="px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-white transition-all text-xs font-semibold cursor-pointer"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </FabricFoldRow>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* 4. Mobile Cards Grid */}
+      <div className="grid grid-cols-1 gap-4 lg:hidden">
+        {programs.map((prog) => {
+          const isDeleting = animatingDeleteIds.includes(prog._id);
+          return (
+            <FabricFoldCard
+              key={prog._id}
+              id={prog._id}
+              isDeleting={isDeleting}
+              className="p-4 bg-slate-900 border-slate-800"
+            >
+              <div className="flex justify-between items-center">
+                <div>
+                  <h4 className="font-bold text-white">{prog.title}</h4>
+                  <p className="text-xs text-slate-400">{prog.code}</p>
+                </div>
+                <button
+                  onClick={() =>
+                    requestDelete({ id: prog._id, title: prog.title, type: 'single' })
+                  }
+                  className="px-3 py-1.5 rounded-lg bg-rose-500/10 text-rose-400 text-xs font-semibold cursor-pointer"
+                >
+                  Delete
+                </button>
+              </div>
+            </FabricFoldCard>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+```
+
+---
+
+## 🎛️ 8. Animation Feature Flag Fallback Mode (`feature:animations === false`)
+
+Cross-referenced with master specification [`modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md`](../modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md#63-the-animation-engine-feature-flag-featureanimations--instant-fallback-contract).
+
+When a tenant or website has **`feature:animations` set to `false`**:
+
+```mermaid
+flowchart TD
+    DeleteClick[User clicks Delete on Row / Card] --> ModalOpen[DeleteConfirmationModal Opens]
+    ModalOpen --> UserConfirms[User confirms deletion]
+    UserConfirms --> CheckFlag{feature:animations Enabled?}
+
+    CheckFlag -- "YES (Enabled)" --> RichSeq[Full Rich Motion Sequence]
+    RichSeq --> DustbinSlide[Right-Sliding Canvas Dustbin Emerges]
+    RichSeq --> FabricFold[3D Fabric Fold Wave into Dustbin Mouth]
+    RichSeq --> DustbinClose[Lid Snaps Shut & Dustbin Exits Right]
+    RichSeq --> FlipCollapse[Remaining Rows Glide into Place via FLIP]
+
+    CheckFlag -- "NO (Disabled / Instant Fallback)" --> InstantSeq[Instant Fallback Mode]
+    InstantSeq --> SkipDustbin[DustbinPortal Bypassed: Never Mounted]
+    InstantSeq --> FastFade[Row / Card Opacity Fades in 150ms]
+    InstantSeq --> ContextCommit[Item Removed from Context State Array in-place]
+    InstantSeq --> ImmediateSuccess[Success Toast Triggered Immediately]
+```
+
+### Fallback Implementation in `useDeleteOrchestrator`:
+```typescript
+// src/hooks/useDeleteOrchestrator.ts (Feature Flag Check)
+const { isEnabled } = useFeatureFlags();
+const animationsEnabled = isEnabled("feature:animations") ?? true;
+
+const executeDelete = async () => {
+  if (!deleteTarget) return;
+
+  setIsDeleting(true);
+  try {
+    await onDeleteConfirmed(deleteTarget.id);
+    closeModal();
+    onSuccessToast?.();
+
+    if (!animationsEnabled) {
+      // Instant Fallback: Commit removal immediately without Canvas Dustbin
+      commitDeleteToContext(deleteTarget.id);
+      setIsDeleting(false);
+      setDeleteTarget(null);
+      return;
+    }
+
+    // Rich Motion Sequence: Launch Canvas Dustbin & 3D Fabric Fold
+    setIsDustbinActive(true);
+    setFoldingItemIds(deleteTarget.ids || [deleteTarget.id]);
+
+    setTimeout(() => {
+      commitDeleteToContext(deleteTarget.id);
+      setIsDustbinActive(false);
+      setFoldingItemIds([]);
+      setIsDeleting(false);
+      setDeleteTarget(null);
+    }, 750); // Exact 3D fabric fold timing
+  } catch (err) {
+    setIsDeleting(false);
+    onErrorToast?.();
+  }
+};
+```
+
+---
+
+## 🔒 9. Verification & Compliance Checklist
+
+Before approving any table row or card deletion flow, audit against these 7 requirements:
+1. [ ] **Confirmation Modal First**: Does clicking delete on a row or card open the modal without prematurely running the dustbin animation?
+2. [ ] **In-Modal Task Loop**: Does the confirmation modal's delete button execute a task-specific loop while the API is processing?
+3. [ ] **Error Immunity**: If the API call fails, is the dustbin animation suppressed completely, leaving the row/card visible in the table?
+4. [ ] **Success Sequence**: Does the flow strictly follow: API Confirmed -> Success Toast -> Modal Close -> Dustbin slides in from right -> Fabric Fold -> Dustbin Lid Snap & Exit?
+5. [ ] **Bulk Deletion Group Flight**: When multiple rows/cards are deleted, do they all lift and fold into the dustbin simultaneously?
+6. [ ] **Context State Integrity (Zero Duplicates)**: Is the single canonical Context API array updated in-place, allowing subsequent new records to render seamlessly without phantom reappearance?
+7. [ ] **Feature Flag Fallback Audit**: When `feature:animations` is toggled OFF, does row/card deletion bypass the canvas dustbin and remove the item with a clean 150ms opacity fade?
 
 
 
@@ -10546,8 +12874,8 @@ Every archetype in this catalogue documents:
 7. [Recipe 7: Pure CSS Scroll Progress Bar (Zero-JS ScrollTimeline)](#recipe-7-pure-css-scroll-progress-bar-zero-js-scrolltimeline)
 8. [Recipe 8: Universal Apple Genie Modal & Origin Morph System (`AppleGenieModal.tsx`)](#recipe-8-universal-apple-genie-modal--origin-morph-system)
 9. [Recipe 9: Production Three.js 3D Model Viewer & Parts Inspector Studio](#recipe-9-production-threejs-3d-model-viewer--parts-inspector-studio)
-10. [Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System (GenieTrashBinPortal.tsx & useGenieTrashDelete.ts)](#recipe-10-screen-level-apple-genie-trash-bin--3d-vacuum-deletion-system)
 10. [Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System (`GenieTrashBinPortal.tsx` & `useGenieTrashDelete.ts`)](#recipe-10-screen-level-apple-genie-trash-bin--3d-vacuum-deletion-system)
+11. [Recipe 11: Task-Specific In-Flight Action Buttons Suite (`TaskAnimatedButtons.tsx`)](#recipe-11-task-specific-in-flight-action-buttons-suite)
 
 ---
 
@@ -13632,6 +15960,578 @@ export function useGenieTrashDelete() {
 }
 ```
 
+---
+
+## Recipe 11: Task-Specific In-Flight Action Buttons Suite (`TaskAnimatedButtons.tsx`)
+
+### Overview & Mechanics
+- **Component File**: `components/TaskAnimatedButtons.tsx`
+- **Specification Reference**: [`design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`](./BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md)
+- **Non-Negotiable Rule**: Generic circular loading spinners (`animate-spin` circular borders) are strictly forbidden. Every asynchronous button execution must display an action-specific micro-animation inside the button during in-flight network requests ($T_{\text{api}}$).
+- **Embedded Components**:
+  1. `TaskAnimatedDeleteButton`: In-button trash bin loop (bin enters right, lid pops open, document drops in, lid snaps shut, bin departs left; repeats smoothly until API settles, then morphs to emerald checkmark).
+  2. `TaskAnimatedOrderTruckButton`: Delivery truck driving on animated road (spinning tyres $\omega = 360^\circ$, moving dashed road strip, trailing dynamic tyre dust & exhaust lines, subtle suspension bounce).
+  3. `TaskAnimatedLiveSyncButton`: Communications broadcast tower (blinking red transmitter beacon at apex needle, concentric radiating RF wave arcs, animated live pulsing status badge with audio equalizer bars).
+  4. `TaskAnimatedPaymentButton`: POS card chip insertion with radiating contactless NFC wave pulses and verified checkmark.
+  5. `TaskAnimatedDownloadPdfButton`: Laser scanner beam moving downward across document, folding into PDF badge and dropping into tray.
+  6. `TaskAnimatedSendEmailButton`: Origami supersonic jet plane folding, takeoff with vapor contrail lines.
+  7. `TaskAnimatedEditButton`: Stylus pen scribing flowing cursive script lines across sheet, laser verification scan, wax seal press.
+  8. `TaskAnimatedCreateButton`: Isometric 3D construction bricks snapping together with spark particles, blossoming into a new record.
+
+### Complete Copy-Paste Code:
+```tsx
+'use client';
+
+import React, { useState, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, AlertCircle, Trash2, ShoppingCart, Radio, CreditCard, FileDown, Send, Edit3, Plus } from 'lucide-react';
+
+// ============================================================================
+// CORE SYNCHRONIZATION HOOK
+// ============================================================================
+export interface UseTaskAnimationOptions {
+  cycleDuration?: number; // Duration of one complete loop in ms
+  morphDuration?: number; // Duration of success morph in ms
+  onSuccessToast?: () => void;
+  onErrorToast?: (err: unknown) => void;
+}
+
+export function useTaskAnimationSync(options: UseTaskAnimationOptions = {}) {
+  const {
+    cycleDuration = 950,
+    morphDuration = 400,
+    onSuccessToast,
+    onErrorToast
+  } = options;
+
+  const [status, setStatus] = useState<'idle' | 'animating' | 'success' | 'error'>('idle');
+  const isExecutingRef = useRef(false);
+
+  const execute = useCallback(async (taskPromise: Promise<any>) => {
+    if (isExecutingRef.current) return;
+    isExecutingRef.current = true;
+    setStatus('animating');
+    const startTime = performance.now();
+
+    let isSuccess = false;
+    let errorObj: unknown = null;
+
+    try {
+      await taskPromise;
+      isSuccess = true;
+    } catch (err) {
+      errorObj = err;
+      isSuccess = false;
+    }
+
+    // Graceful cycle completion math
+    const elapsed = performance.now() - startTime;
+    const remainder = cycleDuration - (elapsed % cycleDuration);
+    const waitTime = remainder === cycleDuration ? 0 : remainder;
+
+    if (waitTime > 0) {
+      await new Promise(r => setTimeout(r, waitTime));
+    }
+
+    setStatus(isSuccess ? 'success' : 'error');
+    await new Promise(r => setTimeout(r, morphDuration));
+
+    if (isSuccess) {
+      onSuccessToast?.();
+    } else {
+      onErrorToast?.(errorObj);
+    }
+
+    isExecutingRef.current = false;
+  }, [cycleDuration, morphDuration, onSuccessToast, onErrorToast]);
+
+  const reset = useCallback(() => {
+    setStatus('idle');
+    isExecutingRef.current = false;
+  }, []);
+
+  return { status, isLoading: status === 'animating', isSuccess: status === 'success', isError: status === 'error', execute, reset };
+}
+
+// ============================================================================
+// 1. DELETE BUTTON (IN-BUTTON DUSTBIN LOOP)
+// ============================================================================
+interface TaskAnimatedDeleteButtonProps {
+  onDelete: () => Promise<any>;
+  label?: string;
+  activeLabel?: string;
+  successLabel?: string;
+  className?: string;
+  onSuccessToast?: () => void;
+}
+
+export const TaskAnimatedDeleteButton: React.FC<TaskAnimatedDeleteButtonProps> = ({
+  onDelete,
+  label = "Delete Item",
+  activeLabel = "Deleting...",
+  successLabel = "Deleted!",
+  className = "",
+  onSuccessToast
+}) => {
+  const { status, isLoading, isSuccess, isError, execute } = useTaskAnimationSync({
+    cycleDuration: 950,
+    onSuccessToast
+  });
+
+  return (
+    <motion.button
+      whileTap={{ scale: isLoading ? 1 : 0.96 }}
+      onClick={() => !isLoading && execute(onDelete())}
+      disabled={isLoading}
+      className={`relative inline-flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl font-medium text-xs tracking-wide text-white transition-all duration-300 border overflow-hidden cursor-pointer ${
+        isSuccess
+          ? 'bg-emerald-600/90 border-emerald-500/50 shadow-lg shadow-emerald-950/40'
+          : isError
+          ? 'bg-rose-700 border-rose-500/50 shadow-lg shadow-rose-950/40'
+          : 'bg-neutral-900/80 hover:bg-red-950/60 border-red-500/30 hover:border-red-500/60 shadow-lg shadow-red-950/20'
+      } ${className}`}
+    >
+      {/* Icon Frame */}
+      <div className="relative w-5 h-5 flex items-center justify-center overflow-hidden">
+        <AnimatePresence mode="wait">
+          {status === 'idle' && (
+            <motion.div key="idle" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }}>
+              <Trash2 className="w-4 h-4 text-red-400" />
+            </motion.div>
+          )}
+
+          {status === 'animating' && (
+            <motion.div key="animating" className="relative w-5 h-5 flex items-center justify-center overflow-hidden">
+              {/* Bin Body + Lid Assembly */}
+              <motion.div
+                animate={{
+                  x: [20, 0, 0, 0, -20],
+                  opacity: [0, 1, 1, 1, 0]
+                }}
+                transition={{
+                  duration: 0.95,
+                  repeat: Infinity,
+                  ease: [0.25, 1, 0.5, 1],
+                  times: [0, 0.25, 0.65, 0.8, 1]
+                }}
+                className="relative flex flex-col items-center"
+              >
+                {/* Popping Lid */}
+                <motion.div
+                  animate={{
+                    rotate: [0, 0, -55, -55, 0, 0],
+                    y: [0, 0, -2, -2, 0, 0]
+                  }}
+                  transition={{
+                    duration: 0.95,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    times: [0, 0.2, 0.35, 0.6, 0.72, 1]
+                  }}
+                  style={{ originX: 0.1, originY: 1 }}
+                  className="w-3.5 h-1 bg-red-400 rounded-t-sm shadow-sm"
+                />
+                
+                {/* Bin Base */}
+                <div className="w-3 h-3.5 bg-gradient-to-b from-red-500 to-red-700 rounded-b-sm flex items-center justify-center border-t border-red-300/40">
+                  <div className="w-1 h-2 border-x border-white/40" />
+                </div>
+              </motion.div>
+
+              {/* Dropping Document Icon */}
+              <motion.div
+                animate={{
+                  y: [-12, -12, 2, 2],
+                  scale: [1, 1, 0.4, 0],
+                  opacity: [0, 1, 1, 0]
+                }}
+                transition={{
+                  duration: 0.95,
+                  repeat: Infinity,
+                  ease: "easeIn",
+                  times: [0, 0.3, 0.6, 0.65]
+                }}
+                className="absolute w-2 h-2.5 bg-white/90 rounded-[1px] shadow-sm"
+              />
+            </motion.div>
+          )}
+
+          {status === 'success' && (
+            <motion.div key="success" initial={{ scale: 0.5, rotate: -45 }} animate={{ scale: 1, rotate: 0 }}>
+              <Check className="w-4 h-4 text-emerald-300" />
+            </motion.div>
+          )}
+
+          {status === 'error' && (
+            <motion.div key="error" initial={{ scale: 0.5 }} animate={{ scale: 1 }}>
+              <AlertCircle className="w-4 h-4 text-rose-300" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <span>
+        {status === 'idle' && label}
+        {status === 'animating' && activeLabel}
+        {status === 'success' && successLabel}
+        {status === 'error' && "Failed"}
+      </span>
+    </motion.button>
+  );
+};
+
+// ============================================================================
+// 2. ORDER TRUCK BUTTON (MOVING ROAD, SPINNING TYRES, TRAILING DUST LINES)
+// ============================================================================
+interface TaskAnimatedOrderTruckButtonProps {
+  onOrder: () => Promise<any>;
+  label?: string;
+  activeLabel?: string;
+  successLabel?: string;
+  className?: string;
+  onSuccessToast?: () => void;
+}
+
+export const TaskAnimatedOrderTruckButton: React.FC<TaskAnimatedOrderTruckButtonProps> = ({
+  onOrder,
+  label = "Place Order",
+  activeLabel = "Dispatching...",
+  successLabel = "Order Shipped!",
+  className = "",
+  onSuccessToast
+}) => {
+  const { status, isLoading, isSuccess, isError, execute } = useTaskAnimationSync({
+    cycleDuration: 1000,
+    onSuccessToast
+  });
+
+  return (
+    <motion.button
+      whileTap={{ scale: isLoading ? 1 : 0.96 }}
+      onClick={() => !isLoading && execute(onOrder())}
+      disabled={isLoading}
+      className={`relative inline-flex items-center justify-center gap-3 px-5 py-2.5 rounded-xl font-medium text-xs tracking-wide text-white transition-all duration-300 border overflow-hidden cursor-pointer ${
+        isSuccess
+          ? 'bg-emerald-600/90 border-emerald-400/50 shadow-lg shadow-emerald-950/40'
+          : isError
+          ? 'bg-rose-700 border-rose-500/50 shadow-lg shadow-rose-950/40'
+          : 'bg-neutral-900/80 hover:bg-neutral-800/80 border-cyan-500/30 hover:border-cyan-400/60 shadow-lg shadow-cyan-950/20'
+      } ${className}`}
+    >
+      {/* Icon Frame / Moving Truck */}
+      <div className="relative w-8 h-5 flex items-center justify-center overflow-hidden">
+        <AnimatePresence mode="wait">
+          {status === 'idle' && (
+            <motion.div key="idle" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }}>
+              <ShoppingCart className="w-4 h-4 text-cyan-400" />
+            </motion.div>
+          )}
+
+          {status === 'animating' && (
+            <motion.div key="animating" className="relative w-8 h-5 flex items-center justify-center overflow-hidden">
+              {/* Delivery Truck with Suspension Vibration */}
+              <motion.div
+                animate={{ y: [0, -0.8, 0, 0.6, 0] }}
+                transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
+                className="relative flex items-end -ml-1"
+              >
+                {/* Truck Cargo Body */}
+                <div className="w-4 h-3 bg-cyan-600 rounded-tl-sm flex items-center justify-center border-t border-l border-cyan-300/40">
+                  <div className="w-2 h-1.5 bg-amber-400 rounded-[1px]" />
+                </div>
+                {/* Truck Driver Cab */}
+                <div className="w-2.5 h-2.5 bg-cyan-500 rounded-tr-md relative border-t border-r border-cyan-300/40">
+                  <div className="w-1 h-0.8 bg-cyan-950/80 rounded-tr-sm ml-0.8 mt-0.5" />
+                </div>
+
+                {/* Spinning Tyres */}
+                <div className="absolute -bottom-1 left-0.5 right-0.5 flex justify-between pointer-events-none">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 0.25, repeat: Infinity, ease: "linear" }}
+                    className="w-1.8 h-1.8 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center"
+                  >
+                    <div className="w-0.5 h-0.5 bg-neutral-200 rounded-full" />
+                  </motion.div>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 0.25, repeat: Infinity, ease: "linear" }}
+                    className="w-1.8 h-1.8 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center"
+                  >
+                    <div className="w-0.5 h-0.5 bg-neutral-200 rounded-full" />
+                  </motion.div>
+                </div>
+              </motion.div>
+
+              {/* Trailing Tyre Dust Lines */}
+              <div className="absolute bottom-0.5 left-0 pointer-events-none">
+                <motion.div
+                  animate={{ x: [0, -10], scale: [0.5, 1.2], opacity: [0.9, 0] }}
+                  transition={{ duration: 0.35, repeat: Infinity, ease: "easeOut" }}
+                  className="w-1 h-0.8 rounded-full bg-neutral-300/70"
+                />
+              </div>
+
+              {/* Moving Road Surface Dashes */}
+              <div className="absolute -bottom-0.5 left-0 right-0 h-[1px] overflow-hidden">
+                <motion.div
+                  animate={{ x: [0, -16] }}
+                  transition={{ duration: 0.2, repeat: Infinity, ease: "linear" }}
+                  className="w-16 h-full border-b border-dashed border-cyan-400/80"
+                />
+              </div>
+            </motion.div>
+          )}
+
+          {status === 'success' && (
+            <motion.div key="success" initial={{ scale: 0.5 }} animate={{ scale: 1 }}>
+              <Check className="w-4 h-4 text-emerald-300" />
+            </motion.div>
+          )}
+
+          {status === 'error' && (
+            <motion.div key="error" initial={{ scale: 0.5 }} animate={{ scale: 1 }}>
+              <AlertCircle className="w-4 h-4 text-rose-300" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <span>
+        {status === 'idle' && label}
+        {status === 'animating' && activeLabel}
+        {status === 'success' && successLabel}
+        {status === 'error' && "Order Failed"}
+      </span>
+    </motion.button>
+  );
+};
+
+// ============================================================================
+// 3. LIVE SYNC / REFRESH BUTTON (BROADCAST TOWER + PULSING LIVE TEXT)
+// ============================================================================
+interface TaskAnimatedLiveSyncButtonProps {
+  onSync: () => Promise<any>;
+  label?: string;
+  activeLabel?: string;
+  successLabel?: string;
+  className?: string;
+  onSuccessToast?: () => void;
+}
+
+export const TaskAnimatedLiveSyncButton: React.FC<TaskAnimatedLiveSyncButtonProps> = ({
+  onSync,
+  label = "Sync Live",
+  activeLabel = "Syncing Live",
+  successLabel = "Synchronized!",
+  className = "",
+  onSuccessToast
+}) => {
+  const { status, isLoading, isSuccess, isError, execute } = useTaskAnimationSync({
+    cycleDuration: 1100,
+    onSuccessToast
+  });
+
+  return (
+    <motion.button
+      whileTap={{ scale: isLoading ? 1 : 0.96 }}
+      onClick={() => !isLoading && execute(onSync())}
+      disabled={isLoading}
+      className={`relative inline-flex items-center justify-center gap-2.5 px-4 py-2 rounded-xl font-medium text-xs tracking-wide transition-all duration-300 border overflow-hidden cursor-pointer ${
+        isSuccess
+          ? 'bg-emerald-950/80 text-emerald-200 border-emerald-500/40 shadow-lg shadow-emerald-950/40'
+          : isError
+          ? 'bg-rose-950/80 text-rose-200 border-rose-500/40 shadow-lg shadow-rose-950/40'
+          : 'bg-neutral-900/80 text-neutral-200 hover:bg-neutral-800/80 border-emerald-500/30 hover:border-emerald-500/60 shadow-lg shadow-emerald-950/20'
+      } ${className}`}
+    >
+      {/* Broadcast Tower Icon with Radiating Wave Arcs */}
+      <div className="relative w-5 h-5 flex items-center justify-center">
+        {isLoading && (
+          <>
+            {[0, 0.4].map((delay, idx) => (
+              <motion.div
+                key={idx}
+                animate={{ scale: [0.6, 1.8], opacity: [0.9, 0] }}
+                transition={{ duration: 1.1, repeat: Infinity, delay, ease: "easeOut" }}
+                className="absolute top-0 w-3 h-3 rounded-full border border-emerald-400/70 pointer-events-none"
+              />
+            ))}
+            {/* Blinking Beacon Tip */}
+            <motion.div
+              animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.4, 0.8] }}
+              transition={{ duration: 0.4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_6px_#ef4444] z-20"
+            />
+          </>
+        )}
+        <Radio className={`w-4 h-4 transition-colors ${isLoading ? 'text-emerald-400' : 'text-neutral-400'}`} />
+      </div>
+
+      {/* Live Text Area with Pulsing Orb & Equalizer */}
+      <div className="flex items-center gap-1.5">
+        {isLoading && (
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+          </span>
+        )}
+        <span className={isLoading ? "font-mono font-semibold tracking-wider uppercase text-emerald-300" : ""}>
+          {status === 'idle' && label}
+          {status === 'animating' && activeLabel}
+          {status === 'success' && successLabel}
+          {status === 'error' && "Sync Failed"}
+        </span>
+        {isLoading && (
+          <div className="flex items-end gap-0.5 h-3 ml-1">
+            {[0.4, 0.9, 0.5, 1.0].map((h, i) => (
+              <motion.div
+                key={i}
+                animate={{ height: [`${h * 30}%`, `${h * 100}%`, `${h * 30}%`] }}
+                transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.12, ease: "easeInOut" }}
+                className="w-0.5 bg-emerald-400 rounded-full"
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </motion.button>
+  );
+};
+
+// ============================================================================
+// 4. COMPLETE PAYMENT BUTTON (CHIP INSERTION + CONTACTLESS NFC WAVES)
+// ============================================================================
+export const TaskAnimatedPaymentButton: React.FC<{
+  onPay: () => Promise<any>;
+  amount?: string;
+  className?: string;
+  onSuccessToast?: () => void;
+}> = ({ onPay, amount = "$149.00", className = "", onSuccessToast }) => {
+  const { status, isLoading, isSuccess, execute } = useTaskAnimationSync({
+    cycleDuration: 1100,
+    onSuccessToast
+  });
+
+  return (
+    <motion.button
+      whileTap={{ scale: isLoading ? 1 : 0.96 }}
+      onClick={() => !isLoading && execute(onPay())}
+      disabled={isLoading}
+      className={`relative inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-xl font-semibold text-xs tracking-wide text-white transition-all duration-300 border overflow-hidden cursor-pointer bg-neutral-900/90 hover:bg-neutral-800/90 border-violet-500/30 hover:border-violet-500/60 shadow-lg shadow-violet-950/30 ${className}`}
+    >
+      <div className="relative w-5 h-5 flex items-center justify-center">
+        {isLoading ? (
+          <div className="relative w-5 h-5 flex items-center justify-center">
+            {/* NFC Wave Radiations */}
+            {[0, 0.35].map((d, i) => (
+              <motion.div
+                key={i}
+                animate={{ scale: [0.7, 1.9], opacity: [0.8, 0] }}
+                transition={{ duration: 1.1, repeat: Infinity, delay: d, ease: "easeOut" }}
+                className="absolute inset-0 rounded-full border border-violet-400/80 pointer-events-none"
+              />
+            ))}
+            {/* Dipping Card */}
+            <motion.div
+              animate={{ y: [-4, 2, -4] }}
+              transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
+              className="w-3.5 h-2.5 bg-amber-400 rounded-[1px] border border-amber-200"
+            />
+          </div>
+        ) : isSuccess ? (
+          <Check className="w-4 h-4 text-emerald-400" />
+        ) : (
+          <CreditCard className="w-4 h-4 text-violet-400" />
+        )}
+      </div>
+      <span>{isLoading ? "Authorizing..." : isSuccess ? "Payment Approved!" : `Pay ${amount}`}</span>
+    </motion.button>
+  );
+};
+
+// ============================================================================
+// 5. DOWNLOAD PDF BUTTON (LASER SCANNER BEAM + TRAY DROP)
+// ============================================================================
+export const TaskAnimatedDownloadPdfButton: React.FC<{
+  onDownload: () => Promise<any>;
+  label?: string;
+  className?: string;
+  onSuccessToast?: () => void;
+}> = ({ onDownload, label = "Download PDF", className = "", onSuccessToast }) => {
+  const { status, isLoading, isSuccess, execute } = useTaskAnimationSync({
+    cycleDuration: 1000,
+    onSuccessToast
+  });
+
+  return (
+    <motion.button
+      whileTap={{ scale: isLoading ? 1 : 0.96 }}
+      onClick={() => !isLoading && execute(onDownload())}
+      disabled={isLoading}
+      className={`relative inline-flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl font-medium text-xs text-white border border-cyan-500/30 bg-neutral-900/80 hover:bg-neutral-800/80 ${className}`}
+    >
+      <div className="relative w-5 h-5 flex items-center justify-center overflow-hidden">
+        {isLoading ? (
+          <div className="relative w-4 h-4 bg-white/90 rounded-[2px] border border-cyan-400 overflow-hidden">
+            {/* Laser Scanline */}
+            <motion.div
+              animate={{ y: [-2, 16, -2] }}
+              transition={{ duration: 0.9, repeat: Infinity, ease: "easeInOut" }}
+              className="w-full h-0.5 bg-cyan-400 shadow-[0_0_4px_#22d3ee]"
+            />
+          </div>
+        ) : isSuccess ? (
+          <Check className="w-4 h-4 text-emerald-400" />
+        ) : (
+          <FileDown className="w-4 h-4 text-cyan-400" />
+        )}
+      </div>
+      <span>{isLoading ? "Compiling PDF..." : isSuccess ? "Downloaded!" : label}</span>
+    </motion.button>
+  );
+};
+
+// ============================================================================
+// 6. SEND EMAIL BUTTON (ORIGAMI JET PLANE TAKEOFF & VAPOR TRAIL)
+// ============================================================================
+export const TaskAnimatedSendEmailButton: React.FC<{
+  onSend: () => Promise<any>;
+  label?: string;
+  className?: string;
+  onSuccessToast?: () => void;
+}> = ({ onSend, label = "Send Message", className = "", onSuccessToast }) => {
+  const { status, isLoading, isSuccess, execute } = useTaskAnimationSync({
+    cycleDuration: 900,
+    onSuccessToast
+  });
+
+  return (
+    <motion.button
+      whileTap={{ scale: isLoading ? 1 : 0.96 }}
+      onClick={() => !isLoading && execute(onSend())}
+      disabled={isLoading}
+      className={`relative inline-flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl font-medium text-xs text-white border border-indigo-500/30 bg-neutral-900/80 hover:bg-neutral-800/80 ${className}`}
+    >
+      <div className="relative w-5 h-5 flex items-center justify-center overflow-hidden">
+        {isLoading ? (
+          <motion.div
+            animate={{ x: [-8, 12], y: [6, -10], scale: [0.8, 1.2], opacity: [0.2, 1] }}
+            transition={{ duration: 0.9, repeat: Infinity, ease: "easeIn" }}
+          >
+            <Send className="w-4 h-4 text-indigo-400" />
+          </motion.div>
+        ) : isSuccess ? (
+          <Check className="w-4 h-4 text-emerald-400" />
+        ) : (
+          <Send className="w-4 h-4 text-indigo-400" />
+        )}
+      </div>
+      <span>{isLoading ? "Dispatching..." : isSuccess ? "Delivered!" : label}</span>
+    </motion.button>
+  );
+};
+```
 
 
 

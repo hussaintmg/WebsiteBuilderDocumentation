@@ -398,6 +398,18 @@ async function runAudit() {
     'Upgrade raw <input placeholder="..." /> to Floating Label Inputs per design-system/03_UI_COMPONENTS_LIBRARY.md'
   );
 
+  // Check Task-Specific Button Animations & Zero Generic Spinners
+  let hasTaskButtons = /TaskAnimatedButton|TaskAnimatedDelete|TaskAnimatedOrderTruck|TaskAnimatedLiveSync|useTaskAnimationSync/i.test(allCodeContent);
+  let hasGenericButtonSpinners = /<button[^>]*animate-spin|<Loader[^>]*animate-spin/i.test(allCodeContent);
+  evaluateCheck(
+    'UI/UX',
+    'Task-Specific Button Micro-Animations (Zero Generic Spinners)',
+    5,
+    hasTaskButtons || !hasGenericButtonSpinners,
+    hasTaskButtons ? 'Task-specific button micro-animations detected (Delete bin loop, truck, live tower)' : (hasGenericButtonSpinners ? 'Prohibited generic circle spinners detected on action buttons' : 'Standard button states'),
+    'Implement TaskAnimatedButtons with action-specific in-flight micro-animations per design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md'
+  );
+
   // --------------------------------------------------------------------------
   // SUITE 6: AUTHENTICATION, ZERO-DEMO & ERGONOMICS
   // --------------------------------------------------------------------------

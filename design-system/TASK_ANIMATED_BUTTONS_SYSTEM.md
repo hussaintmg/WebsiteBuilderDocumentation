@@ -875,16 +875,24 @@ Below are the 30 concrete, real-world task buttons designed across Public Market
 
 ### 🛡️ CATEGORY 6: Dashboard, RBAC & Security (Examples 27–30)
 
-#### Example 27: "Delete Item / Trash Record" (Confirmation Modal + Canvas Dustbin Fabric-Fold)
+#### Example 27: "Delete Item / Trash Record" (In-Button Dustbin Loop + Screen Canvas Fabric-Fold)
 - **Surface / Context**: Master Data Table Rows, Mobile Card Grid, CMS Content Rows, User Management.
-- **Master Rule Reference**: Full orchestration specification documented in [`design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`](./ROW_CARD_DELETE_DUSTBIN_ANIMATION.md).
+- **Master Rule References**:
+  - In-Button Micro-Animation: [`design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`](./BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md)
+  - Screen-Level Fabric-Fold Deletion: [`design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`](./ROW_CARD_DELETE_DUSTBIN_ANIMATION.md)
+  - Code Recipe: [`design-system/09_IMPLEMENTATION_RECIPES.md#recipe-11`](./09_IMPLEMENTATION_RECIPES.md) (`TaskAnimatedDeleteButton`)
 - **Triggered Action**: `useProgram().deleteProgram(programId)`.
 - **Two-Phase Interaction Architecture**:
-  1. **Phase 1: Confirmation Modal Handshake**:
-     - Clicking "Delete" on a row or card opens `<DeleteConfirmationModal />`.
-     - In the modal, the Delete button starts in idle with a clean trash icon.
-     - When user clicks confirm in the modal, the button plays the rotary shredder micro-animation in a loop ($T_{cycle} = 850\text{ms}$) while awaiting backend confirmation.
-     - Upon HTTP 200: Button morphs to checkmark, **Success Toast fires immediately**, and the modal dismisses smoothly.
+  1. **Phase 1: In-Button Processing Loop**:
+     - Clicking "Delete" on a row or card triggers deletion (or opens confirmation modal).
+     - During in-flight network transit ($T_{\text{api}}$), the button icon executes the **In-Button Dustbin Loop** ($T_{cycle} = 950\text{ms}$):
+       a. A miniature trash bin cylinder enters from the right edge (`x: 20 -> 0`).
+       b. Its motorized lid pops open upward (`rotate: -55deg`).
+       c. A mini document/file icon floats from above and drops directly into the bin (`y: -12 -> 2`, `scale: 1.0 -> 0.4`, `opacity: 1 -> 0`).
+       d. The bin lid snaps shut with an elastic bounce (`rotate: 0`).
+       e. The closed bin glides out toward the left (`x: 0 -> -20`).
+       f. If the API is still pending, the next bin enters from the right in seamless rhythm.
+     - Upon HTTP 200: The button settles and morphs into an emerald checkmark, and the **Success Toast triggers**.
   2. **Phase 2: Post-Confirmation Canvas Dustbin & Fabric Fold**:
      - As the modal closes, a high-tech obsidian **Dustbin emerges from the right side of the screen/viewport**.
      - The deleted row or card undergoes a **3D Fabric Folding Wave**: curling from its right edge like flowing silk, horizontally compressing (`scaleX: 1.0 -> 0.0`), and getting pulled into the open mouth of the dustbin.

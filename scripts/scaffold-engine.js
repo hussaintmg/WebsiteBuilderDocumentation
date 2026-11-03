@@ -542,6 +542,225 @@ export const useApp = () => {
 // -----------------------------------------------------------------------------
 // Write Core Files
 // -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// 9. components/TaskAnimatedButtons.tsx
+// -----------------------------------------------------------------------------
+const TASK_ANIMATED_BUTTONS_TSX = `
+'use client';
+
+import React, { useState, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, AlertCircle, Trash2, ShoppingCart, Radio, CreditCard, FileDown, Send } from 'lucide-react';
+
+export function useTaskAnimationSync(options: { cycleDuration?: number; morphDuration?: number; onSuccessToast?: () => void; onErrorToast?: (err: unknown) => void } = {}) {
+  const { cycleDuration = 950, morphDuration = 400, onSuccessToast, onErrorToast } = options;
+  const [status, setStatus] = useState<'idle' | 'animating' | 'success' | 'error'>('idle');
+  const isExecutingRef = useRef(false);
+
+  const execute = useCallback(async (taskPromise: Promise<any>) => {
+    if (isExecutingRef.current) return;
+    isExecutingRef.current = true;
+    setStatus('animating');
+    const startTime = performance.now();
+    let isSuccess = false;
+    let errorObj: unknown = null;
+
+    try {
+      await taskPromise;
+      isSuccess = true;
+    } catch (err) {
+      errorObj = err;
+      isSuccess = false;
+    }
+
+    const elapsed = performance.now() - startTime;
+    const remainder = cycleDuration - (elapsed % cycleDuration);
+    const waitTime = remainder === cycleDuration ? 0 : remainder;
+
+    if (waitTime > 0) {
+      await new Promise(r => setTimeout(r, waitTime));
+    }
+
+    setStatus(isSuccess ? 'success' : 'error');
+    await new Promise(r => setTimeout(r, morphDuration));
+
+    if (isSuccess) onSuccessToast?.();
+    else onErrorToast?.(errorObj);
+    isExecutingRef.current = false;
+  }, [cycleDuration, morphDuration, onSuccessToast, onErrorToast]);
+
+  return { status, isLoading: status === 'animating', isSuccess: status === 'success', isError: status === 'error', execute };
+}
+
+// 1. DELETE BUTTON (IN-BUTTON DUSTBIN LOOP)
+export const TaskAnimatedDeleteButton: React.FC<{
+  onDelete: () => Promise<any>;
+  label?: string;
+  activeLabel?: string;
+  successLabel?: string;
+  className?: string;
+  onSuccessToast?: () => void;
+}> = ({ onDelete, label = "Delete Item", activeLabel = "Deleting...", successLabel = "Deleted!", className = "", onSuccessToast }) => {
+  const { status, isLoading, isSuccess, isError, execute } = useTaskAnimationSync({ cycleDuration: 950, onSuccessToast });
+
+  return (
+    <motion.button
+      whileTap={{ scale: isLoading ? 1 : 0.96 }}
+      onClick={() => !isLoading && execute(onDelete())}
+      disabled={isLoading}
+      className={\`relative inline-flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl font-medium text-xs tracking-wide text-white transition-all duration-300 border overflow-hidden cursor-pointer \${
+        isSuccess ? 'bg-emerald-600/90 border-emerald-500/50 shadow-lg' : isError ? 'bg-rose-700 border-rose-500/50' : 'bg-neutral-900/80 hover:bg-red-950/60 border-red-500/30'
+      } \${className}\`}
+    >
+      <div className="relative w-5 h-5 flex items-center justify-center overflow-hidden">
+        <AnimatePresence mode="wait">
+          {status === 'idle' && <motion.div key="i" initial={{ scale: 0.8 }} animate={{ scale: 1 }}><Trash2 className="w-4 h-4 text-red-400" /></motion.div>}
+          {status === 'animating' && (
+            <motion.div key="a" className="relative w-5 h-5 flex items-center justify-center overflow-hidden">
+              <motion.div
+                animate={{ x: [20, 0, 0, 0, -20], opacity: [0, 1, 1, 1, 0] }}
+                transition={{ duration: 0.95, repeat: Infinity, ease: [0.25, 1, 0.5, 1], times: [0, 0.25, 0.65, 0.8, 1] }}
+                className="relative flex flex-col items-center"
+              >
+                <motion.div
+                  animate={{ rotate: [0, 0, -55, -55, 0, 0], y: [0, 0, -2, -2, 0, 0] }}
+                  transition={{ duration: 0.95, repeat: Infinity, ease: "easeInOut", times: [0, 0.2, 0.35, 0.6, 0.72, 1] }}
+                  style={{ originX: 0.1, originY: 1 }}
+                  className="w-3.5 h-1 bg-red-400 rounded-t-sm shadow-sm"
+                />
+                <div className="w-3 h-3.5 bg-gradient-to-b from-red-500 to-red-700 rounded-b-sm flex items-center justify-center border-t border-red-300/40">
+                  <div className="w-1 h-2 border-x border-white/40" />
+                </div>
+              </motion.div>
+              <motion.div
+                animate={{ y: [-12, -12, 2, 2], scale: [1, 1, 0.4, 0], opacity: [0, 1, 1, 0] }}
+                transition={{ duration: 0.95, repeat: Infinity, ease: "easeIn", times: [0, 0.3, 0.6, 0.65] }}
+                className="absolute w-2 h-2.5 bg-white/90 rounded-[1px] shadow-sm"
+              />
+            </motion.div>
+          )}
+          {status === 'success' && <motion.div key="s" initial={{ scale: 0.5 }} animate={{ scale: 1 }}><Check className="w-4 h-4 text-emerald-300" /></motion.div>}
+          {status === 'error' && <motion.div key="e" initial={{ scale: 0.5 }} animate={{ scale: 1 }}><AlertCircle className="w-4 h-4 text-rose-300" /></motion.div>}
+        </AnimatePresence>
+      </div>
+      <span>{status === 'idle' ? label : status === 'animating' ? activeLabel : status === 'success' ? successLabel : "Failed"}</span>
+    </motion.button>
+  );
+};
+
+// 2. ORDER TRUCK BUTTON (SPINNING TYRES, ROAD DASHES, TRAILING DUST LINES)
+export const TaskAnimatedOrderTruckButton: React.FC<{
+  onOrder: () => Promise<any>;
+  label?: string;
+  activeLabel?: string;
+  successLabel?: string;
+  className?: string;
+  onSuccessToast?: () => void;
+}> = ({ onOrder, label = "Place Order", activeLabel = "Dispatching...", successLabel = "Order Shipped!", className = "", onSuccessToast }) => {
+  const { status, isLoading, isSuccess, isError, execute } = useTaskAnimationSync({ cycleDuration: 1000, onSuccessToast });
+
+  return (
+    <motion.button
+      whileTap={{ scale: isLoading ? 1 : 0.96 }}
+      onClick={() => !isLoading && execute(onOrder())}
+      disabled={isLoading}
+      className={\`relative inline-flex items-center justify-center gap-3 px-5 py-2.5 rounded-xl font-medium text-xs tracking-wide text-white transition-all duration-300 border overflow-hidden cursor-pointer \${
+        isSuccess ? 'bg-emerald-600/90 border-emerald-400/50' : isError ? 'bg-rose-700 border-rose-500/50' : 'bg-neutral-900/80 hover:bg-neutral-800/80 border-cyan-500/30'
+      } \${className}\`}
+    >
+      <div className="relative w-8 h-5 flex items-center justify-center overflow-hidden">
+        <AnimatePresence mode="wait">
+          {status === 'idle' && <motion.div key="i" initial={{ scale: 0.8 }} animate={{ scale: 1 }}><ShoppingCart className="w-4 h-4 text-cyan-400" /></motion.div>}
+          {status === 'animating' && (
+            <motion.div key="a" className="relative w-8 h-5 flex items-center justify-center overflow-hidden">
+              <motion.div animate={{ y: [0, -0.8, 0, 0.6, 0] }} transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }} className="relative flex items-end -ml-1">
+                <div className="w-4 h-3 bg-cyan-600 rounded-tl-sm flex items-center justify-center border-t border-l border-cyan-300/40">
+                  <div className="w-2 h-1.5 bg-amber-400 rounded-[1px]" />
+                </div>
+                <div className="w-2.5 h-2.5 bg-cyan-500 rounded-tr-md relative border-t border-r border-cyan-300/40">
+                  <div className="w-1 h-0.8 bg-cyan-950/80 rounded-tr-sm ml-0.8 mt-0.5" />
+                </div>
+                <div className="absolute -bottom-1 left-0.5 right-0.5 flex justify-between pointer-events-none">
+                  <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.25, repeat: Infinity, ease: "linear" }} className="w-1.8 h-1.8 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center">
+                    <div className="w-0.5 h-0.5 bg-neutral-200 rounded-full" />
+                  </motion.div>
+                  <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.25, repeat: Infinity, ease: "linear" }} className="w-1.8 h-1.8 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center">
+                    <div className="w-0.5 h-0.5 bg-neutral-200 rounded-full" />
+                  </motion.div>
+                </div>
+              </motion.div>
+              <div className="absolute bottom-0.5 left-0 pointer-events-none">
+                <motion.div animate={{ x: [0, -10], scale: [0.5, 1.2], opacity: [0.9, 0] }} transition={{ duration: 0.35, repeat: Infinity, ease: "easeOut" }} className="w-1 h-0.8 rounded-full bg-neutral-300/70" />
+              </div>
+              <div className="absolute -bottom-0.5 left-0 right-0 h-[1px] overflow-hidden">
+                <motion.div animate={{ x: [0, -16] }} transition={{ duration: 0.2, repeat: Infinity, ease: "linear" }} className="w-16 h-full border-b border-dashed border-cyan-400/80" />
+              </div>
+            </motion.div>
+          )}
+          {status === 'success' && <motion.div key="s" initial={{ scale: 0.5 }} animate={{ scale: 1 }}><Check className="w-4 h-4 text-emerald-300" /></motion.div>}
+          {status === 'error' && <motion.div key="e" initial={{ scale: 0.5 }} animate={{ scale: 1 }}><AlertCircle className="w-4 h-4 text-rose-300" /></motion.div>}
+        </AnimatePresence>
+      </div>
+      <span>{status === 'idle' ? label : status === 'animating' ? activeLabel : status === 'success' ? successLabel : "Order Failed"}</span>
+    </motion.button>
+  );
+};
+
+// 3. LIVE SYNC BUTTON (BROADCAST TOWER + PULSING LIVE TEXT)
+export const TaskAnimatedLiveSyncButton: React.FC<{
+  onSync: () => Promise<any>;
+  label?: string;
+  activeLabel?: string;
+  successLabel?: string;
+  className?: string;
+  onSuccessToast?: () => void;
+}> = ({ onSync, label = "Sync Live", activeLabel = "Syncing Live", successLabel = "Synchronized!", className = "", onSuccessToast }) => {
+  const { status, isLoading, isSuccess, isError, execute } = useTaskAnimationSync({ cycleDuration: 1100, onSuccessToast });
+
+  return (
+    <motion.button
+      whileTap={{ scale: isLoading ? 1 : 0.96 }}
+      onClick={() => !isLoading && execute(onSync())}
+      disabled={isLoading}
+      className={\`relative inline-flex items-center justify-center gap-2.5 px-4 py-2 rounded-xl font-medium text-xs tracking-wide transition-all duration-300 border overflow-hidden cursor-pointer \${
+        isSuccess ? 'bg-emerald-950/80 text-emerald-200 border-emerald-500/40' : isError ? 'bg-rose-950/80 text-rose-200 border-rose-500/40' : 'bg-neutral-900/80 text-neutral-200 hover:bg-neutral-800/80 border-emerald-500/30'
+      } \${className}\`}
+    >
+      <div className="relative w-5 h-5 flex items-center justify-center">
+        {isLoading && (
+          <>
+            {[0, 0.4].map((delay, idx) => (
+              <motion.div key={idx} animate={{ scale: [0.6, 1.8], opacity: [0.9, 0] }} transition={{ duration: 1.1, repeat: Infinity, delay, ease: "easeOut" }} className="absolute top-0 w-3 h-3 rounded-full border border-emerald-400/70 pointer-events-none" />
+            ))}
+            <motion.div animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.4, 0.8] }} transition={{ duration: 0.4, repeat: Infinity, ease: "easeInOut" }} className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_6px_#ef4444] z-20" />
+          </>
+        )}
+        <Radio className={\`w-4 h-4 transition-colors \${isLoading ? 'text-emerald-400' : 'text-neutral-400'}\`} />
+      </div>
+      <div className="flex items-center gap-1.5">
+        {isLoading && (
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+          </span>
+        )}
+        <span className={isLoading ? "font-mono font-semibold tracking-wider uppercase text-emerald-300" : ""}>
+          {status === 'idle' ? label : status === 'animating' ? activeLabel : status === 'success' ? successLabel : "Sync Failed"}
+        </span>
+        {isLoading && (
+          <div className="flex items-end gap-0.5 h-3 ml-1">
+            {[0.4, 0.9, 0.5, 1.0].map((h, i) => (
+              <motion.div key={i} animate={{ height: [\`\${h * 30}%\`, \`\${h * 100}%\`, \`\${h * 30}%\`] }} transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.12, ease: "easeInOut" }} className="w-0.5 bg-emerald-400 rounded-full" />
+            ))}
+          </div>
+        )}
+      </div>
+    </motion.button>
+  );
+};
+`;
+
 log(`${colors.bold}Step 1: Writing Core Standard Files...${colors.reset}`);
 safeWrite('lib/utils.ts', UTILS_TS);
 safeWrite('hooks/useRapidClickBatcher.ts', RAPID_CLICK_BATCHER_TS);
@@ -551,6 +770,7 @@ safeWrite('components/AnimatedPageWrapper.tsx', ANIMATED_PAGE_WRAPPER_TSX);
 safeWrite('components/GlassCard.tsx', GLASS_CARD_TSX);
 safeWrite('lib/safe-storage.ts', SAFE_STORAGE_TS);
 safeWrite('context/AppContext.tsx', APP_CONTEXT_TSX);
+safeWrite('components/TaskAnimatedButtons.tsx', TASK_ANIMATED_BUTTONS_TSX);
 
 // -----------------------------------------------------------------------------
 // Step 2: Audit and Ensure Dependencies in package.json

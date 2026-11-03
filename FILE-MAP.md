@@ -159,6 +159,7 @@
 | `design-system/FRONTEND_DESIGN_RULES.md` | UI Rules | Floating inputs, resizable dvh sidebar, theme rules | Core UI Mechanics | Verified |
 | `design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md` | Animation | 3D Genie Origin-Morph unroll & zero-bar draggable dialogs | Modal Windows | Verified |
 | `design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md` | Animation | Screen-level Genie Trash Bin, portal elevation, 3D vacuum drop | Deletion Physics | Verified |
+| `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md` | Animation | In-flight button task micro-animations (Delete bin loop, order truck, live sync tower) | Button In-Flight Physics | Verified |
 | `design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md` | 3D Graphics | Three.js GLTF model viewer and inspection studio | 3D Interactive UI | Verified |
 | `design-system/01_CSS_PROPERTIES_REFERENCE.md` | Reference | Modern CSS properties, clamp math, layout reference | Styling | Verified |
 | `design-system/02_VISUAL_EFFECTS_CATALOGUE.md` | Effects | Glass, neumorphism, aurora, spotlight effects | Visual Polish | Verified |
