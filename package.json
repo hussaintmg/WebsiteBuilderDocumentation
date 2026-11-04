@@ -2,9 +2,9 @@
   "name": "website-builder-engine",
   "version": "2.1.0",
   "description": "Cross-platform autonomous web engineering engine, design system, and quality gate for Next.js, FastAPI, Node.js, and MongoDB.",
-  "main": "lib/resolve-paths.js",
+  "main": "scripts/resolve-paths.js",
   "bin": {
-    "website-builder": "./bin/website-builder.js"
+    "website-builder": "./scripts/website-builder.js"
   },
   "scripts": {
     "test": "node scripts/test-framework.js",

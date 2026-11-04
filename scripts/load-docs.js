@@ -23,7 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { getSkillDir, resolveSkillPath } = require('../lib/resolve-paths');
+const { getSkillDir, resolveSkillPath } = require('./resolve-paths');
 
 const args = process.argv.slice(2);
 const isList = args.includes('--list');

@@ -4432,12 +4432,447 @@ Mobile Screen (390px):
 
 ---
 
-## 5. React Hook: `useResponsiveTabs`
+## 5. React Hook Implementation: `hooks/useResponsiveTabs.ts`
 
-The core measurement and partition logic is separated into an uncoupled custom hook (`hooks/useResponsiveTabs.ts`):
-- Uses `ResizeObserver` on container.
-- Measures hidden measuring tabs off-screen with `visibility: hidden; position: absolute; pointer-events: none`.
-- Re-evaluates instantly on window resize, device orientation change, and tab list updates.
+The core measurement and partition logic is encapsulated inside an uncoupled custom hook. When implementing in any project, the AI agent must create this file at `<project-root>/hooks/useResponsiveTabs.ts`:
+
+```typescript
+'use client';
+
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+
+export interface TabItem<T = string> {
+  id: T;
+  label: string;
+  icon?: React.ReactNode;
+  badge?: string | number;
+  disabled?: boolean;
+}
+
+export interface UseResponsiveTabsOptions {
+  gap?: number;
+  moreButtonWidth?: number;
+  pinActiveTab?: boolean;
+}
+
+export interface UseResponsiveTabsResult<T = string> {
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  measureContainerRef: React.RefObject<HTMLDivElement | null>;
+  visibleTabs: TabItem<T>[];
+  overflowTabs: TabItem<T>[];
+  isActiveInOverflow: boolean;
+  activeTab: TabItem<T> | undefined;
+  containerWidth: number;
+}
+
+/**
+ * useResponsiveTabs Hook
+ * 
+ * Dynamically computes visible tabs vs overflow tabs based on real-time
+ * container pixel width measured by ResizeObserver.
+ */
+export function useResponsiveTabs<T extends string = string>(
+  tabs: TabItem<T>[],
+  activeId: T,
+  options: UseResponsiveTabsOptions = {}
+): UseResponsiveTabsResult<T> {
+  const { gap = 6, moreButtonWidth = 96, pinActiveTab = true } = options;
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const measureContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [tabWidths, setTabWidths] = useState<number[]>([]);
+
+  // Find active tab item
+  const activeTab = useMemo(
+    () => tabs.find(t => t.id === activeId) || tabs[0],
+    [tabs, activeId]
+  );
+
+  // Measure tab widths from hidden measuring container
+  const measureTabs = useCallback(() => {
+    if (!measureContainerRef.current) return;
+    const children = Array.from(measureContainerRef.current.children) as HTMLElement[];
+    const widths = children.map(child => Math.ceil(child.getBoundingClientRect().width));
+    setTabWidths(widths);
+  }, []);
+
+  // Set up ResizeObserver on visible container
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const el = containerRef.current;
+    const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        const width = entry.contentRect.width;
+        setContainerWidth(Math.floor(width));
+      }
+    });
+
+    observer.observe(el);
+    setContainerWidth(Math.floor(el.getBoundingClientRect().width));
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Measure tab element widths on mount and whenever tabs change
+  useEffect(() => {
+    measureTabs();
+  }, [tabs, measureTabs]);
+
+  // Orientation and window resize listener
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current) {
+        setContainerWidth(Math.floor(containerRef.current.getBoundingClientRect().width));
+      }
+      measureTabs();
+    };
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+    };
+  }, [measureTabs]);
+
+  // Compute Partitioning
+  const { visibleTabs, overflowTabs, isActiveInOverflow } = useMemo(() => {
+    if (tabs.length === 0) {
+      return { visibleTabs: [], overflowTabs: [], isActiveInOverflow: false };
+    }
+
+    if (containerWidth === 0 || tabWidths.length !== tabs.length) {
+      return { visibleTabs: tabs, overflowTabs: [], isActiveInOverflow: false };
+    }
+
+    const totalTabsWidth = tabWidths.reduce((acc, w) => acc + w, 0) + (tabs.length - 1) * gap;
+
+    if (totalTabsWidth <= containerWidth) {
+      return {
+        visibleTabs: tabs,
+        overflowTabs: [],
+        isActiveInOverflow: false
+      };
+    }
+
+    const availableForVisible = containerWidth - moreButtonWidth - gap;
+    let accumulatedWidth = 0;
+    const visible: TabItem<T>[] = [];
+    const overflow: TabItem<T>[] = [];
+
+    const activeIndex = tabs.findIndex(t => t.id === activeId);
+
+    for (let i = 0; i < tabs.length; i++) {
+      const tab = tabs[i];
+      const width = tabWidths[i] || 80;
+      const nextTotal = visible.length === 0 ? width : accumulatedWidth + gap + width;
+
+      if (nextTotal <= availableForVisible) {
+        accumulatedWidth = nextTotal;
+        visible.push(tab);
+      } else {
+        overflow.push(tab);
+      }
+    }
+
+    if (visible.length === 0 && tabs.length > 0) {
+      visible.push(tabs[0]);
+      overflow.splice(0, 1);
+    }
+
+    const activeInOverflow = overflow.some(t => t.id === activeId);
+
+    if (pinActiveTab && activeInOverflow && activeIndex !== -1 && visible.length > 0) {
+      const activeItem = tabs[activeIndex];
+      const lastVisible = visible.pop()!;
+      overflow.push(lastVisible);
+
+      const activeOverflowIdx = overflow.findIndex(t => t.id === activeId);
+      if (activeOverflowIdx !== -1) {
+        overflow.splice(activeOverflowIdx, 1);
+      }
+      visible.push(activeItem);
+
+      return {
+        visibleTabs: visible,
+        overflowTabs: overflow,
+        isActiveInOverflow: false
+      };
+    }
+
+    return {
+      visibleTabs: visible,
+      overflowTabs: overflow,
+      isActiveInOverflow: activeInOverflow
+    };
+  }, [tabs, activeId, tabWidths, containerWidth, gap, moreButtonWidth, pinActiveTab]);
+
+  return {
+    containerRef,
+    measureContainerRef,
+    visibleTabs,
+    overflowTabs,
+    isActiveInOverflow,
+    activeTab,
+    containerWidth
+  };
+}
+```
+
+---
+
+## 6. Complete Component Implementation: `components/ResponsiveTabs.tsx`
+
+The AI agent must place this component at `<project-root>/components/ResponsiveTabs.tsx`:
+
+```tsx
+'use client';
+
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { ChevronDown, Check } from 'lucide-react';
+import { TabItem, useResponsiveTabs } from '../hooks/useResponsiveTabs';
+
+export interface ResponsiveTabsProps<T extends string = string> {
+  tabs: TabItem<T>[];
+  activeTab: T;
+  onChange: (id: T) => void;
+  className?: string;
+  pinActiveTab?: boolean;
+  moreLabel?: string;
+}
+
+export function ResponsiveTabs<T extends string = string>({
+  tabs,
+  activeTab,
+  onChange,
+  className = '',
+  pinActiveTab = true,
+  moreLabel = 'More'
+}: ResponsiveTabsProps<T>) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const moreButtonRef = useRef<HTMLButtonElement | null>(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  const {
+    containerRef,
+    measureContainerRef,
+    visibleTabs,
+    overflowTabs,
+    isActiveInOverflow,
+    activeTab: currentActiveTab
+  } = useResponsiveTabs(tabs, activeTab, {
+    pinActiveTab,
+    gap: 6,
+    moreButtonWidth: 105
+  });
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        moreButtonRef.current &&
+        !moreButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (visibleTabs.length === 0) return;
+
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      const currentIndex = visibleTabs.findIndex(t => t.id === activeTab);
+      const nextIndex = (currentIndex + 1) % visibleTabs.length;
+      onChange(visibleTabs[nextIndex].id);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const currentIndex = visibleTabs.findIndex(t => t.id === activeTab);
+      const prevIndex = (currentIndex - 1 + visibleTabs.length) % visibleTabs.length;
+      onChange(visibleTabs[prevIndex].id);
+    } else if (e.key === 'Escape' && isDropdownOpen) {
+      e.preventDefault();
+      setIsDropdownOpen(false);
+      moreButtonRef.current?.focus();
+    }
+  };
+
+  const springTransition = shouldReduceMotion
+    ? { duration: 0 }
+    : { type: 'spring', stiffness: 450, damping: 35 };
+
+  return (
+    <div className={`relative w-full ${className}`} onKeyDown={handleKeyDown}>
+      {/* Hidden measurement row */}
+      <div
+        ref={measureContainerRef}
+        aria-hidden="true"
+        className="absolute top-0 left-0 flex gap-1.5 opacity-0 pointer-events-none -z-50 select-none overflow-hidden h-0"
+      >
+        {tabs.map(tab => (
+          <div
+            key={tab.id}
+            className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium whitespace-nowrap"
+          >
+            {tab.icon && <span className="w-4 h-4 shrink-0">{tab.icon}</span>}
+            <span>{tab.label}</span>
+            {tab.badge !== undefined && (
+              <span className="px-1.5 py-0.5 text-[10px] font-semibold rounded-full">
+                {tab.badge}
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Visible Tab Bar */}
+      <div
+        ref={containerRef}
+        role="tablist"
+        className="relative flex items-center w-full p-1.5 bg-neutral-900/60 backdrop-blur-xl border border-white/10 rounded-2xl shadow-inner overflow-visible gap-1.5"
+      >
+        {visibleTabs.map(tab => {
+          const isActive = tab.id === activeTab;
+          return (
+            <button
+              key={tab.id}
+              role="tab"
+              type="button"
+              aria-selected={isActive}
+              disabled={tab.disabled}
+              onClick={() => onChange(tab.id)}
+              className={`relative flex items-center gap-2 px-3.5 py-2 text-sm font-medium whitespace-nowrap rounded-xl transition-colors cursor-pointer select-none outline-none ${
+                tab.disabled
+                  ? 'opacity-40 cursor-not-allowed'
+                  : isActive
+                  ? 'text-white'
+                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="responsive-tabs-active-pill"
+                  transition={springTransition}
+                  className="absolute inset-0 bg-white/10 border border-white/15 rounded-xl shadow-sm -z-0"
+                />
+              )}
+              <span className="relative z-10 flex items-center gap-2">
+                {tab.icon && <span className="w-4 h-4 shrink-0">{tab.icon}</span>}
+                <span>{tab.label}</span>
+                {tab.badge !== undefined && (
+                  <span className={`px-1.5 py-0.5 text-[10px] font-semibold rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-white/10 text-neutral-400'}`}>
+                    {tab.badge}
+                  </span>
+                )}
+              </span>
+            </button>
+          );
+        })}
+
+        {/* Overflow Menu Trigger */}
+        {overflowTabs.length > 0 && (
+          <div className="relative ml-auto shrink-0">
+            <button
+              ref={moreButtonRef}
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded={isDropdownOpen}
+              onClick={() => setIsDropdownOpen(prev => !prev)}
+              className={`relative flex items-center gap-1.5 px-3 py-2 text-sm font-medium whitespace-nowrap rounded-xl transition-all cursor-pointer ${
+                isActiveInOverflow
+                  ? 'text-white bg-white/10 border border-white/25 shadow-sm'
+                  : isDropdownOpen
+                  ? 'text-white bg-white/10 border border-white/15'
+                  : 'text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent'
+              }`}
+            >
+              {isActiveInOverflow && (
+                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse shadow-[0_0_8px_rgba(96,165,250,0.8)]" />
+              )}
+              <span>{isActiveInOverflow && currentActiveTab ? `${moreLabel}: ${currentActiveTab.label}` : `${moreLabel} (${overflowTabs.length})`}</span>
+              <motion.span animate={{ rotate: isDropdownOpen ? 180 : 0 }} transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.2 }}>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </motion.span>
+            </button>
+
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  ref={dropdownRef}
+                  role="menu"
+                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -6, scale: 0.96 }}
+                  animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+                  exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -6, scale: 0.96 }}
+                  transition={springTransition}
+                  className="absolute right-0 mt-2 z-50 min-w-[210px] p-1.5 rounded-xl bg-neutral-900/95 backdrop-blur-2xl border border-white/15 shadow-[0_16px_36px_rgba(0,0,0,0.5)] focus:outline-none"
+                >
+                  <div className="py-1">
+                    {overflowTabs.map(tab => {
+                      const isTabActive = tab.id === activeTab;
+                      return (
+                        <button
+                          key={tab.id}
+                          role="menuitem"
+                          type="button"
+                          disabled={tab.disabled}
+                          onClick={() => { onChange(tab.id); setIsDropdownOpen(false); moreButtonRef.current?.focus(); }}
+                          className={`flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg text-left transition-colors cursor-pointer ${
+                            tab.disabled ? 'opacity-40 cursor-not-allowed' : isTabActive ? 'bg-white/15 text-white font-medium' : 'text-neutral-300 hover:bg-white/10 hover:text-white'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5 truncate">
+                            {tab.icon && <span className="w-4 h-4 shrink-0 text-neutral-400">{tab.icon}</span>}
+                            <span className="truncate">{tab.label}</span>
+                          </div>
+                          {isTabActive && <Check className="w-4 h-4 text-blue-400 shrink-0 ml-2" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+---
+
+## 7. AI Agent Scaffolding & Integration Guide
+
+When instructed to *"modernize tabs"*, *"make tabs responsive"*, or *"is page ke tabs mobile friendly banao"*:
+
+1. **Verify Target Files**:
+   - Check if `<target-project>/hooks/useResponsiveTabs.ts` exists. If missing, create it from Section 5.
+   - Check if `<target-project>/components/ResponsiveTabs.tsx` exists. If missing, create it from Section 6.
+2. **Replace Static Tab Lists**:
+   - Locate hardcoded tab buttons or overflowing flex containers in `app/**/page.tsx`.
+   - Import `ResponsiveTabs` and pass the tab array and state handler:
+     ```tsx
+     import { ResponsiveTabs } from '@/components/ResponsiveTabs';
+     ```
+3. **Verify Zero Compilation Errors**:
+   - Run `npx tsc --noEmit` to verify type safety.
+
 
 
 
@@ -4567,6 +5002,216 @@ The layout MUST strictly enforce a three-tier z-index separation:
 
 ---
 
+## 6. Complete Component Source Code: `components/LiquidTabs.tsx`
+
+When instructed to create or modernize tabs with liquid physics, the AI agent must scaffold the component at `<project-root>/components/LiquidTabs.tsx`:
+
+```tsx
+'use client';
+
+import React, { useRef, useEffect, useState, useId } from 'react';
+import { motion } from 'framer-motion';
+
+export interface LiquidTabItem {
+  id: string;
+  label: string;
+  icon?: React.ReactNode;
+  badge?: string | number;
+}
+
+export interface LiquidTabsProps {
+  tabs: LiquidTabItem[];
+  activeTabId: string;
+  onChange: (id: string) => void;
+  className?: string;
+  variant?: 'cyan' | 'emerald' | 'violet' | 'amber';
+}
+
+/**
+ * LiquidTabs
+ * Premium navigation tab bar featuring viscous fluid gooey physics.
+ * Strict Layer-3 DOM architecture guarantees 100% crisp text anti-aliasing.
+ */
+export const LiquidTabs: React.FC<LiquidTabsProps> = ({
+  tabs,
+  activeTabId,
+  onChange,
+  className = '',
+  variant = 'cyan'
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const [pillGeometry, setPillGeometry] = useState({ left: 0, width: 0, height: 0 });
+  const [prevLeft, setPrevLeft] = useState(0);
+  const filterId = useId().replace(/:/g, '');
+
+  useEffect(() => {
+    const activeEl = tabRefs.current.get(activeTabId);
+    const containerEl = containerRef.current;
+    if (activeEl && containerEl) {
+      const activeRect = activeEl.getBoundingClientRect();
+      const containerRect = containerEl.getBoundingClientRect();
+      const newLeft = activeRect.left - containerRect.left;
+      setPrevLeft(pillGeometry.left || newLeft);
+      setPillGeometry({
+        left: newLeft,
+        width: activeRect.width,
+        height: activeRect.height
+      });
+    }
+  }, [activeTabId, tabs]);
+
+  const variantGradients = {
+    cyan: 'from-cyan-500 to-blue-600 shadow-[0_0_20px_rgba(6,182,212,0.35)]',
+    emerald: 'from-emerald-500 to-teal-600 shadow-[0_0_20px_rgba(16,185,129,0.35)]',
+    violet: 'from-violet-500 to-indigo-600 shadow-[0_0_20px_rgba(139,92,246,0.35)]',
+    amber: 'from-amber-500 to-orange-600 shadow-[0_0_20px_rgba(245,158,11,0.35)]'
+  }[variant];
+
+  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+    let nextIndex: number | null = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIndex = (index + 1) % tabs.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (index - 1 + tabs.length) % tabs.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = tabs.length - 1;
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault();
+      const nextTab = tabs[nextIndex];
+      onChange(nextTab.id);
+      tabRefs.current.get(nextTab.id)?.focus();
+    }
+  };
+
+  const isMovingRight = pillGeometry.left >= prevLeft;
+
+  return (
+    <div
+      ref={containerRef}
+      role="tablist"
+      aria-label="Liquid Navigation Tabs"
+      className={`relative inline-flex items-center p-1.5 rounded-2xl backdrop-blur-xl bg-neutral-900/70 border border-white/10 shadow-2xl select-none ${className}`}
+    >
+      <svg className="absolute w-0 h-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <defs>
+          <filter id={`liquid-goo-${filterId}`} colorInterpolationFilters="sRGB">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="
+                1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 20 -10"
+              result="goo"
+            />
+            <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+          </filter>
+        </defs>
+      </svg>
+
+      <div
+        className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl"
+        style={{ filter: `url(#liquid-goo-${filterId})` }}
+      >
+        {pillGeometry.width > 0 && (
+          <>
+            <motion.div
+              layoutId="liquid-primary-pill"
+              animate={{
+                x: pillGeometry.left,
+                width: pillGeometry.width,
+                height: pillGeometry.height
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 480,
+                damping: 30,
+                mass: 0.8
+              }}
+              className={`absolute top-1.5 rounded-xl bg-gradient-to-r ${variantGradients}`}
+            />
+            <motion.div
+              animate={{
+                x: isMovingRight ? pillGeometry.left - 6 : pillGeometry.left + pillGeometry.width - 10,
+                opacity: [0, 0.9, 0],
+                scale: [0.6, 1.2, 0.4]
+              }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              className={`absolute top-3 w-4 h-4 rounded-full bg-gradient-to-r ${variantGradients}`}
+            />
+          </>
+        )}
+      </div>
+
+      <div className="relative z-10 flex items-center gap-1">
+        {tabs.map((tab, index) => {
+          const isActive = tab.id === activeTabId;
+          return (
+            <button
+              key={tab.id}
+              ref={el => {
+                if (el) tabRefs.current.set(tab.id, el);
+                else tabRefs.current.delete(tab.id);
+              }}
+              role="tab"
+              aria-selected={isActive}
+              tabIndex={isActive ? 0 : -1}
+              onClick={() => onChange(tab.id)}
+              onKeyDown={e => handleKeyDown(e, index)}
+              className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
+                isActive ? 'text-white' : 'text-neutral-400 hover:text-neutral-200'
+              }`}
+            >
+              {tab.icon && (
+                <span className={`w-4 h-4 transition-transform duration-200 ${isActive ? 'scale-110 text-white' : 'text-neutral-400'}`}>
+                  {tab.icon}
+                </span>
+              )}
+              <span className="tracking-wide">{tab.label}</span>
+              {tab.badge !== undefined && (
+                <span
+                  className={`text-[11px] font-semibold px-1.5 py-0.5 rounded-full transition-colors ${
+                    isActive ? 'bg-white/20 text-white' : 'bg-neutral-800 text-neutral-400'
+                  }`}
+                >
+                  {tab.badge}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+```
+
+---
+
+## 7. AI Agent Scaffolding & Integration Guide
+
+1. Place `<target-project>/components/LiquidTabs.tsx`.
+2. Import into navigation bars, hero filters, or tab switches:
+   ```tsx
+   import { LiquidTabs } from '@/components/LiquidTabs';
+
+   <LiquidTabs
+     tabs={[{ id: 'home', label: 'Home' }, { id: 'docs', label: 'Docs' }]}
+     activeTabId={active}
+     onChange={setActive}
+   />
+   ```
+
+
+---
+
 
 <a id="file-design-system-3d-interactive-carousel-system-md"></a>
 ## 📄 Specification: `design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md`
@@ -4653,6 +5298,290 @@ This produces an organic metallic reflection that glides across the frosted card
 - When screen width $< 640\text{px}$ (mobile devices), cylinder radius automatically contracts, and cards transition into a clean horizontal scroll snap with touch swipe.
 - When `prefers-reduced-motion` is active, 3D rotations are flattened to standard 2D sliding transitions.
 - Full keyboard support: `ArrowLeft` / `ArrowRight` rotates carousel by exactly 1 card.
+
+
+---
+
+## 6. Complete Component Source Code: `components/CardCarousel3D.tsx`
+
+When instructed to create a 3D showcase or card carousel, the AI agent must scaffold the component at `<project-root>/components/CardCarousel3D.tsx`:
+
+```tsx
+'use client';
+
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+
+export interface Carousel3DItem {
+  id: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  image?: string;
+  tag?: string;
+  accentColor?: string;
+  actionUrl?: string;
+}
+
+export interface CardCarousel3DProps {
+  items: Carousel3DItem[];
+  cardWidth?: number;
+  cardHeight?: number;
+  className?: string;
+  onSelect?: (item: Carousel3DItem) => void;
+}
+
+/**
+ * CardCarousel3D
+ * Cylindrical 3D perspective card carousel with touch/pointer momentum physics,
+ * depth scaling, and specular lighting reflections.
+ */
+export const CardCarousel3D: React.FC<CardCarousel3DProps> = ({
+  items,
+  cardWidth = 320,
+  cardHeight = 420,
+  className = '',
+  onSelect
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartX = useRef(0);
+  const dragStartRotation = useRef(0);
+
+  const N = Math.max(items.length, 1);
+  const anglePerItem = 360 / N;
+  const radius = Math.round(cardWidth / (2 * Math.tan(Math.PI / N))) + 60;
+
+  const rotationAngle = useMotionValue(0);
+  const smoothAngle = useSpring(rotationAngle, {
+    stiffness: 350,
+    damping: 32,
+    mass: 0.8
+  });
+
+  const [currentAngle, setCurrentAngle] = useState(0);
+
+  useEffect(() => {
+    const unsubscribe = smoothAngle.on('change', v => {
+      setCurrentAngle(v);
+      const normalizedIndex = (Math.round(-v / anglePerItem) % N + N) % N;
+      setActiveIndex(normalizedIndex);
+    });
+    return () => unsubscribe();
+  }, [smoothAngle, anglePerItem, N]);
+
+  const snapToIndex = useCallback(
+    (index: number) => {
+      const targetAngle = -index * anglePerItem;
+      rotationAngle.set(targetAngle);
+    },
+    [anglePerItem, rotationAngle]
+  );
+
+  const handlePrev = () => {
+    const nextIndex = (activeIndex - 1 + N) % N;
+    snapToIndex(nextIndex);
+  };
+
+  const handleNext = () => {
+    const nextIndex = (activeIndex + 1) % N;
+    snapToIndex(nextIndex);
+  };
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    dragStartX.current = e.clientX;
+    dragStartRotation.current = rotationAngle.get();
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - dragStartX.current;
+    const deltaAngle = (deltaX / cardWidth) * anglePerItem * 1.2;
+    rotationAngle.set(dragStartRotation.current + deltaAngle);
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    try {
+      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {
+      // Ignored if capture lost
+    }
+    const current = rotationAngle.get();
+    const nearestIndex = Math.round(-current / anglePerItem);
+    rotationAngle.set(-nearestIndex * anglePerItem);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      handlePrev();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      handleNext();
+    }
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      className={`relative w-full flex flex-col items-center justify-center py-12 overflow-hidden select-none outline-none focus-visible:ring-1 focus-visible:ring-cyan-500/50 ${className}`}
+      style={{ perspective: '1200px' }}
+    >
+      <div
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        className="relative flex items-center justify-center cursor-grab active:cursor-grabbing"
+        style={{
+          width: cardWidth,
+          height: cardHeight,
+          transformStyle: 'preserve-3d'
+        }}
+      >
+        {items.map((item, index) => {
+          const itemBaseAngle = index * anglePerItem;
+          const totalAngle = itemBaseAngle + currentAngle;
+          const normalizedAngle = (((totalAngle % 360) + 540) % 360) - 180;
+          const rad = (normalizedAngle * Math.PI) / 180;
+          const proximity = Math.cos(rad);
+          const isFront = proximity > 0.4;
+          const scale = 0.75 + 0.25 * Math.max(0, proximity);
+          const opacity = Math.max(0.18, Math.pow(proximity, 1.4));
+          const zIndex = Math.round(proximity * 100);
+
+          return (
+            <div
+              key={item.id}
+              onClick={() => {
+                if (index === activeIndex && onSelect) {
+                  onSelect(item);
+                } else {
+                  snapToIndex(index);
+                }
+              }}
+              className="absolute inset-0 rounded-3xl transition-shadow duration-300"
+              style={{
+                width: cardWidth,
+                height: cardHeight,
+                transform: `rotateY(${itemBaseAngle + currentAngle}deg) translateZ(${radius}px) scale(${scale})`,
+                opacity: opacity,
+                zIndex: zIndex,
+                backfaceVisibility: 'hidden',
+                pointerEvents: isFront ? 'auto' : 'none'
+              }}
+            >
+              <div className="relative w-full h-full rounded-3xl overflow-hidden backdrop-blur-2xl bg-neutral-900/85 border border-white/10 shadow-2xl flex flex-col justify-between p-6 group hover:border-white/20 transition-all duration-300">
+                <div
+                  className="absolute inset-0 pointer-events-none rounded-3xl opacity-30 group-hover:opacity-60 transition-opacity duration-300"
+                  style={{
+                    background: `linear-gradient(${135 + normalizedAngle * 0.4}deg, rgba(255,255,255,0.25) 0%, transparent 60%)`
+                  }}
+                />
+
+                <div className="relative z-10 flex items-center justify-between">
+                  {item.tag && (
+                    <span className="px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300">
+                      {item.tag}
+                    </span>
+                  )}
+                  {item.actionUrl && (
+                    <span className="p-2 rounded-xl bg-white/5 border border-white/10 text-neutral-400 group-hover:text-white transition-colors">
+                      <ExternalLink className="w-4 h-4" />
+                    </span>
+                  )}
+                </div>
+
+                {item.image && (
+                  <div className="relative z-10 w-full h-36 rounded-2xl overflow-hidden my-3 border border-white/5">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                )}
+
+                <div className="relative z-10 mt-auto">
+                  {item.subtitle && (
+                    <p className="text-xs font-medium text-cyan-400 uppercase tracking-widest mb-1">
+                      {item.subtitle}
+                    </p>
+                  )}
+                  <h3 className="text-xl font-bold text-white tracking-tight leading-snug mb-2">
+                    {item.title}
+                  </h3>
+                  {item.description && (
+                    <p className="text-sm text-neutral-400 line-clamp-2 leading-relaxed">
+                      {item.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="relative z-20 flex items-center gap-6 mt-8">
+        <button
+          type="button"
+          onClick={handlePrev}
+          aria-label="Previous card"
+          className="p-3 rounded-2xl backdrop-blur-xl bg-neutral-900/80 border border-white/10 text-neutral-300 hover:text-white hover:border-white/20 hover:scale-105 active:scale-95 transition-all shadow-xl"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+
+        <div className="flex items-center gap-2">
+          {items.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`Go to slide ${i + 1}`}
+              onClick={() => snapToIndex(i)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                i === activeIndex
+                  ? 'w-7 bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.8)]'
+                  : 'w-2 bg-neutral-700 hover:bg-neutral-500'
+              }`}
+            />
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={handleNext}
+          aria-label="Next card"
+          className="p-3 rounded-2xl backdrop-blur-xl bg-neutral-900/80 border border-white/10 text-neutral-300 hover:text-white hover:border-white/20 hover:scale-105 active:scale-95 transition-all shadow-xl"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  );
+};
+```
+
+---
+
+## 7. AI Agent Scaffolding & Integration Guide
+
+1. Place `<target-project>/components/CardCarousel3D.tsx`.
+2. Import into showcase sections:
+   ```tsx
+   import { CardCarousel3D } from '@/components/CardCarousel3D';
+
+   <CardCarousel3D items={showcaseData} />
+   ```
 
 
 ---
@@ -7978,6 +8907,339 @@ Where:
 - [ ] **Minimum 1-Cycle Completion**: If network latency is 50ms, animation continues to 100% of cycle duration before showing success.
 - [ ] **Toast Deferral**: Toast notifications fire STRICTLY AFTER the completion morph finishes.
 
+
+
+---
+
+## 16. Universal Production Component: `components/AnimatedTaskButton.tsx`
+
+When creating or retrofitting buttons in any project, the AI agent must scaffold the unified action component at `<project-root>/components/AnimatedTaskButton.tsx`:
+
+```tsx
+'use client';
+
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, AlertTriangle } from 'lucide-react';
+
+export type TaskAnimationType = 'delete' | 'truck' | 'airplane' | 'rider' | 'live-sync';
+
+export interface AnimatedTaskButtonProps {
+  taskType: TaskAnimationType;
+  label?: string;
+  loadingLabel?: string;
+  successLabel?: string;
+  errorLabel?: string;
+  isLoading?: boolean;
+  isSuccess?: boolean;
+  isError?: boolean;
+  onClick?: () => void | Promise<void>;
+  disabled?: boolean;
+  className?: string;
+  variant?: 'primary' | 'danger' | 'ghost' | 'glass';
+}
+
+/**
+ * AnimatedTaskButton
+ * Universal action button with task-specific in-flight micro-animations.
+ * Strictly adheres to Rule 10: Zero generic spinners.
+ */
+export const AnimatedTaskButton: React.FC<AnimatedTaskButtonProps> = ({
+  taskType,
+  label,
+  loadingLabel,
+  successLabel,
+  errorLabel,
+  isLoading: controlledLoading,
+  isSuccess: controlledSuccess,
+  isError: controlledError,
+  onClick,
+  disabled = false,
+  className = '',
+  variant = 'glass'
+}) => {
+  const [internalLoading, setInternalLoading] = useState(false);
+  const [internalSuccess, setInternalSuccess] = useState(false);
+  const [internalError, setInternalError] = useState(false);
+
+  const isLoading = controlledLoading !== undefined ? controlledLoading : internalLoading;
+  const isSuccess = controlledSuccess !== undefined ? controlledSuccess : internalSuccess;
+  const isError = controlledError !== undefined ? controlledError : internalError;
+
+  const defaultLabels: Record<TaskAnimationType, { idle: string; loading: string; success: string }> = {
+    delete: { idle: 'Delete Record', loading: 'Deleting...', success: 'Deleted!' },
+    truck: { idle: 'Place Order', loading: 'Dispatching...', success: 'Order Dispatched!' },
+    airplane: { idle: 'Order by Air', loading: 'Taking Off...', success: 'Flight Dispatched!' },
+    rider: { idle: 'Quick Delivery', loading: 'Rider En Route...', success: 'Rider Dispatched!' },
+    'live-sync': { idle: 'Sync Live', loading: 'Syncing Live...', success: 'Synchronized!' }
+  };
+
+  const currentLabel = isSuccess
+    ? successLabel || defaultLabels[taskType].success
+    : isError
+    ? errorLabel || 'Action Failed'
+    : isLoading
+    ? loadingLabel || defaultLabels[taskType].loading
+    : label || defaultLabels[taskType].idle;
+
+  const handleClick = async () => {
+    if (disabled || isLoading || isSuccess) return;
+    if (onClick) {
+      if (controlledLoading === undefined) {
+        setInternalLoading(true);
+        setInternalSuccess(false);
+        setInternalError(false);
+        try {
+          await onClick();
+          setInternalLoading(false);
+          setInternalSuccess(true);
+          setTimeout(() => setInternalSuccess(false), 2400);
+        } catch {
+          setInternalLoading(false);
+          setInternalError(true);
+          setTimeout(() => setInternalError(false), 2400);
+        }
+      } else {
+        onClick();
+      }
+    }
+  };
+
+  const variantStyles = {
+    glass: 'bg-neutral-900/80 hover:bg-neutral-850 border border-white/10 hover:border-white/20 text-neutral-100 shadow-lg',
+    primary: 'bg-cyan-600 hover:bg-cyan-500 border border-cyan-400/40 text-white shadow-cyan-900/30',
+    danger: 'bg-rose-600/90 hover:bg-rose-500 border border-rose-400/30 text-white shadow-rose-950/40',
+    ghost: 'bg-transparent hover:bg-white/5 border border-transparent hover:border-white/10 text-neutral-200'
+  }[variant];
+
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      disabled={disabled || isLoading}
+      className={`relative inline-flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 backdrop-blur-xl disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden active:scale-[0.98] ${variantStyles} ${className}`}
+    >
+      <AnimatePresence>
+        {isSuccess && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1.15 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-emerald-500/20 pointer-events-none rounded-xl blur-sm"
+          />
+        )}
+      </AnimatePresence>
+
+      <div className="relative flex items-center justify-center min-w-[28px] h-6">
+        <AnimatePresence mode="wait">
+          {isSuccess ? (
+            <motion.div
+              key="success"
+              initial={{ scale: 0, rotate: -45 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+              className="text-emerald-400"
+            >
+              <Check className="w-5 h-5 stroke-[2.5]" />
+            </motion.div>
+          ) : isError ? (
+            <motion.div
+              key="error"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              className="text-rose-400"
+            >
+              <AlertTriangle className="w-5 h-5 stroke-[2.5]" />
+            </motion.div>
+          ) : isLoading ? (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex items-center justify-center"
+            >
+              {taskType === 'delete' && <InFlightDeleteBin />}
+              {taskType === 'truck' && <InFlightDeliveryTruck />}
+              {taskType === 'airplane' && <InFlightAirCargoPlane />}
+              {taskType === 'rider' && <InFlightCourierRider />}
+              {taskType === 'live-sync' && <InFlightBroadcastTower />}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="idle"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="flex items-center justify-center text-neutral-400"
+            >
+              {taskType === 'delete' && <IdleTrashIcon />}
+              {taskType === 'truck' && <IdleTruckIcon />}
+              {taskType === 'airplane' && <IdlePlaneIcon />}
+              {taskType === 'rider' && <IdleRiderIcon />}
+              {taskType === 'live-sync' && <IdleTowerIcon />}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <span className="relative z-10 tracking-wide font-medium">{currentLabel}</span>
+    </button>
+  );
+};
+
+/* Micro-Animation Components */
+const InFlightDeleteBin: React.FC = () => (
+  <div className="relative w-7 h-6 flex items-center justify-center overflow-hidden">
+    <motion.div
+      animate={{ x: [24, 0, 0, 0, -24], opacity: [0, 1, 1, 1, 0] }}
+      transition={{ duration: 1.0, repeat: Infinity, ease: [0.25, 1, 0.5, 1], times: [0, 0.25, 0.65, 0.8, 1] }}
+      className="relative flex flex-col items-center"
+    >
+      <motion.div
+        animate={{ rotate: [0, -55, -55, 0] }}
+        transition={{ duration: 1.0, repeat: Infinity, times: [0.2, 0.38, 0.58, 0.72] }}
+        style={{ transformOrigin: '0% 100%' }}
+        className="w-4 h-1 bg-rose-400 rounded-t-sm"
+      />
+      <div className="w-3.5 h-3.5 bg-rose-500/90 rounded-b-sm border-t border-rose-300 flex justify-center items-center">
+        <div className="w-1.5 h-2 border-x border-rose-300/60" />
+      </div>
+      <motion.div
+        animate={{ y: [-12, 3], scale: [1, 0.3], opacity: [0, 1, 1, 0] }}
+        transition={{ duration: 1.0, repeat: Infinity, times: [0.35, 0.6] }}
+        className="absolute top-0 w-2 h-2.5 bg-white rounded-[1px] border border-neutral-300"
+      />
+    </motion.div>
+  </div>
+);
+
+const InFlightDeliveryTruck: React.FC = () => (
+  <div className="relative w-10 h-6 flex items-center justify-center overflow-hidden">
+    <motion.div
+      animate={{ y: [0, -1, 0, 0.8, 0] }}
+      transition={{ duration: 0.35, repeat: Infinity, ease: 'linear' }}
+      className="relative flex items-end"
+    >
+      <div className="relative flex items-end">
+        <div className="w-5 h-3.5 bg-cyan-600 rounded-tl-sm border-t border-l border-cyan-300/40 flex items-center justify-center">
+          <div className="w-2.5 h-2 bg-amber-500 rounded-[1px] border border-amber-300/50" />
+        </div>
+        <div className="w-2.5 h-2.5 bg-cyan-500 rounded-tr-md border-t border-r border-cyan-300/40 relative">
+          <div className="w-1 h-1 bg-cyan-950/80 rounded-tr-sm ml-1 mt-0.5" />
+        </div>
+      </div>
+      <div className="absolute -bottom-1 left-0.5 right-0.5 flex justify-between pointer-events-none">
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.3, repeat: Infinity, ease: 'linear' }} className="w-2 h-2 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center">
+          <div className="w-0.5 h-0.5 bg-neutral-200 rounded-full" />
+        </motion.div>
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.3, repeat: Infinity, ease: 'linear' }} className="w-2 h-2 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center">
+          <div className="w-0.5 h-0.5 bg-neutral-200 rounded-full" />
+        </motion.div>
+      </div>
+    </motion.div>
+    <div className="absolute -bottom-0.5 left-0 right-0 h-[1.5px] overflow-hidden">
+      <motion.div animate={{ x: [0, -20] }} transition={{ duration: 0.25, repeat: Infinity, ease: 'linear' }} className="w-20 h-full border-b border-dashed border-cyan-400/80" />
+    </div>
+  </div>
+);
+
+const InFlightAirCargoPlane: React.FC = () => (
+  <div className="relative w-11 h-6 flex items-center justify-center overflow-hidden">
+    <motion.div animate={{ x: [30, -30] }} transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }} className="absolute top-1 w-3 h-1 bg-white/20 rounded-full blur-[0.5px]" />
+    <div className="absolute bottom-0.5 left-0 right-0 h-[1px] overflow-hidden">
+      <motion.div animate={{ x: [0, -18] }} transition={{ duration: 0.2, repeat: Infinity, ease: 'linear' }} className="w-28 h-full border-b border-dashed border-white/60" />
+    </div>
+    <motion.div
+      animate={{ y: [2, 0, -3, -1, 2], rotate: [-2, 4, 16, 8, -2], scale: [0.95, 1, 1.05, 1, 0.95] }}
+      transition={{ duration: 1.6, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
+      className="relative flex items-center justify-center text-cyan-400"
+    >
+      <svg width="20" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
+      </svg>
+      <motion.div animate={{ width: [0, 14], opacity: [0.8, 0] }} transition={{ duration: 0.4, repeat: Infinity, ease: 'easeOut' }} className="absolute -left-2.5 top-1.5 h-[1.5px] bg-gradient-to-l from-white/70 to-transparent" />
+    </motion.div>
+  </div>
+);
+
+const InFlightCourierRider: React.FC = () => (
+  <div className="relative w-11 h-6 flex items-center justify-center overflow-hidden">
+    <div className="absolute right-0 top-1.5 w-5 h-2.5 bg-gradient-to-r from-amber-300/30 to-transparent rounded-full blur-[1px] pointer-events-none" />
+    <div className="absolute bottom-0 left-0 right-0 h-[1.5px] overflow-hidden">
+      <motion.div animate={{ x: [0, -16] }} transition={{ duration: 0.22, repeat: Infinity, ease: 'linear' }} className="w-24 h-full border-b border-dashed border-amber-400/80" />
+    </div>
+    <motion.div animate={{ y: [0, -1, 0, 0.7, 0] }} transition={{ duration: 0.28, repeat: Infinity, ease: 'linear' }} className="relative flex items-end">
+      <div className="w-3 h-2.5 bg-emerald-600 border border-emerald-400/60 rounded-[2px] flex items-center justify-center shadow-sm">
+        <div className="w-1 h-1 bg-white/80 rounded-[1px]" />
+      </div>
+      <div className="relative -ml-0.5 flex flex-col items-center">
+        <div className="w-2 h-2 bg-neutral-800 rounded-full border border-neutral-600 relative">
+          <div className="w-1 h-0.5 bg-amber-400 rounded-r-full absolute top-0.5 right-0.5" />
+        </div>
+        <div className="w-2.5 h-1.5 bg-neutral-700 rounded-t-sm" />
+      </div>
+      <div className="w-1.5 h-3 bg-neutral-800 rounded-tr-md border-r border-neutral-600 relative flex items-start">
+        <div className="w-1 h-1 bg-amber-300 rounded-full mt-0.5 ml-0.5" />
+      </div>
+      <div className="absolute -bottom-1 left-0.5 right-0.5 flex justify-between pointer-events-none">
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.24, repeat: Infinity, ease: 'linear' }} className="w-2 h-2 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center">
+          <div className="w-0.5 h-0.5 bg-amber-400 rounded-full" />
+        </motion.div>
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.24, repeat: Infinity, ease: 'linear' }} className="w-2 h-2 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center">
+          <div className="w-0.5 h-0.5 bg-amber-400 rounded-full" />
+        </motion.div>
+      </div>
+    </motion.div>
+  </div>
+);
+
+const InFlightBroadcastTower: React.FC = () => (
+  <div className="relative w-8 h-6 flex items-center justify-center overflow-hidden">
+    <motion.div animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.2, 0.8] }} transition={{ duration: 0.45, repeat: Infinity }} className="absolute top-0.5 w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.9)]" />
+    <motion.div animate={{ scale: [0.6, 2.2], opacity: [1, 0] }} transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut' }} className="absolute top-0 w-3 h-3 rounded-full border border-cyan-400/80 pointer-events-none" />
+    <motion.div animate={{ scale: [0.6, 2.2], opacity: [1, 0] }} transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut', delay: 0.4 }} className="absolute top-0 w-3 h-3 rounded-full border border-cyan-400/80 pointer-events-none" />
+    <div className="w-3.5 h-4 flex flex-col items-center mt-2">
+      <div className="w-0.5 h-2 bg-neutral-400" />
+      <div className="w-3 h-2 border-b-2 border-x-2 border-neutral-500 rounded-b-sm" />
+    </div>
+  </div>
+);
+
+const IdleTrashIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
+);
+const IdleTruckIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" /><polygon points="16 8 20 8 23 11 23 16 16 16 16 8" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></svg>
+);
+const IdlePlaneIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" /></svg>
+);
+const IdleRiderIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="5.5" cy="17.5" r="3.5" /><circle cx="18.5" cy="17.5" r="3.5" /><path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM12 17.5V14l-3-3 4-3 2 3h3" /></svg>
+);
+const IdleTowerIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4.93 4.93a10 10 0 0 1 14.14 0M7.76 7.76a6 6 0 0 1 8.48 0M12 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM12 12v9" /></svg>
+);
+```
+
+---
+
+## 17. AI Agent Integration & Usage Guide
+
+1. In any project target requiring action buttons (e.g. Delete, Checkout, Quick Courier, Air Dispatch, Sync), create `<target-project>/components/AnimatedTaskButton.tsx`.
+2. Replace static buttons with:
+   ```tsx
+   import { AnimatedTaskButton } from '@/components/AnimatedTaskButton';
+
+   // Air Cargo Dispatch
+   <AnimatedTaskButton taskType="airplane" onClick={handleAirDispatch} />
+
+   // Local Courier Rider
+   <AnimatedTaskButton taskType="rider" onClick={handleRiderDispatch} />
+   ```
 
 
 ---

@@ -32,7 +32,7 @@ function getCandidateSkillDirs() {
     candidates.push(path.resolve(process.env.SKILL_DIR));
   }
 
-  // 2. Relative to this module (within the repository itself)
+  // 2. Relative to this module (inside scripts/ -> parent is skill root)
   const repoRoot = path.resolve(__dirname, '..');
   candidates.push(repoRoot);
 
@@ -46,7 +46,7 @@ function getCandidateSkillDirs() {
   candidates.push(path.join(home, '.cursor', 'skills', 'website-builder-engine'));
   candidates.push(path.join(home, '.config', 'website-builder-engine'));
 
-  // 6. Common Windows Development Locations
+  // 6. Common Development Locations
   candidates.push('C:\\Coding\\WebsiteBuilderDocumentation');
   candidates.push('D:\\Coding\\WebsiteBuilderDocumentation');
 
@@ -79,7 +79,7 @@ function getSkillDir() {
     }
   }
 
-  // Graceful fallback to repo root if all checks fail
+  // Graceful fallback to parent of scripts/ if all checks fail
   const fallback = path.resolve(__dirname, '..');
   cachedSkillDir = fallback;
   return fallback;
@@ -130,4 +130,3 @@ module.exports = {
   getCandidateSkillDirs,
   getDiagnostics
 };
-

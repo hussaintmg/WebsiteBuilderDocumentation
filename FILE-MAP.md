@@ -68,16 +68,11 @@
   - `design-system/FRONTEND_DESIGN_RULES.md`: Core UI laws (floating label inputs, resizable sidebar, zero-bar dialogs).
   - `design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`: Apple macOS 3D Genie Origin-Morph unrolling animation & zero-bar draggable dialogs.
   - `design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`: Screen-level Genie Trash Bin, portal coordinate elevation, 3D vacuum siphon drop & layout glide-up.
-  - `design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md`: Apple-inspired responsive mobile tab overflow system, dynamic container measurement, and `[More ▼]` dropdown.
+  - `design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md`: Apple-inspired responsive mobile tab overflow system, dynamic container measurement, `[More ▼]` dropdown, with full copy-paste hook and component implementations.
   - `design-system/300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md`: Master catalog of 300 viral social media animations, hover mechanics, and Usman Shams (@iusmanshams) micro-interactions across 8 categories.
-  - `hooks/useResponsiveTabs.ts`: Dynamic ResizeObserver calculation hook for tab width and overflow partition.
-  - `components/ResponsiveTabs.tsx`: Production glassmorphic tab component with Framer Motion gliding pill and accessibility.
-  - `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`: Task-specific in-flight micro-animations suite (delete bin loop, truck road, RF tower, cargo airplane takeoff, scooter courier rider).
-  - `design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md`: Viscous fluid navigation tabs with SVG color-matrix goo filter and 3-tier text protection.
-  - `design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md`: 3D cylindrical card carousel with touch momentum, spring snapping, and specular gloss lighting.
-  - `components/AnimatedTaskButton.tsx`: Universal action button executing task-specific micro-animations (delete, truck, airplane, rider, live-sync).
-  - `components/LiquidTabs.tsx`: Production glassmorphic tab component with liquid viscous meniscus transition and ARIA keyboard support.
-  - `components/CardCarousel3D.tsx`: Production 3D perspective carousel with pointer inertia physics and specular reflection highlights.
+  - `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`: Task-specific in-flight micro-animations suite (delete bin loop, truck road, RF tower, cargo airplane takeoff, scooter courier rider) with universal `AnimatedTaskButton` component.
+  - `design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md`: Viscous fluid navigation tabs with SVG color-matrix goo filter, 3-tier text protection, and complete `LiquidTabs` component.
+  - `design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md`: 3D cylindrical card carousel with touch momentum, spring snapping, specular gloss lighting, and complete `CardCarousel3D` component.
   - `design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`: Three.js model viewer, GLTF loader, parts audit studio.
   - `design-system/01_CSS_PROPERTIES_REFERENCE.md` through `07_WEBSITE_DESIGN_PATTERNS.md`: Modern CSS clamp math, visual effects, components, cards, animations, sections, and patterns.
   - `design-system/09_IMPLEMENTATION_RECIPES.md` & `10_SEARCHABLE_INDEX.md`: Production React/Tailwind recipes and searchable index.

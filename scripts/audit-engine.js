@@ -30,7 +30,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
-const { getSkillDir, resolveSkillPath } = require('../lib/resolve-paths');
+const { getSkillDir, resolveSkillPath } = require('./resolve-paths');
 
 // CLI Arguments
 const args = process.argv.slice(2);

@@ -20,7 +20,7 @@
 
 const path = require('path');
 const { spawnSync } = require('child_process');
-const { getSkillDir, getScriptPath, getDiagnostics } = require('../lib/resolve-paths');
+const { getSkillDir, getScriptPath, getDiagnostics } = require('./resolve-paths');
 
 const [,, command, ...args] = process.argv;
 
@@ -98,4 +98,3 @@ switch (command) {
     console.error(`Unknown command: "${command}". Run "website-builder help" for usage.`);
     process.exit(1);
 }
-

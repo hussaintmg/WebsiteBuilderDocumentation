@@ -22,7 +22,7 @@ const {
   resolveSkillPath,
   getScriptPath,
   getDiagnostics
-} = require('../lib/resolve-paths');
+} = require('./resolve-paths');
 
 // ANSI Colors
 const colors = {
@@ -148,11 +148,9 @@ async function runAllTests() {
   const tabsSpec = resolveSkillPath('design-system', 'RESPONSIVE_MOBILE_TABS_SYSTEM.md');
   assert(fs.existsSync(tabsSpec), 'RESPONSIVE_MOBILE_TABS_SYSTEM.md exists in design-system');
 
-  const tabsHook = resolveSkillPath('hooks', 'useResponsiveTabs.ts');
-  assert(fs.existsSync(tabsHook), 'hooks/useResponsiveTabs.ts exists');
-
-  const tabsComponent = resolveSkillPath('components', 'ResponsiveTabs.tsx');
-  assert(fs.existsSync(tabsComponent), 'components/ResponsiveTabs.tsx exists');
+  const tabsSpecContent = fs.readFileSync(tabsSpec, 'utf8');
+  assert(tabsSpecContent.includes('useResponsiveTabs'), 'RESPONSIVE_MOBILE_TABS_SYSTEM.md contains useResponsiveTabs hook implementation');
+  assert(tabsSpecContent.includes('export function ResponsiveTabs'), 'RESPONSIVE_MOBILE_TABS_SYSTEM.md contains ResponsiveTabs component implementation');
 
   // Mathematical Partition Logic Test (Simulated Engine)
   function simulatePartition(tabs, tabWidths, containerWidth, activeId, options = {}) {
@@ -231,10 +229,10 @@ async function runAllTests() {
   // --------------------------------------------------------------------------
   // SUITE 5: UNIFIED CLI RUNNER (website-builder)
   // --------------------------------------------------------------------------
-  suite('Unified Cross-Platform CLI Runner (bin/website-builder.js)');
+  suite('Unified Cross-Platform CLI Runner (scripts/website-builder.js)');
 
-  const cliPath = resolveSkillPath('bin', 'website-builder.js');
-  assert(fs.existsSync(cliPath), 'bin/website-builder.js exists and is executable');
+  const cliPath = resolveSkillPath('scripts', 'website-builder.js');
+  assert(fs.existsSync(cliPath), 'scripts/website-builder.js exists and is executable');
 
   const cliInfo = spawnSync(process.execPath, [cliPath, 'info'], { encoding: 'utf8' });
   assert(cliInfo.status === 0, 'website-builder info runs with Exit Code 0');
@@ -276,36 +274,25 @@ async function runAllTests() {
   const btnSpecContent = fs.readFileSync(btnSpec, 'utf8');
   assert(btnSpecContent.includes('Button 2B: Order by Air Express'), 'Button 2B (Airplane Takeoff) specified in button spec');
   assert(btnSpecContent.includes('Button 2C: Rider Quick-Commerce'), 'Button 2C (Scooter Courier) specified in button spec');
-
-  const taskBtnComp = resolveSkillPath('components', 'AnimatedTaskButton.tsx');
-  assert(fs.existsSync(taskBtnComp), 'components/AnimatedTaskButton.tsx exists');
-  const taskBtnContent = fs.readFileSync(taskBtnComp, 'utf8');
-  assert(taskBtnContent.includes('InFlightAirCargoPlane'), 'AnimatedTaskButton implements InFlightAirCargoPlane micro-animation');
-  assert(taskBtnContent.includes('InFlightCourierRider'), 'AnimatedTaskButton implements InFlightCourierRider micro-animation');
+  assert(btnSpecContent.includes('AnimatedTaskButton'), 'Button spec contains AnimatedTaskButton component implementation');
+  assert(btnSpecContent.includes('InFlightAirCargoPlane'), 'Button spec implements InFlightAirCargoPlane micro-animation');
+  assert(btnSpecContent.includes('InFlightCourierRider'), 'Button spec implements InFlightCourierRider micro-animation');
 
   // 2. Liquid Gooey Tabs Specification & Component
   const liquidSpec = resolveSkillPath('design-system', 'LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md');
   assert(fs.existsSync(liquidSpec), 'design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md exists');
   const liquidSpecContent = fs.readFileSync(liquidSpec, 'utf8');
   assert(liquidSpecContent.includes('feColorMatrix') && liquidSpecContent.includes('19 -9'), 'Liquid tabs spec defines SVG color matrix threshold filter');
-
-  const liquidComp = resolveSkillPath('components', 'LiquidTabs.tsx');
-  assert(fs.existsSync(liquidComp), 'components/LiquidTabs.tsx exists');
-  const liquidCompContent = fs.readFileSync(liquidComp, 'utf8');
-  assert(liquidCompContent.includes('export const LiquidTabs'), 'LiquidTabs component exported');
-  assert(liquidCompContent.includes('liquid-goo'), 'LiquidTabs integrates SVG gooey filter');
+  assert(liquidSpecContent.includes('export const LiquidTabs'), 'LiquidTabs component exported in spec');
+  assert(liquidSpecContent.includes('liquid-goo'), 'LiquidTabs integrates SVG gooey filter');
 
   // 3. 3D Perspective Carousel Specification & Component
   const carouselSpec = resolveSkillPath('design-system', '3D_INTERACTIVE_CAROUSEL_SYSTEM.md');
   assert(fs.existsSync(carouselSpec), 'design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md exists');
   const carouselSpecContent = fs.readFileSync(carouselSpec, 'utf8');
   assert(carouselSpecContent.includes('rotateY') && carouselSpecContent.includes('translateZ'), '3D Carousel spec defines cylindrical perspective geometry');
-
-  const carouselComp = resolveSkillPath('components', 'CardCarousel3D.tsx');
-  assert(fs.existsSync(carouselComp), 'components/CardCarousel3D.tsx exists');
-  const carouselCompContent = fs.readFileSync(carouselComp, 'utf8');
-  assert(carouselCompContent.includes('export const CardCarousel3D'), 'CardCarousel3D component exported');
-  assert(carouselCompContent.includes('preserve-3d'), 'CardCarousel3D uses 3D transform style');
+  assert(carouselSpecContent.includes('export const CardCarousel3D'), 'CardCarousel3D component exported in spec');
+  assert(carouselSpecContent.includes('preserve-3d'), 'CardCarousel3D uses 3D transform style');
 
   // 4. Recipes 13, 14, 15 Verification
   const recipesPath = resolveSkillPath('design-system', '09_IMPLEMENTATION_RECIPES.md');
