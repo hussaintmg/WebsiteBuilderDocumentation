@@ -131,6 +131,22 @@
         ],
         "hover-effects": [
           "design-system/300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md"
+        ],
+        "liquid-tabs": [
+          "design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md",
+          "design-system/09_IMPLEMENTATION_RECIPES.md"
+        ],
+        "airplane-button": [
+          "design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md",
+          "design-system/09_IMPLEMENTATION_RECIPES.md"
+        ],
+        "rider-button": [
+          "design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md",
+          "design-system/09_IMPLEMENTATION_RECIPES.md"
+        ],
+        "carousel-3d": [
+          "design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md",
+          "design-system/09_IMPLEMENTATION_RECIPES.md"
         ]
       }
     },

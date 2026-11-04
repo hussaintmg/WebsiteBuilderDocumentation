@@ -239,6 +239,149 @@ When user clicks "Place Order", "Confirm Dispatch", or "Ship Package":
 
 ---
 
+## Button 2B: Order by Air Express — Cargo Jet Takeoff with Runway Markings & Contrail Streams
+
+### 2B.1 Visual Choreography & Micro-Story
+When user clicks "Order by Air", "Air Cargo Express", or international flight freight:
+1. **Airport Runway Foundation**: The bottom edge of the button icon activates an airport runway with glowing white centerline dashed markings rushing backward at high velocity ($v = 240\text{px/s}$).
+2. **Engines Spool & Acceleration**: An aerodynamic jet cargo airplane vector sits on the runway line; twin turbine jet engines emit expanding amber/cyan ignition heat cones.
+3. **Rotation & Liftoff ($\theta = 18^\circ$)**: The aircraft pitches up dynamically with rotation angle $\theta = 18^\circ$ around its center of lift, climbing rapidly toward the top-right corner.
+4. **Contrail Particle Streams & Cloud Strata**:
+   - Twin high-altitude condensation trails (white vapor streams) stream from wingtips, expanding and fading (`opacity: 0.8 -> 0`, `scaleY: 1 -> 2.5`).
+   - Two miniature cloud puffs glide horizontally past the aircraft in the upper troposphere.
+5. **Settled State**: On HTTP 200, the aircraft levels off, a glowing emerald radar circle forms around the plane, and the button label morphs to `"Flight Dispatched!"`.
+
+### 2B.2 Framer Motion SVG Motion Specification
+```tsx
+// Inside TaskAnimatedAirplaneButton Icon Frame (44x24px)
+<div className="relative w-11 h-6 flex items-center justify-center overflow-hidden">
+  {/* Passing Clouds */}
+  <motion.div
+    animate={{ x: [30, -30] }}
+    transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+    className="absolute top-1 w-3 h-1 bg-white/20 rounded-full blur-[0.5px]"
+  />
+
+  {/* Runway Dash Line */}
+  <div className="absolute bottom-0.5 left-0 right-0 h-[1px] overflow-hidden">
+    <motion.div
+      animate={{ x: [0, -18] }}
+      transition={{ duration: 0.2, repeat: Infinity, ease: "linear" }}
+      className="w-28 h-full border-b border-dashed border-white/60"
+    />
+  </div>
+
+  {/* Jet Airplane Vector */}
+  <motion.div
+    animate={{
+      y: [2, 0, -3, -1, 2],
+      rotate: [-2, 4, 16, 8, -2],
+      scale: [0.95, 1, 1.05, 1, 0.95]
+    }}
+    transition={{ duration: 1.6, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
+    className="relative flex items-center justify-center text-cyan-400"
+  >
+    {/* SVG Cargo Jet */}
+    <svg width="22" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
+    </svg>
+
+    {/* Contrail Vapor Trails */}
+    <motion.div
+      animate={{ width: [0, 16], opacity: [0.8, 0] }}
+      transition={{ duration: 0.4, repeat: Infinity, ease: "easeOut" }}
+      className="absolute -left-3 top-2 h-[1.5px] bg-gradient-to-l from-white/70 to-transparent"
+    />
+    <motion.div
+      animate={{ width: [0, 16], opacity: [0.8, 0] }}
+      transition={{ duration: 0.4, repeat: Infinity, ease: "easeOut", delay: 0.1 }}
+      className="absolute -left-3 top-3 h-[1.5px] bg-gradient-to-l from-white/70 to-transparent"
+    />
+  </motion.div>
+</div>
+```
+
+---
+
+## Button 2C: Rider Quick-Commerce — Urban Scooter Courier with Spinning Spoked Wheels & Bouncing Carrier Box
+
+### 2C.1 Visual Choreography & Micro-Story
+When user clicks "Deliver by Rider", "Quick Courier", or local doorstep delivery:
+1. **Asphalt Street Horizon**: Dark urban road surface with speed dash streaks moving leftward.
+2. **Motorcycle / Scooter Chassis**: Modern city scooter with front fairing, curved handlebars, driver seat, and headlights.
+3. **Spoked Dual Wheels Rotation**: Both front and rear wheels feature high-speed rotational blur ($\omega = 720^\circ/\text{s}$) with visible axle hubs.
+4. **Courier Driver with Helmet & Bouncing Carrier Box**:
+   - The courier silhouette leans forward dynamically into the wind.
+   - A bold thermal delivery box (pizza / parcel cargo) is mounted on the rear cargo rack.
+   - The box and chassis experience subtle realistic road suspension micro-bounces ($\Delta y = \pm 1.2\text{px}$, damping $\zeta = 0.65$).
+5. **Headlight Cone Beam**: A translucent pale yellow-white light cone projects forward from the scooter headlight onto the asphalt.
+6. **Settled State**: On HTTP 200, the courier pulls a smooth braking halt, the parcel slides from the carrier rack to the customer doorstep, and button morphs to `"Rider Dispatched!"`.
+
+### 2C.2 Framer Motion SVG Motion Specification
+```tsx
+// Inside TaskAnimatedRiderButton Icon Frame (42x24px)
+<div className="relative w-11 h-6 flex items-center justify-center overflow-hidden">
+  {/* Headlight Beam */}
+  <div className="absolute right-0 top-1 w-6 h-3 bg-gradient-to-r from-amber-300/30 to-transparent rounded-full blur-[1px] pointer-events-none" />
+
+  {/* Asphalt Road Line */}
+  <div className="absolute bottom-0 left-0 right-0 h-[1.5px] overflow-hidden">
+    <motion.div
+      animate={{ x: [0, -16] }}
+      transition={{ duration: 0.22, repeat: Infinity, ease: "linear" }}
+      className="w-24 h-full border-b border-dashed border-amber-400/80"
+    />
+  </div>
+
+  {/* Scooter + Courier Chassis */}
+  <motion.div
+    animate={{ y: [0, -1, 0, 0.7, 0] }}
+    transition={{ duration: 0.28, repeat: Infinity, ease: "linear" }}
+    className="relative flex items-end"
+  >
+    {/* Rear Delivery Box */}
+    <div className="w-3.5 h-3 bg-emerald-600 border border-emerald-400/60 rounded-[2px] flex items-center justify-center shadow-sm">
+      <div className="w-1.5 h-1.5 bg-white/80 rounded-[1px]" />
+    </div>
+
+    {/* Driver Silhouette Leaning Forward */}
+    <div className="relative -ml-0.5 flex flex-col items-center">
+      {/* Helmet with Visor */}
+      <div className="w-2.5 h-2.5 bg-neutral-800 rounded-full border border-neutral-600 relative">
+        <div className="w-1 h-0.5 bg-amber-400 rounded-r-full absolute top-0.5 right-0.5" />
+      </div>
+      {/* Torso */}
+      <div className="w-3 h-2 bg-neutral-700 rounded-t-sm" />
+    </div>
+
+    {/* Front Scooter Fork & Headlight */}
+    <div className="w-2 h-3.5 bg-neutral-800 rounded-tr-md border-r border-neutral-600 relative flex items-start">
+      <div className="w-1 h-1 bg-amber-300 rounded-full mt-0.5 ml-0.5" />
+    </div>
+
+    {/* Spinning Spoked Wheels */}
+    <div className="absolute -bottom-1 left-0.5 right-0.5 flex justify-between pointer-events-none">
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 0.24, repeat: Infinity, ease: "linear" }}
+        className="w-2 h-2 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center"
+      >
+        <div className="w-0.5 h-0.5 bg-amber-400 rounded-full" />
+      </motion.div>
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 0.24, repeat: Infinity, ease: "linear" }}
+        className="w-2 h-2 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center"
+      >
+        <div className="w-0.5 h-0.5 bg-amber-400 rounded-full" />
+      </motion.div>
+    </div>
+  </motion.div>
+</div>
+```
+
+---
+
 ## Button 3: Live Sync & Refresh — The Broadcast Tower Beacon & Concentric Radio Waves with Live Text
 
 ### 3.1 Visual Choreography & Micro-Story

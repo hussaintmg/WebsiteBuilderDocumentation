@@ -24,6 +24,8 @@
 - [design-system/DESIGN_ARCHITECTURE.md](#file-design-system-design-architecture-md)
 - [design-system/FRONTEND_DESIGN_RULES.md](#file-design-system-frontend-design-rules-md)
 - [design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md](#file-design-system-responsive-mobile-tabs-system-md)
+- [design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md](#file-design-system-liquid-gooey-navigation-tabs-system-md)
+- [design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md](#file-design-system-3d-interactive-carousel-system-md)
 - [design-system/300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md](#file-design-system-300-viral-animations-and-hover-effects-catalogue-md)
 - [design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md](#file-design-system-apple-genie-origin-morph-system-md)
 - [design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md](#file-design-system-apple-genie-trash-bin-deletion-system-md)
@@ -4442,6 +4444,219 @@ The core measurement and partition logic is separated into an uncoupled custom h
 ---
 
 
+<a id="file-design-system-liquid-gooey-navigation-tabs-system-md"></a>
+## 📄 Specification: `design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md`
+
+# 💧 Master Specification: Liquid Gooey Navigation Tabs System
+
+> **FILE:** `design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md`  
+> **CLASSIFICATION:** Advanced Fluid Dynamics & Micro-Interaction System  
+> **COMPANION COMPONENT:** [`components/LiquidTabs.tsx`](../components/LiquidTabs.tsx)  
+> **RECIPE:** [`design-system/09_IMPLEMENTATION_RECIPES.md#recipe-14`](./09_IMPLEMENTATION_RECIPES.md#recipe-14)  
+> **INSPIRATION:** Usman Shams ([@iusmanshams](https://www.instagram.com/iusmanshams/)), Aaron Iker, and Apple macOS Liquid Glass
+
+---
+
+## 1. Architectural Overview & Fluid Physics
+
+The **Liquid Gooey Navigation Tabs System** delivers a hyper-tactile, viscous fluid transition between interactive navigation tabs. Rather than a rigid sliding pill, the active indicator behaves like high-viscosity liquid mercury or molten glass:
+1. When the active tab changes, the liquid indicator stretches elastically toward the destination, creating a viscous capillary bridge (meniscus).
+2. As velocity peaks, a secondary micro-droplet separates from the trailing edge and re-merges into the leading pill upon arrival.
+3. The indicator snaps into place with organic spring overshoot, settling into a crisp frosted glass pill with ambient cyan glow.
+
+```
+Tab A (Active)                      Tab B (Target)
+[  Overview  ]                       [  Analytics  ]
+      \                                    /
+       \_________ Viscous Meniscus _______/
+      (   Blob A   )======~~~======(   Blob B   )
+```
+
+---
+
+## 2. Mathematical Foundation: SVG Color Matrix Threshold Filter
+
+Standard CSS cannot merge two distinct vector geometries into a continuous fluid droplet. This system employs an inline SVG `<filter>` that exploits alpha channel clamping:
+
+```html
+<svg className="hidden pointer-events-none">
+  <defs>
+    <filter id="liquid-goo-filter" colorInterpolationFilters="sRGB">
+      <!-- Step 1: Gaussian blur expands the alpha channel boundary of children -->
+      <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
+      
+      <!-- Step 2: High-contrast color matrix clamps the soft alpha gradient into a sharp edge -->
+      <feColorMatrix
+        in="blur"
+        mode="matrix"
+        values="
+          1 0 0 0 0
+          0 1 0 0 0
+          0 0 1 0 0
+          0 0 0 19 -9"
+        result="goo"
+      />
+      
+      <!-- Step 3: Composite the crisp color on top -->
+      <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+    </filter>
+  </defs>
+</svg>
+```
+
+### 2.1 Why the Alpha Threshold $19\alpha - 9$ Works
+In RGBA color mathematics, each channel is evaluated per fragment:
+$$\alpha_{\text{out}} = 19 \cdot \alpha_{\text{in}} - 9$$
+
+- When two blurred shapes are far apart, $\alpha_{\text{in}} \le 0.45 \implies \alpha_{\text{out}} \le 0$ (completely transparent).
+- When they approach within their standard deviation blur radius, their overlapping alpha sums exceed $0.474$:
+  $$\alpha_{\text{combined}} > \frac{9}{19} \approx 0.4737 \implies \alpha_{\text{out}} > 0$$
+- This creates an instantaneous, smooth fluid bridge connecting the two shapes without manual polygon skinning!
+
+---
+
+## 3. Strict 3-Layer DOM Isolation Rule (Zero Text Blur)
+
+> [!CAUTION]
+> **Zero Text Blur Mandate**
+> Never apply `filter: url(#liquid-goo-filter)` to an element containing readable text or SVGs! The high-contrast color matrix will destroy letter forms and anti-aliasing.
+
+The layout MUST strictly enforce a three-tier z-index separation:
+
+```
++-------------------------------------------------------------+
+| Layer 2 (z-10): Text & Icons (Relative, crisp, zero filter) |
+| [  Overview  ]     [  Analytics  ]     [  Settings  ]       |
++-------------------------------------------------------------+
+| Layer 1 (z-0):  Fluid Blob Canvas (Absolute inset-0)        |
+|                 with filter: url(#liquid-goo-filter)        |
++-------------------------------------------------------------+
+| Layer 0 (-z-10): Glass Nav Bar Pill Shell                   |
+|                  backdrop-blur-xl bg-neutral-900/70 border  |
++-------------------------------------------------------------+
+```
+
+---
+
+## 4. Framer Motion Transition Mechanics
+
+- **Pill Motion Parameters**:
+  - `stiffness: 480`
+  - `damping: 28`
+  - `mass: 0.85`
+- **Stretch Transformation**:
+  $$\text{scaleX}(v) = 1 + \min\left(0.35, \frac{|\Delta x|}{400}\right)$$
+- **Droplet Detachment Velocity**:
+  During rapid tab jumping ($\Delta t < 200\text{ms}$), a secondary $8\text{px}$ orb animates along an offset bezier trajectory with a $60\text{ms}$ lag, giving the sensation of physical liquid inertia.
+
+---
+
+## 5. Keyboard Navigation & Accessibility (ARIA)
+
+1. `role="tablist"` on wrapper container.
+2. `role="tab"`, `aria-selected={isActive}`, and `tabIndex={isActive ? 0 : -1}` on individual tab items.
+3. Arrow key navigation:
+   - `ArrowRight` / `ArrowDown`: Moves focus and activates next tab.
+   - `ArrowLeft` / `ArrowUp`: Moves focus and activates previous tab.
+   - `Home`: Jumps to first tab.
+   - `End`: Jumps to last tab.
+4. Automatic fallback when `prefers-reduced-motion` is detected:
+   - The SVG filter is gracefully bypassed and replaced with a standard instant crossfade to prevent discomfort.
+
+
+---
+
+
+<a id="file-design-system-3d-interactive-carousel-system-md"></a>
+## 📄 Specification: `design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md`
+
+# 🎠 Master Specification: 3D Perspective Card Carousel System
+
+> **FILE:** `design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md`  
+> **CLASSIFICATION:** 3D Spatial Geometry & Touch-Momentum Carousel  
+> **COMPANION COMPONENT:** [`components/CardCarousel3D.tsx`](../components/CardCarousel3D.tsx)  
+> **RECIPE:** [`design-system/09_IMPLEMENTATION_RECIPES.md#recipe-15`](./09_IMPLEMENTATION_RECIPES.md#recipe-15)  
+> **INSPIRATION:** Usman Shams ([@iusmanshams](https://www.instagram.com/iusmanshams/)) and Apple Cover Flow 3D
+
+---
+
+## 1. Architectural Overview & Spatial Geometry
+
+The **3D Perspective Card Carousel System** renders an interactive circular cylinder or elliptical ring of luxury cards positioned in true 3D CSS perspective space. Users can drag, swipe, or click pagination controls, causing cards to smoothly orbit around the central axis with realistic inertia and depth attenuation.
+
+```
+                    [ Card i-1 ] (scale: 0.85, z: -100px)
+                   /            \
+                  /              \
+[ Card i-2 ]     /                \     [ Card i+1 ] (scale: 0.85, z: -100px)
+                |                  |
+                 \                /
+                  \              /
+                   \____________/
+                  [ ACTIVE CARD i ] (scale: 1.0, z: 0px, Specular Glare)
+```
+
+---
+
+## 2. Mathematical Foundation: Cylindrical Coordinate Distribution
+
+Given $N$ items and a carousel radius $R$ derived from card width $W_{\text{card}}$:
+$$R = \frac{W_{\text{card}}}{2 \cdot \tan\left(\frac{\pi}{N}\right)}$$
+
+For each card $i \in \{0, 1, \dots, N-1\}$ with rotational drag angle $\theta_{\text{rot}}$:
+$$\theta_i = \left(\frac{360^\circ}{N} \cdot i\right) + \theta_{\text{rot}}$$
+
+### 2.1 Depth, Scale, and Opacity Attenuation
+The visual priority of each card is modulated by its angular distance from the focal plane ($\theta = 0^\circ$):
+$$\Delta\theta_i = \left(\theta_i + 180^\circ \pmod{360^\circ}\right) - 180^\circ$$
+$$\text{proximity}_i = \cos(\Delta\theta_i \cdot \frac{\pi}{180^\circ})$$
+
+The 3D CSS spatial transformation applied to each card facet is:
+```css
+transform: rotateY(var(--card-angle)) translateZ(var(--cylinder-radius)) scale(var(--depth-scale));
+```
+
+1. **Z-Translation**: $z_i = R \cdot (\text{proximity}_i - 1)$ via `translateZ`
+2. **Scale Factor**: $s_i = 0.75 + 0.25 \cdot \max(0, \text{proximity}_i)$
+3. **Card Opacity**: $\alpha_i = \max(0.2, \text{proximity}_i^{1.5})$
+4. **Z-Index Layering**: $z\text{-index}_i = \lfloor 100 \cdot \text{proximity}_i \rfloor$
+
+---
+
+## 3. Touch Drag Momentum & Inertia Snapping
+
+1. **Pointer Down**: Captures starting client coordinate $X_0$ and resets velocity history.
+2. **Pointer Move**: Calculates displacement:
+   $$\Delta\theta = \frac{\Delta X}{\text{dragFactor}}$$
+   Updates rotational angle with $60\text{ FPS}$ frame rendering.
+3. **Pointer Up**: Evaluates release velocity $v_x = \frac{\Delta X}{\Delta t}$.
+   - If $|v_x| > v_{\text{threshold}}$, momentum continues over $k$ frames with exponential decay factor $\mu = 0.92$.
+   - Elastic spring snaps to the nearest exact card index:
+     $$i_{\text{target}} = \operatorname{round}\left(-\frac{\theta_{\text{rot}}}{360^\circ / N}\right) \pmod N$$
+
+---
+
+## 4. Specular Lighting & Glass Glare Physics
+
+Each card features an active specular highlight layer that dynamically mirrors the card's tilt angle:
+```tsx
+const glareOpacity = Math.max(0, proximity);
+const glareTransform = `translateX(${deltaTheta * 1.5}px)`;
+```
+This produces an organic metallic reflection that glides across the frosted card facet as it passes the central spotlight.
+
+---
+
+## 5. Accessibility & Responsive Degradation
+
+- When screen width $< 640\text{px}$ (mobile devices), cylinder radius automatically contracts, and cards transition into a clean horizontal scroll snap with touch swipe.
+- When `prefers-reduced-motion` is active, 3D rotations are flattened to standard 2D sliding transitions.
+- Full keyboard support: `ArrowLeft` / `ArrowRight` rotates carousel by exactly 1 card.
+
+
+---
+
+
 <a id="file-design-system-300-viral-animations-and-hover-effects-catalogue-md"></a>
 ## 📄 Specification: `design-system/300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md`
 
@@ -7406,6 +7621,149 @@ When user clicks "Place Order", "Confirm Dispatch", or "Ship Package":
       className="w-20 h-full border-b border-dashed border-cyan-400/80"
     />
   </div>
+</div>
+```
+
+---
+
+## Button 2B: Order by Air Express — Cargo Jet Takeoff with Runway Markings & Contrail Streams
+
+### 2B.1 Visual Choreography & Micro-Story
+When user clicks "Order by Air", "Air Cargo Express", or international flight freight:
+1. **Airport Runway Foundation**: The bottom edge of the button icon activates an airport runway with glowing white centerline dashed markings rushing backward at high velocity ($v = 240\text{px/s}$).
+2. **Engines Spool & Acceleration**: An aerodynamic jet cargo airplane vector sits on the runway line; twin turbine jet engines emit expanding amber/cyan ignition heat cones.
+3. **Rotation & Liftoff ($\theta = 18^\circ$)**: The aircraft pitches up dynamically with rotation angle $\theta = 18^\circ$ around its center of lift, climbing rapidly toward the top-right corner.
+4. **Contrail Particle Streams & Cloud Strata**:
+   - Twin high-altitude condensation trails (white vapor streams) stream from wingtips, expanding and fading (`opacity: 0.8 -> 0`, `scaleY: 1 -> 2.5`).
+   - Two miniature cloud puffs glide horizontally past the aircraft in the upper troposphere.
+5. **Settled State**: On HTTP 200, the aircraft levels off, a glowing emerald radar circle forms around the plane, and the button label morphs to `"Flight Dispatched!"`.
+
+### 2B.2 Framer Motion SVG Motion Specification
+```tsx
+// Inside TaskAnimatedAirplaneButton Icon Frame (44x24px)
+<div className="relative w-11 h-6 flex items-center justify-center overflow-hidden">
+  {/* Passing Clouds */}
+  <motion.div
+    animate={{ x: [30, -30] }}
+    transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+    className="absolute top-1 w-3 h-1 bg-white/20 rounded-full blur-[0.5px]"
+  />
+
+  {/* Runway Dash Line */}
+  <div className="absolute bottom-0.5 left-0 right-0 h-[1px] overflow-hidden">
+    <motion.div
+      animate={{ x: [0, -18] }}
+      transition={{ duration: 0.2, repeat: Infinity, ease: "linear" }}
+      className="w-28 h-full border-b border-dashed border-white/60"
+    />
+  </div>
+
+  {/* Jet Airplane Vector */}
+  <motion.div
+    animate={{
+      y: [2, 0, -3, -1, 2],
+      rotate: [-2, 4, 16, 8, -2],
+      scale: [0.95, 1, 1.05, 1, 0.95]
+    }}
+    transition={{ duration: 1.6, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
+    className="relative flex items-center justify-center text-cyan-400"
+  >
+    {/* SVG Cargo Jet */}
+    <svg width="22" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
+    </svg>
+
+    {/* Contrail Vapor Trails */}
+    <motion.div
+      animate={{ width: [0, 16], opacity: [0.8, 0] }}
+      transition={{ duration: 0.4, repeat: Infinity, ease: "easeOut" }}
+      className="absolute -left-3 top-2 h-[1.5px] bg-gradient-to-l from-white/70 to-transparent"
+    />
+    <motion.div
+      animate={{ width: [0, 16], opacity: [0.8, 0] }}
+      transition={{ duration: 0.4, repeat: Infinity, ease: "easeOut", delay: 0.1 }}
+      className="absolute -left-3 top-3 h-[1.5px] bg-gradient-to-l from-white/70 to-transparent"
+    />
+  </motion.div>
+</div>
+```
+
+---
+
+## Button 2C: Rider Quick-Commerce — Urban Scooter Courier with Spinning Spoked Wheels & Bouncing Carrier Box
+
+### 2C.1 Visual Choreography & Micro-Story
+When user clicks "Deliver by Rider", "Quick Courier", or local doorstep delivery:
+1. **Asphalt Street Horizon**: Dark urban road surface with speed dash streaks moving leftward.
+2. **Motorcycle / Scooter Chassis**: Modern city scooter with front fairing, curved handlebars, driver seat, and headlights.
+3. **Spoked Dual Wheels Rotation**: Both front and rear wheels feature high-speed rotational blur ($\omega = 720^\circ/\text{s}$) with visible axle hubs.
+4. **Courier Driver with Helmet & Bouncing Carrier Box**:
+   - The courier silhouette leans forward dynamically into the wind.
+   - A bold thermal delivery box (pizza / parcel cargo) is mounted on the rear cargo rack.
+   - The box and chassis experience subtle realistic road suspension micro-bounces ($\Delta y = \pm 1.2\text{px}$, damping $\zeta = 0.65$).
+5. **Headlight Cone Beam**: A translucent pale yellow-white light cone projects forward from the scooter headlight onto the asphalt.
+6. **Settled State**: On HTTP 200, the courier pulls a smooth braking halt, the parcel slides from the carrier rack to the customer doorstep, and button morphs to `"Rider Dispatched!"`.
+
+### 2C.2 Framer Motion SVG Motion Specification
+```tsx
+// Inside TaskAnimatedRiderButton Icon Frame (42x24px)
+<div className="relative w-11 h-6 flex items-center justify-center overflow-hidden">
+  {/* Headlight Beam */}
+  <div className="absolute right-0 top-1 w-6 h-3 bg-gradient-to-r from-amber-300/30 to-transparent rounded-full blur-[1px] pointer-events-none" />
+
+  {/* Asphalt Road Line */}
+  <div className="absolute bottom-0 left-0 right-0 h-[1.5px] overflow-hidden">
+    <motion.div
+      animate={{ x: [0, -16] }}
+      transition={{ duration: 0.22, repeat: Infinity, ease: "linear" }}
+      className="w-24 h-full border-b border-dashed border-amber-400/80"
+    />
+  </div>
+
+  {/* Scooter + Courier Chassis */}
+  <motion.div
+    animate={{ y: [0, -1, 0, 0.7, 0] }}
+    transition={{ duration: 0.28, repeat: Infinity, ease: "linear" }}
+    className="relative flex items-end"
+  >
+    {/* Rear Delivery Box */}
+    <div className="w-3.5 h-3 bg-emerald-600 border border-emerald-400/60 rounded-[2px] flex items-center justify-center shadow-sm">
+      <div className="w-1.5 h-1.5 bg-white/80 rounded-[1px]" />
+    </div>
+
+    {/* Driver Silhouette Leaning Forward */}
+    <div className="relative -ml-0.5 flex flex-col items-center">
+      {/* Helmet with Visor */}
+      <div className="w-2.5 h-2.5 bg-neutral-800 rounded-full border border-neutral-600 relative">
+        <div className="w-1 h-0.5 bg-amber-400 rounded-r-full absolute top-0.5 right-0.5" />
+      </div>
+      {/* Torso */}
+      <div className="w-3 h-2 bg-neutral-700 rounded-t-sm" />
+    </div>
+
+    {/* Front Scooter Fork & Headlight */}
+    <div className="w-2 h-3.5 bg-neutral-800 rounded-tr-md border-r border-neutral-600 relative flex items-start">
+      <div className="w-1 h-1 bg-amber-300 rounded-full mt-0.5 ml-0.5" />
+    </div>
+
+    {/* Spinning Spoked Wheels */}
+    <div className="absolute -bottom-1 left-0.5 right-0.5 flex justify-between pointer-events-none">
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 0.24, repeat: Infinity, ease: "linear" }}
+        className="w-2 h-2 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center"
+      >
+        <div className="w-0.5 h-0.5 bg-amber-400 rounded-full" />
+      </motion.div>
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 0.24, repeat: Infinity, ease: "linear" }}
+        className="w-2 h-2 rounded-full bg-neutral-900 border border-neutral-400 flex items-center justify-center"
+      >
+        <div className="w-0.5 h-0.5 bg-amber-400 rounded-full" />
+      </motion.div>
+    </div>
+  </motion.div>
 </div>
 ```
 
@@ -18789,6 +19147,173 @@ export function ResponsiveTabs<T extends string = string>({
 ```
 
 
+
+---
+
+## Recipe 13: Airplane Takeoff & Scooter Rider In-Flight Action Buttons
+
+### Overview & Mechanics
+- **Component**: `AnimatedTaskButton.tsx`
+- **Location**: `components/AnimatedTaskButton.tsx`
+- **Reference**: `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`
+- **Technique**: Provides task-specific vector in-flight micro-animations replacing generic spinners for `"airplane"` (cargo flight takeoff with runway dashes, pitch angle, and contrails) and `"rider"` (urban courier on motor scooter with spinning wheels, bouncing delivery box, and asphalt streaks).
+
+### Complete Copy-Paste Code:
+```tsx
+'use client';
+
+import React from 'react';
+import { AnimatedTaskButton } from '@/components/AnimatedTaskButton';
+
+export function ActionButtonsDemo() {
+  const handleAirDispatch = async () => {
+    // Simulate flight dispatch network call
+    await new Promise(resolve => setTimeout(resolve, 2800));
+  };
+
+  const handleRiderDispatch = async () => {
+    // Simulate courier dispatch network call
+    await new Promise(resolve => setTimeout(resolve, 2500));
+  };
+
+  return (
+    <div className="flex flex-wrap items-center gap-4 p-8 bg-neutral-950 rounded-2xl border border-white/10">
+      {/* Flight Cargo Button */}
+      <AnimatedTaskButton
+        taskType="airplane"
+        label="Order by Air Express"
+        loadingLabel="Flight Taking Off..."
+        successLabel="Flight Dispatched!"
+        onClick={handleAirDispatch}
+        variant="primary"
+      />
+
+      {/* Urban Courier Rider Button */}
+      <AnimatedTaskButton
+        taskType="rider"
+        label="Deliver via Rider"
+        loadingLabel="Rider En Route..."
+        successLabel="Rider Dispatched!"
+        onClick={handleRiderDispatch}
+        variant="glass"
+      />
+    </div>
+  );
+}
+```
+
+---
+
+## Recipe 14: Liquid Gooey Navigation Tabs with SVG Filter
+
+### Overview & Mechanics
+- **Component**: `LiquidTabs.tsx`
+- **Location**: `components/LiquidTabs.tsx`
+- **Reference**: `design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md`
+- **Technique**: Uses an SVG `<feGaussianBlur>` and `<feColorMatrix>` filter on an isolated background layer (`z-0`) to achieve fluid, viscous meniscus stretching between tabs while preserving 100% crisp typography on the top layer (`z-10`).
+
+### Complete Copy-Paste Code:
+```tsx
+'use client';
+
+import React, { useState } from 'react';
+import { LiquidTabs, LiquidTabItem } from '@/components/LiquidTabs';
+import { LayoutGrid, Sparkles, Sliders, Shield } from 'lucide-react';
+
+const navigationTabs: LiquidTabItem[] = [
+  { id: 'dashboard', label: 'Dashboard', icon: <LayoutGrid className="w-4 h-4" /> },
+  { id: 'features', label: 'AI Features', icon: <Sparkles className="w-4 h-4" />, badge: 'New' },
+  { id: 'settings', label: 'Settings', icon: <Sliders className="w-4 h-4" /> },
+  { id: 'security', label: 'Security', icon: <Shield className="w-4 h-4" /> }
+];
+
+export function LiquidTabsDemo() {
+  const [activeTab, setActiveTab] = useState('dashboard');
+
+  return (
+    <div className="flex flex-col items-center justify-center p-12 bg-neutral-950 min-h-[300px]">
+      <LiquidTabs
+        tabs={navigationTabs}
+        activeTabId={activeTab}
+        onChange={setActiveTab}
+        variant="cyan"
+      />
+      <div className="mt-8 text-neutral-400 text-sm">
+        Active section: <span className="text-cyan-400 font-semibold uppercase">{activeTab}</span>
+      </div>
+    </div>
+  );
+}
+```
+
+---
+
+## Recipe 15: 3D Perspective Card Carousel UI
+
+### Overview & Mechanics
+- **Component**: `CardCarousel3D.tsx`
+- **Location**: `components/CardCarousel3D.tsx`
+- **Reference**: `design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md`
+- **Technique**: Cylindrical 3D perspective geometry ($R = W / (2 \tan(\pi/N))$) with pointer drag momentum, spring snapping, and dynamic specular gloss glare.
+
+### Complete Copy-Paste Code:
+```tsx
+'use client';
+
+import React from 'react';
+import { CardCarousel3D, Carousel3DItem } from '@/components/CardCarousel3D';
+
+const showcaseCards: Carousel3DItem[] = [
+  {
+    id: '1',
+    title: 'Autonomous Builder Engine',
+    subtitle: 'Next.js 15 & AI',
+    description: 'Self-assembling fullstack application engine with automated compliance gates.',
+    tag: 'Core System'
+  },
+  {
+    id: '2',
+    title: 'Apple macOS Genie Portals',
+    subtitle: '3D Spatial Deletion',
+    description: 'Screen-level portal coordinate elevation and vacuum siphon trash bin physics.',
+    tag: 'Motion Physics'
+  },
+  {
+    id: '3',
+    title: 'Liquid Gooey Tabs',
+    subtitle: 'Fluid Viscous Meniscus',
+    description: 'Organic SVG color matrix filter indicator with zero font anti-aliasing degradation.',
+    tag: 'Navigation'
+  },
+  {
+    id: '4',
+    title: 'Flight Cargo & Rider Buttons',
+    subtitle: 'Task In-Flight Narratives',
+    description: 'Zero generic loading spinners. Real-time vector stories during network requests.',
+    tag: 'Micro-Actions'
+  },
+  {
+    id: '5',
+    title: '3D Cylinder Carousel',
+    subtitle: 'Spatial Depth Matrix',
+    description: 'Pointer momentum drag, velocity snapping, and specular reflection highlights.',
+    tag: 'Showcase UI'
+  }
+];
+
+export function Carousel3DDemo() {
+  return (
+    <div className="w-full py-12 bg-neutral-950 flex flex-col items-center">
+      <CardCarousel3D
+        items={showcaseCards}
+        cardWidth={320}
+        cardHeight={400}
+        onSelect={(item) => console.log('Selected card:', item.title)}
+      />
+    </div>
+  );
+}
+```
 
 
 ---

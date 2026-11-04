@@ -50,6 +50,8 @@ const sections = [
       'design-system/DESIGN_ARCHITECTURE.md',
       'design-system/FRONTEND_DESIGN_RULES.md',
       'design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md',
+      'design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md',
+      'design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md',
       'design-system/300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md',
       'design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md',
       'design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md',

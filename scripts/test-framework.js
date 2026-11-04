@@ -266,6 +266,67 @@ async function runAllTests() {
   assert(runAnimTopic.stdout.includes('300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md'), 'load-docs outputs catalogue path');
 
   // --------------------------------------------------------------------------
+  // SUITE 7: VIRAL TASK BUTTONS, LIQUID TABS & 3D CAROUSEL SUITE
+  // --------------------------------------------------------------------------
+  suite('Viral Task Buttons, Liquid Gooey Tabs & 3D Carousel Suite');
+
+  // 1. Task Buttons Specification & Component
+  const btnSpec = resolveSkillPath('design-system', 'BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md');
+  assert(fs.existsSync(btnSpec), 'BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md exists');
+  const btnSpecContent = fs.readFileSync(btnSpec, 'utf8');
+  assert(btnSpecContent.includes('Button 2B: Order by Air Express'), 'Button 2B (Airplane Takeoff) specified in button spec');
+  assert(btnSpecContent.includes('Button 2C: Rider Quick-Commerce'), 'Button 2C (Scooter Courier) specified in button spec');
+
+  const taskBtnComp = resolveSkillPath('components', 'AnimatedTaskButton.tsx');
+  assert(fs.existsSync(taskBtnComp), 'components/AnimatedTaskButton.tsx exists');
+  const taskBtnContent = fs.readFileSync(taskBtnComp, 'utf8');
+  assert(taskBtnContent.includes('InFlightAirCargoPlane'), 'AnimatedTaskButton implements InFlightAirCargoPlane micro-animation');
+  assert(taskBtnContent.includes('InFlightCourierRider'), 'AnimatedTaskButton implements InFlightCourierRider micro-animation');
+
+  // 2. Liquid Gooey Tabs Specification & Component
+  const liquidSpec = resolveSkillPath('design-system', 'LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md');
+  assert(fs.existsSync(liquidSpec), 'design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md exists');
+  const liquidSpecContent = fs.readFileSync(liquidSpec, 'utf8');
+  assert(liquidSpecContent.includes('feColorMatrix') && liquidSpecContent.includes('19 -9'), 'Liquid tabs spec defines SVG color matrix threshold filter');
+
+  const liquidComp = resolveSkillPath('components', 'LiquidTabs.tsx');
+  assert(fs.existsSync(liquidComp), 'components/LiquidTabs.tsx exists');
+  const liquidCompContent = fs.readFileSync(liquidComp, 'utf8');
+  assert(liquidCompContent.includes('export const LiquidTabs'), 'LiquidTabs component exported');
+  assert(liquidCompContent.includes('liquid-goo'), 'LiquidTabs integrates SVG gooey filter');
+
+  // 3. 3D Perspective Carousel Specification & Component
+  const carouselSpec = resolveSkillPath('design-system', '3D_INTERACTIVE_CAROUSEL_SYSTEM.md');
+  assert(fs.existsSync(carouselSpec), 'design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md exists');
+  const carouselSpecContent = fs.readFileSync(carouselSpec, 'utf8');
+  assert(carouselSpecContent.includes('rotateY') && carouselSpecContent.includes('translateZ'), '3D Carousel spec defines cylindrical perspective geometry');
+
+  const carouselComp = resolveSkillPath('components', 'CardCarousel3D.tsx');
+  assert(fs.existsSync(carouselComp), 'components/CardCarousel3D.tsx exists');
+  const carouselCompContent = fs.readFileSync(carouselComp, 'utf8');
+  assert(carouselCompContent.includes('export const CardCarousel3D'), 'CardCarousel3D component exported');
+  assert(carouselCompContent.includes('preserve-3d'), 'CardCarousel3D uses 3D transform style');
+
+  // 4. Recipes 13, 14, 15 Verification
+  const recipesPath = resolveSkillPath('design-system', '09_IMPLEMENTATION_RECIPES.md');
+  const recipesContent = fs.readFileSync(recipesPath, 'utf8');
+  assert(recipesContent.includes('Recipe 13: Airplane Takeoff & Scooter Rider In-Flight Action Buttons'), 'Recipe 13 documented in recipes');
+  assert(recipesContent.includes('Recipe 14: Liquid Gooey Navigation Tabs with SVG Filter'), 'Recipe 14 documented in recipes');
+  assert(recipesContent.includes('Recipe 15: 3D Perspective Card Carousel UI'), 'Recipe 15 documented in recipes');
+
+  // 5. Dynamic Documentation Resolution
+  const runLiquidDocs = spawnSync(process.execPath, [loadDocsScript, 'liquid-tabs', '--files-only'], { encoding: 'utf8' });
+  assert(runLiquidDocs.status === 0, 'load-docs resolves "liquid-tabs" topic');
+  assert(runLiquidDocs.stdout.includes('LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md'), 'load-docs outputs liquid tabs spec');
+
+  const runAirplaneDocs = spawnSync(process.execPath, [loadDocsScript, 'airplane-button', '--files-only'], { encoding: 'utf8' });
+  assert(runAirplaneDocs.status === 0, 'load-docs resolves "airplane-button" topic');
+
+  const runCarouselDocs = spawnSync(process.execPath, [loadDocsScript, 'carousel-3d', '--files-only'], { encoding: 'utf8' });
+  assert(runCarouselDocs.status === 0, 'load-docs resolves "carousel-3d" topic');
+  assert(runCarouselDocs.stdout.includes('3D_INTERACTIVE_CAROUSEL_SYSTEM.md'), 'load-docs outputs 3D carousel spec');
+
+  // --------------------------------------------------------------------------
   // SUMMARY
   // --------------------------------------------------------------------------
   const duration = ((Date.now() - startTime) / 1000).toFixed(2);

@@ -4024,3 +4024,170 @@ export function ResponsiveTabs<T extends string = string>({
 ```
 
 
+
+---
+
+## Recipe 13: Airplane Takeoff & Scooter Rider In-Flight Action Buttons
+
+### Overview & Mechanics
+- **Component**: `AnimatedTaskButton.tsx`
+- **Location**: `components/AnimatedTaskButton.tsx`
+- **Reference**: `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`
+- **Technique**: Provides task-specific vector in-flight micro-animations replacing generic spinners for `"airplane"` (cargo flight takeoff with runway dashes, pitch angle, and contrails) and `"rider"` (urban courier on motor scooter with spinning wheels, bouncing delivery box, and asphalt streaks).
+
+### Complete Copy-Paste Code:
+```tsx
+'use client';
+
+import React from 'react';
+import { AnimatedTaskButton } from '@/components/AnimatedTaskButton';
+
+export function ActionButtonsDemo() {
+  const handleAirDispatch = async () => {
+    // Simulate flight dispatch network call
+    await new Promise(resolve => setTimeout(resolve, 2800));
+  };
+
+  const handleRiderDispatch = async () => {
+    // Simulate courier dispatch network call
+    await new Promise(resolve => setTimeout(resolve, 2500));
+  };
+
+  return (
+    <div className="flex flex-wrap items-center gap-4 p-8 bg-neutral-950 rounded-2xl border border-white/10">
+      {/* Flight Cargo Button */}
+      <AnimatedTaskButton
+        taskType="airplane"
+        label="Order by Air Express"
+        loadingLabel="Flight Taking Off..."
+        successLabel="Flight Dispatched!"
+        onClick={handleAirDispatch}
+        variant="primary"
+      />
+
+      {/* Urban Courier Rider Button */}
+      <AnimatedTaskButton
+        taskType="rider"
+        label="Deliver via Rider"
+        loadingLabel="Rider En Route..."
+        successLabel="Rider Dispatched!"
+        onClick={handleRiderDispatch}
+        variant="glass"
+      />
+    </div>
+  );
+}
+```
+
+---
+
+## Recipe 14: Liquid Gooey Navigation Tabs with SVG Filter
+
+### Overview & Mechanics
+- **Component**: `LiquidTabs.tsx`
+- **Location**: `components/LiquidTabs.tsx`
+- **Reference**: `design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md`
+- **Technique**: Uses an SVG `<feGaussianBlur>` and `<feColorMatrix>` filter on an isolated background layer (`z-0`) to achieve fluid, viscous meniscus stretching between tabs while preserving 100% crisp typography on the top layer (`z-10`).
+
+### Complete Copy-Paste Code:
+```tsx
+'use client';
+
+import React, { useState } from 'react';
+import { LiquidTabs, LiquidTabItem } from '@/components/LiquidTabs';
+import { LayoutGrid, Sparkles, Sliders, Shield } from 'lucide-react';
+
+const navigationTabs: LiquidTabItem[] = [
+  { id: 'dashboard', label: 'Dashboard', icon: <LayoutGrid className="w-4 h-4" /> },
+  { id: 'features', label: 'AI Features', icon: <Sparkles className="w-4 h-4" />, badge: 'New' },
+  { id: 'settings', label: 'Settings', icon: <Sliders className="w-4 h-4" /> },
+  { id: 'security', label: 'Security', icon: <Shield className="w-4 h-4" /> }
+];
+
+export function LiquidTabsDemo() {
+  const [activeTab, setActiveTab] = useState('dashboard');
+
+  return (
+    <div className="flex flex-col items-center justify-center p-12 bg-neutral-950 min-h-[300px]">
+      <LiquidTabs
+        tabs={navigationTabs}
+        activeTabId={activeTab}
+        onChange={setActiveTab}
+        variant="cyan"
+      />
+      <div className="mt-8 text-neutral-400 text-sm">
+        Active section: <span className="text-cyan-400 font-semibold uppercase">{activeTab}</span>
+      </div>
+    </div>
+  );
+}
+```
+
+---
+
+## Recipe 15: 3D Perspective Card Carousel UI
+
+### Overview & Mechanics
+- **Component**: `CardCarousel3D.tsx`
+- **Location**: `components/CardCarousel3D.tsx`
+- **Reference**: `design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md`
+- **Technique**: Cylindrical 3D perspective geometry ($R = W / (2 \tan(\pi/N))$) with pointer drag momentum, spring snapping, and dynamic specular gloss glare.
+
+### Complete Copy-Paste Code:
+```tsx
+'use client';
+
+import React from 'react';
+import { CardCarousel3D, Carousel3DItem } from '@/components/CardCarousel3D';
+
+const showcaseCards: Carousel3DItem[] = [
+  {
+    id: '1',
+    title: 'Autonomous Builder Engine',
+    subtitle: 'Next.js 15 & AI',
+    description: 'Self-assembling fullstack application engine with automated compliance gates.',
+    tag: 'Core System'
+  },
+  {
+    id: '2',
+    title: 'Apple macOS Genie Portals',
+    subtitle: '3D Spatial Deletion',
+    description: 'Screen-level portal coordinate elevation and vacuum siphon trash bin physics.',
+    tag: 'Motion Physics'
+  },
+  {
+    id: '3',
+    title: 'Liquid Gooey Tabs',
+    subtitle: 'Fluid Viscous Meniscus',
+    description: 'Organic SVG color matrix filter indicator with zero font anti-aliasing degradation.',
+    tag: 'Navigation'
+  },
+  {
+    id: '4',
+    title: 'Flight Cargo & Rider Buttons',
+    subtitle: 'Task In-Flight Narratives',
+    description: 'Zero generic loading spinners. Real-time vector stories during network requests.',
+    tag: 'Micro-Actions'
+  },
+  {
+    id: '5',
+    title: '3D Cylinder Carousel',
+    subtitle: 'Spatial Depth Matrix',
+    description: 'Pointer momentum drag, velocity snapping, and specular reflection highlights.',
+    tag: 'Showcase UI'
+  }
+];
+
+export function Carousel3DDemo() {
+  return (
+    <div className="w-full py-12 bg-neutral-950 flex flex-col items-center">
+      <CardCarousel3D
+        items={showcaseCards}
+        cardWidth={320}
+        cardHeight={400}
+        onSelect={(item) => console.log('Selected card:', item.title)}
+      />
+    </div>
+  );
+}
+```
