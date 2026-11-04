@@ -33,6 +33,8 @@ const sections = [
     category: '1. Core Directives & Behavioral Laws',
     files: [
       'MAIN_AGENT_DIRECTIVE.md',
+      'rules/CORE_DIRECTIVE.md',
+      'rules/MANDATORY_EXECUTION_CHECKLIST.md',
       'rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md',
       'rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md',
       'rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md',
@@ -47,6 +49,7 @@ const sections = [
     files: [
       'design-system/DESIGN_ARCHITECTURE.md',
       'design-system/FRONTEND_DESIGN_RULES.md',
+      'design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md',
       'design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md',
       'design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md',
       'design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md',

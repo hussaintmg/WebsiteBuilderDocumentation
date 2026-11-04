@@ -19,9 +19,16 @@
 ### 1. Agent Directives & Autonomous Project Orchestration
 - **Functionality**: Defines the mandatory 5-phase execution protocol, behavioral guardrails, discovery interview engine, and standardized blueprint generators for all AI coding agents.
 - **Confidence**: Verified
-- **Entry Point**: `MAIN_AGENT_DIRECTIVE.md`
+- **Entry Point**: `MAIN_AGENT_DIRECTIVE.md` & `rules/CORE_DIRECTIVE.md`
 - **Primary Files**:
   - `MAIN_AGENT_DIRECTIVE.md`: Master agent operating directive, Rule Zero, 5-phase protocol, behavioral guardrails.
+  - `rules/CORE_DIRECTIVE.md`: Tier 0 rapid manifest and 10 ironclad architectural laws (< 200 lines).
+  - `rules/MANDATORY_EXECUTION_CHECKLIST.md`: 10-step mandatory task execution checklist, scoped test requirements, and anti-premature completion gate.
+  - `SKILL_MANIFEST.json`: Progressive loading index mapping topics to targeted documentation files.
+  - `lib/resolve-paths.js`: Cross-platform dynamic path and environment resolver (Claude Code, Gemini, Cursor, CI).
+  - `bin/website-builder.js`: Unified cross-platform CLI runner for audit, scaffold, docs, test, and compile.
+  - `scripts/load-docs.js`: On-demand targeted documentation loader to eliminate 1.8MB context blowout.
+  - `scripts/test-framework.js`: Automated framework testing suite with 30 passing verification checkpoints.
   - `PLAN_BUILDER.md`: Project blueprint generator for `PLAN.md`, `ARCHITECTURE.md`, `RULES.md`, `SPRINTS.md`, and `FILE-MAP.md`.
   - `DISCOVERY_QUESTIONNAIRE.md`: 11-phase onboarding questionnaire covering stack, RBAC, features, and timeouts.
 - **Supporting Files**:
@@ -61,6 +68,10 @@
   - `design-system/FRONTEND_DESIGN_RULES.md`: Core UI laws (floating label inputs, resizable sidebar, zero-bar dialogs).
   - `design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`: Apple macOS 3D Genie Origin-Morph unrolling animation & zero-bar draggable dialogs.
   - `design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`: Screen-level Genie Trash Bin, portal coordinate elevation, 3D vacuum siphon drop & layout glide-up.
+  - `design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md`: Apple-inspired responsive mobile tab overflow system, dynamic container measurement, and `[More ▼]` dropdown.
+  - `hooks/useResponsiveTabs.ts`: Dynamic ResizeObserver calculation hook for tab width and overflow partition.
+  - `components/ResponsiveTabs.tsx`: Production glassmorphic tab component with Framer Motion gliding pill and accessibility.
+  - `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`: Task-specific in-flight micro-animations suite (delete bin loop, truck road, RF tower).
   - `design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`: Three.js model viewer, GLTF loader, parts audit studio.
   - `design-system/01_CSS_PROPERTIES_REFERENCE.md` through `07_WEBSITE_DESIGN_PATTERNS.md`: Modern CSS clamp math, visual effects, components, cards, animations, sections, and patterns.
   - `design-system/09_IMPLEMENTATION_RECIPES.md` & `10_SEARCHABLE_INDEX.md`: Production React/Tailwind recipes and searchable index.

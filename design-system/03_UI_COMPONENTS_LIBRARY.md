@@ -203,7 +203,13 @@ export function PrimaryGlassButton({ onClick, loading, children }) {
 
 ---
 
-## Category D: Forms, Validated Inputs & Selection Controls
+### NAV-8: Apple-Inspired Responsive Mobile Tabs with Dynamic Overflow Dropdown
+- **Visual Description**: Production tab bar that solves mobile tab cramping and horizontal scrolling. Dynamically measures container width in real time via `ResizeObserver` against an offscreen measurement row. Renders the maximum number of tabs that cleanly fit in the viewport with obsidian glass styling (`bg-neutral-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-1.5`), and smoothly routes all remaining tabs into an elevated `[More ▼]` glass dropdown menu.
+- **Active Tab Retention**: Keeps the active tab visible with a 60 FPS Framer Motion gliding pill (`layoutId="responsive-tabs-active-pill"`). If the selected tab resides in the overflow dropdown, the `[More ▼]` trigger button reflects the active state with a glowing blue pulse dot and dynamic title (`More: ActiveTabLabel`).
+- **Keyboard & Reduced Motion**: Full WAI-ARIA `role="tablist"` / `role="tab"` with `ArrowLeft`/`ArrowRight`/`ArrowDown`/`Escape` navigation and seamless fallback for `prefers-reduced-motion`.
+- **Cross-Reference**: Master specification in [`design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md`](./RESPONSIVE_MOBILE_TABS_SYSTEM.md) and Recipe 12 in [`design-system/09_IMPLEMENTATION_RECIPES.md`](./09_IMPLEMENTATION_RECIPES.md).
+
+---
 
 ---
 

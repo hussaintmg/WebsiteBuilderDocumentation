@@ -87,7 +87,7 @@ We recognize four distinct pathways to introduce 3D assets into a project:
 ### Pathway D: Anatomy Procedural 3D & Isometric Rigid-Body Engine (`wheresryan22/anatomy`)
 - **Use Case**: Engineering mechanisms, explanatory technical machines, cutaways, dial indicators, articulated robotic limbs, test benches, rocket engines, lock tumblers, and instruments where **the object IS the explanation**.
 - **Installation Footprint**:
-  - **Global Antigravity Skill**: `C:\Users\lenovo\.gemini\config\skills\anatomy\SKILL.md` (Native global CLI & slash command `/anatomy` available everywhere)
+  - **Global Skill Footprint**: `~/.gemini/config/skills/anatomy/SKILL.md` (Native global CLI & slash command `/anatomy` available everywhere)
   - **Docs Repository**: Kept 100% clean (zero duplicate clone bloat in repo root)
 - **Core Technology Stack**:
   - Zero heavy external DCC software (Blender/Maya) required. Written directly in TypeScript/ESM (`kit/iso-kit.ts`, `kit/turn-build.mjs`, `kit/lathe.mjs`, `kit/tube.mjs`).
@@ -776,7 +776,7 @@ In world-class software and systems engineering, abstract box-and-arrow diagrams
 
 ### 9.2 Architecture & Global Installation Footprint
 The Anatomy skill is installed natively in the global Antigravity customizations directory, ensuring it is always ready to invoke across any workspace via the `/anatomy` slash command or agent prompts without bloating the repository root:
-- **Global Skill Directory**: `C:\Users\lenovo\.gemini\config\skills\anatomy\`
+- **Global Skill Directory**: `~/.gemini/config/skills/anatomy/`
 - **Documentation Repo Policy**: Kept 100% clean (zero duplicate clone bloat in repo root)
 - **Core Modules (`kit/`)**:
   - `kit/iso-kit.ts` / `kit/iso-kit.mjs`: Core isometric projection math, 4-tone shading engine, SVG string rendering, plate formatting, and base CSS (`ISO_CSS`).

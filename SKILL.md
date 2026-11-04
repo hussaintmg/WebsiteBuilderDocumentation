@@ -9,30 +9,32 @@ description: Use when planning, architecting, scaffolding, building, retrofittin
 
 ---
 
-## 🌐 GLOBAL REPOSITORY & PATH RESOLUTION LAW
+## 🌐 UNIVERSAL CROSS-PLATFORM PATH RESOLUTION LAW
 
-> 📌 **CROSS-WORKSPACE COMPLIANCE DIRECTIVE**:  
-> Regardless of which project directory or drive you are currently working in (e.g. `c:\MyClientApp`, `D:\work\storefront`), the canonical Website Builder Engine and its 50+ documentation specifications, design tokens, and scripts are permanently installed globally on your machine at:
+> 📌 **CROSS-ENVIRONMENT COMPLIANCE DIRECTIVE**:  
+> The Website Builder Engine is designed to run seamlessly across all major AI coding environments:
+> - **Claude Code**: Installed at `~/.claude/skills/website-builder-engine/` or in project configuration.
+> - **Google Gemini / Antigravity**: Installed at `~/.gemini/config/skills/website-builder-engine/`.
+> - **Cursor / VS Code**: Installed at `~/.cursor/skills/` or cloned in your active workspace.
+> - **Autonomous CLI / CI/CD**: Supported via environment variable `WEBSITE_BUILDER_SKILL_DIR` or the global CLI `npx website-builder`.
 > 
-> **`C:/Users/lenovo/.gemini/config/skills/website-builder-engine/`**
-> 
-> You **MUST** read blueprints, guides, and run the audit engine directly from this global path:
-> - **Master Compiled Brain**: `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/BRAIN.md`
-> - **Audit CLI Runner**: `node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .`
-> - **Module Specs**: `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/modules/<MODULE_NAME>.md`
-> - **Design System**: `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/design-system/<FILE_NAME>.md`
-> - **Rules & Standards**: `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/rules/<RULE_NAME>.md`
+> The framework automatically resolves its canonical root via `lib/resolve-paths.js`. You may invoke commands using standard relative paths, via the unified CLI `website-builder`, or directly via node:
+> - **Audit CLI Runner**: `node scripts/audit-engine.js .` *(or `npx website-builder audit .`)*
+> - **Scaffolding Runner**: `node scripts/scaffold-engine.js .` *(or `npx website-builder scaffold .`)*
+> - **Documentation Loader**: `node scripts/load-docs.js <topic>` *(or `npx website-builder docs <topic>`)*
+> - **Automated Test Suite**: `npm test` *(or `npx website-builder test`)*
 
 ---
 
-## 🧠 MANDATORY MASTER BRAIN INGESTION LAW
+## 🧠 MANDATORY TIERED PROGRESSIVE INGESTION PROTOCOL
 
-> ⚡ **CRITICAL FIRST ACTION FOR THE AGENT**:  
-> Before formulating any proposal, scaffolding a project, modifying files, or answering the user, you **MUST IMMEDIATELY READ** the compiled master knowledge base:  
+> ⚡ **CRITICAL FIRST ACTION FOR THE AGENT (NO CONTEXT BLOWOUT)**:  
+> Attempting to read the entire 1.8MB `BRAIN.md` in one turn causes tool read limits (46KB) or context truncation.
+> The framework enforces **Tiered Progressive Ingestion**:
 > 
-> 👉 **`C:/Users/lenovo/.gemini/config/skills/website-builder-engine/BRAIN.md`**  
-> 
-> Reading this single file loads the full actionable specifications, code recipes, design tokens, security rules, and testing standards of all 49 framework files directly into your active working context. If `BRAIN.md` is missing, compile it via `node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/compile-brain.js`.
+> 1. **Step 1 — Ingest Tier 0 Core Laws**: Read [`rules/CORE_DIRECTIVE.md`](./rules/CORE_DIRECTIVE.md) and [`rules/MANDATORY_EXECUTION_CHECKLIST.md`](./rules/MANDATORY_EXECUTION_CHECKLIST.md). This loads all mandatory architectural rules, context laws, motion physics, and test gates into working memory in under 200 lines.
+> 2. **Step 2 — Load Targeted Module on Demand**: Use [`SKILL_MANIFEST.json`](./SKILL_MANIFEST.json) or run `node scripts/load-docs.js <topic>` (e.g. `responsive-tabs`, `buttons`, `auth`, `datatable`, `genie-trash`, `retrofit`) to load ONLY the exact specifications needed for your active task.
+> 3. **Step 3 — Master Brain Reference**: `BRAIN.md` is compiled as a unified single-file offline reference and search index. Compile anytime via `node scripts/compile-brain.js`.
 
 ---
 
@@ -42,7 +44,7 @@ description: Use when planning, architecting, scaffolding, building, retrofittin
 > When the `/website-builder-engine` command or skill is activated, you **MUST NOT** provide shallow, generic, or off-the-cuff boilerplate code. You **MUST NOT** rely on vague memory or hallucinate patterns when canonical, battle-tested specifications exist in this framework.
 > 
 > **Every decision and architecture proposal MUST be grounded in the framework's actual documentation files:**
-> 1. **Scan the Living Map First**: Always consult [`FILE-MAP.md`](./FILE-MAP.md) (or `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/FILE-MAP.md`) to locate the exact module, rule, or design pattern needed.
+> 1. **Scan the Living Map First**: Always consult [`FILE-MAP.md`](./FILE-MAP.md) or [`SKILL_MANIFEST.json`](./SKILL_MANIFEST.json) to locate the exact module, rule, or design pattern needed.
 > 2. **Read Before Designing or Coding**: You MUST explicitly read the canonical documentation files (`modules/`, `rules/`, `design-system/`) relevant to the user's task before proposing solutions or scaffolding code.
 > 3. **Cite & Link Specific Blueprints**: Explicitly reference the underlying module specification, models, hooks, and component recipes in your plan.
 > 4. **No Generic Fallbacks**: If the user asks for pagination, cart steppers, modals, auth, or storage, you MUST use the engine's canonical implementations (`useRapidClickBatcher`, `AppleGenieModal`, `useResilientPayment`, `useMultiStorageUpload`, `UnifiedMedia`, `useNetworkQuality`), NEVER generic un-optimized placeholders.
@@ -123,7 +125,8 @@ Once the plan is approved:
 
 1. **Run Automated Baseline Audit**:
    ```bash
-   node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .
+   node scripts/audit-engine.js .
+   # Or via global CLI: npx website-builder audit .
    ```
 2. **Generate Gap Checklist (`.project/RETROFIT_PLAN.md`)**:
    Record all failing items (missing animations, plain HTML inputs, direct component API calls, demo buttons, missing edge proxy).
@@ -193,6 +196,7 @@ Before designing or implementing any subsystem, the agent **MUST read the canoni
 6. **Direct-to-Storage Presigned Uploads**: Bypass Vercel Free plan's 4.5MB limit by streaming large files directly to cloud storage buckets or using 2MB chunked GridFS streaming.
 7. **Low-Bandwidth 5-Pillar Speed**: Auto-transcode uploads to WebP/AVIF with 20-char BlurHash LQIP, stream RSC shells in < 50ms, prune MongoDB listing payloads by 90%, and auto-downgrade heavy 3D/video assets on slow 2G/Save-Data.
 8. **Strict Zero-Demo Security & Inter-Auth Navigation Ergonomics**: All authentication views (`/login`, `/signup`, `/forgot-password`, `/reset-password`) must NEVER include pre-filled demo accounts or "Click to login as Admin/Owner" demo buttons. Form input states must initialize to clean empty strings (`""`). Additionally, ensure full bidirectional navigation ergonomics: `/login` must feature a right-aligned "Forgot password?" link adjacent to the password input label and a bottom-card "Don't have an account? Sign up" link; `/signup` must feature an "Already have an account? Log in" footer link; and password recovery views must feature a "← Back to log in" link per [`modules/AUTH_AND_FACELOCK.md`](./modules/AUTH_AND_FACELOCK.md).
-9. **Autonomous Retrofit & 95%+ Audit Mandate**: When instructed to complete, upgrade, or modernize an existing website, the agent is strictly forbidden from doing partial cosmetic work or stopping prematurely. The agent must execute the 6-stage protocol in [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md), refactor all screens with modern motion physics and glass depth, and verify compliance via `node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .`. Completion is only permitted when the audit exits with Code 0 (Score >= 95%).
+9. **Autonomous Retrofit & 95%+ Audit Mandate**: When instructed to complete, upgrade, or modernize an existing website, the agent is strictly forbidden from doing partial cosmetic work or stopping prematurely. The agent must execute the 6-stage protocol in [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md), refactor all screens with modern motion physics and glass depth, and verify compliance via `node scripts/audit-engine.js .` (or `npx website-builder audit .`). Completion is only permitted when the audit exits with Code 0 (Score >= 95%).
 10. **Screen-Level Genie Trash Bin & Vacuum Deletion Mandate**: In table views, data grids, and card decks, deletions MUST NEVER be restricted to local container divs with `overflow: hidden`. Deleting items MUST be elevated to a fixed screen-level portal overlay (`fixed inset-0 z-[99999]`) using `getBoundingClientRect()` snapshots. The animated Trash Bin MUST rush onto the screen from the right edge with kinetic spring physics (`x: 260 -> 0`), its motorized lid MUST swing open (`rotate: -55deg`), and deleting items MUST be sucked into the glowing can aperture via a 3D Genie vacuum deform (`scaleX: 0.12, rotateX: 65deg`). The lid MUST slam shut with elastic bounce, and remaining table rows MUST glide up smoothly via Framer Motion `layout` FLIP animations per [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
 11. **Task-Specific In-Flight Button Animations Mandate (Zero Generic Spinners)**: Generic circular loading spinners (`animate-spin` borders) on action buttons are strictly forbidden across all public pages, dashboard tables, and modal dialogs. Every interactive action button triggering an asynchronous API operation MUST display a task-specific vector micro-animation inside its icon frame during network transit ($T_{\text{api}}$). For deletion, the button MUST display the in-button dustbin loop (bin glides in from right, lid pops open, document drops in, lid snaps shut, bin departs left; repeats smoothly until API settles). For orders/dispatch, it MUST display a delivery truck driving along an animated road with spinning tyres ($\omega = 360^\circ$), moving dashed road strip, and trailing tyre dust lines. For live synchronization/refresh, it MUST display a communications tower with an apex blinking beacon, radiating RF wave arcs, and an animated live pulsing status badge with audio equalizer bars. Toast notifications MUST be strictly deferred until the full animation cycle and completion morph finish per [`design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`](./design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md).
+12. **Responsive Mobile Tabs & Dynamic Overflow Mandate**: Tab navigation on mobile devices MUST NEVER force horizontal scrolling (`overflow-x: auto`) or break layouts through uncontrolled wrapping. All tab components MUST dynamically compute available container width via `ResizeObserver`, retain visible tabs that cleanly fit, and automatically collapse overflow tabs into an Apple-inspired `[More ▼]` glass dropdown menu. The active tab must always be visibly indicated (pinned to visible slot or highlighted on the dropdown trigger) with 60 FPS Framer Motion gliding indicator per [`design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md`](./design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md).

@@ -10,6 +10,8 @@
 
 ### 1. Core Directives & Behavioral Laws
 - [MAIN_AGENT_DIRECTIVE.md](#file-main-agent-directive-md)
+- [rules/CORE_DIRECTIVE.md](#file-rules-core-directive-md)
+- [rules/MANDATORY_EXECUTION_CHECKLIST.md](#file-rules-mandatory-execution-checklist-md)
 - [rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md](#file-rules-safe-development-and-file-map-rules-md)
 - [rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md](#file-rules-expert-engineering-and-phased-planning-system-md)
 - [rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md](#file-rules-models-and-contexts-architecture-md)
@@ -21,6 +23,7 @@
 ### 2. Design System & Visual Architecture
 - [design-system/DESIGN_ARCHITECTURE.md](#file-design-system-design-architecture-md)
 - [design-system/FRONTEND_DESIGN_RULES.md](#file-design-system-frontend-design-rules-md)
+- [design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md](#file-design-system-responsive-mobile-tabs-system-md)
 - [design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md](#file-design-system-apple-genie-origin-morph-system-md)
 - [design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md](#file-design-system-apple-genie-trash-bin-deletion-system-md)
 - [design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md](#file-design-system-button-in-flight-task-animations-specification-md)
@@ -214,7 +217,8 @@ Before marking any task, file operation, or sprint as completed:
    - **Tier 6 (UI Copywriting & UX Predictability)**: Never leak technical backend terms (database pipelines, Axios terms) on UI; pass the human predictability discovery test.
    - **Tier 7 (Visual, Responsive, Theme & Animations)**: Verify Light/Dark/CMS themes (zero rogue hex codes); ensure 60 FPS animations and mobile responsiveness (`390x844`).
 3. **Never claim success without actual terminal output or browser inspection logs.** Evidence must always precede assertions.
-4. **Mandatory Audit Engine Execution**: Run `node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .`. The script must exit with Code 0 (Compliance Score >= 95%). If the score is below 95%, the agent is strictly prohibited from marking the task complete and must resolve all listed gaps.
+4. **Mandatory Audit Engine Execution**: Run `node scripts/audit-engine.js .` (or `npx website-builder audit .`). The script must exit with Code 0 (Compliance Score >= 95%). If the score is below 95%, the agent is strictly prohibited from marking the task complete and must resolve all listed gaps.
+5. **10-Step Mandatory Task Execution Checklist**: Strictly track all 10 stages per [`rules/MANDATORY_EXECUTION_CHECKLIST.md`](./rules/MANDATORY_EXECUTION_CHECKLIST.md). Never declare work complete without running actual test and build commands with verified exit code 0.
 5. Update `SPRINTS.md` marking completed tasks with `[x]` and logging complete tier-by-tier evidence notes.
 6. **Continuous FILE-MAP Synchronization**: Update the root `FILE-MAP.md` to reflect all newly created, updated, or removed files, routes, models, and critical execution flows per [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](./rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md).
 
@@ -238,13 +242,184 @@ Before marking any task, file operation, or sprint as completed:
 14. **The Root-Level `/app` Directory Standard (Zero `src/` Wrapper)**: All Next.js projects governed by this framework MUST place the Next.js App Router directly at the project root (`<root>/app/`). Wrapping application files inside an unnecessary `src/` folder is strictly prohibited. Sibling root folders are strictly designated as: `/app`, `/components`, `/context`, `/models`, `/hooks`, `/lib`, `/public`, `/styles`, and `/.project/`. TypeScript path aliases in `tsconfig.json` MUST map `"@/*": ["./*"]`.
 15. **The Optimistic Rapid-Click Batching Mandate**: High-frequency interactive controls (pagination skipping, cart quantity steppers, slide carousels, like bursts, and tri-state table sorts) MUST implement `useRapidClickBatcher` with instant 0ms optimistic UI updates, 300ms settling debounce, and `AbortController` cancellation. Never freeze or disable interactive controls on the first click per [`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`](./modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md).
 16. **Zero Demo Credentials & Inter-Auth Navigation Ergonomics Mandate**: Authentication pages (`/login`, `/signup`, `/forgot-password`, `/reset-password`) MUST NEVER feature pre-filled demo credentials, mock accounts, or "Click to login as Owner/Admin" backdoor buttons in production or development environments. Forms must initialize input states to clean empty strings (`""`). Furthermore, every auth page MUST implement complete bidirectional navigation ergonomics: `/login` must feature a right-aligned "Forgot password?" link adjacent to the password input label and a bottom-card "Don't have an account? Sign up" link; `/signup` must feature an "Already have an account? Log in" footer link; and password recovery views must feature a "← Back to log in" link per [`modules/AUTH_AND_FACELOCK.md`](./modules/AUTH_AND_FACELOCK.md).
-17. **The Autonomous Retrofit & Universal 95%+ Audit Mandate**: When instructed to complete, upgrade, or modernize an existing website, the agent is strictly forbidden from doing partial cosmetic work, leaving screens unstyled, skipping animations, or stopping prematurely. The agent must execute the 6-stage protocol in [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md), refactor all screens with modern motion physics and glass depth, and verify compliance via `node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .`. Completion is only permitted when the audit exits with Code 0 (Score >= 95%).
+17. **The Autonomous Retrofit & Universal 95%+ Audit Mandate**: When instructed to complete, upgrade, or modernize an existing website, the agent is strictly forbidden from doing partial cosmetic work, leaving screens unstyled, skipping animations, or stopping prematurely. The agent must execute the 6-stage protocol in [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md), refactor all screens with modern motion physics and glass depth, and verify compliance via `node scripts/audit-engine.js .` (or `npx website-builder audit .`). Completion is only permitted when the audit exits with Code 0 (Score >= 95%).
 18. **Screen-Level Genie Trash Bin & Vacuum Deletion Mandate**: In table views, data grids, and card decks, deletions MUST NEVER be restricted to local container divs with `overflow: hidden`. Deleting items MUST be elevated to a fixed screen-level portal overlay (`fixed inset-0 z-[99999]`) using `getBoundingClientRect()` snapshots. The animated Trash Bin MUST rush onto the screen from the right edge with kinetic spring physics (`x: 260 -> 0`), its motorized lid MUST swing open (`rotate: -55deg`), and deleting items MUST be sucked into the glowing can aperture via a 3D Genie vacuum deform (`scaleX: 0.12, rotateX: 65deg`). The lid MUST slam shut with elastic bounce, and remaining table rows MUST glide up smoothly via Framer Motion `layout` FLIP animations per [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
 19. **Task-Specific In-Flight Button Animations Mandate (Zero Generic Spinners)**: Generic circular loading spinners (`animate-spin` borders) on action buttons are strictly forbidden across all public pages, dashboard tables, and modal dialogs. Every interactive action button triggering an asynchronous API operation MUST display a task-specific vector micro-animation inside its icon frame during network transit ($T_{\text{api}}$). For deletion, the button MUST display the in-button dustbin loop (bin glides in from right, lid pops open, document drops in, lid snaps shut, bin departs left; repeats smoothly until API settles). For orders/dispatch, it MUST display a delivery truck driving along an animated road with spinning tyres ($\omega = 360^\circ$), moving dashed road strip, and trailing tyre dust lines. For live synchronization/refresh, it MUST display a communications tower with an apex blinking beacon, radiating RF wave arcs, and an animated live pulsing status badge with audio equalizer bars. Toast notifications MUST be strictly deferred until the full animation cycle and completion morph finish per [`design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`](./design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md).
+20. **Responsive Mobile Tabs & Dynamic Overflow Mandate**: Tab navigation on mobile screens MUST NEVER force horizontal scrolling (`overflow-x: auto`) or break layouts through wrapping. All tab components MUST dynamically compute container width via `ResizeObserver`, retain visible tabs that cleanly fit, and automatically collapse overflow tabs into an Apple-inspired `[More ▼]` glass dropdown menu. The active tab must always be visibly indicated (pinned to visible slot or highlighted on the dropdown trigger) with 60 FPS Framer Motion gliding indicator per [`design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md`](./design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md).
 
 
 
 
+
+
+---
+
+
+<a id="file-rules-core-directive-md"></a>
+## 📄 Specification: `rules/CORE_DIRECTIVE.md`
+
+# Website Builder Engine — Tier 0 Core Directives & Laws
+
+> **MANDATORY PREREQUISITE FOR ALL AI AGENTS (Claude Code, Gemini, Cursor, Copilot)**  
+> Read this document first before writing code. This lightweight specification establishes the non-negotiable architectural laws and engineering standards of Website Builder Engine.
+
+---
+
+## 1. The 10 Ironclad Engine Laws
+
+### Law 1: Rule Zero (Plan First, Code Second)
+Never start writing production code until a structured implementation plan (`/.project/PLAN.md` or task plan) is created and aligned with the user.
+
+### Law 2: Root-Level `/app` Standard (Zero `src/` Wrapper)
+In all Next.js projects governed by this framework:
+- App Router is situated directly at `<root>/app/`.
+- Sibling root folders: `/components`, `/context`, `/models`, `/hooks`, `/lib`, `/public`, `/styles`.
+- Path aliases: `"@/*": ["./*"]` in `tsconfig.json`. Wrapping project files inside an unnecessary `src/` directory is prohibited unless an existing legacy project strictly requires migration.
+
+### Law 3: Aesthetics, Glassmorphism & Motion Physics Are Non-Negotiable
+- **Zero Plain HTML**: Barebones, unstyled HTML or basic white cards with flat gray borders are forbidden.
+- **Glassmorphic Canvas**: Dark obsidian canvas (`bg-neutral-950`), frosted glass panels (`backdrop-blur-xl bg-neutral-900/60 border border-white/10`), ambient radial glow, and refined typography.
+- **Framer Motion Micro-Interactions**: Wrap pages in animated transitions (`initial={{ opacity: 0, y: 16 }}`). Hover/active states must have kinetic tactile spring feedback (`hover:scale-[1.02] active:scale-[0.98]`).
+
+### Law 4: Context Law & State Integrity
+Page components must **NEVER** make direct raw `fetch()` or `axios` calls. All state mutations and queries must be encapsulated inside domain React Contexts (`/context/`).
+
+### Law 5: Zero-Demo Auth & Bidirectional Ergonomics
+- Never place prefilled demo credentials or backdoor buttons ("Click to login as Admin") in any environment.
+- Initialize form inputs to empty strings (`""`).
+- Provide bidirectional navigation links (`/login` has right-aligned "Forgot password?" and bottom "Sign up"; `/signup` has "Log in"; recovery pages have "← Back to log in").
+
+### Law 6: Screen-Level Genie Trash Bin & Deletion Portal
+- Deletions in tables and card grids must escape local container `overflow: hidden` via `getBoundingClientRect()` snapshots into a fixed screen-level portal (`fixed inset-0 z-[99999]`).
+- The animated Trash Bin rushes from the right edge (`x: 260 -> 0`), its motorized lid swings open (`rotate: -55deg`), and deleting items are sucked in via a 3D Genie vacuum deform (`scaleX: 0.12, rotateX: 65deg`).
+- The lid slams shut with elastic bounce, and remaining table rows glide up smoothly via Framer Motion `layout` FLIP animations.
+
+### Law 7: Task-Specific In-Flight Button Animations (Zero Generic Spinners)
+- Generic circular loading spinners (`animate-spin` borders) on action buttons are strictly forbidden.
+- During network transit, buttons must display task-specific micro-animations inside their icon frames:
+  - **Delete**: In-button trash bin loop (bin glides in, lid pops open, document drops in, lid snaps, bin departs left; repeats until API settles).
+  - **Order / Dispatch**: Delivery truck driving along an animated road with spinning tyres ($\omega = 360^\circ$), moving road dashes, and trailing tyre dust lines.
+  - **Live Sync / Refresh**: Communications tower with apex blinking beacon, radiating RF wave arcs, and animated live pulsing status badge with audio equalizer bars.
+
+### Law 8: Responsive Mobile Tabs & Zero Horizontal Scrolling Law
+- UI tabs must never force ugly horizontal scrolling or clip awkwardly on mobile screens.
+- Implement dynamic width calculation via `ResizeObserver`: tabs that fit remain in the primary bar; overflow tabs automatically collapse into an Apple-inspired `[More ▼]` glass dropdown.
+- The active tab must always be visibly represented (pinned or highlighted on the dropdown trigger button).
+
+### Law 9: File Necessity, Anti-Bloat & Zero Dead-Code
+- Every file in the repository must serve a verified active purpose.
+- Unreferenced orphan files, dummy placeholder stubs (`// TODO`), and duplicate conflicting packages (`axios` vs `fetch`, `moment` vs `date-fns`) must be audited and cleaned.
+
+### Law 10: Mandatory Test Execution & 95%+ Audit Gate
+- Merely mentioning a test command does not count. The agent **MUST execute real commands** (`npm test`, `npx tsc --noEmit`, `node scripts/audit-engine.js .`).
+- Premature completion claims are strictly forbidden. Compliance score must be >= 95% and `audit-engine.js` must exit with Code 0.
+
+---
+
+## 2. Progressive Documentation Loading Reference
+
+When implementing specific features, read the targeted module from the repository or invoke `node scripts/load-docs.js <topic>`:
+
+| Feature / Domain | Mandatory Documentation Path |
+| :--- | :--- |
+| **Responsive Mobile Tabs** | `design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md` |
+| **In-Flight Button Animations** | `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md` |
+| **Genie Trash Bin Deletion** | `design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md` |
+| **Auth & Edge Proxy Protection** | `modules/AUTH_AND_FACELOCK.md` & `modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md` |
+| **Data Tables & Mobile Cards** | `modules/DATA_TABLE_AND_CARDS_SYSTEM.md` |
+| **Rapid Click Batching** | `modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md` |
+| **Retrofit Protocol** | `modules/EXISTING_PROJECT_RETROFIT_ENGINE.md` |
+| **Mandatory Execution Checklist** | `rules/MANDATORY_EXECUTION_CHECKLIST.md` |
+| **Testing Standards & Verification** | `rules/TESTING_AND_VERIFICATION.md` |
+
+
+---
+
+
+<a id="file-rules-mandatory-execution-checklist-md"></a>
+## 📄 Specification: `rules/MANDATORY_EXECUTION_CHECKLIST.md`
+
+# Mandatory Task Execution Checklist & Verification Gate
+
+> **UNIVERSAL PROTOCOL FOR ALL AI AGENTS & PAIR PROGRAMMERS**  
+> Every development, retrofit, or modernization task MUST strictly execute and document these 10 distinct checkpoints in order.
+> 
+> **PREMATURE COMPLETION PROHIBITION**: An agent is strictly forbidden from declaring any task complete, finished, or resolved until Checkpoints 1 through 10 have been executed with concrete terminal evidence. Merely mentioning or planning a test command does NOT qualify as executing it.
+
+---
+
+## 📋 The 10 Mandatory Checkpoints
+
+### 1. Project Analysis
+- [ ] Inspect the target workspace file structure, package dependencies, framework versions, and configurations.
+- [ ] Identify whether the project is Greenfield (new) or Existing (Retrofit).
+- [ ] Audit existing conventions, path aliases (`@/*`), and styling setups (Tailwind, CSS modules).
+
+### 2. Architecture Understanding
+- [ ] Trace data flows, existing models, context providers, and API routes.
+- [ ] Determine module boundaries and identify downstream dependencies to prevent breaking changes.
+- [ ] Verify root-level directory layout (Root `/app` standard vs legacy `src/`).
+
+### 3. Implementation Planning
+- [ ] Formulate a detailed, phased implementation plan (`/.project/PLAN.md` or scoped task checklist).
+- [ ] Specify exactly which files will be created, modified, or removed.
+- [ ] Define the exact testing and verification strategy before writing any code.
+
+### 4. Complete Code Implementation
+- [ ] Implement all planned components, hooks, models, and routes.
+- [ ] Apply dark glassmorphic aesthetics (`bg-neutral-950`, frosted glass, Framer Motion physics).
+- [ ] Enforce Context Law: Zero direct raw `fetch()` or `axios` calls in UI components.
+- [ ] Implement task-specific button micro-animations (no generic circular spinners).
+- [ ] Implement screen-level Genie Trash Bin for deletions and dynamic responsive tab overflow for tab bars.
+- [ ] **NO PARTIAL WORK**: Do not stop after editing 1 or 2 files or leaving screens unstyled.
+
+### 5. Dependency Verification
+- [ ] Check `package.json` for required peer dependencies (e.g., `framer-motion`, `lucide-react`, `clsx`, `tailwind-merge`).
+- [ ] Verify compatibility between installed packages; resolve version conflicts or duplicate libraries (`axios` vs native `fetch`, `moment` vs `date-fns`).
+- [ ] Run `npm ls` or inspect node modules if import errors occur.
+
+### 6. Build Execution
+- [ ] Run the project build command:
+  - Next.js: `npm run build` or `npx next build`
+  - TypeScript project: `npx tsc --noEmit`
+- [ ] Record the exact exit code and terminal output.
+- [ ] Ensure compilation finishes with **Exit Code 0** (Zero syntax errors, zero fatal build breaks).
+
+### 7. Relevant Automated Testing (Scoped & Real Execution)
+- [ ] Execute scoped, relevant automated tests targeting the modified subsystem:
+  - Unit tests: `npm test` or `npx vitest run <file>` or `node scripts/test-units.mjs`
+  - E2E / Integration tests (when applicable): `npx playwright test`
+  - Typecheck: `npx tsc --noEmit`
+- [ ] **SCOPE-AWARE RULE**: Scope tests to relevant changes and avoid running unnecessary, slow end-to-end suites that delay workflows without adding value.
+- [ ] **ZERO FABRICATION RULE**: Never report fabricated test outputs. Every claim of a passing test MUST include actual command invocation and verified stdout/stderr.
+
+### 8. Error Fixing & Defect Remediation
+- [ ] If any build, typecheck, or test failure occurs, immediately analyze the root cause.
+- [ ] Apply precise code fixes rather than suppressing errors with `@ts-ignore` or `eslint-disable`.
+- [ ] Re-run the failing test command to verify the fix.
+
+### 9. Regression Testing
+- [ ] Verify that existing, unmodified features continue to operate normally.
+- [ ] Check page navigation, auth routes, and core database interactions.
+- [ ] Ensure no orphan imports or broken component links were introduced.
+
+### 10. Final Verification & Audit Gate (Score >= 95%)
+- [ ] Execute the automated compliance engine:
+  ```bash
+  node scripts/audit-engine.js .
+  ```
+  *(Or via global runner: `npx website-builder audit .`)*
+- [ ] The audit engine MUST exit with **Exit Code 0 (Compliance Score >= 95%)**.
+- [ ] If score is < 95%, review the generated `RETROFIT_TODO.md`, resolve all listed deficiencies, and re-run.
+- [ ] Document final verification evidence in the final response to the user.
+
+---
+
+## 🚫 Premature Completion Prevention Rules
+
+1. **The "1-File Exit" Violation**: If an agent edits only 1 or 2 files and says *"I have updated the component, you can integrate it"*, this is a critical framework violation. The agent must complete the entire integration, tests, and verification.
+2. **The "Unverified Success" Violation**: Claiming *"Tests pass"* without running a terminal command is strictly forbidden.
+3. **The "Ignored Build" Violation**: Marking a task complete without executing `npx tsc --noEmit` or `npm run build` is invalid.
 
 
 ---
@@ -4153,6 +4328,116 @@ Cross-referenced with master specification [`design-system/PREMIUM_BUTTON_ANIMAT
 ---
 
 
+<a id="file-design-system-responsive-mobile-tabs-system-md"></a>
+## 📄 Specification: `design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md`
+
+# Responsive Mobile Tabs & Dynamic Overflow System (`ResponsiveTabs`)
+
+> **STATUS: CANONICAL FRAMEWORK COMPONENT & DESIGN SYSTEM SPECIFICATION**  
+> Solves the universal problem of tab bars breaking, cramping, or forcing horizontal scrollbars on mobile devices (`320px` to `768px`) through an intelligent dynamic width calculation engine, Apple-inspired glassmorphism, and seamless `[More ▼]` overflow dropdown.
+
+---
+
+## 1. Problem Statement & Mobile Ergonomics
+
+### The Failure Modes of Traditional Tabs
+1. **The Cramping / Squish Breakdown**: Standard CSS flex rows without overflow protection shrink tabs to illegible widths (`font-size: 8px`, truncated labels like `"Set..."`, `"Not..."`).
+2. **The Disastrous Layout Break (Flex Wrap)**: If set to `flex-wrap`, multi-row tab wrapping shoves page content downward, breaking sticky headers and creating jittery visual jumps.
+3. **The Forced Horizontal Scrollbar**: Tab bars with `overflow-x: auto` force users into cumbersome lateral thumb swiping, hide crucial action tabs off-screen without indication, and exhibit ugly browser scrollbar tracks on Windows/Android.
+
+### The Solution: Apple-Inspired Dynamic Tab Overflow
+The `ResponsiveTabs` system measures available container width in real time via a `ResizeObserver` and automatically partitions tabs into:
+1. **Visible Tabs**: The maximum number of tabs that cleanly fit within the container with proper padding and gaps.
+2. **Overflow Dropdown (`[More ▼]`)**: Any tabs that cannot fit are smoothly moved into an elevated glass dropdown menu.
+3. **Active Tab Priority Guarantee**: If the currently active tab is in the overflow list, the system either pins the active tab to the visible row OR elevates the `[More ▼]` button with active state styling, high-contrast typography, and an active pulse indicator so the user always knows what is selected.
+
+---
+
+## 2. Mathematical Partitioning Model
+
+Let:
+- $W_{\text{container}}$: Measured inner width of the tab container.
+- $W_{\text{padding}}$: Total horizontal padding and borders of container.
+- $G$: Inter-tab gap in pixels (default: $6\text{px}$).
+- $w_i$: Measured rendered width of tab $i$ for $i \in \{0, 1, \dots, N-1\}$.
+- $W_{\text{more}}$: Rendered width of the `[More ▼]` dropdown trigger button (~$96\text{px}$).
+- $W_{\text{net}} = W_{\text{container}} - W_{\text{padding}}$.
+
+### Partition Algorithm
+1. **Total Width Test**:
+   $$\sum_{i=0}^{N-1} w_i + (N - 1) \cdot G \le W_{\text{net}}$$
+   If true, all tabs fit. $V = \{0, 1, \dots, N-1\}$ and $O = \emptyset$. No overflow trigger is rendered.
+2. **Overflow Budgeting**:
+   If tabs exceed $W_{\text{net}}$, the available width for visible tabs is:
+   $$W_{\text{budget}} = W_{\text{net}} - W_{\text{more}} - G$$
+3. **Greedy Slice with Active Tab Retention**:
+   Find the largest $M < N$ such that:
+   $$\sum_{i=0}^{M-1} w_i + (M - 1) \cdot G \le W_{\text{budget}}$$
+   - **Active Tab Protection**: If active tab index $k \ge M$ and `pinActiveTab = true`, the system reserves a slot for tab $k$, ensuring the selected tab is always in $V$, shifting earlier lower-priority tabs to $O$.
+   - **Dropdown Indicator**: If tab $k \in O$, the `[More ▼]` button receives `aria-current="true"`, active glass highlight styling, and dynamic label `"More: " + activeTab.label`.
+
+---
+
+## 3. Apple-Inspired Visual Tokens & Micro-Interactions
+
+```
+Desktop (> 1024px):
+┌────────────────────────────────────────────────────────────────────────┐
+│  [ Overview ]  [ Analytics ]  [ Transactions ]  [ Settings ]  [ Logs ] │
+└────────────────────────────────────────────────────────────────────────┘
+
+Mobile Screen (390px):
+┌──────────────────────────────────────────────────┐
+│  [ Overview ]  [ Analytics ]  [ More (3) ▼ ]     │
+└──────────────────────────────────────┬───────────┘
+                                       │ (Opens on click/down arrow)
+                                       ▼
+                       ┌───────────────────────────┐
+                       │  • Transactions           │
+                       │  ✔ Settings (Active)      │
+                       │  • Audit Logs             │
+                       └───────────────────────────┘
+```
+
+### Visual Styling Tokens
+| UI Layer | Token / Classes | Purpose |
+| :--- | :--- | :--- |
+| **Tab Bar Container** | `relative flex items-center bg-neutral-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-1.5 shadow-inner` | Dark obsidian frosted glass track. Zero horizontal scrolling. |
+| **Inactive Tab** | `px-3.5 py-2 text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-xl transition-colors` | Subtle, accessible unselected state. |
+| **Active Gliding Pill** | `layoutId="responsive-active-pill"` `bg-white/10 text-white border border-white/15 shadow-sm` | 60 FPS Framer Motion FLIP transition between active tabs. |
+| **Overflow Trigger** | Glass button with animated chevron: `rotate: isOpen ? 180 : 0` | Tactile dropdown trigger with active dot if item inside is selected. |
+| **Dropdown Menu** | `fixed` or `absolute right-0 mt-2 z-50 bg-neutral-900/95 backdrop-blur-2xl border border-white/15 shadow-2xl rounded-xl p-1.5` | Elevated floating glass sheet with kinetic spring entrance. |
+
+---
+
+## 4. Accessibility & Keyboard Navigation (WAI-ARIA)
+
+1. **Roles & Attributes**:
+   - Container has `role="tablist"` and `aria-orientation="horizontal"`.
+   - Each tab button has `role="tab"`, `aria-selected={isActive}`, and `tabIndex={isActive ? 0 : -1}`.
+   - The overflow trigger button has `aria-haspopup="menu"` and `aria-expanded={isOpen}`.
+2. **Keyboard Traversal**:
+   - `ArrowLeft` / `ArrowRight`: Moves focus and selection across visible tabs.
+   - `ArrowDown` on More button: Opens the overflow menu and focuses the first item.
+   - `ArrowUp` / `ArrowDown` inside dropdown: Cycles through overflow items.
+   - `Enter` / `Space`: Selects focused tab and dismisses dropdown.
+   - `Escape`: Closes dropdown and returns focus to the `[More ▼]` button.
+3. **Reduced Motion**:
+   - Integrated with `useReducedMotion()`. If active, transitions use instant opacity cuts without spring transforms.
+
+---
+
+## 5. React Hook: `useResponsiveTabs`
+
+The core measurement and partition logic is separated into an uncoupled custom hook (`hooks/useResponsiveTabs.ts`):
+- Uses `ResizeObserver` on container.
+- Measures hidden measuring tabs off-screen with `visibility: hidden; position: absolute; pointer-events: none`.
+- Re-evaluates instantly on window resize, device orientation change, and tab list updates.
+
+
+---
+
+
 <a id="file-design-system-apple-genie-origin-morph-system-md"></a>
 ## 📄 Specification: `design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`
 
@@ -5713,6 +5998,7 @@ Where:
 - [ ] **Seamless Seams**: If network latency exceeds 3000ms, loops transition without jump cuts or visual jitter.
 - [ ] **Minimum 1-Cycle Completion**: If network latency is 50ms, animation continues to 100% of cycle duration before showing success.
 - [ ] **Toast Deferral**: Toast notifications fire STRICTLY AFTER the completion morph finishes.
+
 
 
 ---
@@ -7678,7 +7964,7 @@ We recognize four distinct pathways to introduce 3D assets into a project:
 ### Pathway D: Anatomy Procedural 3D & Isometric Rigid-Body Engine (`wheresryan22/anatomy`)
 - **Use Case**: Engineering mechanisms, explanatory technical machines, cutaways, dial indicators, articulated robotic limbs, test benches, rocket engines, lock tumblers, and instruments where **the object IS the explanation**.
 - **Installation Footprint**:
-  - **Global Antigravity Skill**: `C:\Users\lenovo\.gemini\config\skills\anatomy\SKILL.md` (Native global CLI & slash command `/anatomy` available everywhere)
+  - **Global Skill Footprint**: `~/.gemini/config/skills/anatomy/SKILL.md` (Native global CLI & slash command `/anatomy` available everywhere)
   - **Docs Repository**: Kept 100% clean (zero duplicate clone bloat in repo root)
 - **Core Technology Stack**:
   - Zero heavy external DCC software (Blender/Maya) required. Written directly in TypeScript/ESM (`kit/iso-kit.ts`, `kit/turn-build.mjs`, `kit/lathe.mjs`, `kit/tube.mjs`).
@@ -8367,7 +8653,7 @@ In world-class software and systems engineering, abstract box-and-arrow diagrams
 
 ### 9.2 Architecture & Global Installation Footprint
 The Anatomy skill is installed natively in the global Antigravity customizations directory, ensuring it is always ready to invoke across any workspace via the `/anatomy` slash command or agent prompts without bloating the repository root:
-- **Global Skill Directory**: `C:\Users\lenovo\.gemini\config\skills\anatomy\`
+- **Global Skill Directory**: `~/.gemini/config/skills/anatomy/`
 - **Documentation Repo Policy**: Kept 100% clean (zero duplicate clone bloat in repo root)
 - **Core Modules (`kit/`)**:
   - `kit/iso-kit.ts` / `kit/iso-kit.mjs`: Core isometric projection math, 4-tone shading engine, SVG string rendering, plate formatting, and base CSS (`ISO_CSS`).
@@ -11096,7 +11382,13 @@ export function PrimaryGlassButton({ onClick, loading, children }) {
 
 ---
 
-## Category D: Forms, Validated Inputs & Selection Controls
+### NAV-8: Apple-Inspired Responsive Mobile Tabs with Dynamic Overflow Dropdown
+- **Visual Description**: Production tab bar that solves mobile tab cramping and horizontal scrolling. Dynamically measures container width in real time via `ResizeObserver` against an offscreen measurement row. Renders the maximum number of tabs that cleanly fit in the viewport with obsidian glass styling (`bg-neutral-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-1.5`), and smoothly routes all remaining tabs into an elevated `[More ▼]` glass dropdown menu.
+- **Active Tab Retention**: Keeps the active tab visible with a 60 FPS Framer Motion gliding pill (`layoutId="responsive-tabs-active-pill"`). If the selected tab resides in the overflow dropdown, the `[More ▼]` trigger button reflects the active state with a glowing blue pulse dot and dynamic title (`More: ActiveTabLabel`).
+- **Keyboard & Reduced Motion**: Full WAI-ARIA `role="tablist"` / `role="tab"` with `ArrowLeft`/`ArrowRight`/`ArrowDown`/`Escape` navigation and seamless fallback for `prefers-reduced-motion`.
+- **Cross-Reference**: Master specification in [`design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md`](./RESPONSIVE_MOBILE_TABS_SYSTEM.md) and Recipe 12 in [`design-system/09_IMPLEMENTATION_RECIPES.md`](./09_IMPLEMENTATION_RECIPES.md).
+
+---
 
 ---
 
@@ -12876,6 +13168,7 @@ Every archetype in this catalogue documents:
 9. [Recipe 9: Production Three.js 3D Model Viewer & Parts Inspector Studio](#recipe-9-production-threejs-3d-model-viewer--parts-inspector-studio)
 10. [Recipe 10: Screen-Level Apple Genie Trash Bin & 3D Vacuum Deletion System (`GenieTrashBinPortal.tsx` & `useGenieTrashDelete.ts`)](#recipe-10-screen-level-apple-genie-trash-bin--3d-vacuum-deletion-system)
 11. [Recipe 11: Task-Specific In-Flight Action Buttons Suite (`TaskAnimatedButtons.tsx`)](#recipe-11-task-specific-in-flight-action-buttons-suite)
+12. [Recipe 12: Apple-Inspired Responsive Mobile Tabs Overflow System (`ResponsiveTabs.tsx` & `useResponsiveTabs.ts`)](#recipe-12-apple-inspired-responsive-mobile-tabs-overflow-system)
 
 ---
 
@@ -16533,6 +16826,349 @@ export const TaskAnimatedSendEmailButton: React.FC<{
 };
 ```
 
+---
+
+## Recipe 12: Apple-Inspired Responsive Mobile Tabs Overflow System
+
+### Overview & Mechanics
+- **Components**: `hooks/useResponsiveTabs.ts` and `components/ResponsiveTabs.tsx`
+- **Technique**: Dynamic container measurement via `ResizeObserver` paired with an offscreen hidden measuring row. Automatically calculates visible tabs based on real-time container width and collapses un-fitting tabs into an Apple-inspired `[More ▼]` glass dropdown.
+- **Active Tab Protection**: When an active tab falls into the overflow menu, it can either be pinned/promoted to the visible row (`pinActiveTab: true`) or dynamically reflected on the `[More ▼]` trigger button with an active pulsing indicator dot.
+- **Micro-Interactions**: Framer Motion `layoutId="responsive-tabs-active-pill"` for fluid 60 FPS gliding tab switching, smooth dropdown spring animation (`stiffness: 450, damping: 35`), and reduced-motion fallback.
+- **A11y**: Full WAI-ARIA `role="tablist"` / `role="tab"` / `aria-selected` support and accessible keyboard navigation (Left/Right arrows, Down arrow, Escape).
+- **Mobile Guarantee**: Eliminates horizontal scrollbars and layout breaks on mobile viewports (`320px` to `768px`).
+
+### Complete Implementation: `hooks/useResponsiveTabs.ts`
+```tsx
+'use client';
+
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+
+export interface TabItem<T = string> {
+  id: T;
+  label: string;
+  icon?: React.ReactNode;
+  badge?: string | number;
+  disabled?: boolean;
+}
+
+export interface UseResponsiveTabsOptions {
+  gap?: number;
+  moreButtonWidth?: number;
+  pinActiveTab?: boolean;
+}
+
+export function useResponsiveTabs<T extends string = string>(
+  tabs: TabItem<T>[],
+  activeId: T,
+  options: UseResponsiveTabsOptions = {}
+) {
+  const { gap = 6, moreButtonWidth = 96, pinActiveTab = true } = options;
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const measureContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [tabWidths, setTabWidths] = useState<number[]>([]);
+
+  const activeTab = useMemo(
+    () => tabs.find(t => t.id === activeId) || tabs[0],
+    [tabs, activeId]
+  );
+
+  const measureTabs = useCallback(() => {
+    if (!measureContainerRef.current) return;
+    const children = Array.from(measureContainerRef.current.children) as HTMLElement[];
+    const widths = children.map(child => Math.ceil(child.getBoundingClientRect().width));
+    setTabWidths(widths);
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const el = containerRef.current;
+    const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        setContainerWidth(Math.floor(entry.contentRect.width));
+      }
+    });
+    observer.observe(el);
+    setContainerWidth(Math.floor(el.getBoundingClientRect().width));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    measureTabs();
+  }, [tabs, measureTabs]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current) {
+        setContainerWidth(Math.floor(containerRef.current.getBoundingClientRect().width));
+      }
+      measureTabs();
+    };
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+    };
+  }, [measureTabs]);
+
+  const { visibleTabs, overflowTabs, isActiveInOverflow } = useMemo(() => {
+    if (tabs.length === 0) return { visibleTabs: [], overflowTabs: [], isActiveInOverflow: false };
+    if (containerWidth === 0 || tabWidths.length !== tabs.length) {
+      return { visibleTabs: tabs, overflowTabs: [], isActiveInOverflow: false };
+    }
+
+    const totalTabsWidth = tabWidths.reduce((acc, w) => acc + w, 0) + (tabs.length - 1) * gap;
+    if (totalTabsWidth <= containerWidth) {
+      return { visibleTabs: tabs, overflowTabs: [], isActiveInOverflow: false };
+    }
+
+    const availableForVisible = containerWidth - moreButtonWidth - gap;
+    let accumulatedWidth = 0;
+    const visible: TabItem<T>[] = [];
+    const overflow: TabItem<T>[] = [];
+    const activeIndex = tabs.findIndex(t => t.id === activeId);
+
+    for (let i = 0; i < tabs.length; i++) {
+      const tab = tabs[i];
+      const width = tabWidths[i] || 80;
+      const nextTotal = visible.length === 0 ? width : accumulatedWidth + gap + width;
+
+      if (nextTotal <= availableForVisible) {
+        accumulatedWidth = nextTotal;
+        visible.push(tab);
+      } else {
+        overflow.push(tab);
+      }
+    }
+
+    if (visible.length === 0 && tabs.length > 0) {
+      visible.push(tabs[0]);
+      overflow.splice(0, 1);
+    }
+
+    const activeInOverflow = overflow.some(t => t.id === activeId);
+    if (pinActiveTab && activeInOverflow && activeIndex !== -1 && visible.length > 0) {
+      const activeItem = tabs[activeIndex];
+      const lastVisible = visible.pop()!;
+      overflow.push(lastVisible);
+      const activeOverflowIdx = overflow.findIndex(t => t.id === activeId);
+      if (activeOverflowIdx !== -1) overflow.splice(activeOverflowIdx, 1);
+      visible.push(activeItem);
+      return { visibleTabs: visible, overflowTabs: overflow, isActiveInOverflow: false };
+    }
+
+    return { visibleTabs: visible, overflowTabs: overflow, isActiveInOverflow: activeInOverflow };
+  }, [tabs, activeId, tabWidths, containerWidth, gap, moreButtonWidth, pinActiveTab]);
+
+  return { containerRef, measureContainerRef, visibleTabs, overflowTabs, isActiveInOverflow, activeTab, containerWidth };
+}
+```
+
+### Complete Implementation: `components/ResponsiveTabs.tsx`
+```tsx
+'use client';
+
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { ChevronDown, Check } from 'lucide-react';
+import { TabItem, useResponsiveTabs } from '../hooks/useResponsiveTabs';
+
+export interface ResponsiveTabsProps<T extends string = string> {
+  tabs: TabItem<T>[];
+  activeTab: T;
+  onChange: (id: T) => void;
+  className?: string;
+  pinActiveTab?: boolean;
+  moreLabel?: string;
+}
+
+export function ResponsiveTabs<T extends string = string>({
+  tabs,
+  activeTab,
+  onChange,
+  className = '',
+  pinActiveTab = true,
+  moreLabel = 'More'
+}: ResponsiveTabsProps<T>) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const moreButtonRef = useRef<HTMLButtonElement | null>(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  const {
+    containerRef,
+    measureContainerRef,
+    visibleTabs,
+    overflowTabs,
+    isActiveInOverflow,
+    activeTab: currentActiveTab
+  } = useResponsiveTabs(tabs, activeTab, { pinActiveTab, gap: 6, moreButtonWidth: 105 });
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        moreButtonRef.current &&
+        !moreButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    }
+    if (isDropdownOpen) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isDropdownOpen]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (visibleTabs.length === 0) return;
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      const currentIndex = visibleTabs.findIndex(t => t.id === activeTab);
+      const nextIndex = (currentIndex + 1) % visibleTabs.length;
+      onChange(visibleTabs[nextIndex].id);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const currentIndex = visibleTabs.findIndex(t => t.id === activeTab);
+      const prevIndex = (currentIndex - 1 + visibleTabs.length) % visibleTabs.length;
+      onChange(visibleTabs[prevIndex].id);
+    } else if (e.key === 'Escape' && isDropdownOpen) {
+      e.preventDefault();
+      setIsDropdownOpen(false);
+      moreButtonRef.current?.focus();
+    }
+  };
+
+  const springTransition = shouldReduceMotion
+    ? { duration: 0 }
+    : { type: 'spring', stiffness: 450, damping: 35 };
+
+  return (
+    <div className={`relative w-full ${className}`} onKeyDown={handleKeyDown}>
+      <div
+        ref={measureContainerRef}
+        aria-hidden="true"
+        className="absolute top-0 left-0 flex items-center gap-1.5 opacity-0 pointer-events-none -z-50"
+        style={{ visibility: 'hidden' }}
+      >
+        {tabs.map(tab => (
+          <div key={tab.id} className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium whitespace-nowrap rounded-xl">
+            {tab.icon && <span className="w-4 h-4">{tab.icon}</span>}
+            <span>{tab.label}</span>
+            {tab.badge !== undefined && <span className="px-1.5 py-0.5 text-[10px] rounded-full">{tab.badge}</span>}
+          </div>
+        ))}
+      </div>
+
+      <div
+        ref={containerRef}
+        role="tablist"
+        aria-orientation="horizontal"
+        className="relative flex items-center gap-1.5 w-full p-1.5 rounded-2xl bg-neutral-900/60 backdrop-blur-xl border border-white/10 shadow-inner overflow-hidden"
+      >
+        {visibleTabs.map(tab => {
+          const isActive = tab.id === activeTab;
+          return (
+            <button
+              key={tab.id}
+              role="tab"
+              type="button"
+              aria-selected={isActive}
+              tabIndex={isActive ? 0 : -1}
+              disabled={tab.disabled}
+              onClick={() => { onChange(tab.id); setIsDropdownOpen(false); }}
+              className={`relative flex items-center gap-2 px-3.5 py-2 text-sm font-medium whitespace-nowrap rounded-xl transition-colors duration-200 outline-none cursor-pointer ${
+                tab.disabled ? 'opacity-40 cursor-not-allowed' : isActive ? 'text-white' : 'text-neutral-400 hover:text-neutral-200 hover:bg-white/5'
+              }`}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="responsive-tabs-active-pill"
+                  transition={springTransition}
+                  className="absolute inset-0 rounded-xl bg-white/10 border border-white/20 shadow-[0_2px_12px_rgba(255,255,255,0.06)]"
+                />
+              )}
+              <span className="relative z-10 flex items-center gap-2">
+                {tab.icon && <span className="w-4 h-4 shrink-0">{tab.icon}</span>}
+                <span>{tab.label}</span>
+                {tab.badge !== undefined && (
+                  <span className={`px-1.5 py-0.5 text-[10px] font-semibold rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-white/10 text-neutral-400'}`}>
+                    {tab.badge}
+                  </span>
+                )}
+              </span>
+            </button>
+          );
+        })}
+
+        {overflowTabs.length > 0 && (
+          <div className="relative ml-auto shrink-0">
+            <button
+              ref={moreButtonRef}
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded={isDropdownOpen}
+              onClick={() => setIsDropdownOpen(prev => !prev)}
+              className={`relative flex items-center gap-1.5 px-3 py-2 text-sm font-medium whitespace-nowrap rounded-xl transition-all cursor-pointer ${
+                isActiveInOverflow ? 'text-white bg-white/10 border border-white/25 shadow-sm' : isDropdownOpen ? 'text-white bg-white/10 border border-white/15' : 'text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent'
+              }`}
+            >
+              {isActiveInOverflow && <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse shadow-[0_0_8px_rgba(96,165,250,0.8)]" />}
+              <span>{isActiveInOverflow && currentActiveTab ? `${moreLabel}: ${currentActiveTab.label}` : `${moreLabel} (${overflowTabs.length})`}</span>
+              <motion.span animate={{ rotate: isDropdownOpen ? 180 : 0 }} transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.2 }}>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </motion.span>
+            </button>
+
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  ref={dropdownRef}
+                  role="menu"
+                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -6, scale: 0.96 }}
+                  animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+                  exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -6, scale: 0.96 }}
+                  transition={springTransition}
+                  className="absolute right-0 mt-2 z-50 min-w-[210px] p-1.5 rounded-xl bg-neutral-900/95 backdrop-blur-2xl border border-white/15 shadow-[0_16px_36px_rgba(0,0,0,0.5)] focus:outline-none"
+                >
+                  <div className="py-1">
+                    {overflowTabs.map(tab => {
+                      const isTabActive = tab.id === activeTab;
+                      return (
+                        <button
+                          key={tab.id}
+                          role="menuitem"
+                          type="button"
+                          disabled={tab.disabled}
+                          onClick={() => { onChange(tab.id); setIsDropdownOpen(false); moreButtonRef.current?.focus(); }}
+                          className={`flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg text-left transition-colors cursor-pointer ${
+                            tab.disabled ? 'opacity-40 cursor-not-allowed' : isTabActive ? 'bg-white/15 text-white font-medium' : 'text-neutral-300 hover:bg-white/10 hover:text-white'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5 truncate">
+                            {tab.icon && <span className="w-4 h-4 shrink-0 text-neutral-400">{tab.icon}</span>}
+                            <span className="truncate">{tab.label}</span>
+                          </div>
+                          {isTabActive && <Check className="w-4 h-4 text-blue-400 shrink-0 ml-2" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+
 
 
 ---
@@ -16581,8 +17217,8 @@ flowchart TD
 ### 📦 Stage 1: Safety Inventory, File Necessity & Dead-Code Mapping
 **Rule: Never touch code before mapping dependencies and purging dead weight.**
 
-1. **Mandatory Brain Ingestion**:
-   Before modifying anything, read `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/BRAIN.md`. This loads all 49 specifications, code recipes, and design tokens into context.
+1. **Tier 0 Core Law Ingestion & Progressive Documentation**:
+   Before modifying anything, read [`rules/CORE_DIRECTIVE.md`](../rules/CORE_DIRECTIVE.md) and [`rules/MANDATORY_EXECUTION_CHECKLIST.md`](../rules/MANDATORY_EXECUTION_CHECKLIST.md). Load specific subsystem specs on demand via `node scripts/load-docs.js <topic>` without causing context blowout.
 2. **Perform Read-Only Codebase Survey**:
    - Inspect all folders, routes, components, and package manifests.
    - Identify existing business logic (forms, checkout, database models, payment routes).
@@ -16605,9 +17241,10 @@ flowchart TD
 ### 🔍 Stage 2: Automated Audit & Gap Detection
 **Rule: Quantify the gap with terminal evidence.**
 
-1. Execute the automated Audit CLI script bundled with the global skill:
+1. Execute the automated Audit CLI script bundled with the skill:
    ```bash
-   node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .
+   node scripts/audit-engine.js .
+   # Or via global CLI: npx website-builder audit .
    ```
 2. The script runs 30+ compliance checks across:
    - Root `/app` directory integrity (Zero `src/` wrapper).
@@ -16730,18 +17367,20 @@ The agent must systematically upgrade **EVERY** existing page and component:
    - **Static TypeScript Gate**: Run `npx tsc --noEmit` and assert zero type errors (Exit code 0).
 2. **Execute the Audit Engine**:
    ```bash
-   node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .
+   node scripts/audit-engine.js .
+   # Or via global CLI: npx website-builder audit .
    ```
 3. **Evaluate the Verdict**:
    - If **Score < 95%** (Exit Code 1):  
      **THE AGENT MUST NOT STOP.** Read each failing item in the terminal output, locate the offending files, apply the remediation fixes, and re-run.
    - If **Score >= 95%** (Exit Code 0):  
      Compliance standard achieved!
-4. **Execute Static Production Build**:
+4. **Execute Static Production Build & Scoped Tests**:
    ```bash
    npm run build
+   npm test
    ```
-   Assert zero TypeScript, lint, or build errors.
+   Assert zero TypeScript, lint, build, or test errors.
 5. **Synchronize `FILE-MAP.md`**:
    Update `FILE-MAP.md` with all new components, contexts, and modified routes.
 
@@ -16751,8 +17390,8 @@ The agent must systematically upgrade **EVERY** existing page and component:
 
 Whenever summoned to refactor or complete an existing site, execute:
 
-- [ ] `[ ]` **Step 1**: Ingest Master Brain (`C:/Users/lenovo/.gemini/config/skills/website-builder-engine/BRAIN.md`).
-- [ ] `[ ]` **Step 2**: Run `node <skill-path>/scripts/audit-engine.js .` to establish baseline failure score.
+- [ ] `[ ]` **Step 1**: Ingest Tier 0 Core Laws (`rules/CORE_DIRECTIVE.md` & `MANDATORY_EXECUTION_CHECKLIST.md`).
+- [ ] `[ ]` **Step 2**: Run `node scripts/audit-engine.js .` to establish baseline failure score and generate `RETROFIT_TODO.md`.
 - [ ] `[ ]` **Step 3**: Audit file necessity, purge dead orphan files and duplicate packages (`axios` vs `fetch`).
 - [ ] `[ ]` **Step 4**: Create `.project/RETROFIT_PLAN.md` with every failing item categorized.
 - [ ] `[ ]` **Step 5**: Install missing modern packages (`framer-motion`, `lucide-react`, `clsx`, `tailwind-merge`).

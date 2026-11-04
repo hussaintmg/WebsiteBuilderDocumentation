@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "website-builder-engine",
+  "version": "2.1.0",
+  "description": "Cross-platform autonomous web engineering engine, design system, and quality gate for Next.js, FastAPI, Node.js, and MongoDB.",
+  "supportedEnvironments": [
+    "Claude Code",
+    "Google Gemini / Antigravity",
+    "Cursor",
+    "VS Code Copilot",
+    "Autonomous CLI / CI/CD"
+  ],
+  "tiers": {
+    "tier0_manifest_and_core_law": {
+      "purpose": "Essential laws and architecture contracts loaded before taking any action. Total payload < 300 lines.",
+      "mandatoryFiles": [
+        "rules/CORE_DIRECTIVE.md",
+        "rules/MANDATORY_EXECUTION_CHECKLIST.md"
+      ]
+    },
+    "tier1_foundation_and_scaffolding": {
+      "purpose": "Foundational design tokens, color physics, typography, and initial project scaffolding.",
+      "files": [
+        "design-system/DESIGN_ARCHITECTURE.md",
+        "design-system/FRONTEND_DESIGN_RULES.md",
+        "rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md",
+        "rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md"
+      ]
+    },
+    "tier2_domain_modules": {
+      "purpose": "Load on-demand based on the user's specific domain task or feature request. Eliminates context blowout.",
+      "topicMapping": {
+        "responsive-tabs": [
+          "design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md",
+          "design-system/09_IMPLEMENTATION_RECIPES.md"
+        ],
+        "tabs": [
+          "design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md",
+          "design-system/09_IMPLEMENTATION_RECIPES.md"
+        ],
+        "buttons": [
+          "design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md",
+          "design-system/TASK_ANIMATED_BUTTONS_SYSTEM.md",
+          "design-system/PREMIUM_BUTTON_ANIMATION_SYSTEM.md"
+        ],
+        "genie-trash": [
+          "design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md",
+          "design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md"
+        ],
+        "delete": [
+          "design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md",
+          "design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md"
+        ],
+        "modals": [
+          "design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md"
+        ],
+        "tables": [
+          "modules/DATA_TABLE_AND_CARDS_SYSTEM.md",
+          "design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md"
+        ],
+        "datatable": [
+          "modules/DATA_TABLE_AND_CARDS_SYSTEM.md",
+          "design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md"
+        ],
+        "auth": [
+          "modules/AUTH_AND_FACELOCK.md",
+          "modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md"
+        ],
+        "facelock": [
+          "modules/AUTH_AND_FACELOCK.md"
+        ],
+        "rbac": [
+          "modules/RBAC_SYSTEM.md",
+          "rules/RBAC_SECURITY_RULES.md"
+        ],
+        "retrofit": [
+          "modules/EXISTING_PROJECT_RETROFIT_ENGINE.md",
+          "rules/TESTING_AND_VERIFICATION.md"
+        ],
+        "modernize": [
+          "modules/EXISTING_PROJECT_RETROFIT_ENGINE.md"
+        ],
+        "rapid-click": [
+          "modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md"
+        ],
+        "batching": [
+          "modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md"
+        ],
+        "payments": [
+          "modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md",
+          "rules/PAYMENT_SAFEGUARD_RULE.md"
+        ],
+        "media": [
+          "modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md"
+        ],
+        "storage": [
+          "modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md"
+        ],
+        "performance": [
+          "modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md"
+        ],
+        "low-bandwidth": [
+          "modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md"
+        ],
+        "mobile-nav": [
+          "modules/MOBILE_NAVIGATION_AND_LAYOUT.md"
+        ],
+        "chat": [
+          "modules/CHAT_AND_COMMUNICATION_SYSTEM.md",
+          "modules/CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md"
+        ],
+        "ai-copilot": [
+          "modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md",
+          "modules/AUTONOMOUS_AI_LEAD_RESPONDER_AND_BOOKING_SYSTEM.md"
+        ],
+        "cms": [
+          "modules/CMS_ENGINE.md"
+        ],
+        "settings": [
+          "modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md"
+        ],
+        "3d-models": [
+          "design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md"
+        ]
+      }
+    },
+    "tier3_testing_and_audit": {
+      "purpose": "Automated verification, static gates, and compliance scoring.",
+      "files": [
+        "rules/TESTING_AND_VERIFICATION.md",
+        "rules/MANDATORY_EXECUTION_CHECKLIST.md",
+        "scripts/audit-engine.js"
+      ]
+    }
+  },
+  "cliCommands": {
+    "audit": "node scripts/audit-engine.js [project-dir]",
+    "scaffold": "node scripts/scaffold-engine.js [project-dir]",
+    "loadDocs": "node scripts/load-docs.js <topic-or-module>",
+    "compileBrain": "node scripts/compile-brain.js",
+    "testFramework": "node scripts/test-framework.js"
+  }
+}

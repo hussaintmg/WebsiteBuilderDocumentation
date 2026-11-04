@@ -36,8 +36,8 @@ flowchart TD
 ### 📦 Stage 1: Safety Inventory, File Necessity & Dead-Code Mapping
 **Rule: Never touch code before mapping dependencies and purging dead weight.**
 
-1. **Mandatory Brain Ingestion**:
-   Before modifying anything, read `C:/Users/lenovo/.gemini/config/skills/website-builder-engine/BRAIN.md`. This loads all 49 specifications, code recipes, and design tokens into context.
+1. **Tier 0 Core Law Ingestion & Progressive Documentation**:
+   Before modifying anything, read [`rules/CORE_DIRECTIVE.md`](../rules/CORE_DIRECTIVE.md) and [`rules/MANDATORY_EXECUTION_CHECKLIST.md`](../rules/MANDATORY_EXECUTION_CHECKLIST.md). Load specific subsystem specs on demand via `node scripts/load-docs.js <topic>` without causing context blowout.
 2. **Perform Read-Only Codebase Survey**:
    - Inspect all folders, routes, components, and package manifests.
    - Identify existing business logic (forms, checkout, database models, payment routes).
@@ -60,9 +60,10 @@ flowchart TD
 ### 🔍 Stage 2: Automated Audit & Gap Detection
 **Rule: Quantify the gap with terminal evidence.**
 
-1. Execute the automated Audit CLI script bundled with the global skill:
+1. Execute the automated Audit CLI script bundled with the skill:
    ```bash
-   node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .
+   node scripts/audit-engine.js .
+   # Or via global CLI: npx website-builder audit .
    ```
 2. The script runs 30+ compliance checks across:
    - Root `/app` directory integrity (Zero `src/` wrapper).
@@ -185,18 +186,20 @@ The agent must systematically upgrade **EVERY** existing page and component:
    - **Static TypeScript Gate**: Run `npx tsc --noEmit` and assert zero type errors (Exit code 0).
 2. **Execute the Audit Engine**:
    ```bash
-   node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .
+   node scripts/audit-engine.js .
+   # Or via global CLI: npx website-builder audit .
    ```
 3. **Evaluate the Verdict**:
    - If **Score < 95%** (Exit Code 1):  
      **THE AGENT MUST NOT STOP.** Read each failing item in the terminal output, locate the offending files, apply the remediation fixes, and re-run.
    - If **Score >= 95%** (Exit Code 0):  
      Compliance standard achieved!
-4. **Execute Static Production Build**:
+4. **Execute Static Production Build & Scoped Tests**:
    ```bash
    npm run build
+   npm test
    ```
-   Assert zero TypeScript, lint, or build errors.
+   Assert zero TypeScript, lint, build, or test errors.
 5. **Synchronize `FILE-MAP.md`**:
    Update `FILE-MAP.md` with all new components, contexts, and modified routes.
 
@@ -206,8 +209,8 @@ The agent must systematically upgrade **EVERY** existing page and component:
 
 Whenever summoned to refactor or complete an existing site, execute:
 
-- [ ] `[ ]` **Step 1**: Ingest Master Brain (`C:/Users/lenovo/.gemini/config/skills/website-builder-engine/BRAIN.md`).
-- [ ] `[ ]` **Step 2**: Run `node <skill-path>/scripts/audit-engine.js .` to establish baseline failure score.
+- [ ] `[ ]` **Step 1**: Ingest Tier 0 Core Laws (`rules/CORE_DIRECTIVE.md` & `MANDATORY_EXECUTION_CHECKLIST.md`).
+- [ ] `[ ]` **Step 2**: Run `node scripts/audit-engine.js .` to establish baseline failure score and generate `RETROFIT_TODO.md`.
 - [ ] `[ ]` **Step 3**: Audit file necessity, purge dead orphan files and duplicate packages (`axios` vs `fetch`).
 - [ ] `[ ]` **Step 4**: Create `.project/RETROFIT_PLAN.md` with every failing item categorized.
 - [ ] `[ ]` **Step 5**: Install missing modern packages (`framer-motion`, `lucide-react`, `clsx`, `tailwind-merge`).

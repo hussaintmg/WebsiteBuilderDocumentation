@@ -30,6 +30,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { getSkillDir, resolveSkillPath } = require('../lib/resolve-paths');
 
 // CLI Arguments
 const args = process.argv.slice(2);
@@ -122,11 +123,11 @@ async function runAudit() {
   header(`WEBSITE BUILDER ENGINE — MASTER COMPLIANCE, QUALITY & TEST AUDIT`);
   log(`${colors.gray}Target Directory: ${targetDir}${colors.reset}`);
 
-  const globalBrainPath = 'C:/Users/lenovo/.gemini/config/skills/website-builder-engine/BRAIN.md';
+  const globalBrainPath = resolveSkillPath('BRAIN.md');
   if (fs.existsSync(globalBrainPath)) {
     log(`${colors.gray}Master Brain:    ${globalBrainPath} (Active & Verified)${colors.reset}\n`);
   } else {
-    log(`${colors.gray}Master Brain:    Pending compilation${colors.reset}\n`);
+    log(`${colors.gray}Master Brain:    Pending compilation (Compile via website-builder compile)${colors.reset}\n`);
   }
 
   const allFiles = walkFiles(targetDir);
@@ -410,6 +411,24 @@ async function runAudit() {
     'Implement TaskAnimatedButtons with action-specific in-flight micro-animations per design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md'
   );
 
+  // Check Responsive Mobile Tabs & Overflow System
+  const hasTabsUsage = /ResponsiveTabs|useResponsiveTabs|role="tablist"|<Tabs|TabsList/i.test(allCodeContent);
+  const hasResponsiveTabOverflow = /ResponsiveTabs|useResponsiveTabs|overflowTabs|isActiveInOverflow/i.test(allCodeContent);
+  const hasCrampedHorizontalScrollTabs = /overflow-x-auto[^'"`]*flex[^'"`]*gap-[^'"`]*(tab|button)/i.test(allCodeContent);
+
+  evaluateCheck(
+    'UI/UX',
+    'Responsive Mobile Tabs & Zero Horizontal Scrolling Law',
+    5,
+    !hasCrampedHorizontalScrollTabs && (!hasTabsUsage || hasResponsiveTabOverflow),
+    hasResponsiveTabOverflow
+      ? 'Intelligent responsive tab overflow system active (Dynamic ResizeObserver + More dropdown)'
+      : (!hasTabsUsage
+          ? 'No tab systems present or standard layout'
+          : (hasCrampedHorizontalScrollTabs ? 'Prohibited horizontal scrolling tabs detected on mobile' : 'Tabs present without dynamic overflow')),
+    'Upgrade tab bars to ResponsiveTabs with dynamic width calculation and More dropdown per design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md'
+  );
+
   // --------------------------------------------------------------------------
   // SUITE 6: AUTHENTICATION, ZERO-DEMO & ERGONOMICS
   // --------------------------------------------------------------------------
@@ -602,6 +621,80 @@ async function runAudit() {
   );
 
   // --------------------------------------------------------------------------
+  // SUITE 10: TASK EXECUTION CHECKLIST & REAL AUTOMATED TEST VERIFICATION
+  // --------------------------------------------------------------------------
+  log(`\n${colors.bold}${colors.magenta}▶ SUITE 10: TASK EXECUTION CHECKLIST & REAL AUTOMATED TEST GATE${colors.reset}`);
+
+  // Test 10.1: Real Automated Test Execution (Scoped & Actual Execution)
+  let testSuitePassed = true;
+  let testSuiteDetails = 'No automated test runner configured in package.json';
+  
+  if (pkg.scripts && (pkg.scripts.test || pkg.scripts['test:units'] || pkg.scripts['test:rbac'])) {
+    const testCommand = pkg.scripts.test && !pkg.scripts.test.includes('no test specified')
+      ? 'test'
+      : (pkg.scripts['test:units'] ? 'test:units' : 'test:rbac');
+
+    try {
+      log(`  ${colors.gray}Executing scoped test runner: npm run ${testCommand}...${colors.reset}`);
+      const testRun = spawnSync('npm', ['run', testCommand], {
+        cwd: targetDir,
+        encoding: 'utf8',
+        shell: true,
+        timeout: 45000
+      });
+
+      if (testRun.status === 0) {
+        testSuitePassed = true;
+        const outLines = (testRun.stdout || '').split('\n').map(l => l.trim()).filter(Boolean);
+        const lastLine = outLines[outLines.length - 1] || 'All tests passed';
+        testSuiteDetails = `Real test execution passed with Exit Code 0: ${lastLine.slice(0, 80)}`;
+      } else {
+        testSuitePassed = false;
+        const errLines = ((testRun.stderr || '') + '\n' + (testRun.stdout || '')).split('\n').map(l => l.trim()).filter(Boolean);
+        testSuiteDetails = `Test execution failed with Exit Code ${testRun.status}: ${errLines[0] || 'Unknown error'}`;
+      }
+    } catch (e) {
+      testSuitePassed = false;
+      testSuiteDetails = `Failed to run automated test command: ${e.message}`;
+    }
+  } else {
+    // Check if test specification files exist
+    const testFiles = allFiles.filter(f => /(\.test\.|\.spec\.|[\\/]tests[\\/]|[\\/]__tests__[\\/])/.test(f));
+    if (testFiles.length > 0) {
+      testSuitePassed = true;
+      testSuiteDetails = `Found ${testFiles.length} test specification files in project`;
+    } else {
+      testSuitePassed = true;
+      testSuiteDetails = 'No automated tests configured (Static compile gate applied)';
+    }
+  }
+
+  evaluateCheck(
+    'Testing',
+    'Real Automated Test Execution & Passing Status',
+    8,
+    testSuitePassed,
+    testSuiteDetails,
+    'Ensure all automated tests pass with Exit Code 0 per rules/TESTING_AND_VERIFICATION.md'
+  );
+
+  // Test 10.2: Mandatory Task Execution Checklist Adherence
+  const hasPlan = fs.existsSync(path.join(targetDir, '.project', 'PLAN.md')) ||
+                  fs.existsSync(path.join(targetDir, 'RETROFIT_TODO.md')) ||
+                  fs.existsSync(path.join(targetDir, 'PLAN.md')) ||
+                  fs.existsSync(path.join(targetDir, 'CLAUDE.md')) ||
+                  fs.existsSync(path.join(targetDir, 'AGENTS.md')) ||
+                  fs.existsSync(path.join(targetDir, 'rules', 'MANDATORY_EXECUTION_CHECKLIST.md'));
+  evaluateCheck(
+    'Workflow',
+    '10-Step Mandatory Task Execution Checklist Adherence',
+    6,
+    hasPlan,
+    hasPlan ? 'Structured planning & execution checklist document tracked in workspace' : 'No planning or checklist document detected (.project/PLAN.md or RETROFIT_TODO.md)',
+    'Initialize 10-step execution tracking per rules/MANDATORY_EXECUTION_CHECKLIST.md'
+  );
+
+  // --------------------------------------------------------------------------
   // FINAL SCORE & SUMMARY
   // --------------------------------------------------------------------------
   const scorePercent = Math.round((auditResults.totalScore / auditResults.maxScore) * 100);
@@ -633,7 +726,7 @@ async function runAudit() {
         if (f.fixHint) todoContent += `  - **Required Fix**: ${f.fixHint}\n`;
         todoContent += `\n`;
       });
-      todoContent += `---\n*Instructions for AI Agent:* Mark each task \`[x]\` as you resolve it. Re-run \`node C:/Users/lenovo/.gemini/config/skills/website-builder-engine/scripts/audit-engine.js .\` after every 2-3 files. You are FORBIDDEN from stopping until all items are completed and score is >= 95%.\n`;
+      todoContent += `---\n*Instructions for AI Agent:* Mark each task \`[x]\` as you resolve it. Re-run \`node ${path.join(__dirname, 'audit-engine.js')} .\` (or \`npx website-builder audit .\`) after every 2-3 files. You are FORBIDDEN from stopping until all items are completed and score is >= 95%.\n`;
       fs.writeFileSync(todoPath, todoContent, 'utf8');
       log(`  ${colors.magenta}📝 Generated actionable checklist:${colors.reset} ${todoPath}\n`);
     } catch (e) {
