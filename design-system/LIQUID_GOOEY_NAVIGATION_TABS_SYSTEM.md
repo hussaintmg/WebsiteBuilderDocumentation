@@ -113,3 +113,4 @@ The layout MUST strictly enforce a three-tier z-index separation:
    - `End`: Jumps to last tab.
 4. Automatic fallback when `prefers-reduced-motion` is detected:
    - The SVG filter is gracefully bypassed and replaced with a standard instant crossfade to prevent discomfort.
+

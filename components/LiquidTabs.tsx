@@ -194,3 +194,4 @@ export const LiquidTabs: React.FC<LiquidTabsProps> = ({
     </div>
   );
 };
+
