@@ -98,3 +98,4 @@ switch (command) {
     console.error(`Unknown command: "${command}". Run "website-builder help" for usage.`);
     process.exit(1);
 }
+
