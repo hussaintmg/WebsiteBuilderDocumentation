@@ -326,3 +326,4 @@ export function ResponsiveTabs<T extends string = string>({
     </div>
   );
 }
+

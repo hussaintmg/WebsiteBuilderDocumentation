@@ -71,3 +71,4 @@ When implementing specific features, read the targeted module from the repositor
 | **Retrofit Protocol** | `modules/EXISTING_PROJECT_RETROFIT_ENGINE.md` |
 | **Mandatory Execution Checklist** | `rules/MANDATORY_EXECUTION_CHECKLIST.md` |
 | **Testing Standards & Verification** | `rules/TESTING_AND_VERIFICATION.md` |
+

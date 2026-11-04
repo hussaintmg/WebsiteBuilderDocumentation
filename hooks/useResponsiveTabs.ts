@@ -189,3 +189,4 @@ export function useResponsiveTabs<T extends string = string>(
     containerWidth
   };
 }
+

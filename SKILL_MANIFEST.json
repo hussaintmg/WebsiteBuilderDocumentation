@@ -121,6 +121,16 @@
         ],
         "3d-models": [
           "design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md"
+        ],
+        "viral-animations": [
+          "design-system/300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md",
+          "design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md"
+        ],
+        "animations-300": [
+          "design-system/300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md"
+        ],
+        "hover-effects": [
+          "design-system/300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md"
         ]
       }
     },
@@ -141,3 +151,4 @@
     "testFramework": "node scripts/test-framework.js"
   }
 }
+

@@ -100,3 +100,4 @@ The core measurement and partition logic is separated into an uncoupled custom h
 - Uses `ResizeObserver` on container.
 - Measures hidden measuring tabs off-screen with `visibility: hidden; position: absolute; pointer-events: none`.
 - Re-evaluates instantly on window resize, device orientation change, and tab list updates.
+

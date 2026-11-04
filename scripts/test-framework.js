@@ -241,6 +241,31 @@ async function runAllTests() {
   assert(cliInfo.stdout.includes('"verified": true'), 'CLI info outputs valid verified JSON diagnostics');
 
   // --------------------------------------------------------------------------
+  // SUITE 6: MASTER 300 VIRAL ANIMATIONS & HOVER EFFECTS CATALOGUE
+  // --------------------------------------------------------------------------
+  suite('Master 300 Viral Animations & Hover Effects Catalogue');
+
+  const animCataloguePath = resolveSkillPath('design-system', '300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md');
+  assert(fs.existsSync(animCataloguePath), '300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md exists in design-system');
+
+  const animContent = fs.readFileSync(animCataloguePath, 'utf8');
+  const itemCount = (animContent.match(/^### \d+\./gm) || []).length;
+  assert(itemCount === 300, `Catalogue contains exactly 300 verified animation items (found ${itemCount})`);
+
+  // Verify all 8 categories exist
+  for (let cat = 1; cat <= 8; cat++) {
+    assert(animContent.includes(`Category ${cat}:`), `Category ${cat} is defined in catalogue`);
+  }
+
+  // Verify Usman Shams profile deconstruction exists
+  assert(animContent.includes('iusmanshams') || animContent.includes('Usman Shams'), 'Usman Shams signature design mechanics deconstructed');
+
+  // Test load-docs topic lookup for viral-animations
+  const runAnimTopic = spawnSync(process.execPath, [loadDocsScript, 'viral-animations', '--files-only'], { encoding: 'utf8' });
+  assert(runAnimTopic.status === 0, 'load-docs resolves "viral-animations" topic');
+  assert(runAnimTopic.stdout.includes('300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md'), 'load-docs outputs catalogue path');
+
+  // --------------------------------------------------------------------------
   // SUMMARY
   // --------------------------------------------------------------------------
   const duration = ((Date.now() - startTime) / 1000).toFixed(2);
@@ -264,3 +289,4 @@ runAllTests().catch(err => {
   console.error('Fatal test error:', err);
   process.exit(1);
 });
+

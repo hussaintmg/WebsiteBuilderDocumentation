@@ -69,6 +69,7 @@
   - `design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`: Apple macOS 3D Genie Origin-Morph unrolling animation & zero-bar draggable dialogs.
   - `design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`: Screen-level Genie Trash Bin, portal coordinate elevation, 3D vacuum siphon drop & layout glide-up.
   - `design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md`: Apple-inspired responsive mobile tab overflow system, dynamic container measurement, and `[More ▼]` dropdown.
+  - `design-system/300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md`: Master catalog of 300 viral social media animations, hover mechanics, and Usman Shams (@iusmanshams) micro-interactions across 8 categories.
   - `hooks/useResponsiveTabs.ts`: Dynamic ResizeObserver calculation hook for tab width and overflow partition.
   - `components/ResponsiveTabs.tsx`: Production glassmorphic tab component with Framer Motion gliding pill and accessibility.
   - `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`: Task-specific in-flight micro-animations suite (delete bin loop, truck road, RF tower).

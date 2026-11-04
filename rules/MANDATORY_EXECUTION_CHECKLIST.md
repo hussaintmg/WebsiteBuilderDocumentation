@@ -79,3 +79,4 @@
 1. **The "1-File Exit" Violation**: If an agent edits only 1 or 2 files and says *"I have updated the component, you can integrate it"*, this is a critical framework violation. The agent must complete the entire integration, tests, and verification.
 2. **The "Unverified Success" Violation**: Claiming *"Tests pass"* without running a terminal command is strictly forbidden.
 3. **The "Ignored Build" Violation**: Marking a task complete without executing `npx tsc --noEmit` or `npm run build` is invalid.
+
