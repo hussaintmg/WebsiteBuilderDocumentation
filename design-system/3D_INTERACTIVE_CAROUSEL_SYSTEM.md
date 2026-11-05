@@ -2,7 +2,7 @@
 
 > **FILE:** `design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md`  
 > **CLASSIFICATION:** 3D Spatial Geometry & Touch-Momentum Carousel  
-> **COMPANION COMPONENT:** [`components/CardCarousel3D.tsx`](../components/CardCarousel3D.tsx)  
+> **COMPANION COMPONENT (generated in the target project):** `components/CardCarousel3D.tsx`  
 > **RECIPE:** [`design-system/09_IMPLEMENTATION_RECIPES.md#recipe-15`](./09_IMPLEMENTATION_RECIPES.md#recipe-15)  
 > **INSPIRATION:** Usman Shams ([@iusmanshams](https://www.instagram.com/iusmanshams/)) and Apple Cover Flow 3D
 
