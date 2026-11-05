@@ -40,3 +40,10 @@ test('a configured passing test script is actually executed', () => {
   assert.match(result.stdout, /\[PASS\] Automated tests/);
   assert.match(result.stdout, /fixture test ran/);
 });
+
+test('archived legacy audit engine refuses to report a false compliance pass', () => {
+  const legacy = path.join(root, 'scripts', 'audit-engine.legacy.js');
+  const result = spawnSync(process.execPath, [legacy], { encoding: 'utf8', timeout: 15000 });
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /Deprecated legacy audit engine/);
+});
