@@ -36,12 +36,12 @@ function runScript(scriptName, extraArgs = []) {
 
 function showHelp() {
   console.log(`
-Website Builder Engine CLI v2.1.0
+Website Builder Engine CLI v2.2.0
 ══════════════════════════════════════════════════════════════════════════════
 Usage: website-builder <command> [options]
 
 Commands:
-  audit [dir]       Run the 10-suite compliance audit & quality gate on a project
+  audit [dir]       Run an architecture-aware evidence audit on a project
   scaffold [dir]    Auto-scaffold core utilities, hooks, portals, and contexts
   docs <topic>      Load targeted documentation without context blowout
   compile           Recompile all modular specs into BRAIN.md
