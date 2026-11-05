@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "name": "website-builder-engine",
-  "version": "2.1.0",
-  "description": "Cross-platform autonomous web engineering engine, design system, and quality gate for Next.js, FastAPI, Node.js, and MongoDB.",
+  "version": "2.2.0",
+  "description": "Cross-platform, architecture-aware web engineering skill with modular design documentation and evidence-based verification.",
   "supportedEnvironments": [
     "Claude Code",
     "Google Gemini / Antigravity",
@@ -14,6 +14,7 @@
     "tier0_manifest_and_core_law": {
       "purpose": "Essential laws and architecture contracts loaded before taking any action. Total payload < 300 lines.",
       "mandatoryFiles": [
+        "EXECUTION_CONTRACT.md",
         "rules/CORE_DIRECTIVE.md",
         "rules/MANDATORY_EXECUTION_CHECKLIST.md"
       ]
@@ -167,4 +168,3 @@
     "testFramework": "node scripts/test-framework.js"
   }
 }
-

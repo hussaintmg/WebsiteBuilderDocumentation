@@ -5,6 +5,15 @@
 
 ---
 
+## Precedence: Architecture-Aware Execution Contract
+
+Read [../../EXECUTION_CONTRACT.md](../EXECUTION_CONTRACT.md) before applying the laws below. That contract supersedes legacy universal stack assumptions. The laws below are patterns for projects where they are applicable, not permission to force a stack or redesign unrelated areas.
+
+- Detect the project's real framework, architecture, package manager, design system and conventions first.
+- Root /app, MongoDB, Tailwind, React Context, Framer Motion and glassmorphism are conditional, not universal.
+- Missing tests/build/typecheck are NOT CONFIGURED or NOT VERIFIED, never a pass.
+- Inspect widely; change only requested outcomes and necessary dependencies.
+
 ## 1. The 10 Ironclad Engine Laws
 
 ### Law 1: Rule Zero (Plan First, Code Second)

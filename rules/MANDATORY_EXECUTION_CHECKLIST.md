@@ -7,6 +7,10 @@
 
 ---
 
+## Precedence and status rules
+
+Apply [../EXECUTION_CONTRACT.md](../EXECUTION_CONTRACT.md) first. This checklist is architecture-aware: skip checks that are not applicable, do not migrate a project to satisfy a folder convention, and record each skipped item as NOT APPLICABLE with a reason. Do not treat missing test configuration as a pass. Record PASS only with a fresh command/tool result.
+
 ## 📋 The 10 Mandatory Checkpoints
 
 ### 1. Project Analysis

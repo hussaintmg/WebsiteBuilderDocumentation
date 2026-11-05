@@ -6,6 +6,20 @@
 
 ---
 
+## Status vocabulary and evidence contract
+
+The project-aware [Execution Contract](../EXECUTION_CONTRACT.md) takes precedence over legacy universal assumptions in this document.
+
+Use these statuses:
+- **PASS** — the relevant command/tool actually ran and returned successful evidence.
+- **FAIL** — it ran and reported a failure.
+- **NOT CONFIGURED** — no corresponding script, test harness or capability exists.
+- **NOT RUN** — configured but not executed.
+- **BLOCKED** — attempted but blocked by environment/tooling.
+- **NOT APPLICABLE** — the check does not apply to the detected project.
+
+A test file's existence is not test execution. A JavaScript project without TypeScript is not a TypeScript pass. Static pattern checks cannot certify runtime, security, visual quality or animation behavior. Do not use a universal score as a completion gate.
+
 ## 🏛️ 1. Executive Mandate & Universal Verification Lifecycle
 
 ### 1.1 Scope of Obligation

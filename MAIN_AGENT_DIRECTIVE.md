@@ -5,6 +5,16 @@
 
 ---
 
+## Execution Contract Precedence (Read Before Applying Legacy Rules)
+
+**First read [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md).** It has precedence over any older generic or stack-specific instruction in this repository.
+
+- Discover the target project's actual framework, package manager, architecture, design system and existing conventions before selecting implementation patterns.
+- The root `/app`, MongoDB, Tailwind, React Context, Framer Motion, glassmorphism, dark mode and any named component are not universal requirements. Apply them only when they fit the actual project or the user explicitly requests them.
+- Inspect broadly, but implement only the requested outcome and necessary dependencies. Preserve unrelated working code and user changes.
+- Define acceptance criteria and execute relevant tests/build/typecheck/lint/browser checks. Missing test configuration is **NOT CONFIGURED / NOT VERIFIED**, never PASS.
+- Do not use a 95% score or static regex audit as proof of completion. Completion requires evidence for the actual requested outcomes.
+
 ## 🛑 Rule Zero: The Absolute Prerequisite
 
 ```
