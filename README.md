@@ -22,6 +22,11 @@ Main-Docs allows any AI agent or engineering team to build **complete, robust we
 ```text
 Main-docs/
 ├── README.md
+├── package.json
+├── SKILL.md
+├── EXECUTION_CONTRACT.md
+├── engines/                       # Project discovery, scope and independent review
+├── quality/                       # Animation QA and acceptance evidence
 ├── MAIN_AGENT_DIRECTIVE.md
 ├── PLAN_BUILDER.md
 ├── DISCOVERY_QUESTIONNAIRE.md
@@ -43,7 +48,8 @@ Main-docs/
 │   ├── RBAC_SECURITY_RULES.md
 │   └── TESTING_AND_VERIFICATION.md
 ├── modules/                       # Feature and subsystem specifications
-└── docs/superpowers/              # Design/plan artifacts from the documentation project
+├── tests/                         # Framework and audit regression tests
+└── .github/workflows/             # CI validation and verification
 ```
 
 > **Single source of truth:** All visual-design rules and component/animation guidance now live in `design-system/`. `rules/` is reserved for engineering, security, planning, payment, and verification standards. Start with [`design-system/README.md`](./design-system/README.md). A few machine-local reference images were not present in the supplied ZIP; see [`design-system/assets/MISSING_REFERENCE_ASSETS.md`](./design-system/assets/MISSING_REFERENCE_ASSETS.md).

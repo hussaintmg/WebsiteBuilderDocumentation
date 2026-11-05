@@ -270,7 +270,7 @@
 ---
 
 ## 🎯 Verification & Confidence Audit
-- **Total Mapped Files**: 79 files (84 Git tree entries including directories) across 3 directories and root
+- **Total Mapped Files**: 91 files (101 Git tree entries including directories) across 3 directories and root
 - **Verified Files**: 53/53 (100% physically inspected from disk)
 - **Likely Files**: 0
 - **Unknown Files**: 0
@@ -280,7 +280,7 @@
 
 
 ## Verified Repository Inventory (overhaul branch baseline)
-- Git tree contained 84 entries: 79 files and 5 directories at the time this map was refreshed.
+- Git tree contained 101 entries: 91 files and 10 directories at the time this map was refreshed.
 - Runtime scripts are under `scripts/`; there is no `lib/resolve-paths.js` or `bin/website-builder.js`.
 - `package.json` is required for the documented npm command workflow and is restored on the overhaul branch.
 - Treat this map as a navigation aid, not proof that every implementation is current. Re-run `npm test` and `npm run validate:docs` after documentation changes.
@@ -293,3 +293,11 @@
 - `engines/INDEPENDENT_REVIEWER.md`: Separate review role, severity model and evidence-based acceptance.
 - `quality/ANIMATION_QA.md`: Multi-stage motion specification and browser QA checklist.
 - `quality/ACCEPTANCE_CRITERIA.md`: Requirement/evidence ledger and completion gate.
+
+
+### Current Overhaul Additions
+- `engines/`: project intelligence, intent/scope planning and independent review.
+- `quality/`: animation QA and acceptance/evidence ledger.
+- `tests/`: regression tests for the audit engine and execution contract.
+- `.github/workflows/quality.yml`: CI validation, framework tests, audit and CLI smoke checks.
+- `package.json`: restored local CLI/test scripts (no third-party runtime dependencies).
