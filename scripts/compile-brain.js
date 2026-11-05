@@ -5,7 +5,7 @@
  * WEBSITE BUILDER ENGINE — MASTER BRAIN COMPILER
  * ============================================================================
  * 
- * Compiles all 60+ modular specifications, design system files, engineering
+ * Compiles all modular specifications, execution contracts, design system files, engineering
  * rules, and architecture blueprints into a unified, high-density BRAIN.md.
  * 
  * When an AI agent loads BRAIN.md, the ENTIRE framework's intelligence,
@@ -32,6 +32,8 @@ const sections = [
   {
     category: '1. Core Directives & Behavioral Laws',
     files: [
+      'EXECUTION_CONTRACT.md',
+      'SKILL.md',
       'MAIN_AGENT_DIRECTIVE.md',
       'rules/CORE_DIRECTIVE.md',
       'rules/MANDATORY_EXECUTION_CHECKLIST.md',
@@ -107,6 +109,16 @@ const sections = [
       'PLAN_BUILDER.md',
       'DISCOVERY_QUESTIONNAIRE.md'
     ]
+  },
+  {
+    category: '5. Project Intelligence, Scope Planning & Quality Gates',
+    files: [
+      'engines/PROJECT_INTELLIGENCE.md',
+      'engines/INTENT_AND_SCOPE.md',
+      'engines/INDEPENDENT_REVIEWER.md',
+      'quality/ANIMATION_QA.md',
+      'quality/ACCEPTANCE_CRITERIA.md'
+    ]
   }
 ];
 
@@ -124,6 +136,8 @@ let compiledContent = `# 🧠 WEBSITE BUILDER ENGINE — MASTER COMPILED BRAIN
 
 // Build TOC
 let fileCount = 0;
+let ingestedCount = 0;
+const missingFiles = [];
 for (const sec of sections) {
   compiledContent += `### ${sec.category}\n`;
   for (const relFile of sec.files) {
@@ -144,9 +158,11 @@ for (const sec of sections) {
     const fullPath = path.join(rootDir, relFile);
     if (!fs.existsSync(fullPath)) {
       console.warn(`Warning: Missing file ${relFile}`);
+      missingFiles.push(relFile);
       continue;
     }
 
+    ingestedCount++;
     const anchor = relFile.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
     const rawContent = fs.readFileSync(fullPath, 'utf8');
 
@@ -166,6 +182,11 @@ const lineCount = compiledContent.split('\n').length;
 
 console.log(`${bold}${green}✔ Successfully compiled Master Brain!${reset}`);
 console.log(`  Output Path: ${outputFile}`);
-console.log(`  Total Files Ingested: ${fileCount}`);
+console.log(`  Manifest Files: ${fileCount}`);
+console.log(`  Files Actually Ingested: ${ingestedCount}`);
+if (missingFiles.length) {
+  console.error(`Compilation incomplete: ${missingFiles.length} missing source file(s): ${missingFiles.join(', ')}`);
+  process.exitCode = 1;
+}
 console.log(`  Total Size: ${sizeMB} MB (${lineCount} lines)`);
 
