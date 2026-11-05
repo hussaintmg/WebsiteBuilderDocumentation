@@ -25,8 +25,8 @@
   - `rules/CORE_DIRECTIVE.md`: Tier 0 rapid manifest and 10 ironclad architectural laws (< 200 lines).
   - `rules/MANDATORY_EXECUTION_CHECKLIST.md`: 10-step mandatory task execution checklist, scoped test requirements, and anti-premature completion gate.
   - `SKILL_MANIFEST.json`: Progressive loading index mapping topics to targeted documentation files.
-  - `lib/resolve-paths.js`: Cross-platform dynamic path and environment resolver (Claude Code, Gemini, Cursor, CI).
-  - `bin/website-builder.js`: Unified cross-platform CLI runner for audit, scaffold, docs, test, and compile.
+  - `scripts/resolve-paths.js`: Cross-platform dynamic path and environment resolver (Claude Code, Gemini, Cursor, CI).
+  - `scripts/website-builder.js`: Unified cross-platform CLI runner for audit, scaffold, docs, test, and compile.
   - `scripts/load-docs.js`: On-demand targeted documentation loader to eliminate 1.8MB context blowout.
   - `scripts/test-framework.js`: Automated framework testing suite with 30 passing verification checkpoints.
   - `PLAN_BUILDER.md`: Project blueprint generator for `PLAN.md`, `ARCHITECTURE.md`, `RULES.md`, `SPRINTS.md`, and `FILE-MAP.md`.
@@ -270,10 +270,17 @@
 ---
 
 ## 🎯 Verification & Confidence Audit
-- **Total Mapped Files**: 53 files across 3 directories and root
+- **Total Mapped Files**: 79 files (84 Git tree entries including directories) across 3 directories and root
 - **Verified Files**: 53/53 (100% physically inspected from disk)
 - **Likely Files**: 0
 - **Unknown Files**: 0
 - **Source-Code Files Changed**: 0
 - **Application Behavior Altered**: No
 
+
+
+## Verified Repository Inventory (overhaul branch baseline)
+- Git tree contained 84 entries: 79 files and 5 directories at the time this map was refreshed.
+- Runtime scripts are under `scripts/`; there is no `lib/resolve-paths.js` or `bin/website-builder.js`.
+- `package.json` is required for the documented npm command workflow and is restored on the overhaul branch.
+- Treat this map as a navigation aid, not proof that every implementation is current. Re-run `npm test` and `npm run validate:docs` after documentation changes.

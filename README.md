@@ -78,7 +78,7 @@ The agent loads the specific feature guides from `modules/` and executes sprint 
 
 - **The "Design Apna Banana Hai" Law (Original & Bespoke Design)**: Documentation defines architectural and structural mechanics. Agents and developers **MUST craft an original, brand-tailored, state-of-the-art visual identity for every project**—never blindly copy-paste dummy colors, mock cards, or example templates verbatim from docs.
 - **Bespoke Brand Logo & Real Favicon Suite Mandate**: Every project must feature an authentic, high-resolution vector Brand Logo (both full wordmark and compact 32x32 glyph) and a complete real Favicon & PWA Suite (`favicon.ico`, `icon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest`). Zero tolerance for default framework icons (Next.js, Vite, React) or generic unstyled text.
-- **Mandatory Tailwind CSS & Rich Aesthetics**: 100% Tailwind CSS with dual-theme (`dark:`) support, glow shadows, bespoke glassmorphism, and spring animations.
+- **Project-appropriate styling & rich aesthetics**: Project-appropriate styling system with dual-theme (`dark:`) support, glow shadows, bespoke glassmorphism, and spring animations.
 - **Custom Floating Label Inputs (No Placeholders)**: Centered label transitions to top border notch upon focus or entry; First-line textarea alignment; Google Forms style Select.
 - **Fixed Resizable `h-dvh` Sidebar**: Dynamic viewport height (`h-dvh`), smooth drag handle to resize width with `localStorage` memory, and collapse/expand toggle.
 - **Bespoke Typography & Animated Icons**: Expressive fonts (**Neofolio**, **Nexo Kora**, **Bierika**, **OSIRIS**, **Plus Jakarta Sans**, **Outfit**) combined with vector icons (Lucide, FontAwesome, Material) and animated micro-icons (**Lordicon**, **Icons8**, **LottieFlow**, **LottieFiles**).
@@ -99,3 +99,14 @@ The agent loads the specific feature guides from `modules/` and executes sprint 
 
 
 
+
+
+## Execution and Verification Contract
+The skill is architecture-aware: it discovers the existing project's actual framework, package manager, folder conventions and design system before recommending changes. It does not impose Next.js, MongoDB, Tailwind, glassmorphism or a specific animation library on unrelated projects. Read `EXECUTION_CONTRACT.md` for scope control, phased implementation, animation acceptance criteria and evidence-based completion rules.
+
+Run framework self-checks with:
+```sh
+npm test
+npm run validate:docs
+```
+For an application audit, run `npm run audit -- <project-directory>`. The audit reports commands that were not configured or could not be executed as unverified; it never treats missing tests as a pass.

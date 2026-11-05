@@ -1,13 +1,60 @@
 ---
 name: website-builder-engine
-description: Use when planning, architecting, scaffolding, building, retrofitting, modernizing, or modifying full-stack web applications, CMS, dashboards, APIs, or SaaS using Next.js, FastAPI, Node.js, and MongoDB. Enforces complete aesthetic glow-up, motion physics, and 95%+ audit score.
+description: Use when planning, building, debugging, retrofitting, modernizing, or verifying web applications and full-stack projects across existing stacks. Requires architecture-aware discovery, scoped implementation, real verification evidence, and truthful completion reporting.
 ---
 
 # Website Builder & Autonomous Web Engineering Engine (`website-builder-engine`)
 
-> **PURPOSE**: Master production architecture and autonomous engineering engine for building, modernizing, and retrofitting complete, high-performance, non-breaking web applications in a single run. Enforces Rule Zero ("Plan First, Code Second"), bespoke visual branding, root-level `/app` directory standard (Zero `src/` wrapper), polymorphic multi-storage, split-brain payment resilience, 5-pillar low-bandwidth performance, optimistic rapid-click batching, mandatory deep-documentation inspection, and automated 95%+ audit score gates.
+> **PURPOSE**: Master production architecture and autonomous engineering engine for building, modernizing, and retrofitting complete, high-performance, non-breaking web applications in a single run. Enforces Rule Zero ("Plan First, Code Second"), bespoke visual branding, root-level `/app` directory standard (Zero `src/` wrapper), polymorphic multi-storage, split-brain payment resilience, 5-pillar low-bandwidth performance, optimistic rapid-click batching, mandatory deep-documentation inspection, and automated evidence-based acceptance criteria audit score gates.
 
 ---
+
+
+
+## MANDATORY EXECUTION CONTRACT — OVERRIDES LEGACY CONFLICTS
+
+This contract has precedence over older examples, score gates, and stack-specific defaults elsewhere in this skill.
+
+### A. Discover the real project before choosing an architecture
+1. Inspect repository root, all relevant source/configuration files, package manifests and lockfiles, framework entry points, route structure, existing design tokens/components, data models, API boundaries, auth/RBAC, tests, CI and deployment configuration.
+2. Identify the actual framework, language, package manager, runtime, workspace/monorepo boundaries and installed libraries from repository evidence. Do not infer Next.js, MongoDB, Tailwind, Framer Motion, Lucide, a root `/app`, or any other stack component unless the project demonstrates it or the user explicitly requests it.
+3. For large repositories, use a repeatable inventory and targeted file reads. Record what was inspected and what could not be inspected; never claim a complete audit when files were truncated, inaccessible or skipped.
+4. Read only the documentation modules relevant to the request and its discovered dependencies. Load additional modules when implementation reveals a dependency.
+
+### B. Understand intent and control scope
+1. Translate the request into observable outcomes and acceptance criteria before editing.
+2. Classify work as: required, dependency-required, optional recommendation, or unrelated. Implement the first two categories; do not silently expand into unrelated redesigns or rewrites.
+3. Inspect broadly to understand impact, but change only the requested outcome and necessary connected work.
+4. Preserve existing architecture, naming, conventions, working behavior and useful documentation unless a documented reason and migration plan justify a change.
+5. Ask a concise clarification only when a decision materially changes architecture, security, cost, user-visible behavior or irreversible data operations. Otherwise choose the least disruptive evidence-based default and state it.
+
+### C. Plan and implement in safe phases
+1. Establish a baseline: current git status/diff, existing tests, build state and known failures. Never overwrite user changes.
+2. Produce a dependency-aware plan listing affected files, contracts, migration risks, acceptance criteria and verification commands.
+3. Implement the smallest coherent vertical slice, then integrate dependent layers. Keep API, schema, UI, permissions, loading/error/empty states and responsive behavior consistent.
+4. Use existing project libraries and design system before introducing dependencies. Add dependencies only when justified and compatible with the package manager/runtime.
+5. Do not generate placeholder handlers, fake data presented as real, dead controls, TODO-only implementations or success states that are not backed by actual operations.
+6. Preserve backward compatibility where required; use explicit migrations and rollback plans for data/schema changes.
+
+### D. Design and motion must be contextual and complete
+1. Existing brand, visual language, accessibility, platform conventions and user requirements outrank generic aesthetic mandates. Glassmorphism, dark mode, floating labels, sidebars, specific icon libraries and any one animation style are optional unless requested or already part of the product system.
+2. Treat animation documentation as a pattern library, not a requirement to add motion to every control.
+3. For multi-stage motion, specify semantic stages, start/end states, timing, easing, interruption/cancellation behavior, reduced-motion fallback and final layout/data state. Two CSS keyframes can interpolate smoothly; the acceptance criterion is whether the complete intended choreography is present and works, not the number of keyframes.
+4. Verify motion in a real browser when browser tooling is available. Check actual rendered states, clipping/overflow, stacking contexts, responsive layouts, reduced motion and interaction interruption. If browser verification is unavailable, report it as NOT VERIFIED.
+
+### E. Verification is evidence-based; no false passes
+1. Execute the relevant existing test command(s). A test file existing is not evidence that tests passed.
+2. Run the project's actual build, typecheck and lint commands when configured and relevant. Do not substitute a guessed command or install dependencies without authorization/context.
+3. For projects with no test script, report TESTS: NOT CONFIGURED / NOT VERIFIED. Do not mark them passed.
+4. A JavaScript project without TypeScript is NOT APPLICABLE for TypeScript checking, not a TypeScript pass.
+5. Separate PASS, FAIL, NOT RUN, NOT CONFIGURED, NOT APPLICABLE and BLOCKED. Every PASS must include the command/tool, exit status and useful output/evidence.
+6. Compare against the baseline and run focused regression tests for changed behavior. Add tests for new behavior and bug fixes when a test harness exists.
+7. Static regex checks are advisory only. They cannot prove visual quality, runtime correctness, security, API behavior or animation quality.
+8. Do not use a universal percentage threshold as a completion gate. Completion is based on acceptance criteria and evidence for the actual task.
+
+### F. Completion report
+Report: requested outcomes; files changed; important design/architecture decisions; tests/build/typecheck/lint/browser checks with exact status; known failures and pre-existing failures; unverified items and why; migration/deployment steps; and remaining risks.
+Never say "complete", "passed", "production-ready" or "verified" for an item without supporting evidence. If a tool or environment prevents verification, say so plainly and identify the next exact step.
 
 ## 🌐 UNIVERSAL CROSS-PLATFORM PATH RESOLUTION LAW
 
@@ -18,7 +65,7 @@ description: Use when planning, architecting, scaffolding, building, retrofittin
 > - **Cursor / VS Code**: Installed at `~/.cursor/skills/` or cloned in your active workspace.
 > - **Autonomous CLI / CI/CD**: Supported via environment variable `WEBSITE_BUILDER_SKILL_DIR` or the global CLI `npx website-builder`.
 > 
-> The framework automatically resolves its canonical root via `lib/resolve-paths.js`. You may invoke commands using standard relative paths, via the unified CLI `website-builder`, or directly via node:
+> The framework automatically resolves its canonical root via `scripts/resolve-paths.js`. You may invoke commands using standard relative paths, via the unified CLI `website-builder`, or directly via node:
 > - **Audit CLI Runner**: `node scripts/audit-engine.js .` *(or `npx website-builder audit .`)*
 > - **Scaffolding Runner**: `node scripts/scaffold-engine.js .` *(or `npx website-builder scaffold .`)*
 > - **Documentation Loader**: `node scripts/load-docs.js <topic>` *(or `npx website-builder docs <topic>`)*
@@ -74,7 +121,7 @@ Choose your workflow based on the current workspace state:
 │ 1. Run audit-engine.js baseline  │     │ 1. Rule Zero: Discovery Qs   │
 │ 2. Read RETROFIT_ENGINE.md       │     │ 2. Generate /.project/PLAN   │
 │ 3. Upgrade UI, Motion, Security  │     │ 3. Scaffold Root /app & DB   │
-│ 4. Loop until score >= 95%       │     │ 4. Phased Sprints Execution  │
+│ 4. Implement scoped changes and verify each acceptance criterion with evidence       │     │ 4. Phased Sprints Execution  │
 └──────────────────────────────────┘     └──────────────────────────────┘
 ```
 
@@ -155,7 +202,7 @@ Before designing or implementing any subsystem, the agent **MUST read the canoni
 
 | Domain | Capability | Canonical Framework Specification |
 | :--- | :--- | :--- |
-| **Retrofit** | Existing Website Modernization & 95%+ Audit Protocol | [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md) |
+| **Retrofit** | Existing Website Modernization & evidence-based acceptance criteria Audit Protocol | [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md) |
 | **Interactive UI** | Optimistic Rapid-Click Batching (Pagination, Steppers, Slides, Likes) | [`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`](./modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md) |
 | **Performance** | Low-Bandwidth 2G/3G & 5-Pillar Speed (BlurHash LQIP, RSC, SWR) | [`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`](./modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md) |
 | **Storage** | Multi-Storage Polymorphic & Vercel Free Bypass (Presigned, 2MB GridFS) | [`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`](./modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md) |
@@ -196,7 +243,7 @@ Before designing or implementing any subsystem, the agent **MUST read the canoni
 6. **Direct-to-Storage Presigned Uploads**: Bypass Vercel Free plan's 4.5MB limit by streaming large files directly to cloud storage buckets or using 2MB chunked GridFS streaming.
 7. **Low-Bandwidth 5-Pillar Speed**: Auto-transcode uploads to WebP/AVIF with 20-char BlurHash LQIP, stream RSC shells in < 50ms, prune MongoDB listing payloads by 90%, and auto-downgrade heavy 3D/video assets on slow 2G/Save-Data.
 8. **Strict Zero-Demo Security & Inter-Auth Navigation Ergonomics**: All authentication views (`/login`, `/signup`, `/forgot-password`, `/reset-password`) must NEVER include pre-filled demo accounts or "Click to login as Admin/Owner" demo buttons. Form input states must initialize to clean empty strings (`""`). Additionally, ensure full bidirectional navigation ergonomics: `/login` must feature a right-aligned "Forgot password?" link adjacent to the password input label and a bottom-card "Don't have an account? Sign up" link; `/signup` must feature an "Already have an account? Log in" footer link; and password recovery views must feature a "← Back to log in" link per [`modules/AUTH_AND_FACELOCK.md`](./modules/AUTH_AND_FACELOCK.md).
-9. **Autonomous Retrofit & 95%+ Audit Mandate**: When instructed to complete, upgrade, or modernize an existing website, the agent is strictly forbidden from doing partial cosmetic work or stopping prematurely. The agent must execute the 6-stage protocol in [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md), refactor all screens with modern motion physics and glass depth, and verify compliance via `node scripts/audit-engine.js .` (or `npx website-builder audit .`). Completion is only permitted when the audit exits with Code 0 (Score >= 95%).
+9. **Autonomous Retrofit & evidence-based acceptance criteria Audit Mandate**: When instructed to complete, upgrade, or modernize an existing website, the agent is strictly forbidden from doing partial cosmetic work or stopping prematurely. The agent must execute the 6-stage protocol in [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md), refactor all screens with modern motion physics and glass depth, and verify compliance via `node scripts/audit-engine.js .` (or `npx website-builder audit .`). Completion is only permitted when the audit exits with Code 0 (Score >= 95%).
 10. **Screen-Level Genie Trash Bin & Vacuum Deletion Mandate**: In table views, data grids, and card decks, deletions MUST NEVER be restricted to local container divs with `overflow: hidden`. Deleting items MUST be elevated to a fixed screen-level portal overlay (`fixed inset-0 z-[99999]`) using `getBoundingClientRect()` snapshots. The animated Trash Bin MUST rush onto the screen from the right edge with kinetic spring physics (`x: 260 -> 0`), its motorized lid MUST swing open (`rotate: -55deg`), and deleting items MUST be sucked into the glowing can aperture via a 3D Genie vacuum deform (`scaleX: 0.12, rotateX: 65deg`). The lid MUST slam shut with elastic bounce, and remaining table rows MUST glide up smoothly via Framer Motion `layout` FLIP animations per [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
 11. **Task-Specific In-Flight Button Animations Mandate (Zero Generic Spinners)**: Generic circular loading spinners (`animate-spin` borders) on action buttons are strictly forbidden across all public pages, dashboard tables, and modal dialogs. Every interactive action button triggering an asynchronous API operation MUST display a task-specific vector micro-animation inside its icon frame during network transit ($T_{\text{api}}$). For deletion, the button MUST display the in-button dustbin loop (bin glides in from right, lid pops open, document drops in, lid snaps shut, bin departs left; repeats smoothly until API settles). For orders/dispatch, it MUST display a delivery truck driving along an animated road with spinning tyres ($\omega = 360^\circ$), moving dashed road strip, and trailing tyre dust lines. For live synchronization/refresh, it MUST display a communications tower with an apex blinking beacon, radiating RF wave arcs, and an animated live pulsing status badge with audio equalizer bars. Toast notifications MUST be strictly deferred until the full animation cycle and completion morph finish per [`design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`](./design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md).
 12. **Responsive Mobile Tabs & Dynamic Overflow Mandate**: Tab navigation on mobile devices MUST NEVER force horizontal scrolling (`overflow-x: auto`) or break layouts through uncontrolled wrapping. All tab components MUST dynamically compute available container width via `ResizeObserver`, retain visible tabs that cleanly fit, and automatically collapse overflow tabs into an Apple-inspired `[More ▼]` glass dropdown menu. The active tab must always be visibly indicated (pinned to visible slot or highlighted on the dropdown trigger) with 60 FPS Framer Motion gliding indicator per [`design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md`](./design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md).
