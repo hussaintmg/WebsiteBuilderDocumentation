@@ -21,7 +21,9 @@ jobs:
         run: npm run validate:docs
       - name: Run framework tests
         run: npm test
-      - name: Run project-aware audit against this repository\n        run: node scripts/audit-engine.js .\n      - name: Verify CLI help and diagnostics
+      - name: Run project-aware audit against this repository
+        run: node scripts/audit-engine.js .
+      - name: Verify CLI help and diagnostics
         run: |
           node scripts/website-builder.js help
           node scripts/website-builder.js info
