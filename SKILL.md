@@ -178,34 +178,15 @@ Once the plan is approved:
 
 ## ⚡ WORKFLOW B: EXISTING PROJECT RETROFIT & MODERNIZATION
 
-> 🛡️ **THE AUTONOMOUS UPGRADE MANDATE**:  
-> When instructed to *"complete this existing website according to the skill"*, *"modernize this project"*, or *"is website ko theek karo"*, you **MUST NOT** exit prematurely after doing 1 or 2 cosmetic edits. You must follow the 6-stage protocol in [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md):
+For an existing repository, follow the architecture-aware process in [Project Intelligence](./engines/PROJECT_INTELLIGENCE.md), [Intent and Scope](./engines/INTENT_AND_SCOPE.md), and [Execution Contract](./EXECUTION_CONTRACT.md).
 
-1. **Run Automated Baseline Audit**:
-   ```bash
-   node scripts/audit-engine.js .
-   # Or via global CLI: node scripts/website-builder.js audit .
-   ```
-2. **Generate Gap Checklist (`.project/RETROFIT_PLAN.md`)**:
-   Record all failing items (missing animations, plain HTML inputs, direct component API calls, demo buttons, missing edge proxy).
-3. **Harmonize Packages**: Install `framer-motion`, `lucide-react`, `clsx`, `tailwind-merge` if missing.
-4. **Execute End-to-End Visual Overhaul Across ALL Pages**:
-   - Wrap page containers with Framer Motion entry transitions (`initial={{ opacity: 0, y: 16 }}`).
-   - Elevate cards and dialogs to frosted glassmorphism (`backdrop-blur-xl bg-neutral-900/60 border border-white/10`).
-   - Add micro-animations (`transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]`) to interactive elements.
-   - Upgrade flat inputs to Floating Label inputs per [`design-system/03_UI_COMPONENTS_LIBRARY.md`](./design-system/03_UI_COMPONENTS_LIBRARY.md).
-   - Implement public mobile bottom bar & dashboard floating menu pill (`"Menu"` / `"Close"`).
-5. **Security & Context Law Retrofit**:
-   - Purge all demo accounts / "Click to login as Admin" backdoor buttons from `/login`, `/signup`, `/forgot-password`.
-   - Add inter-auth navigation links (`"Forgot password?"`, `"Don't have an account? Sign up"`, `"Already have an account? Log in"`).
-   - Move direct page component `fetch`/`axios` calls into dedicated domain Contexts (`/context/`).
-   - Deploy Next.js Edge Middleware (`middleware.ts`).
-6. **Continuous Audit Loop**:
-   - Re-run `audit-engine.js`.
-   - **DO NOT STOP** until the script exits with Code 0 (Score >= 95%).
-   - Verify `npm run build` succeeds with zero errors.
-
----
+1. **Baseline and discover**: inspect git status, actual stack, routes, components, data flow, shared dependencies, current tests and known failures. Preserve existing user changes.
+2. **Define the outcome**: write observable acceptance criteria. Classify work as required, dependency-required, optional or unrelated.
+3. **Build a dependency-aware plan**: list affected files/contracts, migration risks, regression surfaces, exclusions and exact verification commands.
+4. **Implement complete connected behavior**: update the UI, state, API, persistence, permissions and loading/error/empty states needed for the requested outcome. Do not perform an unrelated full redesign.
+5. **Review independently**: inspect the complete diff for scope creep, security gaps, duplicate logic and regressions.
+6. **Verify with evidence**: execute relevant project-native tests, build, typecheck, lint and browser checks where configured and applicable. Missing commands are NOT CONFIGURED, never PASS.
+7. **Report honestly**: list changed files, exact evidence, pre-existing failures, unverified items and operational steps. Never use a universal 95% score as a completion gate.
 
 ## 📚 Master Modular Subsystems Library
 
@@ -244,17 +225,17 @@ Before designing or implementing any subsystem, the agent **MUST read the canoni
 
 ---
 
-## ⚡ Non-Negotiable Engineering Guardrails
+## ⚡ Engineering Guardrails (Apply When Relevant)
 
-1. **The Zero-Regression & Anti-Bloat Law ("Cheezain Tore Baghair Kaam Karna")**: Never modify existing working code blindly. Always trace imports, models, and routes first. Additive-only changes; never rename/delete existing exports without migration. Strictly forbid duplicate utility functions or redundant npm packages (`fetch` vs `axios`, `date-fns` vs `moment`).
-2. **The Root-Level `/app` Directory Standard (Zero `src/` Wrapper)**: Next.js App Router must live directly at `<root>/app/`. No `src/` folder.
-3. **Optimistic Rapid-Click Batching Mandate**: High-frequency interactive controls (pagination, cart `+`/`-`, slide carousel, likes, sorting) MUST use `useRapidClickBatcher` with 300ms settling debounce, instant 0ms optimistic UI updates, and `AbortController` cancellation. Never freeze or disable buttons on the first click.
-4. **Strict Zero-Leak Feature Flagging**: When a feature is toggled OFF, it must completely disappear from the UI with zero disabled buttons or teaser menus. Direct URL visits yield a clean 404 Not Found.
-5. **Inquire-Before-Charge Payments**: Never double-charge a user on network timeouts. Query bank Status API before creating secondary charges.
-6. **Direct-to-Storage Presigned Uploads**: Bypass Vercel Free plan's 4.5MB limit by streaming large files directly to cloud storage buckets or using 2MB chunked GridFS streaming.
-7. **Low-Bandwidth 5-Pillar Speed**: Auto-transcode uploads to WebP/AVIF with 20-char BlurHash LQIP, stream RSC shells in < 50ms, prune MongoDB listing payloads by 90%, and auto-downgrade heavy 3D/video assets on slow 2G/Save-Data.
-8. **Strict Zero-Demo Security & Inter-Auth Navigation Ergonomics**: All authentication views (`/login`, `/signup`, `/forgot-password`, `/reset-password`) must NEVER include pre-filled demo accounts or "Click to login as Admin/Owner" demo buttons. Form input states must initialize to clean empty strings (`""`). Additionally, ensure full bidirectional navigation ergonomics: `/login` must feature a right-aligned "Forgot password?" link adjacent to the password input label and a bottom-card "Don't have an account? Sign up" link; `/signup` must feature an "Already have an account? Log in" footer link; and password recovery views must feature a "← Back to log in" link per [`modules/AUTH_AND_FACELOCK.md`](./modules/AUTH_AND_FACELOCK.md).
-9. **Autonomous Retrofit & evidence-based acceptance criteria Audit Mandate**: When instructed to complete, upgrade, or modernize an existing website, the agent is strictly forbidden from doing partial cosmetic work or stopping prematurely. The agent must execute the 6-stage protocol in [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md), refactor all screens with modern motion physics and glass depth, and verify compliance via `node scripts/audit-engine.js .` (or `node scripts/website-builder.js audit .`). Completion is only permitted when the audit exits with Code 0 (Score >= 95%).
-10. **Screen-Level Genie Trash Bin & Vacuum Deletion Mandate**: In table views, data grids, and card decks, deletions MUST NEVER be restricted to local container divs with `overflow: hidden`. Deleting items MUST be elevated to a fixed screen-level portal overlay (`fixed inset-0 z-[99999]`) using `getBoundingClientRect()` snapshots. The animated Trash Bin MUST rush onto the screen from the right edge with kinetic spring physics (`x: 260 -> 0`), its motorized lid MUST swing open (`rotate: -55deg`), and deleting items MUST be sucked into the glowing can aperture via a 3D Genie vacuum deform (`scaleX: 0.12, rotateX: 65deg`). The lid MUST slam shut with elastic bounce, and remaining table rows MUST glide up smoothly via Framer Motion `layout` FLIP animations per [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md).
-11. **Task-Specific In-Flight Button Animations Mandate (Zero Generic Spinners)**: Generic circular loading spinners (`animate-spin` borders) on action buttons are strictly forbidden across all public pages, dashboard tables, and modal dialogs. Every interactive action button triggering an asynchronous API operation MUST display a task-specific vector micro-animation inside its icon frame during network transit ($T_{\text{api}}$). For deletion, the button MUST display the in-button dustbin loop (bin glides in from right, lid pops open, document drops in, lid snaps shut, bin departs left; repeats smoothly until API settles). For orders/dispatch, it MUST display a delivery truck driving along an animated road with spinning tyres ($\omega = 360^\circ$), moving dashed road strip, and trailing tyre dust lines. For live synchronization/refresh, it MUST display a communications tower with an apex blinking beacon, radiating RF wave arcs, and an animated live pulsing status badge with audio equalizer bars. Toast notifications MUST be strictly deferred until the full animation cycle and completion morph finish per [`design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`](./design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md).
-12. **Responsive Mobile Tabs & Dynamic Overflow Mandate**: Tab navigation on mobile devices MUST NEVER force horizontal scrolling (`overflow-x: auto`) or break layouts through uncontrolled wrapping. All tab components MUST dynamically compute available container width via `ResizeObserver`, retain visible tabs that cleanly fit, and automatically collapse overflow tabs into an Apple-inspired `[More ▼]` glass dropdown menu. The active tab must always be visibly indicated (pinned to visible slot or highlighted on the dropdown trigger) with 60 FPS Framer Motion gliding indicator per [`design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md`](./design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md).
+1. **Preserve the existing project**: trace imports, consumers, models and routes before changing shared code. Keep unrelated working behavior intact.
+2. **Architecture is evidence-driven**: root `/app`, MongoDB, Tailwind, React Context, middleware, Framer Motion and named packages are used only when the project actually uses them or the user requests them.
+3. **Security is server-enforced**: enforce authorization, tenant isolation, validation and secrets handling at trusted server boundaries. Client-side hiding is not authorization.
+4. **Data consistency matters**: use transactions, idempotency, concurrency controls and migration/rollback strategies when the domain requires them.
+5. **Design patterns are optional references**: dark mode, glass surfaces, floating labels, mobile navigation patterns, Genie deletion and task-specific button animations are selected according to the existing product design and user request. Do not add every catalogue item to every project.
+6. **Motion must match the task**: use [Animation QA](./quality/ANIMATION_QA.md) for meaningful motion changes. Include full choreography, interruption, failure, reduced-motion and final data-state behavior.
+7. **Performance must be measured**: optimize relevant bottlenecks and network constraints; do not add infrastructure or dependencies without evidence.
+8. **Feature flags and payment safeguards**: implement only when the product has those systems or the user requests them. Protect payment and licensing operations on the server.
+9. **Auth UX and demo safety**: when auth screens are in scope, keep production credentials out of UI and ensure recovery/navigation flows match the actual product.
+10. **Responsive behavior**: test the layouts and interactions relevant to the changed pages and target viewport range.
+11. **No false completion**: use the evidence statuses in [Acceptance Criteria](./quality/ACCEPTANCE_CRITERIA.md). A score or static scan cannot substitute for actual acceptance evidence.
+
