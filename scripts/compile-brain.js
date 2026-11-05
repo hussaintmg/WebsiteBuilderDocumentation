@@ -34,6 +34,7 @@ const sections = [
     files: [
       'EXECUTION_CONTRACT.md',
       'SKILL.md',
+      'MASTER_SUMMONING_PROMPT.md',
       'MAIN_AGENT_DIRECTIVE.md',
       'rules/CORE_DIRECTIVE.md',
       'rules/MANDATORY_EXECUTION_CHECKLIST.md',

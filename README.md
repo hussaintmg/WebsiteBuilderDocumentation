@@ -108,6 +108,8 @@ The agent loads the specific feature guides from `modules/` and executes sprint 
 
 
 ## Execution and Verification Contract
+
+For a copy-ready agent instruction, see [MASTER_SUMMONING_PROMPT.md](./MASTER_SUMMONING_PROMPT.md). Existing-project work should follow [the retrofit engine](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md).
 The skill is architecture-aware: it discovers the existing project's actual framework, package manager, folder conventions and design system before recommending changes. It does not impose Next.js, MongoDB, Tailwind, glassmorphism or a specific animation library on unrelated projects. Read `EXECUTION_CONTRACT.md` for scope control, phased implementation, animation acceptance criteria and evidence-based completion rules.
 
 Run framework self-checks with:
