@@ -116,3 +116,7 @@ npm test
 npm run validate:docs
 ```
 For an application audit, run `npm run audit -- <project-directory>`. The audit reports commands that were not configured or could not be executed as unverified; it never treats missing tests as a pass.
+
+
+### Safe scaffolding
+The scaffold CLI is read-only by default. Run `node scripts/website-builder.js scaffold <project-dir>` to preview the proposed files. Add `--apply` only after reviewing the plan. Existing files are skipped by default; `--force` requires `--apply` and creates timestamped backups before overwriting. The scaffold does not install packages or mutate package.json and is limited to projects that declare the React/Tailwind dependencies it uses.

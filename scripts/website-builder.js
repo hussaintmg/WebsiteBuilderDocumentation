@@ -42,7 +42,7 @@ Usage: website-builder <command> [options]
 
 Commands:
   audit [dir]       Run an architecture-aware evidence audit on a project
-  scaffold [dir]    Auto-scaffold core utilities, hooks, portals, and contexts
+  scaffold [dir]    Preview/apply guarded React + Tailwind helper files
   docs <topic>      Load targeted documentation without context blowout
   compile           Recompile all modular specs into BRAIN.md
   test              Run automated framework tests & verification

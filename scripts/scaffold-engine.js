@@ -16,7 +16,7 @@
  * 6. components/GlassCard.tsx (Obsidian dark glassmorphic card container)
  * 7. lib/safe-storage.ts (Multi-tier unified storage engine: local, buffer, supabase, vercel)
  * 8. context/AppContext.tsx (Context law single-source-of-truth master provider)
- * 9. Audit and update package.json for required dependencies
+ * 9. Check required declared dependencies without mutating package.json
  * 
  * Usage:
  *   node scaffold-engine.js [project-directory]
