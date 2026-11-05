@@ -21,15 +21,15 @@ test('missing package/test configuration is explicitly unverified, not a pass', 
   const dir = fixture(null);
   const result = run(dir);
   assert.equal(result.status, 0);
-  assert.match(result.stdout, /Automated tests.*NOT CONFIGURED/);
-  assert.doesNotMatch(result.stdout, /Automated tests.*PASS/);
+  assert.match(result.stdout, Automated tests.*NOT CONFIGURED);
+  assert.doesNotMatch(result.stdout, /\[PASS\] Automated tests/);
 });
 
 test('a configured failing test script is executed and fails the audit', () => {
   const dir = fixture({ scripts: { test: "node -e 'process.exit(7)'" } });
   const result = run(dir);
   assert.equal(result.status, 1);
-  assert.match(result.stdout, /Automated tests.*FAIL/);
+  assert.match(result.stdout, /\[FAIL\] Automated tests/);
   assert.match(result.stdout, /Exit code 7/);
 });
 
