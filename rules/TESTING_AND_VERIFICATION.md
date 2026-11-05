@@ -23,7 +23,7 @@ A test file's existence is not test execution. A JavaScript project without Type
 ## 🏛️ 1. Executive Mandate & Universal Verification Lifecycle
 
 ### 1.1 Scope of Obligation
-Every single file operation within the codebase—whether **creating**, **editing**, or **deleting** a Page, API Route, Utility Function, Database Model, React Context, Custom Hook, Component, or Configuration file—triggers this mandatory verification lifecycle. No change is too small to bypass this protocol.
+Select verification tiers according to the risk and behavior changed. A database mutation, authorization change, UI animation and documentation typo require different evidence. Do not run irrelevant tiers merely to satisfy a universal checklist; record NOT APPLICABLE with a reason.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
@@ -39,7 +39,7 @@ Every single file operation within the codebase—whether **creating**, **editin
 │    - Audit downstream dependents; ensure zero side-effect breakage                      │
 ├────────────────────────────────────────────────────────────────────────────────────────┤
 │ 2. TIER 1: STATIC COMPILATION, TYPE SAFETY & STRICT BUILD GATE                         │
-│    - `npx tsc --noEmit` & `npm run build` (Exit Code: 0, Zero TS Errors)               │
+│    - `the project's configured typecheck and build commands` (Exit Code: 0, Zero TS Errors)               │
 │    - Backend linting & type checks (`ruff check .`, `pyright`, `mypy`)                 │
 ├────────────────────────────────────────────────────────────────────────────────────────┤
 │ 3. TIER 2: ADVERSARIAL "BRAINLESS USER" DESTRUCTION TESTING (CHAOS MONKEY)             │
@@ -99,7 +99,7 @@ Every single file operation within the codebase—whether **creating**, **editin
 
 ### 🔍 2.1 Tier 1: Static Compilation, Type Safety & Strict Build Gate
 
-Before any browser testing or pull request creation, static compilation must pass completely.
+When a project has a configured static compiler/build, run relevant static checks before final browser acceptance and pull-request review. If a command is absent, report NOT CONFIGURED; do not invent a passing result.
 
 #### Mandatory Checks:
 1. **Frontend TypeScript Compilation**:
@@ -537,7 +537,7 @@ Whenever an agent or developer operates on a file, follow this exact matrix:
 1. **Check for Existing Modules / Packages**: Verify that an existing utility or library does not already perform this task.
 2. **Context Alignment**: If creating a new page or domain feature, ensure it consumes its domain React Context (`models/` -> `context/`).
 3. **Step-by-Step Algorithmic Code Writing**: Write code line-by-line with explicit purpose.
-4. **Compile Check**: Run `npx tsc --noEmit` to confirm zero type errors.
+4. **Compile Check**: Run the configured typecheck command when the project uses TypeScript and a checker is available.
 5. **Adversarial Chaos Testing**: Fuzz the new file's exports with invalid types, nulls, and edge cases.
 6. **Responsive & Theme Test**: Verify appearance across light/dark themes and mobile/desktop viewports.
 7. **Document in Sprints**: Record test commands and outputs in `SPRINTS.md`.
@@ -548,7 +548,7 @@ Whenever an agent or developer operates on a file, follow this exact matrix:
 3. **Run Regression Tests**: Run existing test suites to confirm no existing functionality broke.
 4. **Adversarial Edge Case Test**: Test newly added parameters or branches with invalid types and nulls.
 5. **Verify Single Source of Truth**: Confirm that state updates properly propagate to Context and reactive UI.
-6. **Compile Check**: Run `npm run build` with exit code `0`.
+6. **Compile Check**: Run the configured production build command, if one exists.
 
 ### 4.3 When Deleting a File
 1. **Complete Codebase Grep**:
@@ -558,7 +558,7 @@ Whenever an agent or developer operates on a file, follow this exact matrix:
    ```
 2. **Clean All Imports**: Remove or refactor every import statement referencing the deleted file across all files.
 3. **Clean Route Registries**: Remove route from Next.js navigation menus, sidebar configs, and middleware route matchers.
-4. **Compile Check**: Run `npx tsc --noEmit` and `npm run build` to prove zero dangling references or build breaks.
+4. **Compile Check**: Run the configured typecheck and build commands, when applicable, to check for dangling references or build breaks.
 
 ---
 
