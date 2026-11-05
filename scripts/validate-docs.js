@@ -38,7 +38,7 @@ function walk(dir) {
   }
 }
 walk(root);
-for (const full of files) {
+for (const full of files) {\n  // BRAIN.md is a compiled concatenation of source documents; its relative links\n  // intentionally refer to the original module locations, not BRAIN.md's root.\n  if (path.basename(full) === 'BRAIN.md') continue;
   const rel = path.relative(root, full).replace(/\\/g, '/');
   const content = fs.readFileSync(full, 'utf8');
   const linkPattern = /!?\[[^\]]*\]\(([^)]+)\)/g;
