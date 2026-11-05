@@ -1124,9 +1124,9 @@ export function ResponsiveTabs<T extends string = string>({
     </div>
   );
 }
-\`;
+`;
 
-log(\`\${colors.bold}Step 1: Writing Core Standard Files...\${colors.reset}\`);
+log(`${colors.bold}Step 1: Writing Core Standard Files...${colors.reset}`);
 safeWrite('lib/utils.ts', UTILS_TS);
 safeWrite('hooks/useRapidClickBatcher.ts', RAPID_CLICK_BATCHER_TS);
 safeWrite('hooks/useGenieTrashDelete.ts', USE_GENIE_TRASH_DELETE_TS);
