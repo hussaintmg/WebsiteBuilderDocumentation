@@ -15,6 +15,15 @@
 - Define acceptance criteria and execute relevant tests/build/typecheck/lint/browser checks. Missing test configuration is **NOT CONFIGURED / NOT VERIFIED**, never PASS.
 - Do not use a 95% score or static regex audit as proof of completion. Completion requires evidence for the actual requested outcomes.
 
+## Required Engines for Every Meaningful Task
+
+After reading [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md), use the following guides as relevant:
+- [Project Intelligence](./engines/PROJECT_INTELLIGENCE.md) — discover actual stack, routes, dependencies and data flow.
+- [Intent and Scope](./engines/INTENT_AND_SCOPE.md) — acceptance criteria, scope boundaries and implementation phases.
+- [Independent Reviewer](./engines/INDEPENDENT_REVIEWER.md) — review the diff separately from implementation.
+- [Acceptance Criteria](./quality/ACCEPTANCE_CRITERIA.md) — maintain requirement-to-evidence traceability.
+- [Animation QA](./quality/ANIMATION_QA.md) — verify full motion choreography in browser when motion changes.
+
 ## 🛑 Rule Zero: The Absolute Prerequisite
 
 ```

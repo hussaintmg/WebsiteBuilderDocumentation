@@ -98,6 +98,17 @@ Never say "complete", "passed", "production-ready" or "verified" for an item wit
 
 ---
 
+## Project Intelligence, Scope and Independent Review
+
+Before implementing a task, use:
+- [Project Intelligence Engine](./engines/PROJECT_INTELLIGENCE.md) to discover the actual architecture and trace the relevant dependency graph.
+- [Intent and Scope Engine](./engines/INTENT_AND_SCOPE.md) to turn the request into acceptance criteria and prevent unrelated work.
+- [Independent Reviewer](./engines/INDEPENDENT_REVIEWER.md) to inspect the final diff and evidence.
+- [Acceptance Criteria Ledger](./quality/ACCEPTANCE_CRITERIA.md) for task-specific verification.
+- [Animation QA](./quality/ANIMATION_QA.md) whenever the task changes meaningful motion.
+
+These are required workflow guides; their instructions remain architecture-aware and do not force a particular stack or visual style.
+
 ## 🧭 DUAL WORKFLOW PROTOCOL: GREENFIELD VS EXISTING RETROFIT
 
 Choose your workflow based on the current workspace state:

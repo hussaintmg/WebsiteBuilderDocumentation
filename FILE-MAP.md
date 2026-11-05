@@ -284,3 +284,12 @@
 - Runtime scripts are under `scripts/`; there is no `lib/resolve-paths.js` or `bin/website-builder.js`.
 - `package.json` is required for the documented npm command workflow and is restored on the overhaul branch.
 - Treat this map as a navigation aid, not proof that every implementation is current. Re-run `npm test` and `npm run validate:docs` after documentation changes.
+
+
+## New Execution and Quality Engines
+- `EXECUTION_CONTRACT.md`: Highest-precedence architecture-aware task lifecycle and evidence rules.
+- `engines/PROJECT_INTELLIGENCE.md`: Repository reconnaissance, architecture mapping and dependency tracing.
+- `engines/INTENT_AND_SCOPE.md`: Outcome definition, scope classification and phased plan format.
+- `engines/INDEPENDENT_REVIEWER.md`: Separate review role, severity model and evidence-based acceptance.
+- `quality/ANIMATION_QA.md`: Multi-stage motion specification and browser QA checklist.
+- `quality/ACCEPTANCE_CRITERIA.md`: Requirement/evidence ledger and completion gate.

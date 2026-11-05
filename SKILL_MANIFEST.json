@@ -16,7 +16,9 @@
       "mandatoryFiles": [
         "EXECUTION_CONTRACT.md",
         "rules/CORE_DIRECTIVE.md",
-        "rules/MANDATORY_EXECUTION_CHECKLIST.md"
+        "rules/MANDATORY_EXECUTION_CHECKLIST.md",
+        "engines/PROJECT_INTELLIGENCE.md",
+        "engines/INTENT_AND_SCOPE.md"
       ]
     },
     "tier1_foundation_and_scaffolding": {
@@ -148,6 +150,27 @@
         "carousel-3d": [
           "design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md",
           "design-system/09_IMPLEMENTATION_RECIPES.md"
+        ],
+        "project-discovery": [
+          "engines/PROJECT_INTELLIGENCE.md",
+          "EXECUTION_CONTRACT.md"
+        ],
+        "scope-planning": [
+          "engines/INTENT_AND_SCOPE.md",
+          "PLAN_BUILDER.md"
+        ],
+        "independent-review": [
+          "engines/INDEPENDENT_REVIEWER.md",
+          "quality/ACCEPTANCE_CRITERIA.md"
+        ],
+        "animation-qa": [
+          "quality/ANIMATION_QA.md",
+          "design-system/05_ANIMATIONS_CATALOGUE.md"
+        ],
+        "completion-gate": [
+          "quality/ACCEPTANCE_CRITERIA.md",
+          "engines/INDEPENDENT_REVIEWER.md",
+          "EXECUTION_CONTRACT.md"
         ]
       }
     },
