@@ -94,7 +94,7 @@ Never say "complete", "passed", "production-ready" or "verified" for an item wit
 > 1. **Scan the Living Map First**: Always consult [`FILE-MAP.md`](./FILE-MAP.md) or [`SKILL_MANIFEST.json`](./SKILL_MANIFEST.json) to locate the exact module, rule, or design pattern needed.
 > 2. **Read Before Designing or Coding**: You MUST explicitly read the canonical documentation files (`modules/`, `rules/`, `design-system/`) relevant to the user's task before proposing solutions or scaffolding code.
 > 3. **Cite & Link Specific Blueprints**: Explicitly reference the underlying module specification, models, hooks, and component recipes in your plan.
-> 4. **No Generic Fallbacks**: If the user asks for pagination, cart steppers, modals, auth, or storage, you MUST use the engine's canonical implementations (`useRapidClickBatcher`, `AppleGenieModal`, `useResilientPayment`, `useMultiStorageUpload`, `UnifiedMedia`, `useNetworkQuality`), NEVER generic un-optimized placeholders.
+> 4. **Reuse With Architectural Fit**: When a canonical implementation matches the detected stack, existing design system and accepted scope, prefer it over duplicating logic. If it does not fit, use the project's native abstraction; never force a library, component or pattern simply because it appears in this documentation.
 
 ---
 

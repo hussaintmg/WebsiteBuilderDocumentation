@@ -110,7 +110,7 @@
 - **Functionality**: Production-ready enterprise specifications for orders, CMS, auth, real-time chat, leads, blogs, settings, optimistic rapid-click batching, and automated codebase retrofit.
 - **Confidence**: Verified
 - **Primary Files**:
-  - `scripts/audit-engine.js`: Standalone 30+ check compliance CLI; scores 0-100% and blocks completion if < 95%.
+  - `scripts/audit-engine.js`: Architecture-aware evidence runner; executes configured test/build/typecheck/lint scripts and reports missing checks as NOT CONFIGURED. No universal score gate.
   - `modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`: 6-stage end-to-end modernization protocol for existing websites.
   - `modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`: 0ms optimistic UI updates, 300ms settling debounce, AbortController cancellation for pagination, cart steppers, slides, and likes.
   - `modules/ORDER_SLIDE_WORKFLOW.md`: Master order table + 1-by-1 slide carousel review workflow.

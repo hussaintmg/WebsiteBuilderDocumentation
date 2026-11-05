@@ -1,4 +1,12 @@
 #!/usr/bin/env node
+'use strict';
+
+// ARCHIVED LEGACY IMPLEMENTATION — intentionally disabled.
+// This version contains heuristic score gates and false-pass behavior.
+// Use scripts/audit-engine.js instead. The historical source is retained below
+// for reference only and must never be executed as a verification result.
+console.error('Deprecated legacy audit engine: use scripts/audit-engine.js. No audit was run.');
+process.exit(2);
 
 /**
  * ============================================================================
