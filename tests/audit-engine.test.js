@@ -21,7 +21,7 @@ test('missing package/test configuration is explicitly unverified, not a pass', 
   const dir = fixture(null);
   const result = run(dir);
   assert.equal(result.status, 0);
-  assert.match(result.stdout, /\\[NOT CONFIGURED\\] Automated tests/);
+  assert.match(result.stdout, /\[NOT CONFIGURED\] Automated tests/);
   assert.doesNotMatch(result.stdout, /\[PASS\] Automated tests/);
 });
 
@@ -37,6 +37,6 @@ test('a configured passing test script is actually executed', () => {
   const dir = fixture({ scripts: { test: "node -e \"console.log('fixture test ran')\"" } });
   const result = run(dir);
   assert.equal(result.status, 0);
-  assert.match(result.stdout, /\\[PASS\\] Automated tests/);
+  assert.match(result.stdout, /\[PASS\] Automated tests/);
   assert.match(result.stdout, /fixture test ran/);
 });
