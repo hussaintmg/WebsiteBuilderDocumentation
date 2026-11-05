@@ -301,3 +301,5 @@
 - `tests/`: regression tests for the audit engine and execution contract.
 - `.github/workflows/quality.yml`: CI validation, framework tests, audit and CLI smoke checks.
 - `package.json`: restored local CLI/test scripts (no third-party runtime dependencies).
+
+- `BRAIN.md`: Current authoritative execution addendum is placed first; the previous compiled knowledge body is preserved below it. The compiler now includes the new execution and quality engines and exits non-zero if any source file is missing.

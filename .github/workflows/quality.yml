@@ -19,6 +19,8 @@ jobs:
           node-version: 22
       - name: Validate documentation references
         run: npm run validate:docs
+      - name: Compile master brain and verify every source exists
+        run: npm run compile
       - name: Run framework tests
         run: npm test
       - name: Run project-aware audit against this repository
