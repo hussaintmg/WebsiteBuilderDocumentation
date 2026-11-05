@@ -270,7 +270,7 @@
 ---
 
 ## 🎯 Verification & Confidence Audit
-- **Total Mapped Files**: 91 files (101 Git tree entries including directories) across 3 directories and root
+- **Total Mapped Files**: 92 files (102 Git tree entries including directories) across 3 directories and root
 - **Verified Files**: 53/53 (100% physically inspected from disk)
 - **Likely Files**: 0
 - **Unknown Files**: 0
@@ -280,7 +280,7 @@
 
 
 ## Verified Repository Inventory (overhaul branch baseline)
-- Git tree contained 101 entries: 91 files and 10 directories at the time this map was refreshed.
+- Git tree contained 102 entries: 92 files and 10 directories at the time this map was refreshed.
 - Runtime scripts are under `scripts/`; there is no `lib/resolve-paths.js` or `bin/website-builder.js`.
 - `package.json` is required for the documented npm command workflow and is restored on the overhaul branch.
 - Treat this map as a navigation aid, not proof that every implementation is current. Re-run `npm test` and `npm run validate:docs` after documentation changes.
@@ -303,3 +303,5 @@
 - `package.json`: restored local CLI/test scripts (no third-party runtime dependencies).
 
 - `BRAIN.md`: Current authoritative execution addendum is placed first; the previous compiled knowledge body is preserved below it. The compiler now includes the new execution and quality engines and exits non-zero if any source file is missing.
+
+- `tests/scaffold-safety.test.js`: verifies dry-run, explicit apply, forced-overwrite backup and unsupported-project safety.
