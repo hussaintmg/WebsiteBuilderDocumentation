@@ -1,5 +1,7 @@
 # Plan Builder Specification & Generation Engine
 
+> **Applicability:** This is a planning template, not a mandatory architecture. Read [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md) first. The Next.js + MongoDB + Tailwind structure below is an example profile only. For an existing project, preserve its actual stack; for a greenfield project, choose each technology from requirements and trade-offs. Mark irrelevant modules NOT APPLICABLE instead of enabling everything.
+
 > **FOR THE AGENT**: When conducting project onboarding or starting a new build, use this guide to compile the user's interview responses into a concrete, executable project directory (`/.project/`).
 
 ---
@@ -35,13 +37,13 @@ The agent must generate `PLAN.md` using the following standardized layout:
 ## 2. Technical Stack Matrix
 - **Scope**: [Fullstack | Frontend Only | Backend Only | Standalone APIs]
 - **Frontend Framework**: [Next.js App Router | Vite + React | Other]
-- **Styling Engine**: **Tailwind CSS (v3 / v4) - Mandatory**
+- **Styling Engine**: Project-native styling system (Tailwind is one option)
 - **Typography Choice**: [Display: Neofolio / Nexo Kora / Bierika / OSIRIS | Body: Plus Jakarta Sans / Outfit]
 - **Animation Stack**: [Framer Motion + GSAP ScrollTrigger | Three.js (Optional with User Permission)]
 - **Icon Ecosystem**: [Lucide React + Animated Icons (Lordicon, Icons8, LottieFlow, LottieFiles)]
 - **UI Architecture**: [Floating Label Inputs (No Placeholders) | Resizable dvh Sidebar | Public Mobile Bottom Bar with "More" Drawer | Dashboard Floating "Menu"/"Close" Pill | Framer Toasts]
 - **Backend Framework**: [FastAPI (ASGI) | Next.js Serverless Route Handlers | Node Express]
-- **Database & Storage**: **MongoDB (Atlas / Self-Hosted) - Mandatory NoSQL**
+- **Database & Storage**: Database selected from domain, hosting, scale and team requirements
 - **ODM / Query Driver**: **Mongoose (Next.js/Node) | Motor / Beanie (FastAPI Python)**
 - **Authentication**: [NextAuth/Auth.js | Supabase Auth | Custom JWT + Custom AI Face Models]
 - **State Management**: [Zustand | React Query (TanStack) | Context API]
@@ -64,14 +66,14 @@ The agent must generate `PLAN.md` using the following standardized layout:
 | **Dynamic Feature Flags** | [Enabled/Disabled] | Developer/Owner toggle matrix with strict Zero-Leak UI elimination |
 | **Developer Payment Safeguard** | [Enabled/Disabled] | Grace period up to 8th of month, Owner-only banner |
 | **Universal 404 Game Page** | **Mandatory** | Standalone `app/not-found.tsx` with playable HTML5 Canvas arcade mini-game, high score counter & return CTAs |
-| **Root Models & Contexts Architecture** | **Mandatory** | Dedicated root `/models` (1 file per MongoDB model) + root `/context` (1 context per model + 3 global), context-first API encapsulation (Zero direct component API calls), in-place state mutation & single-fetch guarantee |
+| **Models & State/Data Layer** | Conditional | Dedicated root `/models` (1 file per MongoDB model) + root `/context` (1 context per model + 3 global), context-first API encapsulation (Zero direct component API calls), in-place state mutation & single-fetch guarantee |
 | **Backend Scaling & Resilience Engine** | **Mandatory** | 3-Tier Progressive Capacity Matrix, BullMQ 30s Heartbeat Lease Worker Failover, Two-Tier L1/L2 Cache with Redis Pub/Sub Invalidation, Payment Circuit Breaker & Safe Add/Remove Adapter Protocol (`modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`) |
 | **Advanced System Designs & Hyper-Scale Patterns** | [Enabled/Disabled] | 20M Likes Buffer, Hybrid Push/Pull Feeds, Millions-Scale Reminders, Uber H3 Hexagonal Rides with Surge Pricing, CQRS Search, and 20 Production System Designs (`modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md`) |
 | **Payment Idempotency & Reconciliation Engine** | [Enabled/Disabled] | Order-bound idempotency keys, Redis Mutex locking, Inquire-Before-Charge (IBC) timeout recovery, dual webhooks + BullMQ poller reconciliation (`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`) |
 | **Multi-Storage Polymorphic Media Engine** | [Enabled/Disabled] | Heterogeneous storage (Local, Vercel Blob, Supabase, Firebase, S3/R2, GridFS), presigned uploads, 2MB chunked GridFS streaming for Vercel Free plan, polymorphic `<UnifiedMedia />` resolver (`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`) |
-| **Low-Bandwidth & Extreme Performance Engine** | **Mandatory** | 5 Pillars of Low-Bandwidth Speed: Adaptive WebP/AVIF images with BlurHash LQIP, React Server Component streaming (<50ms TTFB), MongoDB projection pruning, IndexedDB offline-first SWR cache, and 80KB JS budget (`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`) |
+| **Low-Bandwidth & Performance** | When required by measured constraints | 5 Pillars of Low-Bandwidth Speed: Adaptive WebP/AVIF images with BlurHash LQIP, React Server Component streaming (<50ms TTFB), MongoDB projection pruning, IndexedDB offline-first SWR cache, and 80KB JS budget (`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`) |
 | **Optimistic Rapid-Click Batching Engine** | **Mandatory** | 0ms local optimistic UI updates with 300ms settling debounce & AbortController cancellation for pagination, cart quantity steppers, slide carousels, like bursts, and tri-state sorting (`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`) |
-| **Existing Project Retrofit Engine** | [Enabled/Disabled] | 6-stage autonomous retrofit, packages harmonization, motion physics, glass depth, and 95%+ audit gate (`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`) |
+| **Existing Project Retrofit Engine** | [Enabled/Disabled] | scoped, dependency-aware retrofit with independent review and evidence-based verification (`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`) |
 | **Screen-Level Genie Trash Bin Deletion** | [Enabled/Disabled] | Kinetic right-edge bin entrance, screen portal elevation via getBoundingClientRect, 3D vacuum siphon drop, and layout glide re-flow (`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`) |
 
 ## 4. Acceptance Criteria & Success Metrics
@@ -80,7 +82,7 @@ The agent must generate `PLAN.md` using the following standardized layout:
 - [ ] Strict role-based permissions prevent unauthorized page visits and button actions.
 - [ ] All forms feature robust validation with clear, responsive error toasts.
 - [ ] Zero layout shifts, high aesthetic standard (curated typography, dark mode, smooth transitions).
-- [ ] Codebase achieves >= 95% compliance score on the automated audit engine (`node <skill-path>/scripts/audit-engine.js .`).
+- [ ] Every required acceptance criterion has fresh evidence; unconfigured checks are explicitly marked NOT CONFIGURED.
 - [ ] Production build passes with zero lint, type, or runtime errors.
 ```
 
@@ -144,7 +146,7 @@ graph TD
 └── tsconfig.json                      # Strict TypeScript configuration with root alias paths ("@/*": ["./*"])
 ```
 
-## 3. Database Schema Blueprint (MongoDB / NoSQL)
+## 3. Optional Database Schema Blueprint (MongoDB / NoSQL Example)
 Define core document collections (users, companies/tenants, roles, orders, cms_posts, audit_logs).
 Include BSON ObjectIds, tenant scoping (`companyId`), compound indexes, and validation rules.
 

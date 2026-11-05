@@ -1,5 +1,7 @@
 # Master Discovery Questionnaire ("Kiya Puchna Hai")
 
+> **Applicability and precedence:** Read [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md) first. This questionnaire is for greenfield discovery or material product decisions. For an existing repository, inspect its real architecture before asking technology questions. All options are prompts, not defaults; no stack, role, integration, design pattern or module is selected until the user confirms it. Skip irrelevant questions and mark them NOT APPLICABLE.
+
 > **FOR THE AGENT**: When onboarding a user or starting any new project, use this questionnaire to interview the user.  
 > Ask questions in **focused batches** (Phase 1, then Phase 2, etc.) rather than sending the entire document at once. Always highlight the **(Recommended)** option.
 
@@ -19,7 +21,7 @@ What is the scope of this build?
 ### Q1.2: Core Technology Stack & Backend Placement (Backend Kahan Rakhna Hai?)
 > **MANDATORY AGENT REQUIREMENT**: The agent MUST ask the user upfront how they want the backend structured (inside the same Next.js project, as a separate Next.js backend project, as Python FastAPI, or Node.js).
 Which architectural setup do you prefer?
-- [x] **(Recommended Dual Next.js) Next.js Frontend + Dedicated Next.js Backend API (2 Separate Next.js Projects)**:  
+- [ ] **(Recommended Dual Next.js) Next.js Frontend + Dedicated Next.js Backend API (2 Separate Next.js Projects)**:  
   - `frontend/`: Next.js App Router for UI, Layouts, SSR, and Client Components.  
   - `backend/`: Dedicated Next.js project solely hosting `/api` Route Handlers, Database ODM (Mongoose / MongoDB), Background Jobs, and Webhooks.  
   *Best for team separation, independent deployments, and end-to-end TypeScript.*
@@ -43,7 +45,7 @@ How should the backend be hosted?
 ---
 
 ### Q1.4: Project Folder Hierarchy Standard (Root-Level `/app` Mandate)
-> **MANDATORY DIRECTORY RULE**: Framework standard strictly mandates the Next.js App Router directly at project root (`<root>/app/`). Wrapping folders in an unnecessary `src/` wrapper is strictly prohibited.
+> **MANDATORY DIRECTORY RULE**: If Next.js App Router is selected for a greenfield project, choose the root or src/app convention deliberately. For an existing project, preserve its current supported layout.
 Which directory structure should be scaffolded?
 - [x] **(Mandatory Framework Standard) Clean Root-Level `/app` Hierarchy (Zero `src/` Wrapper)**:
   - `<root>/app/`: App Router pages, layouts, and `/api` route handlers directly at root.
@@ -68,7 +70,7 @@ What is the visual personality, vibe, and bespoke color motif of your brand?
 ---
 
 ### Q2.0B: Brand Logo & Real Favicon Suite Style (Logo & Favicon Kesa Chahiye?)
-> **MANDATORY BRANDING RULE**: Leaving framework default favicons (Next.js triangle, Vite bird, React atom) or generic unstyled text for a logo is strictly forbidden. The agent MUST create a bespoke, production-ready SVG brand logo and full favicon suite.
+> **MANDATORY BRANDING RULE**: Leaving framework default favicons (Next.js triangle, Vite bird, React atom) or generic unstyled text for a logo is strictly forbidden. When custom branding is part of the accepted scope, create a bespoke, production-ready SVG logo and appropriate favicon suite.
 Which visual style should be crafted for your brand logo and favicon suite?
 - [x] **(Recommended) High-End Geometric Abstract Mark + Wordmark**:
   - **Full Logo**: Bespoke geometric vector emblem with glowing multi-stop gradient paired with bold typographic wordmark (using display font).
@@ -84,7 +86,7 @@ Which visual style should be crafted for your brand logo and favicon suite?
 ---
 
 ### Q2.1: Styling Framework
-- [x] **(Mandatory) Tailwind CSS (v3 / v4)**  
+- [ ] **(Optional) Tailwind CSS (v3 / v4)**  
   *Tailwind CSS is the official styling engine. Built with `dark:` class dual-theme support, custom glassmorphism utilities, and glow effects.*
 
 ---
@@ -210,7 +212,7 @@ Which auth form ergonomics and security standards must be enforced?
 ---
 
 ### Q3.6: Edge Proxy Route Protection & Unauthorized Access Feedback (Proxy & Protected Routes)
-> **MANDATORY SECURITY PROXY RULE**: Protected routes must be strictly guarded via Next.js Edge Middleware (`middleware.ts`). Unauthorized or unauthenticated visitors must be immediately blocked, redirected to a safe view, and alerted via toast notification ("Aap is page pe nahi ja sakte hain").
+> **MANDATORY SECURITY PROXY RULE**: When Next.js is the chosen framework, use the appropriate server-side route protection mechanism; other frameworks must use their native trusted server middleware. Unauthorized or unauthenticated visitors must be immediately blocked, redirected to a safe view, and alerted via toast notification ("Aap is page pe nahi ja sakte hain").
 Which route protection and proxy behavior should be enforced?
 - [x] **(Recommended Mandatory Standard) Dual-Shield Edge Proxy + Interception Toasts + Fresh Evaluation on Auth**:
   - **Edge Middleware Proxy**: Intercepts every route before server render; blocks unauthorized users at the network edge.
