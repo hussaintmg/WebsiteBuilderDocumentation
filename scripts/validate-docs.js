@@ -27,6 +27,46 @@ if (manifest) {
   for (const ref of refs) if (!exists(ref)) errors.push('Manifest reference missing: ' + ref);
   console.log('Manifest file references checked: ' + refs.size);
 }
+
+const activeDirectives = [
+  'SKILL.md',
+  'MAIN_AGENT_DIRECTIVE.md',
+  'MASTER_SUMMONING_PROMPT.md',
+  'PLAN_BUILDER.md',
+  'DISCOVERY_QUESTIONNAIRE.md',
+  'rules/CORE_DIRECTIVE.md',
+  'rules/MANDATORY_EXECUTION_CHECKLIST.md',
+  'rules/TESTING_AND_VERIFICATION.md',
+  'modules/EXISTING_PROJECT_RETROFIT_ENGINE.md'
+];
+const forbiddenActivePatterns = [
+  { pattern: /(?:compliance\\s+)?score\\s*(?:>=|>|of)\\s*95%/i, label: 'legacy 95% score completion gate' },
+  { pattern: /npx\\s+website-builder/i, label: 'unpublished npx website-builder invocation' },
+  { pattern: /lib\\/resolve-paths\\.js|bin\\/website-builder\\.js/, label: 'stale runtime script path' },
+  { pattern: /Tailwind CSS.{0,35}mandatory/i, label: 'universal Tailwind mandate' },
+  { pattern: /MongoDB.{0,35}mandatory/i, label: 'universal MongoDB mandate' }
+];
+for (const rel of activeDirectives) {
+  if (!exists(rel)) { errors.push('Missing active directive: ' + rel); continue; }
+  const content = fs.readFileSync(path.join(root, rel), 'utf8');
+  for (const rule of forbiddenActivePatterns) {
+    if (rule.pattern.test(content)) errors.push(rel + ' contains ' + rule.label);
+  }
+}
+if (manifest && manifest.tiers && manifest.tiers.tier0_manifest_and_core_law) {
+  const mandatory = manifest.tiers.tier0_manifest_and_core_law.mandatoryFiles || [];
+  const lineBudget = mandatory.reduce((sum, rel) => {
+    if (!exists(rel)) return sum;
+    return sum + fs.readFileSync(path.join(root, rel), 'utf8').split('\\n').length;
+  }, 0);
+  if (lineBudget > 300) errors.push('Tier-0 mandatory context exceeds 300 lines (' + lineBudget + '). Move optional guides to progressive tiers.');
+  else console.log('Tier-0 context budget: PASS (' + lineBudget + '/300 lines).');
+}
+const brainPath = path.join(root, 'BRAIN.md');
+if (!fs.existsSync(brainPath) || !fs.readFileSync(brainPath, 'utf8').startsWith('# CURRENT AUTHORITATIVE EXECUTION ADDENDUM')) {
+  errors.push('BRAIN.md must begin with the current authoritative execution addendum.');
+}
+
 const markdownFiles = [];
 function walk(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
