@@ -26,7 +26,7 @@ test('missing package/test configuration is explicitly unverified, not a pass', 
 });
 
 test('a configured failing test script is executed and fails the audit', () => {
-  const dir = fixture({ scripts: { test: "node -e \\"process.exit(7)\\"" } });
+  const dir = fixture({ scripts: { test: "node -e 'process.exit(7)'" } });
   const result = run(dir);
   assert.equal(result.status, 1);
   assert.match(result.stdout, /Automated tests.*FAIL/);
@@ -34,7 +34,7 @@ test('a configured failing test script is executed and fails the audit', () => {
 });
 
 test('a configured passing test script is actually executed', () => {
-  const dir = fixture({ scripts: { test: "node -e \\"console.log('fixture test ran')\\"" } });
+  const dir = fixture({ scripts: { test: "node -e 'console.log(\\\"fixture test ran\\\")'" } });
   const result = run(dir);
   assert.equal(result.status, 0);
   assert.match(result.stdout, /Automated tests.*PASS/);
