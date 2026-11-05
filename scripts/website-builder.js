@@ -10,7 +10,7 @@
  * 
  * Commands:
  *   website-builder audit [target-dir] [--brain]
- *   website-builder scaffold [target-dir]
+ *   website-builder scaffold [target-dir] [--apply] [--force]
  *   website-builder docs <topic> [--content]
  *   website-builder compile
  *   website-builder test
@@ -31,7 +31,7 @@ function runScript(scriptName, extraArgs = []) {
     cwd: process.cwd(),
     env: process.env
   });
-  process.exit(result.status || 0);
+  process.exit(result.status === null ? 1 : result.status);
 }
 
 function showHelp() {

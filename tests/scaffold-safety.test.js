@@ -7,6 +7,7 @@ const { spawnSync } = require('node:child_process');
 
 const root = path.resolve(__dirname, '..');
 const scaffold = path.join(root, 'scripts', 'scaffold-engine.js');
+const cli = path.join(root, 'scripts', 'website-builder.js');
 const deps = {
   react: '^19.0.0',
   'react-dom': '^19.0.0',
@@ -61,7 +62,7 @@ test('--apply --force backs up existing files before overwriting', () => {
   assert.equal(result.status, 0);
   const backups = fs.readdirSync(path.join(dir, 'lib')).filter(name => name.startsWith('utils.ts.bak-'));
   assert.equal(backups.length, 1);
-  assert.equal(fs.readFileSync(path.join(dir, backups[0]), 'utf8'), 'custom user code\\n');
+  assert.equal(fs.readFileSync(path.join(dir, 'lib', backups[0]), 'utf8'), 'custom user code\\n');
 });
 
 test('unsupported project dependencies stop before any scaffold writes', () => {
@@ -70,4 +71,11 @@ test('unsupported project dependencies stop before any scaffold writes', () => {
   assert.equal(result.status, 2);
   assert.match(result.stderr, /Scaffold not applicable/);
   assert.equal(fs.existsSync(path.join(dir, 'lib', 'utils.ts')), false);
+});
+
+test('unified CLI propagates scaffold failure exit codes', () => {
+  const dir = project();
+  const result = spawnSync(process.execPath, [cli, 'scaffold', dir, '--force'], { encoding: 'utf8', timeout: 15000 });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /--force requires --apply/);
 });
