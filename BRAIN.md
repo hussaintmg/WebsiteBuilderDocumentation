@@ -1,3 +1,1334 @@
+# CURRENT AUTHORITATIVE EXECUTION ADDENDUM — READ FIRST
+
+> This addendum is the current source of truth for agent behavior. It supersedes conflicting historical instructions in the legacy compiled body below. The legacy body is preserved for its useful technical recipes, but its old universal stack, styling, motion and 95% score mandates must not override this addendum.
+>
+> **Mandatory first read:** EXECUTION_CONTRACT.md. Discover the real project architecture, define scoped acceptance criteria, implement only requested/dependency-required work, and verify with fresh evidence. Missing checks are NOT CONFIGURED / NOT VERIFIED, never PASS. Do not force Next.js, MongoDB, Tailwind, React Context, Framer Motion, glassmorphism, Genie animations or any other pattern unless it fits the project or the user requested it.
+
+## Current canonical documents
+
+
+---
+
+## Source: EXECUTION_CONTRACT.md
+
+# Execution Contract
+
+This document defines the non-negotiable runtime behavior of WebsiteBuilderDocumentation when used by a coding agent. It supersedes conflicting legacy examples and generic stack assumptions.
+
+## 1. Repository reconnaissance
+- Establish repository root, git status, uncommitted changes and workspace boundaries.
+- Read package manifests, lockfiles, runtime/configuration files, source entry points, routes, shared components, styles/tokens, models, API contracts, auth/authorization, tests and CI.
+- Build a concise architecture map from observed evidence.
+- Search for existing implementations before creating new abstractions.
+- For large projects, inventory all files and inspect all files in the affected dependency graph. Explicitly disclose files not inspected.
+
+## 2. Outcome and scope
+For every request, define:
+- User-visible outcome.
+- Functional behavior and edge cases.
+- Affected routes/components/API/data/permissions.
+- Required and dependency-required changes.
+- Out-of-scope areas.
+- Acceptance tests and rollback concerns.
+
+Broad inspection does not authorize broad unrelated modification. Keep the existing design language unless a redesign is requested.
+
+## 3. Architecture selection
+The repository is the source of truth. Do not force:
+- Next.js or a root /app layout,
+- MongoDB/Mongoose or any database,
+- Tailwind or plain CSS,
+- React Context or any state library,
+- Framer Motion/GSAP,
+- Lucide or any icon library,
+- glassmorphism, dark mode, floating labels, sidebars or other fixed UI patterns.
+
+Use the project's established stack and conventions. For greenfield work, select a stack only after requirements and constraints are understood.
+
+## 4. Phased execution
+1. Baseline: git status, current test/build health, relevant behavior.
+2. Plan: dependency graph, files, contracts, risks and acceptance criteria.
+3. Implement: smallest coherent vertical slice; preserve interfaces.
+4. Integrate: connect UI, API, persistence, permissions and state.
+5. Review: inspect diff for scope creep, secrets, unsafe operations and regressions.
+6. Verify: execute relevant tests, build, typecheck, lint and browser checks.
+7. Report: evidence, blockers, limitations and deployment/migration steps.
+
+Never overwrite uncommitted user changes. Use migrations for persisted data changes and define rollback where practical.
+
+## 5. Motion acceptance
+A motion spec must describe semantic stages rather than relying on a vague "smooth animation" instruction. For each stage record:
+- Trigger and initial state.
+- Visual object(s) and coordinate/origin relationship.
+- Intermediate stages and timing.
+- Easing/physics and overlap.
+- Final state and data/layout synchronization.
+- Cancellation, rapid repeated input and failure behavior.
+- prefers-reduced-motion behavior.
+
+Browser verification should inspect the actual rendered animation, not only source code. Check mobile viewport, overflow/clipping, z-index/portal behavior, focus, keyboard interaction and reduced motion. If browser access is unavailable, state NOT VERIFIED.
+
+## 6. Verification status vocabulary
+- PASS: command/tool executed and returned successful evidence.
+- FAIL: command/tool executed and returned a failure.
+- NOT CONFIGURED: project has no corresponding command or test harness.
+- NOT RUN: command exists but was not executed.
+- BLOCKED: execution was attempted but environment/tooling prevented it.
+- NOT APPLICABLE: check does not apply to this project.
+
+Missing scripts, missing TypeScript, or test files without execution are never PASS. Do not use arbitrary compliance percentages as a completion threshold.
+
+## 7. Completion report
+Include requested outcomes, files changed, decisions, exact verification commands/status, pre-existing failures, unverified items, known risks and next operational steps.
+
+
+---
+
+## Source: MAIN_AGENT_DIRECTIVE.md
+
+# Main Agent Directive & Autonomous Workflow Engine
+
+> **STATUS: MANDATORY FOR ALL AI AGENTS**  
+> If you are an AI assistant (Antigravity, Claude, ChatGPT, etc.) working on a project using this framework, you MUST read and execute this directive before taking any coding action.
+
+---
+
+## Execution Contract Precedence (Read Before Applying Legacy Rules)
+
+**First read [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md).** It has precedence over any older generic or stack-specific instruction in this repository.
+
+- Discover the target project's actual framework, package manager, architecture, design system and existing conventions before selecting implementation patterns.
+- The root `/app`, MongoDB, Tailwind, React Context, Framer Motion, glassmorphism, dark mode and any named component are not universal requirements. Apply them only when they fit the actual project or the user explicitly requests them.
+- Inspect broadly, but implement only the requested outcome and necessary dependencies. Preserve unrelated working code and user changes.
+- Define acceptance criteria and execute relevant tests/build/typecheck/lint/browser checks. Missing test configuration is **NOT CONFIGURED / NOT VERIFIED**, never PASS.
+- Do not use a 95% score or static regex audit as proof of completion. Completion requires evidence for the actual requested outcomes.
+
+## Required Engines for Every Meaningful Task
+
+After reading [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md), use the following guides as relevant:
+- [Project Intelligence](./engines/PROJECT_INTELLIGENCE.md) — discover actual stack, routes, dependencies and data flow.
+- [Intent and Scope](./engines/INTENT_AND_SCOPE.md) — acceptance criteria, scope boundaries and implementation phases.
+- [Independent Reviewer](./engines/INDEPENDENT_REVIEWER.md) — review the diff separately from implementation.
+- [Acceptance Criteria](./quality/ACCEPTANCE_CRITERIA.md) — maintain requirement-to-evidence traceability.
+- [Animation QA](./quality/ANIMATION_QA.md) — verify full motion choreography in browser when motion changes.
+
+## 🛑 Rule Zero: The Absolute Prerequisite
+
+```
+                     ┌─────────────────────────────┐
+                     │  New User Request Received  │
+                     └──────────────┬──────────────┘
+                                    │
+                                    ▼
+                      /───────────────────────────\
+                     <  Does /.project/PLAN.md     >
+                     <  already exist & approved?  >
+                      \───────────────────────────/
+                                    │
+                    NO              │            YES
+               ┌────────────────────┴───────────────────┐
+               ▼                                        ▼
+┌──────────────────────────────────┐     ┌──────────────────────────────┐
+│ STOP! DO NOT WRITE ANY CODE.     │     │ 1. Read .project/PLAN.md     │
+│ 1. Load DISCOVERY_QUESTIONNAIRE  │     │ 2. Read .project/RULES.md    │
+│ 2. Ask user clarifying questions │     │ 3. Execute current Sprint    │
+│ 3. Generate .project/ plan       │     │ 4. Verify evidence & test    │
+└──────────────────────────────────┘     └──────────────────────────────┘
+```
+
+**Never start scaffolding or writing production code until the user approves the generated plan file!**  
+Doing otherwise results in misaligned architecture, wasted tokens, and rework.
+
+---
+
+## 📋 The 5-Phase Agent Execution Protocol
+
+### Phase 1: Interactive Discovery Interview
+When the user presents an idea or starts a new project:
+1. Open [`DISCOVERY_QUESTIONNAIRE.md`](./DISCOVERY_QUESTIONNAIRE.md).
+2. Ask questions in structured, digestible batches (never overwhelm the user with 50 questions at once; group them logically by Phase: Scope -> UI/UX -> RBAC -> Features -> Safeguards).
+3. **Explicit Backend Placement Inquiry**: The agent **MUST explicitly ask the user upfront** whether they want the backend built:
+   - Inside the same Next.js project (Unified Monolith).
+   - As a dedicated Next.js Backend API project (Dual Next.js: `frontend/` + `backend/`).
+   - As a dedicated Python FastAPI backend.
+   - As a dedicated Node.js/Express backend.
+4. Always suggest recommended defaults based on their workload.
+5. Support the user in their preferred language (English, Urdu, or Roman Urdu).
+
+---
+
+### Phase 2: Project Workspace Initialization
+Once answers are received:
+1. Create a dedicated project configuration directory at the root:
+   - For single-project repos: `/.project/`
+   - For multi-project monorepos: `/projects/<project-name>/`
+2. Generate the following core blueprint files using [`PLAN_BUILDER.md`](./PLAN_BUILDER.md):
+   - `PLAN.md`: Objectives, stack, chosen modules, and scope boundaries.
+   - `ARCHITECTURE.md`: Data models, API contracts, RBAC permissions, and file structure.
+   - `RULES.md`: Design rules extracted from `design-system/` plus connection and security rules selected from `rules/`.
+   - `SPRINTS.md`: Phased task list with clear checkboxes and test gates.
+3. Present the plan summary to the user and request explicit confirmation to proceed.
+
+---
+
+### Phase 3: Scaffolding & Foundation First
+Once the plan is approved:
+1. Follow **Foundation-First rule**:
+   - **Original & Bespoke Design Mandate (Design Apna Banana Hai)**: Documentation code examples and color palettes are technical architecture blueprints—**NEVER copy them verbatim into the project**. The agent must craft an original visual identity, bespoke color palette, tailored card layouts, and custom typography pairing for every single project.
+   - **Bespoke Brand Logo & Complete Favicon Suite (With Canva Refinement Mandate)**: When the product requires custom branding or a PWA, design and integrate an authentic vector Brand Logo (wordmark and compact glyph) and a suitable Favicon/PWA suite (`favicon.ico`, `icon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest`). Leaving default framework favicons or generic unstyled text is strictly prohibited. **Canva Refinement Workflow**: If programmatic SVGs or generated logos/favicons do not meet state-of-the-art standards, developers/agents must leverage Canva to craft, refine, and export clean, high-resolution transparent vector/PNG brand assets.
+   - **Zero-Bar Draggable Modals & Apple Genie Origin-Morph System**: Use the Apple macOS 3D Genie Origin-Morph animation for modals, popup forms, confirmation boxes or dropdowns only when it is requested or fits the established product motion language (unrolls from origin button, funnels back on close while origin button elevates and absorbs). Once open, dialogs are freely draggable via their top padding region with zero extra titlebar and zero grip icons per [`design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`](./design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md).
+   - **Backend-Only Payment Safeguard Enforcement**: All licensing checks and payment verification calls must execute **strictly from the backend server**; the frontend browser must never call the licensing API directly.
+   - Use the project's existing styling system; select **Tailwind CSS** with dual-theme (`dark:`) configuration only if it fits the chosen stack and requirements per [`design-system/DESIGN_ARCHITECTURE.md`](./design-system/DESIGN_ARCHITECTURE.md) and [`design-system/FRONTEND_DESIGN_RULES.md`](./design-system/FRONTEND_DESIGN_RULES.md).
+   - Scaffold only the foundational UI atoms required by the accepted product scope, using existing component and interaction conventions.
+   - Set up the database schema and connection layer per [`rules/BACKEND_CONNECTION_RULES.md`](./rules/BACKEND_CONNECTION_RULES.md).
+   - Set up the environment variables template (`.env.example`).
+2. Scaffold only the necessary components and routes specified in the approved sprint.
+
+---
+
+### Phase 4: Module-Specific Implementation
+Whenever implementing a specific subsystem, the agent **MUST read the corresponding module guide** from the `modules/`, `rules/`, and `design-system/` directories before writing code:
+
+| Subsystem to Implement | Mandatory Module Document to Read |
+| :--- | :--- |
+| Tailwind Design System, Floating Inputs, Resizable Sidebar | [`design-system/DESIGN_ARCHITECTURE.md`](./design-system/DESIGN_ARCHITECTURE.md) & [`design-system/FRONTEND_DESIGN_RULES.md`](./design-system/FRONTEND_DESIGN_RULES.md) |
+| CSS Properties, Gradients, Shadows, Math clamp() & Modern CSS | [`design-system/01_CSS_PROPERTIES_REFERENCE.md`](./design-system/01_CSS_PROPERTIES_REFERENCE.md) |
+| Visual Effects (Glass, Neumorphism, Auroras, Spotlights, Beams) | [`design-system/02_VISUAL_EFFECTS_CATALOGUE.md`](./design-system/02_VISUAL_EFFECTS_CATALOGUE.md) |
+| Production UI Component Library (Buttons, Nav, Forms, Overlays) | [`design-system/03_UI_COMPONENTS_LIBRARY.md`](./design-system/03_UI_COMPONENTS_LIBRARY.md) |
+| Card Patterns, Stacked Decks, Fan-Outs & Gesture Swipe Physics | [`design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md`](./design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md) |
+| Animation Catalogue, Transitions, Keyframes & ScrollTimeline | [`design-system/05_ANIMATIONS_CATALOGUE.md`](./design-system/05_ANIMATIONS_CATALOGUE.md) |
+| Apple macOS 3D Genie Origin-Morph & Zero-Bar Draggable Modals | [`design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`](./design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md) |
+| Apple macOS Screen-Level Genie Trash Bin & Vacuum Deletion | [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md) |
+| Three.js 3D Model Architecture, Parts Audit & Inspection Studio | [`design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`](./design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md) |
+| Full-Page Website Sections (Heroes, Bento Grids, Timelines, Footers) | [`design-system/06_WEBSITE_SECTIONS_LIBRARY.md`](./design-system/06_WEBSITE_SECTIONS_LIBRARY.md) |
+| Complete Website Design Patterns (SaaS, AI, Agency, E-Commerce) | [`design-system/07_WEBSITE_DESIGN_PATTERNS.md`](./design-system/07_WEBSITE_DESIGN_PATTERNS.md) |
+| Production React + Tailwind Recipes & Searchable Taxonomy Index | [`design-system/09_IMPLEMENTATION_RECIPES.md`](./design-system/09_IMPLEMENTATION_RECIPES.md) & [`design-system/10_SEARCHABLE_INDEX.md`](./design-system/10_SEARCHABLE_INDEX.md) |
+| User Roles, Portals, Action Permissions | [`modules/RBAC_SYSTEM.md`](./modules/RBAC_SYSTEM.md) & [`rules/RBAC_SECURITY_RULES.md`](./rules/RBAC_SECURITY_RULES.md) |
+| Multi-Company / Multi-Tenant / Custom Domains | [`modules/MULTI_TENANT_SYSTEM.md`](./modules/MULTI_TENANT_SYSTEM.md) |
+| Order Table & 1-by-1 Slide/Carousel Processing | [`modules/ORDER_SLIDE_WORKFLOW.md`](./modules/ORDER_SLIDE_WORKFLOW.md) |
+| Master Data Table, Mobile Cards & Drag Selection | [`modules/DATA_TABLE_AND_CARDS_SYSTEM.md`](./modules/DATA_TABLE_AND_CARDS_SYSTEM.md) |
+| Content Management System (CMS) | [`modules/CMS_ENGINE.md`](./modules/CMS_ENGINE.md) |
+| Keyboard Shortcuts Engine | [`modules/SHORTCUT_KEYS_SYSTEM.md`](./modules/SHORTCUT_KEYS_SYSTEM.md) |
+| Custom AI Face Recognition & Multi-Account Auth | [`modules/AUTH_AND_FACELOCK.md`](./modules/AUTH_AND_FACELOCK.md) |
+| SMTP, WhatsApp Automations, GitHub CI/CD | [`modules/AUTOMATIONS_AND_NOTIFICATIONS.md`](./modules/AUTOMATIONS_AND_NOTIFICATIONS.md) |
+| Settings Hub, Third-Party Integrations & Dynamic Feature Flags | [`modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md`](./modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md) |
+| Edge Proxy Route Protection, Interception Toasts & Session Invalidation | [`modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md`](./modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md) |
+| Mobile Bottom Navigation Bar & Dashboard Floating Menu Pill | [`modules/MOBILE_NAVIGATION_AND_LAYOUT.md`](./modules/MOBILE_NAVIGATION_AND_LAYOUT.md) |
+| Real-Time Omni-Chat & Customer Portal Communication | [`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`](./modules/CHAT_AND_COMMUNICATION_SYSTEM.md) |
+| High-Concurrency Lightweight Sockets & Message Compression | [`modules/CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md`](./modules/CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md) |
+| AI Assistant, Multimodal Copilot & CMS Builder Engine | [`modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md`](./modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md) |
+| Tenant Public Contact Form & Dashboard Enquiries System | [`modules/ENQUIRIES_AND_LEADS_SYSTEM.md`](./modules/ENQUIRIES_AND_LEADS_SYSTEM.md) |
+| Newsletter Canvas Studio, Blog Engine & Public CMS Loop | [`modules/NEWSLETTER_AND_BLOGS_SYSTEM.md`](./modules/NEWSLETTER_AND_BLOGS_SYSTEM.md) |
+| Principal Engineer Mindset, Non-Breaking Phased Planning & Line Decision Matrix | [`rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`](./rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md) |
+| Client Payment Tracking & 8th-Date Banner | [`rules/PAYMENT_SAFEGUARD_RULE.md`](./rules/PAYMENT_SAFEGUARD_RULE.md) |
+| Safe Development, Zero-Regression & FILE-MAP Synchronization | [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](./rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md) |
+| Payment Idempotency & Split-Brain Timeout Reconciliation | [`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`](./modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md) |
+| Multi-Storage Polymorphic Media Engine & Vercel Free Workaround | [`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`](./modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md) |
+| Extreme Low-Bandwidth & Slow Network Performance Optimization | [`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`](./modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md) |
+| Optimistic Rapid-Click Batching & Debounced Settlement | [`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`](./modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md) |
+| Existing Website Retrofit & Modernization Engine | [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md) |
+
+---
+
+### Phase 5: Verification & Completion Gate
+
+1. Read [Execution Contract](./EXECUTION_CONTRACT.md), [Testing & Verification](./rules/TESTING_AND_VERIFICATION.md), and the task's acceptance ledger.
+2. Run the actual project-native commands that exist: tests, production build, typecheck, lint and relevant integration/E2E checks.
+3. Verify changed browser behavior in a real browser when browser tooling is available. For animation changes, follow [Animation QA](./quality/ANIMATION_QA.md).
+4. Review the full diff independently using [Independent Reviewer](./engines/INDEPENDENT_REVIEWER.md).
+5. Record each requirement as PASS, FAIL, NOT CONFIGURED, NOT RUN, BLOCKED or NOT APPLICABLE with evidence.
+6. Do not force unrelated visual patterns, stack migrations or global retrofits to satisfy legacy examples.
+7. Update FILE-MAP and task notes when repository structure or execution flows change.
+8. Never claim completion without evidence. There is no universal 95% score gate.
+
+## ⚡ Agent Behavioral Guardrails
+
+1. Preserve the existing product design, framework, conventions and working features unless the user asks for a redesign or migration.
+2. Treat all module and design-system documents as reusable patterns, not universal requirements.
+3. Apply RBAC, tenant isolation, server-side authorization, validation and payment safeguards according to the product's actual security model.
+4. Add settings, integrations, feature flags, multi-tenancy, custom domains, CMS, LMS, AI, 3D and communication modules only when requested or required by the accepted scope.
+5. Use the project's existing navigation and responsive patterns; do not force a bottom bar, floating menu pill or sidebar.
+6. Use the existing styling and animation stack. Do not force Tailwind, Framer Motion, GSAP, glassmorphism, dark mode or a specific icon library.
+7. Apply Genie deletion, liquid tabs, animated task buttons and other signature motion patterns only when they fit the requested behavior and product language.
+8. Keep user-facing copy understandable and consistent with the product's language and terminology.
+9. Do not add mock credentials, fake success states or controls that do nothing.
+10. Prefer minimal compatible changes over rewrites; document migrations and rollback steps for persisted data.
+11. Run a separate diff review and the relevant project-native verification commands.
+12. Report evidence and limitations precisely. Missing browser access, external services or test infrastructure must be disclosed as unverified.
+
+
+
+---
+
+## Source: rules/CORE_DIRECTIVE.md
+
+# Website Builder Engine — Tier 0 Core Directives & Laws
+
+> **MANDATORY PREREQUISITE FOR ALL AI AGENTS (Claude Code, Gemini, Cursor, Copilot)**  
+> Read this document first before writing code. This lightweight specification establishes the non-negotiable architectural laws and engineering standards of Website Builder Engine.
+
+---
+
+## Precedence: Architecture-Aware Execution Contract
+
+Read [../../EXECUTION_CONTRACT.md](../EXECUTION_CONTRACT.md) before applying the laws below. That contract supersedes legacy universal stack assumptions. The laws below are patterns for projects where they are applicable, not permission to force a stack or redesign unrelated areas.
+
+- Detect the project's real framework, architecture, package manager, design system and conventions first.
+- Root /app, MongoDB, Tailwind, React Context, Framer Motion and glassmorphism are conditional, not universal.
+- Missing tests/build/typecheck are NOT CONFIGURED or NOT VERIFIED, never a pass.
+- Inspect widely; change only requested outcomes and necessary dependencies.
+
+## 1. The 10 Ironclad Engine Laws
+
+### Law 1: Rule Zero (Plan First, Code Second)
+Never start writing production code until a structured implementation plan (`/.project/PLAN.md` or task plan) is created and aligned with the user.
+
+### Law 2: Root-Level `/app` Standard (Zero `src/` Wrapper)
+In all Next.js projects governed by this framework:
+- App Router is situated directly at `<root>/app/`.
+- Sibling root folders: `/components`, `/context`, `/models`, `/hooks`, `/lib`, `/public`, `/styles`.
+- Path aliases: `"@/*": ["./*"]` in `tsconfig.json`. Wrapping project files inside an unnecessary `src/` directory is prohibited unless an existing legacy project strictly requires migration.
+
+### Law 3: Respect the Existing Design System and Motion Language
+- Preserve the project's established visual language and accessibility conventions.
+- Glassmorphism, dark mode, Framer Motion, GSAP and spring effects are optional patterns, not universal requirements.
+- Use motion only when it improves the requested interaction; honor reduced-motion preferences.
+
+### Law 4: State Ownership and Data Boundaries
+Keep data access in the project's established service/state layer. React Context is one option, not a universal requirement. Avoid duplicated fetching and inconsistent sources of truth.
+
+### Law 5: Zero-Demo Auth & Bidirectional Ergonomics
+- Never place prefilled demo credentials or backdoor buttons ("Click to login as Admin") in any environment.
+- Initialize form inputs to empty strings (`""`).
+- Provide bidirectional navigation links (`/login` has right-aligned "Forgot password?" and bottom "Sign up"; `/signup` has "Log in"; recovery pages have "← Back to log in").
+
+### Law 6: Safe Destructive Operations
+Use confirmation, authorization, idempotency and clear failure handling for destructive actions. A screen-level Genie trash animation is an optional visual pattern only when requested or consistent with the product.
+
+### Law 7: Task-Specific In-Flight Button Animations (Zero Generic Spinners)
+- Generic circular loading spinners (`animate-spin` borders) on action buttons are strictly forbidden.
+- During network transit, buttons must display task-specific micro-animations inside their icon frames:
+  - **Delete**: In-button trash bin loop (bin glides in, lid pops open, document drops in, lid snaps, bin departs left; repeats until API settles).
+  - **Order / Dispatch**: Delivery truck driving along an animated road with spinning tyres ($\omega = 360^\circ$), moving road dashes, and trailing tyre dust lines.
+  - **Live Sync / Refresh**: Communications tower with apex blinking beacon, radiating RF wave arcs, and animated live pulsing status badge with audio equalizer bars.
+
+### Law 8: Responsive Navigation
+Choose wrapping, scrolling, dropdown overflow or alternate navigation based on the number of tabs, viewport, accessibility and existing design. Keep the active destination understandable and keyboard accessible.
+
+### Law 9: File Necessity, Anti-Bloat & Zero Dead-Code
+- Every file in the repository must serve a verified active purpose.
+- Unreferenced orphan files, dummy placeholder stubs (`// TODO`), and duplicate conflicting packages (`axios` vs `fetch`, `moment` vs `date-fns`) must be audited and cleaned.
+
+### Law 10: Evidence-Based Verification
+- Execute the project's configured, relevant test/build/typecheck/lint/browser checks.
+- Missing checks are NOT CONFIGURED or NOT VERIFIED, never PASS. TypeScript checks are NOT APPLICABLE when the project does not use TypeScript.
+- No percentage score substitutes for acceptance criteria and fresh evidence.
+
+---
+
+## 2. Progressive Documentation Loading Reference
+
+When implementing specific features, read the targeted module from the repository or invoke `node scripts/load-docs.js <topic>`:
+
+| Feature / Domain | Mandatory Documentation Path |
+| :--- | :--- |
+| **Responsive Mobile Tabs** | `design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md` |
+| **In-Flight Button Animations** | `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md` |
+| **Genie Trash Bin Deletion** | `design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md` |
+| **Auth & Edge Proxy Protection** | `modules/AUTH_AND_FACELOCK.md` & `modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md` |
+| **Data Tables & Mobile Cards** | `modules/DATA_TABLE_AND_CARDS_SYSTEM.md` |
+| **Rapid Click Batching** | `modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md` |
+| **Retrofit Protocol** | `modules/EXISTING_PROJECT_RETROFIT_ENGINE.md` |
+| **Mandatory Execution Checklist** | `rules/MANDATORY_EXECUTION_CHECKLIST.md` |
+| **Testing Standards & Verification** | `rules/TESTING_AND_VERIFICATION.md` |
+
+
+
+---
+
+## Source: rules/MANDATORY_EXECUTION_CHECKLIST.md
+
+# Mandatory Task Execution Checklist & Verification Gate
+
+> **UNIVERSAL PROTOCOL FOR ALL AI AGENTS & PAIR PROGRAMMERS**  
+> Use these checkpoints for every meaningful task; mark genuinely irrelevant checkpoints NOT APPLICABLE with a reason.
+> 
+> **PREMATURE COMPLETION PROHIBITION**: An agent is strictly forbidden from declaring any task complete, finished, or resolved until Checkpoints 1 through 10 have been executed with concrete terminal evidence. Merely mentioning or planning a test command does NOT qualify as executing it.
+
+---
+
+## Precedence and status rules
+
+Apply [../EXECUTION_CONTRACT.md](../EXECUTION_CONTRACT.md) first. This checklist is architecture-aware: skip checks that are not applicable, do not migrate a project to satisfy a folder convention, and record each skipped item as NOT APPLICABLE with a reason. Do not treat missing test configuration as a pass. Record PASS only with a fresh command/tool result.
+
+## 📋 The 10 Mandatory Checkpoints
+
+### 1. Project Analysis
+- [ ] Inspect the target workspace file structure, package dependencies, framework versions, and configurations.
+- [ ] Identify whether the project is Greenfield (new) or Existing (Retrofit).
+- [ ] Audit existing conventions, path aliases (`@/*`), and styling setups (Tailwind, CSS modules).
+
+### 2. Architecture Understanding
+- [ ] Trace data flows, existing models, context providers, and API routes.
+- [ ] Determine module boundaries and identify downstream dependencies to prevent breaking changes.
+- [ ] Verify root-level directory layout (Root `/app` standard vs legacy `src/`).
+
+### 3. Implementation Planning
+- [ ] Formulate a detailed, phased implementation plan (`/.project/PLAN.md` or scoped task checklist).
+- [ ] Specify exactly which files will be created, modified, or removed.
+- [ ] Define the exact testing and verification strategy before writing any code.
+
+### 4. Complete Code Implementation
+- [ ] Implement all planned components, hooks, models, and routes.
+- [ ] Preserve and follow the detected project design system, state/data layer and interaction patterns.
+- [ ] Add animation patterns only when required by the task and product language.
+- [ ] Complete all required UI/API/data/permission/error/loading integrations.
+- [ ] **NO PARTIAL WORK**: Do not stop after editing 1 or 2 files or leaving screens unstyled.
+
+### 5. Dependency Verification
+- [ ] Inspect the actual package manifest and lockfile for dependencies required by the accepted design.
+- [ ] Verify compatibility and avoid introducing duplicate libraries or unnecessary dependencies.
+- [ ] Run `npm ls` or inspect node modules if import errors occur.
+
+### 6. Build Execution
+- [ ] Run the configured project-native production build command, if one exists.
+- [ ] Run the configured typecheck command when the project uses a typed language and a checker is available.
+- [ ] Record the exact exit code and terminal output.
+- [ ] Ensure compilation finishes with **Exit Code 0** (Zero syntax errors, zero fatal build breaks).
+
+### 7. Relevant Automated Testing (Scoped & Real Execution)
+- [ ] Execute scoped, relevant automated tests targeting the modified subsystem:
+  - Unit tests: `npm test` or `npx vitest run <file>` or `node scripts/test-units.mjs`
+  - E2E / Integration tests (when applicable): `npx playwright test`
+  - Typecheck: `npx tsc --noEmit`
+- [ ] **SCOPE-AWARE RULE**: Scope tests to relevant changes and avoid running unnecessary, slow end-to-end suites that delay workflows without adding value.
+- [ ] **ZERO FABRICATION RULE**: Never report fabricated test outputs. Every claim of a passing test MUST include actual command invocation and verified stdout/stderr.
+
+### 8. Error Fixing & Defect Remediation
+- [ ] If any build, typecheck, or test failure occurs, immediately analyze the root cause.
+- [ ] Apply precise code fixes rather than suppressing errors with `@ts-ignore` or `eslint-disable`.
+- [ ] Re-run the failing test command to verify the fix.
+
+### 9. Regression Testing
+- [ ] Verify that existing, unmodified features continue to operate normally.
+- [ ] Check page navigation, auth routes, and core database interactions.
+- [ ] Ensure no orphan imports or broken component links were introduced.
+
+### 10. Final Verification & Evidence Ledger
+- [ ] Map every required acceptance criterion to an actual command, browser check or other relevant evidence.
+- [ ] Record PASS, FAIL, NOT CONFIGURED, NOT RUN, BLOCKED or NOT APPLICABLE with a reason.
+- [ ] Re-run checks after fixes and confirm they match the current diff.
+- [ ] Document remaining risks and unverified items in the final response.
+
+---
+
+## 🚫 Premature Completion Prevention Rules
+
+1. **The "1-File Exit" Violation**: If an agent edits only 1 or 2 files and says *"I have updated the component, you can integrate it"*, this is a critical framework violation. The agent must complete the entire integration, tests, and verification.
+2. **The "Unverified Success" Violation**: Claiming *"Tests pass"* without running a terminal command is strictly forbidden.
+3. **The "Ignored Build" Violation**: Marking a task complete without executing the configured, relevant build/typecheck commands—or disclosing that they are not configured—is invalid.
+
+
+
+---
+
+## Source: rules/TESTING_AND_VERIFICATION.md
+
+# Master Testing & Verification Architecture: The Ironclad Quality Engine
+
+> **THE IRONCLAD LAW OF VERIFICATION**:  
+> An agent or developer must **NEVER** claim a feature is complete, working, fixed, or passing without providing **concrete, fresh execution evidence** (terminal test output, compiler logs, database mutation confirmations, or browser visual inspection records).  
+> **Assertions without evidence are strictly prohibited.** Violating the letter of this rule is violating the spirit of the entire engineering architecture.
+
+---
+
+## Status vocabulary and evidence contract
+
+The project-aware [Execution Contract](../EXECUTION_CONTRACT.md) takes precedence over legacy universal assumptions in this document.
+
+Use these statuses:
+- **PASS** — the relevant command/tool actually ran and returned successful evidence.
+- **FAIL** — it ran and reported a failure.
+- **NOT CONFIGURED** — no corresponding script, test harness or capability exists.
+- **NOT RUN** — configured but not executed.
+- **BLOCKED** — attempted but blocked by environment/tooling.
+- **NOT APPLICABLE** — the check does not apply to the detected project.
+
+A test file's existence is not test execution. A JavaScript project without TypeScript is not a TypeScript pass. Static pattern checks cannot certify runtime, security, visual quality or animation behavior. Do not use a universal score as a completion gate.
+
+## 🏛️ 1. Executive Mandate & Universal Verification Lifecycle
+
+### 1.1 Scope of Obligation
+Select verification tiers according to the risk and behavior changed. A database mutation, authorization change, UI animation and documentation typo require different evidence. Do not run irrelevant tiers merely to satisfy a universal checklist; record NOT APPLICABLE with a reason.
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        UNIVERSAL FILE OPERATION EVENT DETECTED                         │
+│                    (Page / API Route / Utility / Model / Context / Component)          │
+└───────────────────────────────────────────┬────────────────────────────────────────────┘
+                                            │
+                                            ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ 1. LINE-BY-LINE ALGORITHMIC AUDIT & DEAD CODE PURGE                                    │
+│    - Deterministic purpose for each line; zero arbitrary/dumped code                   │
+│    - Check existing utilities & packages; eliminate duplicate functions/variables      │
+│    - Audit downstream dependents; ensure zero side-effect breakage                      │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 2. TIER 1: STATIC COMPILATION, TYPE SAFETY & STRICT BUILD GATE                         │
+│    - `the project's configured typecheck and build commands` (Exit Code: 0, Zero TS Errors)               │
+│    - Backend linting & type checks (`ruff check .`, `pyright`, `mypy`)                 │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 3. TIER 2: ADVERSARIAL "BRAINLESS USER" DESTRUCTION TESTING (CHAOS MONKEY)             │
+│    - Fuzzing with wrong types: `null`, `undefined`, NaN, extreme lengths, SQLi/XSS    │
+│    - Erratic behavior: frantic multi-clicks, aborted requests, out-of-order flows       │
+│    - Assertions: Zero white-screens, clean user-facing error toasts, strict security   │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 4. TIER 3: API CONTRACTS, DATABASE MUTATION FIDELITY & REACTIVE UI HANDSHAKE           │
+│    - Envelope validation: `{ success: boolean, data, error }`                          │
+│    - DB Mutation Check: Confirms ONLY targeted document/field mutated; zero dirty state│
+│    - Reactive DOM: Instant UI update on mutation without `window.location.reload()`   │
+│    - Performance & Redundancy: Eliminate duplicate calls, premature calls & lag        │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 5. TIER 4: SINGLE SOURCE OF TRUTH & CONTEXT LAW                                        │
+│    - Zero direct component API calls when a Domain Context exists                      │
+│    - Audit context methods; eliminate zombie/neglected state variables                 │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 6. TIER 5: UI COPYWRITING ABSTRACTION & HUMAN PREDICTABILITY STANDARDS                 │
+│    - Zero leaked backend jargon (no database pipelines or Axios terms on UI)           │
+│    - Human Mental Model Test: Predictable, intuitive control discovery                 │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 7. TIER 6: VISUAL, RESPONSIVE, THEME & SCROLL ANIMATION FIDELITY                       │
+│    - Theme tokens check (Light, Dark, Tenant/CMS DB themes; zero rogue hex codes)      │
+│    - Font family fidelity; 60 FPS scroll animations; DAM image parallax; mobile checks │
+└───────────────────────────────────────────┬────────────────────────────────────────────┘
+                                            │
+                                            ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        EVIDENCE RECORDED IN `SPRINTS.md`                               │
+│                      Only NOW may task be marked as complete [x]                       │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🚦 2. The 7-Tier Verification Framework
+
+```
+┌────────────────────────────────────────────────────────────────────────────┐
+│  Tier 7: Visual, Responsive, Theme & Scroll Animation Fidelity             │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Tier 6: UX Copywriting Abstraction & Human Predictability Standards       │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Tier 5: Line-by-Line Algorithmic Audit & Dead Code/File Purge             │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Tier 4: Single Source of Truth & Context Law Verification                 │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Tier 3: API Contracts, Database Mutation Fidelity & Reactive UI Sync     │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Tier 2: Adversarial "Brainless User" Destruction Testing (Chaos Monkey)   │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Tier 1: Static Compilation, Type Safety & Strict Build Gate               │
+└────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 🔍 2.1 Tier 1: Static Compilation, Type Safety & Strict Build Gate
+
+When a project has a configured static compiler/build, run relevant static checks before final browser acceptance and pull-request review. If a command is absent, report NOT CONFIGURED; do not invent a passing result.
+
+#### Mandatory Checks:
+1. **Frontend TypeScript Compilation**:
+   ```bash
+   npx tsc --noEmit
+   # or
+   npm run build
+   ```
+   - **Requirement**: Exit code `0`. Zero TypeScript diagnostics errors (`TS2304`, `TS2322`, `TS2345`, `TS2769`, etc.).
+   - **No `any` Escapes**: Using `any` to silence compiler errors is strictly forbidden. Use proper union types, generics, or type assertions backed by Zod schemas.
+2. **Backend Type Checking & Linting**:
+   ```bash
+   # Python / FastAPI
+   ruff check . && pyright
+   # or Node.js / Express
+   npm run lint
+   ```
+   - **Requirement**: Zero unresolved imports, zero syntax errors, and zero type mismatch warnings.
+3. **Environment & Schema Validation**:
+   - Validate that all referenced environment variables are defined in `.env.example` and parsed via type-safe schemas (e.g., Zod `env.mjs`).
+
+---
+
+### 💥 2.2 Tier 2: Adversarial "Brainless User" Destruction Testing (Chaos Monkey Protocol)
+
+> **THE BRAINLESS USER PHILOSOPHY**:  
+> In production, users will not follow your expected happy path. They will double-click frantically, press back mid-upload, input emojis where numbers are expected, leave required fields blank, paste 20,000 words into a name field, and tamper with hidden payload parameters.  
+> **Your job as a verification engineer is to aggressively try to BREAK, CORRUPT, and CRASH your own functions and APIs before a user ever touches them.**
+
+#### 2.2.1 Destructive Payload & Type Fuzzing Matrix
+Every API endpoint and utility function must be subjected to the following adversarial payloads:
+
+| Payload Category | Injection / Fuzz Value | Expected System Reaction | Forbidden Failure Mode |
+| :--- | :--- | :--- | :--- |
+| **Wrong Types** | Passing `{}` or `[]` where string expected; `true` where number expected | Returns `400 Bad Request` or `422 Unprocessable Entity` with validation detail | Crashing with `TypeError: x.toLowerCase is not a function` (500 Internal Error) |
+| **Null & Undefined** | `{ title: null, amount: undefined }` | Gracefully rejected with field-level validation error | `Cannot read property 'x' of undefined` crash |
+| **Numeric Edge Cases** | `-100`, `0`, `1e20`, `NaN`, `Infinity`, `0.000000001` | Rejected if quantity/price must be positive; clamped safely if unbounded | Negative balances, database overflow, or `NaN` saved in MongoDB |
+| **String Extremes** | Empty string `""`, whitespace only `"   "`, 50,000-character payload | Returns polite toast: *"Title must be between 3 and 100 characters"* | Buffer overflow, UI layout breaking, or database truncation error |
+| **Unicode & Special Chars**| Emojis (`🔥🎉🚀`), RTL overrides (`\u202E`), accents, zero-width spaces | Stored and rendered correctly without UTF-8 encoding corruption | Broken character display (`???`), regex infinite loop (ReDoS) |
+| **Injection Vectors** | SQL (`' OR '1'='1`), NoSQL (`{ "$gt": "" }`), XSS (`<script>alert(1)</script>`) | Sanitized, parameterized, and treated as inert string literals | Database extraction, unauthorized data bypass, script execution in DOM |
+| **Malformed JSON** | Truncated JSON `{"name": "test"`, missing brackets, raw text | Returns `400 Bad Request` with structured error envelope | Server crash or silent hanging request |
+
+#### 2.2.2 State & UI Destruction Attacks
+Simulate the impatient, frantic user in browser testing:
+1. **The Rapid Multi-Click Attack**:
+   - Rapidly click a submit button 5 to 10 times within 500ms.
+   - **Verification Requirement**: The button must immediately enter its disabled/loading state on the first click. Debounce or mutex locks must prevent duplicate API calls and duplicate database entries.
+2. **The Aborted Request / Navigation Attack**:
+   - Initiate a large file upload or long API call, and immediately navigate to another page or press browser Back.
+   - **Verification Requirement**: `AbortController` cleanly cancels the fetch. Component unmount does not trigger *"Can't perform a React state update on an unmounted component"* console warnings.
+3. **Out-of-Order Execution Attack**:
+   - Open two tabs on the same record; edit in Tab A and delete in Tab B; then try to save in Tab A.
+   - **Verification Requirement**: System gracefully detects stale version or returns `404 Not Found` with a clear toast: *"This record has been modified or deleted elsewhere"*.
+4. **Mandatory Outcome Assertions**:
+   - 🛡️ **Zero White-Screens**: The application MUST NEVER show a blank white screen or an unhandled React error boundary crash.
+   - 🔔 **Polite Error Toasts**: Any failure must trigger an animated, human-readable error toast (via `ToastContext` / `sonner`) explaining the issue cleanly without technical jargon.
+   - 🔒 **Rock-Solid Security Boundaries**: Unauthorized requests or role violations MUST return `403 Forbidden` with a standardized security envelope, completely preventing unauthorized data leakage.
+
+---
+
+### 🔄 2.3 Tier 3: API Contracts, Database Mutation Fidelity & Reactive UI Handshake
+
+When an API responds or state changes, data integrity across the backend and frontend must be mathematically sound.
+
+#### 2.3.1 Standard API Envelope Contract
+All API endpoints must respond with the standardized envelope defined in [`rules/BACKEND_CONNECTION_RULES.md`](./BACKEND_CONNECTION_RULES.md):
+```typescript
+// Success Response
+{
+  "success": true,
+  "data": { ... },
+  "message": "Operation completed successfully"
+}
+
+// Error Response
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_FAILED",
+    "message": "Please provide a valid program title.",
+    "details": [
+      { "field": "title", "issue": "Minimum 3 characters required" }
+    ]
+  }
+}
+```
+
+#### 2.3.2 Targeted Database Mutation Audit (Zero Dirty State)
+When testing an API endpoint that mutates data (`POST`, `PUT`, `PATCH`, `DELETE`):
+1. **Targeted Field Isolation**:
+   - Verify that the API mutates **ONLY** the designated record and the designated fields.
+   - **Check**: Does updating a user's phone number accidentally wipe their permissions array or reset their `createdAt` timestamp?
+   - **Check**: Does deleting an order inadvertently delete or detach related customer documents without explicit cascading rules?
+2. **Multi-Tenant Isolation Verification**:
+   - Inspect the database query filter: Every read and write MUST include `companyId` (or `tenantId`).
+   - Confirm that an update query cannot mutate a record belonging to another company under any circumstance:
+     ```typescript
+     // ✅ SECURE: Strict tenant isolation in mutation
+     await Program.findOneAndUpdate(
+       { _id: programId, companyId: session.companyId },
+       { $set: updateData },
+       { new: true }
+     );
+     ```
+
+#### 2.3.3 Reactive UI Update Handshake (No Reload Rule)
+> 🚫 **STRICTLY FORBIDDEN**: Using `window.location.reload()` or forcing a hard page refresh to reflect updated data.
+
+1. **Live State Synchronization**:
+   - When an API call succeeds (e.g. creating, editing, or deleting a record), the existing React Context state array must be updated **in-place** immediately.
+   - The UI table, cards, or metrics must reflect the updated data reactively in real time.
+2. **Animation Synchronization**:
+   - If an animated button was triggered, the loading animation must play cleanly until the API returns; if the API finishes faster than the animation cycle, the animation must complete smoothly before displaying the success state and triggering the toast.
+
+#### 2.3.4 Redundant Call & Performance Audit
+1. **Eliminate Duplicate API Calls**:
+   - Open Browser DevTools Network tab.
+   - On page load, verify that each endpoint is called **exactly once**.
+   - If an endpoint is called 2, 3, or more times, investigate and eliminate root causes:
+     - Missing or unstable dependency arrays in `useEffect`.
+     - Multiple child components making duplicate fetches instead of consuming a parent Context.
+     - React StrictMode double-mounting in dev (ensure cleanup logic or cache deduplication via SWR/TanStack Query).
+2. **Prevent Premature Calls**:
+   - Verify that endpoints requiring user action (e.g. search, filter, export) are NOT called on initial page mount before the user interacts.
+3. **Latency Benchmark**:
+   - Local development API responses must resolve in `< 150ms`.
+   - Any endpoint taking `> 500ms` locally must be profiled for unindexed database queries, N+1 query waterfalls, or missing projections.
+
+---
+
+### 🌐 2.4 Tier 4: Single Source of Truth & Context Law
+
+Per [`rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`](../rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md), React Contexts are the sole guardians of entity state and API interactions.
+
+#### 2.4.1 The Context Law: Zero Direct Component API Calls
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ❌ FORBIDDEN ANTI-PATTERN                                                  │
+│ Inside /app/programs/page.tsx:                                              │
+│ const res = await fetch('/api/programs');                                   │
+│ const data = await res.json();                                              │
+│ // Direct fetch bypasses global cache, causes state desync and duplicate code│
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ✅ THE CONTEXT LAW                                                          │
+│ Inside /app/programs/page.tsx:                                              │
+│ const { programs, isLoading, createProgram } = useProgram();                │
+│ // Consumes centralized, reactive state with single source of truth         │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### 2.4.2 Context Integrity Verification Checklist:
+- [ ] **Context Function Availability**: Before creating a direct API call or local state, verify if a Context already exists for this domain (`ProgramContext`, `OrderContext`, `UserContext`, `RoleContext`, `CustomerContext`, `CmsPageContext`, etc.).
+- [ ] **Zero Zombie Context Methods**: Audit the Context file. Are there functions defined in the Context interface (e.g. `archiveProgram()`, `exportOrders()`) that are never imported or called anywhere in the app? Either wire them up to their UI triggers or safely prune them.
+- [ ] **State Reuse Verification**: If a Context already holds `userList` or `companySettings`, verify that pages do NOT re-fetch this data independently.
+- [ ] **Optimistic vs Server State Alignment**: Ensure mutations update the Context's internal array so that sibling components and downstream selectors receive the fresh state instantly.
+
+---
+
+### 🧹 2.5 Tier 5: Line-by-Line Algorithmic Audit, Dead Code Elimination & Side-Effect Tracing
+
+> **THE STEP-BY-STEP ALGORITHMIC CONSTRUCTION RULE**:  
+> Code must never be dumped haphazardly ("and shand nahi dalna"). Every single line written must be a deliberate, logical step in an explicit algorithm with known inputs and deterministic outputs.
+
+#### 2.5.1 The Line-by-Line Audit Protocol
+Before finalizing any code modification:
+1. **Line-by-Line Purpose Justification**:
+   - Inspect every line added or modified.
+   - Ask: *"What is the exact purpose of this line? What is its input? What is its guaranteed output? Can this line cause an unhandled exception if input is unexpected?"*
+2. **Duplicate Logic & Variable Search**:
+   - Before declaring a new utility function (e.g., date formatter, currency parser, slugifier, regex validator), search the entire workspace:
+     ```bash
+     # Check if a similar helper already exists
+     git grep -i "formatDate"
+     git grep -i "slugify"
+     ```
+   - If a function already exists in `utils/` or `lib/`, **import and reuse it**. Never create duplicate variations of the same logic.
+3. **Existing Package Leverage Check**:
+   - Before writing 50 lines of custom date arithmetic or query string parsing, check `package.json`.
+   - If standard, audited packages exist in the project (e.g. `date-fns`, `clsx`, `tailwind-merge`, `lucide-react`, `zod`), utilize them. Never reinvent the wheel with custom, error-prone boilerplate.
+4. **Dead Code & Unused Import Elimination**:
+   - Run linter checks to detect unused variables, dead functions, and dangling imports:
+     ```bash
+     npm run lint
+     ```
+   - Search for unused files: If a component, utility, or route file is not imported anywhere in the project and is not an active Next.js page route, investigate why it exists and safely prune it.
+5. **Downstream Dependency & Architectural Impact Analysis**:
+   - Before modifying or deleting any function signature, model property, or component prop, perform a repository-wide grep for its identifier:
+     ```bash
+     git grep -n "oldFunctionName"
+     ```
+   - Trace all calling sites across all files. Update all callers in the same changeset to ensure zero downstream regressions or compilation failures.
+
+---
+
+### ✍️ 2.6 Tier 6: UI Copywriting Abstraction & Human Predictability Standards
+
+UI microcopy is the primary contract between the software and the human user. Technical jargon must never leak through this layer.
+
+#### 2.6.1 The Non-Technical Copywriting Law
+> 🚫 **STRICTLY FORBIDDEN**: Exposing internal database queries, backend architecture terms, framework pipelines, or developer workflows on user-facing UI elements.
+
+| Leaked Technical Jargon (❌ Strictly Prohibited) | Clean Human-Centered UX Copy (✅ Mandatory) |
+| :--- | :--- |
+| `"Trigger MongoDB Aggregation Pipeline"` | `"Generate Analytics Report"` |
+| `"Executing Axios POST to /api/orders"` | `"Saving Order..."` |
+| `"Execute FastAPI Background Worker"` | `"Processing in Background"` |
+| `"Mutate ProgramContext Array State"` | `"Update Program"` |
+| `"Insert Document into Collection"` | `"Add New Record"` |
+| `"Bypass Edge Proxy Middleware"` | `"Administrative Access"` |
+| `"Error: MongoError E11000 duplicate key"` | `"A program with this code already exists. Please choose another."` |
+
+#### 2.6.2 The Human Predictability & Discovery Test
+Every button, filter, and action must pass the **Predictable Mental Model Test**:
+1. **Can a first-time human user predict where this option lives?**
+   - Destructive actions (e.g., Delete, Archive) must reside within danger zones, require explicit confirmation, and use recognizable danger iconography.
+   - Primary actions (e.g., Create, Save, Export) must be anchored in predictable header or footer action bars.
+   - Settings must be categorized logically: Personal Settings (`/settings`), Business Configuration (`/settings/system`), and CMS Content (`/cms`).
+2. **Predictable Feedback**:
+   - Every user click must provide immediate sensory feedback: button state change, loading spinner/task animation, and an unambiguous success or error toast.
+   - A user must never be left wondering: *"Did my click work, or is the page frozen?"*
+
+---
+
+### 🎨 2.7 Tier 7: Visual, Responsive, Theme & Scroll Animation Fidelity
+
+Visual design is the first impression and the benchmark of software excellence.
+
+#### 2.7.1 Theme Token Adherence (Zero Rogue Colors)
+1. **Strict Design Token Enforcement**:
+   - Every color applied in Tailwind classes must trace back to the curated design tokens defined in [`design-system/DESIGN_ARCHITECTURE.md`](../design-system/DESIGN_ARCHITECTURE.md) and [`design-system/FRONTEND_DESIGN_RULES.md`](../design-system/FRONTEND_DESIGN_RULES.md).
+   - **Rogue Hex Codes Forbidden**: Hardcoded arbitrary colors (e.g. `bg-[#ff0033]`, `text-[#123456]`) are strictly forbidden unless dynamically loaded from the tenant's CMS database theme record.
+2. **Dual-Theme & CMS Theme Verification**:
+   - Test every page in both **Light Mode** and **Dark Mode**.
+   - Verify that text contrast satisfies WCAG AA standards (minimum `4.5:1` contrast ratio).
+   - Verify that tenant-customized brand colors saved in `WebsiteDetailsContext` or `CmsWebsiteDetails` apply seamlessly across buttons, badges, and accents.
+
+#### 2.7.2 Typography & Font Family Verification
+- Verify that configured Google Fonts (e.g. `Outfit`, `Inter`, `Plus Jakarta Sans`) load without layout shifts (CLS).
+- Headings (`h1`, `h2`, `h3`) must use designated display font weights; body text must use crisp, legible weights.
+
+#### 2.7.3 60 FPS Micro-Animations & Scroll Parallax Audit
+1. **Fluid Motion Standards**:
+   - Button hover animations (per [`design-system/MASTER_HOVER_ANIMATION_SYSTEM.md`](../design-system/MASTER_HOVER_ANIMATION_SYSTEM.md)) must execute with hardware-accelerated transforms (`transform`, `opacity`) without causing CPU layout recalculations or dropped frames.
+   - Row deletion fabric-fold and dustbin animations (per [`design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`](../design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md)) must trigger exactly once, run smoothly, and collapse surrounding rows without stutter.
+2. **Scroll-Driven Animation Verification**:
+   - CMS section scroll animations and DAM image parallax effects must execute at 60 FPS.
+   - **Scroll API Storm Prevention**: Scroll listeners must be passive and debounced; scrolling down a page must NEVER trigger unthrottled API calls or re-renders.
+
+#### 2.7.4 Multi-Viewport Mobile & Responsive Audit
+Every page must be verified across three distinct viewport dimensions:
+1. **Desktop Viewport (`1440x900`)**: Full layout, resizable sidebar, multi-column data tables.
+2. **Tablet Viewport (`768x1024`)**: Adaptive grid layouts, collapsible toolbars.
+3. **Mobile Viewport (`390x844` - iPhone standard)**:
+   - Zero horizontal scrollbar or content clipping.
+   - Tables automatically morph into mobile card stacks per [`modules/DATA_TABLE_AND_CARDS_SYSTEM.md`](../modules/DATA_TABLE_AND_CARDS_SYSTEM.md).
+   - Public pages render the fixed bottom navigation bar; dashboard pages render the floating bottom glass pill (`Menu`) with Dual Close Controls per [`modules/MOBILE_NAVIGATION_AND_LAYOUT.md`](../modules/MOBILE_NAVIGATION_AND_LAYOUT.md).
+   - Touch targets must be at least `44x44px` with adequate padding.
+
+---
+
+## 🛠️ 3. Concrete Verification & Adversarial Test Suites
+
+### 3.1 Automated Adversarial API & Chaos Fuzzing Suite
+Below is the standard TypeScript test suite using Jest / Vitest that agents and developers can execute against any API endpoint:
+
+```typescript
+// tests/adversarial/apiChaosFuzzer.test.ts
+import { describe, it, expect } from 'vitest';
+
+interface ChaosTestCase {
+  name: string;
+  payload: any;
+  expectedStatus: number;
+  expectedErrorCode?: string;
+}
+
+const CHAOS_PAYLOADS: ChaosTestCase[] = [
+  {
+    name: 'Null payload object',
+    payload: null,
+    expectedStatus: 400,
+    expectedErrorCode: 'INVALID_PAYLOAD',
+  },
+  {
+    name: 'Array instead of expected object',
+    payload: ['invalid', 'array'],
+    expectedStatus: 422,
+    expectedErrorCode: 'VALIDATION_FAILED',
+  },
+  {
+    name: 'SQL Injection in text field',
+    payload: { title: "'; DROP TABLE programs; --", amount: 100 },
+    expectedStatus: 201, // Stored safely as inert literal string without executing
+  },
+  {
+    name: 'NoSQL Operator Injection',
+    payload: { title: { $gt: '' }, amount: 100 },
+    expectedStatus: 422,
+    expectedErrorCode: 'VALIDATION_FAILED',
+  },
+  {
+    name: 'Extreme string length (50k characters)',
+    payload: { title: 'A'.repeat(50000), amount: 100 },
+    expectedStatus: 422,
+    expectedErrorCode: 'MAX_LENGTH_EXCEEDED',
+  },
+  {
+    name: 'Negative numeric amount',
+    payload: { title: 'Valid Program', amount: -500 },
+    expectedStatus: 422,
+    expectedErrorCode: 'POSITIVE_NUMBER_REQUIRED',
+  },
+  {
+    name: 'NaN and Infinity values',
+    payload: { title: 'Valid Program', amount: NaN },
+    expectedStatus: 422,
+    expectedErrorCode: 'INVALID_NUMBER',
+  },
+  {
+    name: 'Raw HTML & Script Tag XSS payload',
+    payload: { title: '<script>alert("xss")</script>', amount: 100 },
+    expectedStatus: 201, // Sanitized or escaped on output
+  },
+];
+
+describe('Adversarial Chaos Monkey API Verification', () => {
+  CHAOS_PAYLOADS.forEach(({ name, payload, expectedStatus, expectedErrorCode }) => {
+    it(`Adversarial Test: ${name}`, async () => {
+      const response = await fetch('http://localhost:3000/api/programs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer MOCK_TEST_TOKEN',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      // Assert status code
+      expect([expectedStatus, 400, 422]).toContain(response.status);
+
+      const json = await response.json();
+      // Assert standard envelope exists
+      expect(json).toHaveProperty('success');
+      
+      if (!json.success) {
+        expect(json).toHaveProperty('error');
+        expect(json.error).toHaveProperty('message');
+        // Ensure NO raw server stack trace leaked to client
+        expect(json.error).not.toHaveProperty('stack');
+      }
+    });
+  });
+});
+```
+
+---
+
+### 3.2 Live Database Mutation & Isolation Verification Script
+```typescript
+// tests/database/mutationIsolation.test.ts
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import mongoose from 'mongoose';
+import { Program } from '@/models/Program';
+
+describe('Database Mutation & Tenant Isolation Verification', () => {
+  const companyA = new mongoose.Types.ObjectId().toString();
+  const companyB = new mongoose.Types.ObjectId().toString();
+  let programAId: string;
+
+  beforeEach(async () => {
+    // Seed initial test records
+    const progA = await Program.create({
+      title: 'Company A Original Program',
+      code: 'PROG-A-01',
+      companyId: companyA,
+      amount: 500,
+      status: 'active',
+    });
+    programAId = progA._id.toString();
+
+    await Program.create({
+      title: 'Company B Protected Program',
+      code: 'PROG-B-01',
+      companyId: companyB,
+      amount: 1000,
+      status: 'active',
+    });
+  });
+
+  afterEach(async () => {
+    await Program.deleteMany({ companyId: { $in: [companyA, companyB] } });
+  });
+
+  it('Mutates ONLY targeted fields and preserves all other document attributes', async () => {
+    const updated = await Program.findOneAndUpdate(
+      { _id: programAId, companyId: companyA },
+      { $set: { amount: 750 } },
+      { new: true }
+    );
+
+    expect(updated).not.toBeNull();
+    expect(updated?.amount).toBe(750);
+    // Verify non-targeted fields remained intact
+    expect(updated?.title).toBe('Company A Original Program');
+    expect(updated?.code).toBe('PROG-A-01');
+    expect(updated?.status).toBe('active');
+  });
+
+  it('Strictly prevents cross-tenant mutation attacks', async () => {
+    // Attempt to update Company A record using Company B credentials
+    const unauthorizedUpdate = await Program.findOneAndUpdate(
+      { _id: programAId, companyId: companyB }, // Malicious tenant mismatch
+      { $set: { amount: 99999 } },
+      { new: true }
+    );
+
+    // Must return null; record must remain untouched in database
+    expect(unauthorizedUpdate).toBeNull();
+
+    const untouched = await Program.findById(programAId);
+    expect(untouched?.amount).toBe(500); // Original value preserved
+  });
+});
+```
+
+---
+
+## 📋 4. Step-by-Step Verification Matrix for File Operations
+
+Whenever an agent or developer operates on a file, follow this exact matrix:
+
+### 4.1 When Creating a New File
+1. **Check for Existing Modules / Packages**: Verify that an existing utility or library does not already perform this task.
+2. **Context Alignment**: If creating a new page or domain feature, ensure it consumes its domain React Context (`models/` -> `context/`).
+3. **Step-by-Step Algorithmic Code Writing**: Write code line-by-line with explicit purpose.
+4. **Compile Check**: Run the configured typecheck command when the project uses TypeScript and a checker is available.
+5. **Adversarial Chaos Testing**: Fuzz the new file's exports with invalid types, nulls, and edge cases.
+6. **Responsive & Theme Test**: Verify appearance across light/dark themes and mobile/desktop viewports.
+7. **Document in Sprints**: Record test commands and outputs in `SPRINTS.md`.
+
+### 4.2 When Editing an Existing File
+1. **Downstream Dependent Search**: Run `git grep "modifiedExportName"` to identify every file importing this file.
+2. **Line-by-Line Review**: Ensure edits do not introduce redundant variables or duplicate code blocks.
+3. **Run Regression Tests**: Run existing test suites to confirm no existing functionality broke.
+4. **Adversarial Edge Case Test**: Test newly added parameters or branches with invalid types and nulls.
+5. **Verify Single Source of Truth**: Confirm that state updates properly propagate to Context and reactive UI.
+6. **Compile Check**: Run the configured production build command, if one exists.
+
+### 4.3 When Deleting a File
+1. **Complete Codebase Grep**:
+   ```bash
+   git grep -n "deletedFileName"
+   git grep -n "deletedExportName"
+   ```
+2. **Clean All Imports**: Remove or refactor every import statement referencing the deleted file across all files.
+3. **Clean Route Registries**: Remove route from Next.js navigation menus, sidebar configs, and middleware route matchers.
+4. **Compile Check**: Run the configured typecheck and build commands, when applicable, to check for dangling references or build breaks.
+
+---
+
+## 📝 5. Standardized Verification Evidence Log Template
+
+Whenever marking a task as `[x]` in `SPRINTS.md` or opening a pull request, paste and complete this evidence block:
+
+```markdown
+- [x] Task Name: [e.g. Implement Granular Role Permission Matrix Studio]
+  - **Tier 1 (Static Compilation)**:
+    - Command: `npx tsc --noEmit` -> Passed with 0 errors (Exit code: 0).
+    - Command: `npm run build` -> Clean production build completed.
+  - **Tier 2 (Adversarial "Brainless User" Testing)**:
+    - Injected null and malformed payloads into `POST /api/roles`: Gracefully rejected with `422 Unprocessable Entity` and user-friendly toast: *"Role name is required"*.
+    - Tested rapid 10x multi-click on "Save Permissions" button: Debounced successfully; exactly 1 API call dispatched.
+    - Zero white-screens or unhandled React errors observed.
+  - **Tier 3 (API Contracts & DB Mutation Fidelity)**:
+    - Verified response envelope `{ success: true, data: { ... } }`.
+    - Confirmed MongoDB collection `roles` mutated only `permissions` field on targeted role; all other tenant roles untouched.
+    - UI table updated reactively in real time without page reload.
+    - Verified network tab: exactly 1 fetch executed on load, latency: 48ms.
+  - **Tier 4 (Single Source of Truth & Context Law)**:
+    - Verified `RoleContext.tsx` consumed via `useRole()`; zero direct component `fetch()` calls.
+    - Zero zombie context methods.
+  - **Tier 5 (Line-by-Line Audit & Dead Code Purge)**:
+    - Code reviewed step-by-step; zero duplicate helper functions.
+    - Reused existing `clsx` and `lucide-react` libraries; zero dead imports.
+    - Checked downstream dependents of `Role`: all 4 referencing files updated cleanly.
+  - **Tier 6 (UI Copywriting & UX Predictability)**:
+    - Zero technical terms on UI; buttons labeled *"Save Role"*, *"Delete Role"*, *"Manage Permissions"*.
+    - Human mental model test passed: Permissions studio intuitively located in Settings > Roles.
+  - **Tier 7 (Visual, Responsive, Theme & Animations)**:
+    - Tested in Light Mode and Dark Mode: zero rogue hex codes, WCAG contrast verified.
+    - Mobile Viewport (`390x844`): Cards rendered smoothly, zero horizontal scroll, touch targets >= 44px.
+    - Button animations and dustbin delete animated at 60 FPS without jank.
+```
+
+
+---
+
+## Source: engines/PROJECT_INTELLIGENCE.md
+
+# Project Intelligence Engine
+
+## Purpose
+Build a fact-based model of the target repository before proposing architecture or editing code. This engine prevents an agent from applying a remembered stack template to a project that uses a different architecture.
+
+## Discovery sequence
+
+### 1. Establish the workspace
+- Confirm the repository root, active branch, working-tree changes and monorepo/workspace boundaries.
+- Inventory files while excluding generated/vendor directories such as node_modules, .git, build output and caches.
+- Identify all package manifests, lockfiles, runtime versions, environment examples, deployment files and CI workflows.
+- Never overwrite or discard existing user changes.
+
+### 2. Detect the actual stack
+Record evidence for:
+- Framework and version.
+- Language and compiler.
+- Package manager and lockfile.
+- Frontend entry points and route conventions.
+- Backend/API entry points and service boundaries.
+- Database, ORM/ODM and migration strategy.
+- State management, data fetching and caching.
+- Styling system, tokens, component library and icon library.
+- Animation/runtime libraries.
+- Authentication, sessions, RBAC and tenant boundaries.
+- Test runners, build, typecheck, lint and browser tooling.
+
+A dependency in package.json is evidence of installation, not proof that every feature uses it. Trace actual imports and usage before deciding.
+
+### 3. Trace the requested feature
+Follow the feature across layers:
+1. Route/page entry point.
+2. Shared layout and components.
+3. State/query hooks or stores.
+4. API client and server handler.
+5. Service/domain logic.
+6. Models/schema and persistence.
+7. Permissions, validation and tenant isolation.
+8. Tests, fixtures, jobs, notifications and external integrations.
+
+Use repository search and import/reference tracing. Search for existing functionality before creating duplicates.
+
+### 4. Build an evidence-backed architecture map
+For each relevant layer record:
+- File/path.
+- Responsibility.
+- Inputs and outputs.
+- Dependencies and consumers.
+- Data ownership and security boundary.
+- Existing tests and observed behavior.
+- Confidence: verified, inferred, or unknown.
+
+Do not present inference as fact. If a file could not be read or output was truncated, record that limitation.
+
+### 5. Identify risks before implementation
+Check:
+- Shared components used by unrelated pages.
+- API contract consumers.
+- Database migration/backfill implications.
+- Auth and authorization checks on both server and client.
+- Multi-tenant scoping and data leakage.
+- Async race conditions, retries and idempotency.
+- Loading, empty, error and offline states.
+- Accessibility, keyboard behavior and reduced motion.
+- Mobile layout, long content and slow network behavior.
+
+## Required discovery artifact
+Create or update a task-scoped architecture note only when the work warrants it. It should contain:
+- Detected stack and evidence.
+- Relevant route/component/API/data-flow map.
+- Existing conventions to preserve.
+- Related modules/documentation loaded.
+- Unknowns and assumptions.
+- Files in the implementation dependency graph.
+
+## Stop conditions
+Ask the user only when an unknown materially changes architecture, security, irreversible data operations, cost or visible behavior. Otherwise choose the least disruptive evidence-based default and document it.
+
+
+---
+
+## Source: engines/INTENT_AND_SCOPE.md
+
+# Intent and Scope Engine
+
+## Convert requests into observable outcomes
+Do not plan from keywords alone. Rewrite the request as a concise outcome statement and list observable acceptance criteria.
+
+For every acceptance criterion, specify:
+- User action or system trigger.
+- Expected visible result.
+- Expected data/API side effect.
+- Permission and validation rules.
+- Loading, empty, error and cancellation behavior.
+- Responsive/accessibility requirements when relevant.
+- How the result will be verified.
+
+## Dependency-aware scope classification
+Classify each candidate change:
+
+| Class | Meaning | Default action |
+|---|---|---|
+| Required | Directly requested outcome | Implement |
+| Dependency-required | Needed for requested behavior to work safely | Implement and explain |
+| Optional improvement | Useful but not required | Recommend separately |
+| Unrelated | Does not support the requested outcome | Do not implement |
+
+Inspect broadly enough to discover dependencies; do not treat broad inspection as permission for broad rewrites.
+
+## Scope boundary questions
+Before implementation, answer:
+1. Which exact routes, screens, controls or workflows change?
+2. Which shared components or contracts are affected?
+3. What data, permission or external integration changes?
+4. What existing behavior must remain unchanged?
+5. What is explicitly out of scope?
+6. What are the acceptance tests and rollback concerns?
+
+## Existing-project rules
+- Preserve established framework, naming, folder layout, styling, state and API patterns.
+- Do not migrate architecture solely to match a documentation example.
+- Do not replace a working design system with a generic redesign unless requested.
+- Do not introduce new dependencies when an existing supported primitive is sufficient.
+- Keep unrelated files untouched and explain any unavoidable cross-cutting change.
+
+## Greenfield rules
+For a new project, derive architecture from product requirements, scale, team skill, deployment target, data sensitivity, budget and maintenance needs. Present material trade-offs before locking choices.
+
+## Plan format
+1. Outcome.
+2. Acceptance criteria.
+3. Detected project facts.
+4. Required/dependency-required work.
+5. Explicit exclusions.
+6. Files and contracts affected.
+7. Phases and dependency order.
+8. Verification plan.
+9. Risks, migration and rollback.
+
+
+---
+
+## Source: engines/INDEPENDENT_REVIEWER.md
+
+# Independent Implementation Reviewer
+
+## Role
+Review the implementation against the user's outcomes and repository evidence. Do not merely approve code because it follows the author's plan or because the diff is large.
+
+## Review sequence
+1. Re-read the original request and acceptance criteria.
+2. Inspect the complete diff against the baseline.
+3. Check that every changed file is necessary and every requested outcome is covered.
+4. Trace affected imports, routes, API contracts, models, permissions and data flows.
+5. Look for regressions in unrelated consumers of shared code.
+6. Check validation, error handling, async race conditions, idempotency and retries.
+7. Check security boundaries: server-side authorization, tenant scoping, input validation, secrets and unsafe logging.
+8. Check UX states: loading, empty, error, success, offline, disabled and permission denied.
+9. Check accessibility, keyboard focus, semantics, reduced motion and responsive layouts.
+10. Confirm the verification evidence corresponds to the current diff/commit.
+
+## Severity
+- BLOCKER: security/data loss, broken core flow, build failure, destructive migration without safety.
+- HIGH: requested behavior incomplete, API contract broken, serious regression, authorization gap.
+- MEDIUM: important edge case, accessibility issue, responsive breakage, maintainability risk.
+- LOW: cosmetic inconsistency or non-blocking cleanup.
+
+## Review output
+For each finding include severity, file/line, reproduction or evidence, impact and concrete fix.
+Do not invent findings. If no issue is found, state what was inspected and what was not verified.
+
+## Completion decision
+- ACCEPT only when all required acceptance criteria have evidence and no unresolved blocker/high issue remains.
+- REQUEST CHANGES when a required outcome fails or an important risk is unresolved.
+- NOT VERIFIED when browser, runtime, integration or environment checks were unavailable.
+A reviewer cannot convert missing evidence into PASS.
+
+
+---
+
+## Source: quality/ANIMATION_QA.md
+
+# Animation and Motion Quality Assurance
+
+## Core principle
+A visually smooth animation is not defined by the number of CSS keyframes. Browsers interpolate between keyframes. Quality is defined by whether the intended choreography, state transitions, timing, interaction and final layout are correct.
+
+## Motion specification template
+For each meaningful animation document:
+- Name and purpose.
+- Trigger and initial state.
+- Origin/anchor and coordinate system.
+- Semantic stages in order.
+- Duration per stage and total duration.
+- Easing/spring parameters and overlap.
+- Visual properties changed (transform, opacity, clip-path, filter, layout).
+- Final visual state and data/layout synchronization.
+- Interruption, cancellation, repeated input and failure behavior.
+- Reduced-motion alternative.
+- Responsive/viewport constraints.
+
+## Multi-stage choreography checklist
+Example for a delete-to-trash animation:
+1. User activates delete; confirmation UI appears from the correct origin.
+2. Confirm action locks duplicate destructive submissions without freezing unrelated controls.
+3. Item is snapshotted from its real bounding box.
+4. Trash/bin enters from the correct screen edge.
+5. Lid opens and reaches a stable open state.
+6. Item moves/deforms toward the aperture with continuous interpolation.
+7. Item is visually consumed; data mutation completes or failure is handled.
+8. Lid closes; bin exits; remaining layout settles.
+9. Toast and final data state agree with the actual server result.
+
+Do not copy this choreography to unrelated actions. Each animation must represent its actual task.
+
+## Implementation quality
+- Prefer transform/opacity for high-frequency motion; measure expensive filter/blur/layout animation.
+- Use stable layout IDs or measured geometry for shared-element transitions.
+- Keep portals, stacking contexts, clipping and scroll containers in mind.
+- Avoid animation state being the source of truth for persisted data.
+- Ensure API success/failure, cancellation and rapid repeat clicks resolve to a consistent final state.
+- Avoid perpetual animation for a completed or failed task.
+- Respect prefers-reduced-motion and provide a clear non-motion state.
+
+## Browser verification
+When browser tooling exists:
+- Test the exact user interaction on the real rendered page.
+- Capture initial, intermediate and final states.
+- Verify the complete sequence and timing, not just CSS declarations.
+- Check z-index, clipping, scroll, viewport resize, touch and keyboard interaction.
+- Test reduced-motion mode.
+- Test slow API, API failure, double-click and navigation during animation.
+- Inspect console/runtime errors and ensure data state matches the visual result.
+
+If browser tooling is unavailable, report browser motion QA as NOT VERIFIED. Source review alone is not a visual pass.
+
+
+---
+
+## Source: quality/ACCEPTANCE_CRITERIA.md
+
+# Acceptance Criteria and Evidence Ledger
+
+## Task acceptance template
+
+| ID | Requirement | Expected evidence | Status | Evidence reference |
+|---|---|---|---|---|
+| AC-01 | User-visible outcome | Repro steps or browser capture | NOT RUN | |
+| AC-02 | Data/API behavior | Test output or request/response evidence | NOT RUN | |
+| AC-03 | Permissions/security | Authorized and unauthorized test results | NOT RUN | |
+| AC-04 | Responsive behavior | Tested viewport sizes | NOT RUN | |
+| AC-05 | Regression safety | Relevant existing test suite | NOT RUN | |
+
+Remove rows that are genuinely not applicable and explain why. Add task-specific criteria rather than blindly reusing this example.
+
+## Evidence status vocabulary
+- PASS: executed and successful.
+- FAIL: executed and unsuccessful.
+- NOT CONFIGURED: no test or command exists.
+- NOT RUN: available but not executed.
+- BLOCKED: attempted but environment/tooling prevented execution.
+- NOT APPLICABLE: does not apply to the detected stack or task.
+
+## Evidence requirements
+Every PASS must identify:
+- Exact command or tool.
+- Commit/worktree state tested.
+- Exit code or observed result.
+- Relevant output, test name or browser state.
+
+A green static scan does not prove runtime behavior. A passing unit test does not prove browser layout. A successful build does not prove authorization. Choose evidence that matches the requirement.
+
+## Completion gate
+The task is accepted only when:
+1. Every required acceptance criterion is PASS.
+2. Required dependency criteria are PASS.
+3. No unresolved blocker/high-severity review issue remains.
+4. Relevant regression checks have run.
+5. Unverified checks are disclosed and do not affect a claim of full completion.
+6. Final report lists changed files, evidence, limitations and operational steps.
+
+No percentage score can replace this gate.
+
+
+---
+
+# PRESERVED LEGACY COMPILED BRAIN
+
+The following historical compiled content is retained as a reference library. When any instruction conflicts with the current authoritative addendum above, follow the addendum and current source documents.
+
+---
+
 # 🧠 WEBSITE BUILDER ENGINE — MASTER COMPILED BRAIN
 > **CANONICAL PRODUCTION SPECIFICATION & COMPLETE KNOWLEDGE BASE**  
 > Auto-generated compiled synthesis of all 50+ architecture modules, design systems, engineering rules, and verification standards.
