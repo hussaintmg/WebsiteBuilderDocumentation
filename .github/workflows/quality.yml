@@ -21,6 +21,8 @@ jobs:
         run: npm run validate:docs
       - name: Compile master brain and verify every source exists
         run: npm run compile
+      - name: Syntax-check every CLI script
+        run: for file in scripts/*.js; do node --check "$file"; done
       - name: Run framework tests
         run: npm test
       - name: Run project-aware audit against this repository
