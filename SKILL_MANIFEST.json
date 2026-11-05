@@ -16,18 +16,18 @@
       "mandatoryFiles": [
         "EXECUTION_CONTRACT.md",
         "rules/CORE_DIRECTIVE.md",
-        "rules/MANDATORY_EXECUTION_CHECKLIST.md",
-        "engines/PROJECT_INTELLIGENCE.md",
-        "engines/INTENT_AND_SCOPE.md"
+        "rules/MANDATORY_EXECUTION_CHECKLIST.md"
       ]
     },
     "tier1_foundation_and_scaffolding": {
-      "purpose": "Foundational design tokens, color physics, typography, and initial project scaffolding.",
+      "purpose": "Load architecture discovery, scope planning, foundational design tokens and safe scaffolding guidance when relevant to the task.",
       "files": [
         "design-system/DESIGN_ARCHITECTURE.md",
         "design-system/FRONTEND_DESIGN_RULES.md",
         "rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md",
-        "rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md"
+        "rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md",
+        "engines/PROJECT_INTELLIGENCE.md",
+        "engines/INTENT_AND_SCOPE.md"
       ]
     },
     "tier2_domain_modules": {
