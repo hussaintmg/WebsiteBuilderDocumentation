@@ -123,7 +123,15 @@ const sections = [
   }
 ];
 
-let compiledContent = `# 🧠 WEBSITE BUILDER ENGINE — MASTER COMPILED BRAIN
+let compiledContent = `# CURRENT AUTHORITATIVE EXECUTION ADDENDUM — READ FIRST
+
+> This addendum is the current source of truth for agent behavior. It supersedes conflicting historical instructions in the legacy compiled body below. The legacy body is preserved for its useful technical recipes, but its old universal stack, styling, motion and 95% score mandates must not override this addendum.
+>
+> **Mandatory first read:** EXECUTION_CONTRACT.md. Discover the real project architecture, define scoped acceptance criteria, implement only requested/dependency-required work, and verify with fresh evidence. Missing checks are NOT CONFIGURED / NOT VERIFIED, never PASS. Do not force Next.js, MongoDB, Tailwind, React Context, Framer Motion, glassmorphism, Genie animations or any other pattern unless it fits the project or the user requested it.
+
+---
+
+# 🧠 WEBSITE BUILDER ENGINE — MASTER COMPILED BRAIN
 > **CANONICAL PRODUCTION SPECIFICATION & COMPLETE KNOWLEDGE BASE**  
 > Auto-generated compiled synthesis of all 50+ architecture modules, design systems, engineering rules, and verification standards.
 > 
