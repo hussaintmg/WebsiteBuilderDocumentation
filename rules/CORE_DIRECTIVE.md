@@ -55,6 +55,13 @@ Choose wrapping, scrolling, dropdown overflow or alternate navigation based on t
 - Prefer cohesive modules and avoid knowingly adding dead code, duplicate abstractions or unnecessary dependencies.
 - Treat apparently orphaned files and legacy packages as investigation candidates, not automatic deletion targets. Confirm references, build/runtime loading and ownership before removing anything.
 
+### Law 11: Passwords, Secrets and JWT Separation
+- Human login passwords are one-way hashed with Argon2id or bcrypt; never reversibly encrypted or stored plaintext.
+- Third-party credentials that must be replayed (API keys, SMTP passwords, WhatsApp tokens, OAuth/provider secrets) are authenticated-encrypted at rest (AES-256-GCM or approved KMS/envelope encryption). When MongoDB is the chosen datastore, persist ciphertext plus nonce/IV, authentication tag and key-version metadata in a tenant-scoped record; keep encryption keys outside the database and source control.
+- JWTs are signed identity/session containers, not secret storage. Never put passwords, provider credentials, database URLs or encryption keys in JWT claims. A signed JWT is not encrypted.
+- Decrypt integration credentials only inside authorized backend operations immediately before provider use. Never return plaintext to the browser or write secrets to logs, URLs, analytics or AI prompts.
+- Enforce tenant isolation, least privilege, rotation/revocation, redaction and fail-closed behavior when key management is unavailable. Read [SECRETS_AND_CREDENTIALS_SECURITY.md](./SECRETS_AND_CREDENTIALS_SECURITY.md).
+
 ### Law 10: Evidence-Based Verification
 - Execute the project's configured, relevant test/build/typecheck/lint/browser checks.
 - Missing checks are NOT CONFIGURED or NOT VERIFIED, never PASS. TypeScript checks are NOT APPLICABLE when the project does not use TypeScript.
@@ -71,6 +78,7 @@ When implementing specific features, read the targeted module from the repositor
 | **Responsive Mobile Tabs** | `design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md` |
 | **In-Flight Button Animations** | `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md` |
 | **Genie Trash Bin Deletion** | `design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md` |
+| **Secrets, Credentials & JWT Security** | `rules/SECRETS_AND_CREDENTIALS_SECURITY.md` |
 | **Auth & Edge Proxy Protection** | `modules/AUTH_AND_FACELOCK.md` & `modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md` |
 | **Data Tables & Mobile Cards** | `modules/DATA_TABLE_AND_CARDS_SYSTEM.md` |
 | **Rapid Click Batching** | `modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md` |
