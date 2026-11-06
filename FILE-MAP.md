@@ -1,6 +1,6 @@
 # Repository Navigation & Functional File Map (FILE-MAP.md)
 
-> **STATUS: FULLY VERIFIED REPOSITORY BLUEPRINT**  
+> **STATUS: NAVIGATION INVENTORY — VERIFICATION IS EVIDENCE-SCOPED**  
 > This file acts as the verified navigation map for `WebsiteBuilderDocumentation` (Main-Docs). It traces all entry points, architectural rules, visual systems, and production modular subsystems to enable rapid navigation without redundant repository-wide scans.
 
 ---
@@ -9,7 +9,7 @@
 
 - **Repository Type**: Enterprise Web Development Documentation & Autonomous AI Engineering Framework (Main-Docs)
 - **Primary Languages / Formats**: Markdown (`.md`), TypeScript (`.ts`/`.tsx`), Mermaid (`mermaid`), KaTeX Math
-- **Application Target**: Full-stack Next.js (App Router), FastAPI (Python), Node.js/Express, MongoDB (Mongoose), Redis (BullMQ), Tailwind CSS
+- **Application Target**: Cross-stack web projects. Next.js, FastAPI, Node.js, MongoDB, Redis and Tailwind appear as example profiles, not required dependencies.
 - **Core Purpose**: Enables AI agents and human developers to plan, architect, scaffold, and verify production-grade web applications in a single run with zero regressions and zero bloat.
 
 ---
@@ -17,7 +17,7 @@
 ## 🧭 Functional Subsystem Maps
 
 ### 1. Agent Directives & Autonomous Project Orchestration
-- **Functionality**: Defines the mandatory 5-phase execution protocol, behavioral guardrails, discovery interview engine, and standardized blueprint generators for all AI coding agents.
+- **Functionality**: Defines the architecture-aware execution workflow, behavioral guardrails, discovery interview engine, and standardized blueprint generators for all AI coding agents.
 - **Confidence**: Verified
 - **Entry Point**: `MAIN_AGENT_DIRECTIVE.md` & `rules/CORE_DIRECTIVE.md`
 - **Primary Files**:
@@ -48,7 +48,7 @@
   - `rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`: 10 safety laws, zero-regression protocol, anti-bloat guard, and `FILE-MAP.md` standard.
   - `rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`: Principal engineer mindset, 6-phase non-breaking build law, 4-question line foresight matrix.
   - `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`: Root `/models` (1 per file) and `/context` single source of truth rules.
-  - `rules/TESTING_AND_VERIFICATION.md`: Universal 7-tier verification lifecycle (Static, Adversarial Chaos, DB Mutation, Context, Dead Code, Copywriting, Visual).
+  - `rules/TESTING_AND_VERIFICATION.md`: Project-aware verification guidance (Static, Adversarial Chaos, DB Mutation, Context, Dead Code, Copywriting, Visual).
   - `rules/BACKEND_CONNECTION_RULES.md`: Server-to-server contracts, DB connection caching, and API standards.
   - `rules/RBAC_SECURITY_RULES.md`: Role definitions (Developer, Owner, Admin, Staff, Customer), security matrices, permission guards.
   - `rules/PAYMENT_SAFEGUARD_RULE.md`: Developer monthly hosting & maintenance payment banner and grace period rules.
@@ -84,18 +84,18 @@
   - `design-system/assets/MISSING_REFERENCE_ASSETS.md`: Recovery ledger for local visual reference images.
 - **Flow**:
   `Design Requirement ➔ DESIGN_ARCHITECTURE.md ➔ UI Components / Genie Dialogs / Sections ➔ React Component Tree`
-- **Dependencies**: Tailwind CSS, Framer Motion, Three.js, Lucide React.
+- **Dependencies**: Optional design/animation dependencies; selected per project and feature.
 - **Used By**: All UI/UX pages, modals, dashboards, and storefronts.
 
 ---
 
 ### 4. Financial & High-Scale Resilience Engines
-- **Functionality**: Distributed idempotency, in-flight mutex locking, Inquire-Before-Charge timeout recovery, BullMQ worker crash failover, hyper-scale patterns, and universal polymorphic multi-storage architecture.
+- **Functionality**: Distributed idempotency, in-flight mutex locking, Inquire-Before-Charge timeout recovery, BullMQ worker crash failover, hyper-scale patterns, and optional polymorphic multi-storage architecture.
 - **Confidence**: Verified
 - **Entry Point**: `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`, `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md` & `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`
 - **Primary Files**:
   - `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`: Order-bound idempotency keys, Redis mutex lock, Inquire-Before-Charge (IBC) protocol, dual reconciliation (webhooks + BullMQ poller), JazzCash/Stripe adapters, `useResilientPayment` Hook.
-  - `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`: Universal `MediaAsset` schema, polymorphic `<UnifiedMedia />` resolver, Direct-to-Storage presigned uploads (bypassing Vercel 4.5MB limits), 2MB chunked GridFS streaming, and edge caching (`/api/media/[id]`).
+  - `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`: Example `MediaAsset` schema, polymorphic `<UnifiedMedia />` resolver, Direct-to-Storage presigned uploads (bypassing Vercel 4.5MB limits), 2MB chunked GridFS streaming, and edge caching (`/api/media/[id]`).
   - `modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`: 5 pillars of slow-network speed: Adaptive WebP/AVIF images, 20-char BlurHash LQIP, React Server Component streaming (<50ms TTFB), MongoDB projection pruning (90% JSON reduction), IndexedDB offline-first SWR cache, and auto-degradation.
   - `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`: 3-tier capacity planning, BullMQ 30s heartbeat failover, L1/L2 Redis cache, payment circuit breakers.
   - `modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md`: 20 production high-scale blueprints (20M Likes buffer, feeds, reminders, Uber H3 rides).
@@ -140,16 +140,16 @@
 ### Root Orchestration
 | File Path | Type | Main Responsibility | Important For | Confidence |
 | :--- | :--- | :--- | :--- | :--- |
-| `SKILL.md` | Master Skill | Official Antigravity global skill definition & 5-phase orchestrator | Skill Invocation | Verified |
+| `SKILL.md` | Master Skill | Cross-platform skill entry point and orchestrator | Skill Invocation | Verified |
 | `README.md` | Doc Entry | Framework overview, golden rule, directory tree | Orientation | Verified |
 | `MAIN_AGENT_DIRECTIVE.md` | Directive | Master agent rules, 5-phase protocol, behavioral guardrails | Autonomous Execution | Verified |
 | `PLAN_BUILDER.md` | Generator | Blueprint specification for `.project/` and `FILE-MAP.md` | Project Onboarding | Verified |
-| `DISCOVERY_QUESTIONNAIRE.md` | Interview | 11-phase structured discovery questionnaire | Requirements Capture | Verified |
+| `DISCOVERY_QUESTIONNAIRE.md` | Interview | Focused, conditional discovery questionnaire | Requirements Capture | Verified |
 | `MASTER_SUMMONING_PROMPT.md` | Master Prompt | High-impact executive prompt template and action matrix | Fast Invocation & Pilot | Verified |
 | `FILE-MAP.md` | Living Map | Verified repository navigation and functional index | Codebase Navigation | Verified |
 | `BRAIN.md` | Master Brain | Compiled high-density synthesis of all 49 framework specifications | Instant Context Ingestion | Verified |
 | `scripts/audit-engine.js` | Audit CLI | Standalone 9-suite compliance & testing validator, 0-100% scoring | Quality Gate & Testing | Verified |
-| `scripts/scaffold-engine.js` | Scaffolder CLI | Automated zero-dependency generator for core framework files & packages | Fast Foundation Scaffolding | Verified |
+| `scripts/scaffold-engine.js` | Scaffolder CLI | Guarded React/Tailwind helper scaffold; dry-run by default | Fast Foundation Scaffolding | Verified |
 | `scripts/compile-brain.js` | Compiler | Automated build script compiling all specs into unified BRAIN.md | Knowledge Compilation | Verified |
 
 ### Rules & Engineering Standards (`rules/`)
@@ -233,7 +233,7 @@
 
 ### Flow 2: Project Onboarding & Scaffolding Flow
 1. `MAIN_AGENT_DIRECTIVE.md` (Agent activates Rule Zero)
-2. `DISCOVERY_QUESTIONNAIRE.md` (Conducts structured 11-phase interview)
+2. `DISCOVERY_QUESTIONNAIRE.md` (Asks focused questions only when material information is missing)
 3. `PLAN_BUILDER.md` (Generates `.project/PLAN.md`, `ARCHITECTURE.md`, `RULES.md`, `SPRINTS.md`, `FILE-MAP.md`)
 4. User Approves Plan
 5. `rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md` (Executes phased build)
@@ -270,11 +270,11 @@
 ---
 
 ## 🎯 Verification & Confidence Audit
-- **Total Mapped Files**: 92 files (102 Git tree entries including directories) across 3 directories and root
-- **Verified Files**: 53/53 (100% physically inspected from disk)
-- **Likely Files**: 0
-- **Unknown Files**: 0
-- **Source-Code Files Changed**: 0
+- **Total Mapped Files**: 92 files (102 Git tree entries including directories) at the latest verified inventory
+- **Content inspection**: Key entry points, execution rules, selected modules and design references inspected; not every file's full contents were manually reviewed.
+- **Remaining verification**: Target-application runtime, visual, browser and production checks must be performed in each consuming project.
+- **Repository inventory**: 92 tracked files across 10 directories at the latest inventory.
+- **Engine source files changed**: CLI, audit, compiler and validation scripts were updated and are covered by CI checks.
 - **Application Behavior Altered**: No
 
 
