@@ -178,7 +178,7 @@ Compile project-specific rules selected from `design-system/` (visual design) an
 The agent must structure the implementation plan following the **6-Phase Non-Breaking Phased Architecture** defined in [`rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`](rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md).
 
 > 🛡️ **THE OPEN-CLOSED PHASED BUILD LAW**:  
-> Every subsequent phase must build upon previous phases without breaking them. Existing working code is enhanced, never dismantled. All major new features and subsystems MUST reside in dedicated, newly created files that integrate cleanly through established interfaces.
+> Every phase should preserve verified working behavior and integrate through the project's established interfaces. Modular files are preferred when they improve cohesion and maintainability; do not split code into new files mechanically or refactor unrelated working code.
 
 ```markdown
 # Implementation Sprints: [Project Name]

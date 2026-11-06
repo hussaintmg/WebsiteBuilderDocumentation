@@ -19,7 +19,7 @@ What is the scope of this build?
 ---
 
 ### Q1.2: Core Technology Stack & Backend Placement (Backend Kahan Rakhna Hai?)
-> **MANDATORY AGENT REQUIREMENT**: The agent MUST ask the user upfront how they want the backend structured (inside the same Next.js project, as a separate Next.js backend project, as Python FastAPI, or Node.js).
+> **Ask only when needed**: Ask about backend placement only if the user has not specified it and repository evidence does not resolve it. Present the options below as examples, not a mandatory menu or default.
 Which architectural setup do you prefer?
 - [ ] **(Recommended Dual Next.js) Next.js Frontend + Dedicated Next.js Backend API (2 Separate Next.js Projects)**:  
   - `frontend/`: Next.js App Router for UI, Layouts, SSR, and Client Components.  
@@ -45,7 +45,7 @@ How should the backend be hosted?
 ---
 
 ### Q1.4: Project Folder Hierarchy Standard (Root-Level `/app` Mandate)
-> **MANDATORY DIRECTORY RULE**: If Next.js App Router is selected for a greenfield project, choose the root or src/app convention deliberately. For an existing project, preserve its current supported layout.
+> **Framework directory choice**: If Next.js App Router is selected for a greenfield project, choose root `app/` or `src/app/` deliberately based on tooling and team preference. For an existing project, preserve its current supported layout.
 Which directory structure should be scaffolded?
 - [ ] **(Mandatory Framework Standard) Clean Root-Level `/app` Hierarchy (Zero `src/` Wrapper)**:
   - `<root>/app/`: App Router pages, layouts, and `/api` route handlers directly at root.
@@ -58,7 +58,7 @@ Which directory structure should be scaffolded?
 ## 🎨 Phase 2: Design Aesthetics, UI/UX & Component Architecture
 
 ### Q2.0: Bespoke Brand Identity & Aesthetic Theme ("Design Apna Banana Hai")
-> **MANDATORY PRINCIPLE**: Documentation code snippets are mechanical blueprints. The agent will craft a completely original, bespoke visual identity for your project, NOT a generic copy-paste from docs.
+> **Design guidance**: Documentation code snippets are examples. Adapt them to the product brand and existing design system; create a bespoke identity when branding/design work is in scope.
 What is the visual personality, vibe, and bespoke color motif of your brand?
 - [ ] **(Recommended) High-End Obsidian & Sky Cyan / Electric Indigo** (Sleek dark mode, glowing sky-cyan highlights, deep frosted glass).
 - [ ] **Emerald Mint & Deep Slate** (Fintech / Banking / Growth aesthetic, prestige feel).
@@ -70,7 +70,7 @@ What is the visual personality, vibe, and bespoke color motif of your brand?
 ---
 
 ### Q2.0B: Brand Logo & Real Favicon Suite Style (Logo & Favicon Kesa Chahiye?)
-> **MANDATORY BRANDING RULE**: Leaving framework default favicons (Next.js triangle, Vite bird, React atom) or generic unstyled text for a logo is strictly forbidden. When custom branding is part of the accepted scope, create a bespoke, production-ready SVG logo and appropriate favicon suite.
+> **Branding scope**: When custom branding is part of the accepted scope, create an appropriate logo and favicon suite. Do not add branding work to unrelated tasks.
 Which visual style should be crafted for your brand logo and favicon suite?
 - [ ] **(Recommended) High-End Geometric Abstract Mark + Wordmark**:
   - **Full Logo**: Bespoke geometric vector emblem with glowing multi-stop gradient paired with bold typographic wordmark (using display font).
@@ -199,7 +199,7 @@ Which authentication and identity workflows should be enabled?
 ---
 
 ### Q3.5B: Zero-Demo Credentials Policy & Inter-Auth Navigation Ergonomics
-> **MANDATORY AUTH ERGONOMICS & SECURITY RULE**: Pre-filled demo credentials, mock accounts, or "Click to login as Admin/Owner" backdoor buttons are strictly prohibited in all environments. Input fields must initialize to clean empty strings (`""`). Additionally, all auth views must feature frictionless bidirectional navigation links so users never get trapped.
+> **Authentication security guidance**: Pre-filled demo credentials, mock accounts, or "Click to login as Admin/Owner" backdoor buttons are strictly prohibited in all environments. Input fields must initialize to clean empty strings (`""`). Additionally, all auth views must feature frictionless bidirectional navigation links so users never get trapped.
 Which auth form ergonomics and security standards must be enforced?
 - [ ] **(Recommended Mandatory Standard) Strict Zero-Demo Security & Complete Navigation Ergonomics**:
   - **Zero Demo Credentials & Backdoors**: Zero pre-filled values, zero mock click-to-login buttons in production and development. Prevents security audit failures and user confusion.
@@ -212,7 +212,7 @@ Which auth form ergonomics and security standards must be enforced?
 ---
 
 ### Q3.6: Edge Proxy Route Protection & Unauthorized Access Feedback (Proxy & Protected Routes)
-> **MANDATORY SECURITY PROXY RULE**: When Next.js is the chosen framework, use the appropriate server-side route protection mechanism; other frameworks must use their native trusted server middleware. Unauthorized or unauthenticated visitors must be immediately blocked, redirected to a safe view, and alerted via toast notification ("Aap is page pe nahi ja sakte hain").
+> **Route protection guidance**: When Next.js is the chosen framework, use the appropriate server-side route protection mechanism; other frameworks must use their native trusted server middleware. Unauthorized or unauthenticated visitors must be immediately blocked, redirected to a safe view, and alerted via toast notification ("Aap is page pe nahi ja sakte hain").
 Which route protection and proxy behavior should be enforced?
 - [ ] **(Recommended Mandatory Standard) Dual-Shield Edge Proxy + Interception Toasts + Fresh Evaluation on Auth**:
   - **Edge Middleware Proxy**: Intercepts every route before server render; blocks unauthorized users at the network edge.
@@ -330,7 +330,7 @@ How should brand assets, global company contact information, and authentication 
 
 ### Q6.7: Root Models & React Contexts Architecture (State & API Standard)
 How should database schemas, API operations, and client-side state variables be structured across the codebase?
-- [ ] **(Mandatory Standard) Dedicated Root `/models`, Corresponding Root `/context`, and Context-First API Encapsulation**:  
+- [ ] **(Optional architecture) Dedicated Models and Context/State Layer:**  
   - **Root `/models`**: Separate file per MongoDB collection (e.g. `models/Program.ts`, `models/Order.ts`). Mongoose schemas, compound indexes, and strict multi-tenant scoping (`companyId`).  
   - **Root `/context`**: 1-to-1 matching React Context per model (e.g. `context/ProgramContext.tsx`, `context/OrderContext.tsx`) + 3 global structural contexts (`AuthContext`, `ThemeContext`, `ToastContext`).  
   - **Zero Direct Component API Calls**: All mutations, fetches, and domain operations (e.g. `createProgram`, `editProgram`, `deleteProgram`, `downloadProgramPdf`, `sendProgramEmail`) execute exclusively through context methods.  
@@ -412,7 +412,7 @@ Do you want to enable the Developer Payment Safeguard module for client projects
 ## ⚙️ Phase 10: Settings Architecture, Integrations & Dynamic Feature Flags
 
 ### Q10.1: Settings Structure & System Settings Access (Kisko Mile Gi System Settings?)
-> **MANDATORY SETTINGS RULE**: Every project MUST feature a Settings hub with two distinct tiers: **Normal Settings** (Personal profile, security, appearance, regional preferences, company profile) and **System Settings** (Platform infrastructure, credentials, storage, AI keys, and feature flags).
+> **Settings module applicability**: If the product requires settings, define the needed user and administrative settings based on its roles and security model. A two-tier settings hub is one optional pattern, not a universal requirement.
 Who should have access to **System Settings**?
 - [ ] **(Recommended if Developer Role Exists) Dual Developer Governance with Delegation Option**:
   - Developer has full platform governance over System Settings.
@@ -458,7 +458,7 @@ Which AI providers, models, and fallback chains should be configured?
 ---
 
 ### Q10.4: Dynamic Feature Flags & Strict Zero-Leak UI Enforcement (Konse Features On/Off Rakhne Hain?)
-> **STRICT ZERO-LEAK MANDATE**: Features toggled OFF must **COMPLETELY DISAPPEAR** from the user experience. No disabled buttons, no locked teaser menus, no routes accessible. Direct URL visits trigger a clean 404 Not Found.
+> **Feature-flag behavior**: Define disabled-feature behavior explicitly. Hide or disable UI according to product UX, and always enforce authorization server-side; a hidden control is never a security boundary.
 Which modular features should be controllable via the Developer / Owner Feature Flags panel?
 - [ ] **(Recommended Comprehensive Feature Flags Engine)**:
   - [ ] **AI Capabilities** (`feature:ai_engine`): Toggle all AI touchpoints on/off.
