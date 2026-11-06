@@ -28,9 +28,9 @@
   - `scripts/resolve-paths.js`: Cross-platform dynamic path and environment resolver (Claude Code, Gemini, Cursor, CI).
   - `scripts/website-builder.js`: Unified cross-platform CLI runner for audit, scaffold, docs, test, and compile.
   - `scripts/load-docs.js`: On-demand targeted documentation loader to eliminate 1.8MB context blowout.
-  - `scripts/test-framework.js`: Automated framework testing suite with 30 passing verification checkpoints.
+  - `scripts/test-framework.js`: Automated framework testing suite with live pass/fail totals are reported by CI.
   - `PLAN_BUILDER.md`: Project blueprint generator for `PLAN.md`, `ARCHITECTURE.md`, `RULES.md`, `SPRINTS.md`, and `FILE-MAP.md`.
-  - `DISCOVERY_QUESTIONNAIRE.md`: 11-phase onboarding questionnaire covering stack, RBAC, features, and timeouts.
+  - `DISCOVERY_QUESTIONNAIRE.md`: focused conditional onboarding questionnaire covering stack, RBAC, features, and timeouts.
 - **Supporting Files**:
   - `README.md`: High-level repository orientation and philosophy.
 - **Flow**:
@@ -47,7 +47,7 @@
 - **Primary Files**:
   - `rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`: 10 safety laws, zero-regression protocol, anti-bloat guard, and `FILE-MAP.md` standard.
   - `rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`: Principal engineer mindset, 6-phase non-breaking build law, 4-question line foresight matrix.
-  - `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`: Root `/models` (1 per file) and `/context` single source of truth rules.
+  - `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`: Optional models and state-layer patterns.
   - `rules/TESTING_AND_VERIFICATION.md`: Project-aware verification guidance (Static, Adversarial Chaos, DB Mutation, Context, Dead Code, Copywriting, Visual).
   - `rules/BACKEND_CONNECTION_RULES.md`: Server-to-server contracts, DB connection caching, and API standards.
   - `rules/RBAC_SECURITY_RULES.md`: Role definitions (Developer, Owner, Admin, Staff, Customer), security matrices, permission guards.
@@ -157,8 +157,8 @@
 | :--- | :--- | :--- | :--- | :--- |
 | `rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md` | Safety Rule | 10 laws, zero-regression, anti-bloat, FILE-MAP sync | Non-Breaking Dev | Verified |
 | `rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md` | Engineering | Principal engineer mindset, 4-question line foresight | Phased Architecture | Verified |
-| `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md` | Arch Rule | Root `/models` and `/context` encapsulation | State & Data Layer | Verified |
-| `rules/TESTING_AND_VERIFICATION.md` | Quality | Universal 7-tier verification lifecycle | Quality Assurance | Verified |
+| `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md` | Arch Rule | Optional models and state/data-layer patterns | State & Data Layer | Verified |
+| `rules/TESTING_AND_VERIFICATION.md` | Quality | Optional 7-tier verification reference | Quality Assurance | Verified |
 | `rules/BACKEND_CONNECTION_RULES.md` | Backend Rule | DB connection caching, API envelopes, server-to-server calls | Backend Integration | Verified |
 | `rules/RBAC_SECURITY_RULES.md` | Security Rule | 5-tier role hierarchy, permission enforcement | Security & Auth | Verified |
 | `rules/PAYMENT_SAFEGUARD_RULE.md` | Billing Rule | Developer hosting safeguard banner and 8th-day grace date | Platform Billing | Verified |
