@@ -171,6 +171,19 @@
           "quality/ACCEPTANCE_CRITERIA.md",
           "engines/INDEPENDENT_REVIEWER.md",
           "EXECUTION_CONTRACT.md"
+        ],
+        "secrets": [
+          "rules/SECRETS_AND_CREDENTIALS_SECURITY.md",
+          "rules/RBAC_SECURITY_RULES.md"
+        ],
+        "credentials": [
+          "rules/SECRETS_AND_CREDENTIALS_SECURITY.md",
+          "modules/AUTH_AND_FACELOCK.md"
+        ],
+        "jwt": [
+          "rules/SECRETS_AND_CREDENTIALS_SECURITY.md",
+          "modules/AUTH_AND_FACELOCK.md",
+          "modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md"
         ]
       }
     },
