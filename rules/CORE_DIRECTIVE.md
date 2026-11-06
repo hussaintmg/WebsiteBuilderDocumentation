@@ -5,54 +5,60 @@
 
 ---
 
+## Precedence: Architecture-Aware Execution Contract
+
+Read [../../EXECUTION_CONTRACT.md](../EXECUTION_CONTRACT.md) before applying the laws below. That contract supersedes legacy universal stack assumptions. The laws below are patterns for projects where they are applicable, not permission to force a stack or redesign unrelated areas.
+
+- Detect the project's real framework, architecture, package manager, design system and conventions first.
+- Root /app, MongoDB, Tailwind, React Context, Framer Motion and glassmorphism are conditional, not universal.
+- Missing tests/build/typecheck are NOT CONFIGURED or NOT VERIFIED, never a pass.
+- Inspect widely; change only requested outcomes and necessary dependencies.
+
 ## 1. The 10 Ironclad Engine Laws
 
 ### Law 1: Rule Zero (Plan First, Code Second)
 Never start writing production code until a structured implementation plan (`/.project/PLAN.md` or task plan) is created and aligned with the user.
 
-### Law 2: Root-Level `/app` Standard (Zero `src/` Wrapper)
-In all Next.js projects governed by this framework:
-- App Router is situated directly at `<root>/app/`.
-- Sibling root folders: `/components`, `/context`, `/models`, `/hooks`, `/lib`, `/public`, `/styles`.
-- Path aliases: `"@/*": ["./*"]` in `tsconfig.json`. Wrapping project files inside an unnecessary `src/` directory is prohibited unless an existing legacy project strictly requires migration.
+### Law 2: Preserve the Framework-Native Project Structure
+- For existing projects, preserve the actual supported root/`src/` layout and established folder conventions.
+- For greenfield projects, choose the framework's supported structure deliberately; Next.js may use root `app/` or `src/app/`.
+- Add `components`, `context`, `models`, `hooks`, `lib`, `public` or `styles` only when the selected architecture benefits from them. Do not migrate folders merely to satisfy this skill.
 
-### Law 3: Aesthetics, Glassmorphism & Motion Physics Are Non-Negotiable
-- **Zero Plain HTML**: Barebones, unstyled HTML or basic white cards with flat gray borders are forbidden.
-- **Glassmorphic Canvas**: Dark obsidian canvas (`bg-neutral-950`), frosted glass panels (`backdrop-blur-xl bg-neutral-900/60 border border-white/10`), ambient radial glow, and refined typography.
-- **Framer Motion Micro-Interactions**: Wrap pages in animated transitions (`initial={{ opacity: 0, y: 16 }}`). Hover/active states must have kinetic tactile spring feedback (`hover:scale-[1.02] active:scale-[0.98]`).
+### Law 3: Respect the Existing Design System and Motion Language
+- Preserve the project's established visual language and accessibility conventions.
+- Glassmorphism, dark mode, Framer Motion, GSAP and spring effects are optional patterns, not universal requirements.
+- Use motion only when it improves the requested interaction; honor reduced-motion preferences.
 
-### Law 4: Context Law & State Integrity
-Page components must **NEVER** make direct raw `fetch()` or `axios` calls. All state mutations and queries must be encapsulated inside domain React Contexts (`/context/`).
+### Law 4: State Ownership and Data Boundaries
+Keep data access in the project's established service/state layer. React Context is one option, not a universal requirement. Avoid duplicated fetching and inconsistent sources of truth.
 
-### Law 5: Zero-Demo Auth & Bidirectional Ergonomics
-- Never place prefilled demo credentials or backdoor buttons ("Click to login as Admin") in any environment.
-- Initialize form inputs to empty strings (`""`).
-- Provide bidirectional navigation links (`/login` has right-aligned "Forgot password?" and bottom "Sign up"; `/signup` has "Log in"; recovery pages have "← Back to log in").
+### Law 5: Secure, Accessible Authentication (When Auth Is in Scope)
+- Never add hidden backdoor access or expose real credentials. Demo access, if intentionally provided, must be isolated, clearly labeled and safe for the environment.
+- Use clear form defaults and accessible labels; empty strings are a sensible default for credential fields.
+- Provide recovery and cross-navigation links appropriate to the product's actual authentication flows.
 
-### Law 6: Screen-Level Genie Trash Bin & Deletion Portal
-- Deletions in tables and card grids must escape local container `overflow: hidden` via `getBoundingClientRect()` snapshots into a fixed screen-level portal (`fixed inset-0 z-[99999]`).
-- The animated Trash Bin rushes from the right edge (`x: 260 -> 0`), its motorized lid swings open (`rotate: -55deg`), and deleting items are sucked in via a 3D Genie vacuum deform (`scaleX: 0.12, rotateX: 65deg`).
-- The lid slams shut with elastic bounce, and remaining table rows glide up smoothly via Framer Motion `layout` FLIP animations.
+### Law 6: Safe Destructive Operations
+Use confirmation, authorization, idempotency and clear failure handling for destructive actions. A screen-level Genie trash animation is an optional visual pattern only when requested or consistent with the product.
 
-### Law 7: Task-Specific In-Flight Button Animations (Zero Generic Spinners)
-- Generic circular loading spinners (`animate-spin` borders) on action buttons are strictly forbidden.
-- During network transit, buttons must display task-specific micro-animations inside their icon frames:
+### Law 7: Honest Action Feedback and Purposeful Motion
+- Every asynchronous action must communicate pending, success and failure states clearly.
+- Use task-specific in-flight motion when it improves clarity and fits the product. A concise spinner, progress indicator or disabled pending state is valid when appropriate; never add decorative motion that harms accessibility or performance.
+- When a task-specific animation is selected, examples include:
   - **Delete**: In-button trash bin loop (bin glides in, lid pops open, document drops in, lid snaps, bin departs left; repeats until API settles).
   - **Order / Dispatch**: Delivery truck driving along an animated road with spinning tyres ($\omega = 360^\circ$), moving road dashes, and trailing tyre dust lines.
   - **Live Sync / Refresh**: Communications tower with apex blinking beacon, radiating RF wave arcs, and animated live pulsing status badge with audio equalizer bars.
 
-### Law 8: Responsive Mobile Tabs & Zero Horizontal Scrolling Law
-- UI tabs must never force ugly horizontal scrolling or clip awkwardly on mobile screens.
-- Implement dynamic width calculation via `ResizeObserver`: tabs that fit remain in the primary bar; overflow tabs automatically collapse into an Apple-inspired `[More ▼]` glass dropdown.
-- The active tab must always be visibly represented (pinned or highlighted on the dropdown trigger button).
+### Law 8: Responsive Navigation
+Choose wrapping, scrolling, dropdown overflow or alternate navigation based on the number of tabs, viewport, accessibility and existing design. Keep the active destination understandable and keyboard accessible.
 
-### Law 9: File Necessity, Anti-Bloat & Zero Dead-Code
-- Every file in the repository must serve a verified active purpose.
-- Unreferenced orphan files, dummy placeholder stubs (`// TODO`), and duplicate conflicting packages (`axios` vs `fetch`, `moment` vs `date-fns`) must be audited and cleaned.
+### Law 9: File Necessity, Anti-Bloat and Safe Cleanup
+- Prefer cohesive modules and avoid knowingly adding dead code, duplicate abstractions or unnecessary dependencies.
+- Treat apparently orphaned files and legacy packages as investigation candidates, not automatic deletion targets. Confirm references, build/runtime loading and ownership before removing anything.
 
-### Law 10: Mandatory Test Execution & 95%+ Audit Gate
-- Merely mentioning a test command does not count. The agent **MUST execute real commands** (`npm test`, `npx tsc --noEmit`, `node scripts/audit-engine.js .`).
-- Premature completion claims are strictly forbidden. Compliance score must be >= 95% and `audit-engine.js` must exit with Code 0.
+### Law 10: Evidence-Based Verification
+- Execute the project's configured, relevant test/build/typecheck/lint/browser checks.
+- Missing checks are NOT CONFIGURED or NOT VERIFIED, never PASS. TypeScript checks are NOT APPLICABLE when the project does not use TypeScript.
+- No percentage score substitutes for acceptance criteria and fresh evidence.
 
 ---
 
@@ -60,7 +66,7 @@ Page components must **NEVER** make direct raw `fetch()` or `axios` calls. All s
 
 When implementing specific features, read the targeted module from the repository or invoke `node scripts/load-docs.js <topic>`:
 
-| Feature / Domain | Mandatory Documentation Path |
+| Feature / Domain | Reference Documentation (load when relevant) |
 | :--- | :--- |
 | **Responsive Mobile Tabs** | `design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md` |
 | **In-Flight Button Animations** | `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md` |

@@ -1,0 +1,33 @@
+name: Documentation and Engine Checks
+
+on:
+  push:
+    branches: [main, "codex/**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate documentation references
+        run: npm run validate:docs
+      - name: Compile master brain and verify every source exists
+        run: npm run compile
+      - name: Syntax-check every CLI script
+        run: for file in scripts/*.js; do node --check "$file"; done
+      - name: Run framework tests
+        run: npm test
+      - name: Run project-aware audit against this repository
+        run: node scripts/audit-engine.js .
+      - name: Verify CLI help and diagnostics
+        run: |
+          node scripts/website-builder.js help
+          node scripts/website-builder.js info

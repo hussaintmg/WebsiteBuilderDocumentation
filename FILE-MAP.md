@@ -1,6 +1,6 @@
 # Repository Navigation & Functional File Map (FILE-MAP.md)
 
-> **STATUS: FULLY VERIFIED REPOSITORY BLUEPRINT**  
+> **STATUS: NAVIGATION INVENTORY — VERIFICATION IS EVIDENCE-SCOPED**  
 > This file acts as the verified navigation map for `WebsiteBuilderDocumentation` (Main-Docs). It traces all entry points, architectural rules, visual systems, and production modular subsystems to enable rapid navigation without redundant repository-wide scans.
 
 ---
@@ -9,7 +9,7 @@
 
 - **Repository Type**: Enterprise Web Development Documentation & Autonomous AI Engineering Framework (Main-Docs)
 - **Primary Languages / Formats**: Markdown (`.md`), TypeScript (`.ts`/`.tsx`), Mermaid (`mermaid`), KaTeX Math
-- **Application Target**: Full-stack Next.js (App Router), FastAPI (Python), Node.js/Express, MongoDB (Mongoose), Redis (BullMQ), Tailwind CSS
+- **Application Target**: Cross-stack web projects. Next.js, FastAPI, Node.js, MongoDB, Redis and Tailwind appear as example profiles, not required dependencies.
 - **Core Purpose**: Enables AI agents and human developers to plan, architect, scaffold, and verify production-grade web applications in a single run with zero regressions and zero bloat.
 
 ---
@@ -17,7 +17,7 @@
 ## 🧭 Functional Subsystem Maps
 
 ### 1. Agent Directives & Autonomous Project Orchestration
-- **Functionality**: Defines the mandatory 5-phase execution protocol, behavioral guardrails, discovery interview engine, and standardized blueprint generators for all AI coding agents.
+- **Functionality**: Defines the architecture-aware execution workflow, behavioral guardrails, discovery interview engine, and standardized blueprint generators for all AI coding agents.
 - **Confidence**: Verified
 - **Entry Point**: `MAIN_AGENT_DIRECTIVE.md` & `rules/CORE_DIRECTIVE.md`
 - **Primary Files**:
@@ -25,12 +25,12 @@
   - `rules/CORE_DIRECTIVE.md`: Tier 0 rapid manifest and 10 ironclad architectural laws (< 200 lines).
   - `rules/MANDATORY_EXECUTION_CHECKLIST.md`: 10-step mandatory task execution checklist, scoped test requirements, and anti-premature completion gate.
   - `SKILL_MANIFEST.json`: Progressive loading index mapping topics to targeted documentation files.
-  - `lib/resolve-paths.js`: Cross-platform dynamic path and environment resolver (Claude Code, Gemini, Cursor, CI).
-  - `bin/website-builder.js`: Unified cross-platform CLI runner for audit, scaffold, docs, test, and compile.
+  - `scripts/resolve-paths.js`: Cross-platform dynamic path and environment resolver (Claude Code, Gemini, Cursor, CI).
+  - `scripts/website-builder.js`: Unified cross-platform CLI runner for audit, scaffold, docs, test, and compile.
   - `scripts/load-docs.js`: On-demand targeted documentation loader to eliminate 1.8MB context blowout.
-  - `scripts/test-framework.js`: Automated framework testing suite with 30 passing verification checkpoints.
+  - `scripts/test-framework.js`: Automated framework testing suite with live pass/fail totals are reported by CI.
   - `PLAN_BUILDER.md`: Project blueprint generator for `PLAN.md`, `ARCHITECTURE.md`, `RULES.md`, `SPRINTS.md`, and `FILE-MAP.md`.
-  - `DISCOVERY_QUESTIONNAIRE.md`: 11-phase onboarding questionnaire covering stack, RBAC, features, and timeouts.
+  - `DISCOVERY_QUESTIONNAIRE.md`: focused conditional onboarding questionnaire covering stack, RBAC, features, and timeouts.
 - **Supporting Files**:
   - `README.md`: High-level repository orientation and philosophy.
 - **Flow**:
@@ -47,8 +47,8 @@
 - **Primary Files**:
   - `rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`: 10 safety laws, zero-regression protocol, anti-bloat guard, and `FILE-MAP.md` standard.
   - `rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`: Principal engineer mindset, 6-phase non-breaking build law, 4-question line foresight matrix.
-  - `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`: Root `/models` (1 per file) and `/context` single source of truth rules.
-  - `rules/TESTING_AND_VERIFICATION.md`: Universal 7-tier verification lifecycle (Static, Adversarial Chaos, DB Mutation, Context, Dead Code, Copywriting, Visual).
+  - `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`: Optional models and state-layer patterns.
+  - `rules/TESTING_AND_VERIFICATION.md`: Project-aware verification guidance (Static, Adversarial Chaos, DB Mutation, Context, Dead Code, Copywriting, Visual).
   - `rules/BACKEND_CONNECTION_RULES.md`: Server-to-server contracts, DB connection caching, and API standards.
   - `rules/RBAC_SECURITY_RULES.md`: Role definitions (Developer, Owner, Admin, Staff, Customer), security matrices, permission guards.
   - `rules/PAYMENT_SAFEGUARD_RULE.md`: Developer monthly hosting & maintenance payment banner and grace period rules.
@@ -84,18 +84,18 @@
   - `design-system/assets/MISSING_REFERENCE_ASSETS.md`: Recovery ledger for local visual reference images.
 - **Flow**:
   `Design Requirement ➔ DESIGN_ARCHITECTURE.md ➔ UI Components / Genie Dialogs / Sections ➔ React Component Tree`
-- **Dependencies**: Tailwind CSS, Framer Motion, Three.js, Lucide React.
+- **Dependencies**: Optional design/animation dependencies; selected per project and feature.
 - **Used By**: All UI/UX pages, modals, dashboards, and storefronts.
 
 ---
 
 ### 4. Financial & High-Scale Resilience Engines
-- **Functionality**: Distributed idempotency, in-flight mutex locking, Inquire-Before-Charge timeout recovery, BullMQ worker crash failover, hyper-scale patterns, and universal polymorphic multi-storage architecture.
+- **Functionality**: Distributed idempotency, in-flight mutex locking, Inquire-Before-Charge timeout recovery, BullMQ worker crash failover, hyper-scale patterns, and optional polymorphic multi-storage architecture.
 - **Confidence**: Verified
 - **Entry Point**: `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`, `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md` & `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`
 - **Primary Files**:
   - `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`: Order-bound idempotency keys, Redis mutex lock, Inquire-Before-Charge (IBC) protocol, dual reconciliation (webhooks + BullMQ poller), JazzCash/Stripe adapters, `useResilientPayment` Hook.
-  - `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`: Universal `MediaAsset` schema, polymorphic `<UnifiedMedia />` resolver, Direct-to-Storage presigned uploads (bypassing Vercel 4.5MB limits), 2MB chunked GridFS streaming, and edge caching (`/api/media/[id]`).
+  - `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`: Example `MediaAsset` schema, polymorphic `<UnifiedMedia />` resolver, Direct-to-Storage presigned uploads (bypassing Vercel 4.5MB limits), 2MB chunked GridFS streaming, and edge caching (`/api/media/[id]`).
   - `modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`: 5 pillars of slow-network speed: Adaptive WebP/AVIF images, 20-char BlurHash LQIP, React Server Component streaming (<50ms TTFB), MongoDB projection pruning (90% JSON reduction), IndexedDB offline-first SWR cache, and auto-degradation.
   - `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`: 3-tier capacity planning, BullMQ 30s heartbeat failover, L1/L2 Redis cache, payment circuit breakers.
   - `modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md`: 20 production high-scale blueprints (20M Likes buffer, feeds, reminders, Uber H3 rides).
@@ -110,7 +110,7 @@
 - **Functionality**: Production-ready enterprise specifications for orders, CMS, auth, real-time chat, leads, blogs, settings, optimistic rapid-click batching, and automated codebase retrofit.
 - **Confidence**: Verified
 - **Primary Files**:
-  - `scripts/audit-engine.js`: Standalone 30+ check compliance CLI; scores 0-100% and blocks completion if < 95%.
+  - `scripts/audit-engine.js`: Architecture-aware evidence runner; executes configured test/build/typecheck/lint scripts and reports missing checks as NOT CONFIGURED. No universal score gate.
   - `modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`: 6-stage end-to-end modernization protocol for existing websites.
   - `modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`: 0ms optimistic UI updates, 300ms settling debounce, AbortController cancellation for pagination, cart steppers, slides, and likes.
   - `modules/ORDER_SLIDE_WORKFLOW.md`: Master order table + 1-by-1 slide carousel review workflow.
@@ -140,16 +140,16 @@
 ### Root Orchestration
 | File Path | Type | Main Responsibility | Important For | Confidence |
 | :--- | :--- | :--- | :--- | :--- |
-| `SKILL.md` | Master Skill | Official Antigravity global skill definition & 5-phase orchestrator | Skill Invocation | Verified |
+| `SKILL.md` | Master Skill | Cross-platform skill entry point and orchestrator | Skill Invocation | Verified |
 | `README.md` | Doc Entry | Framework overview, golden rule, directory tree | Orientation | Verified |
 | `MAIN_AGENT_DIRECTIVE.md` | Directive | Master agent rules, 5-phase protocol, behavioral guardrails | Autonomous Execution | Verified |
 | `PLAN_BUILDER.md` | Generator | Blueprint specification for `.project/` and `FILE-MAP.md` | Project Onboarding | Verified |
-| `DISCOVERY_QUESTIONNAIRE.md` | Interview | 11-phase structured discovery questionnaire | Requirements Capture | Verified |
+| `DISCOVERY_QUESTIONNAIRE.md` | Interview | Focused, conditional discovery questionnaire | Requirements Capture | Verified |
 | `MASTER_SUMMONING_PROMPT.md` | Master Prompt | High-impact executive prompt template and action matrix | Fast Invocation & Pilot | Verified |
 | `FILE-MAP.md` | Living Map | Verified repository navigation and functional index | Codebase Navigation | Verified |
 | `BRAIN.md` | Master Brain | Compiled high-density synthesis of all 49 framework specifications | Instant Context Ingestion | Verified |
 | `scripts/audit-engine.js` | Audit CLI | Standalone 9-suite compliance & testing validator, 0-100% scoring | Quality Gate & Testing | Verified |
-| `scripts/scaffold-engine.js` | Scaffolder CLI | Automated zero-dependency generator for core framework files & packages | Fast Foundation Scaffolding | Verified |
+| `scripts/scaffold-engine.js` | Scaffolder CLI | Guarded React/Tailwind helper scaffold; dry-run by default | Fast Foundation Scaffolding | Verified |
 | `scripts/compile-brain.js` | Compiler | Automated build script compiling all specs into unified BRAIN.md | Knowledge Compilation | Verified |
 
 ### Rules & Engineering Standards (`rules/`)
@@ -157,8 +157,8 @@
 | :--- | :--- | :--- | :--- | :--- |
 | `rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md` | Safety Rule | 10 laws, zero-regression, anti-bloat, FILE-MAP sync | Non-Breaking Dev | Verified |
 | `rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md` | Engineering | Principal engineer mindset, 4-question line foresight | Phased Architecture | Verified |
-| `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md` | Arch Rule | Root `/models` and `/context` encapsulation | State & Data Layer | Verified |
-| `rules/TESTING_AND_VERIFICATION.md` | Quality | Universal 7-tier verification lifecycle | Quality Assurance | Verified |
+| `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md` | Arch Rule | Optional models and state/data-layer patterns | State & Data Layer | Verified |
+| `rules/TESTING_AND_VERIFICATION.md` | Quality | Optional 7-tier verification reference | Quality Assurance | Verified |
 | `rules/BACKEND_CONNECTION_RULES.md` | Backend Rule | DB connection caching, API envelopes, server-to-server calls | Backend Integration | Verified |
 | `rules/RBAC_SECURITY_RULES.md` | Security Rule | 5-tier role hierarchy, permission enforcement | Security & Auth | Verified |
 | `rules/PAYMENT_SAFEGUARD_RULE.md` | Billing Rule | Developer hosting safeguard banner and 8th-day grace date | Platform Billing | Verified |
@@ -233,7 +233,7 @@
 
 ### Flow 2: Project Onboarding & Scaffolding Flow
 1. `MAIN_AGENT_DIRECTIVE.md` (Agent activates Rule Zero)
-2. `DISCOVERY_QUESTIONNAIRE.md` (Conducts structured 11-phase interview)
+2. `DISCOVERY_QUESTIONNAIRE.md` (Asks focused questions only when material information is missing)
 3. `PLAN_BUILDER.md` (Generates `.project/PLAN.md`, `ARCHITECTURE.md`, `RULES.md`, `SPRINTS.md`, `FILE-MAP.md`)
 4. User Approves Plan
 5. `rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md` (Executes phased build)
@@ -270,10 +270,38 @@
 ---
 
 ## 🎯 Verification & Confidence Audit
-- **Total Mapped Files**: 53 files across 3 directories and root
-- **Verified Files**: 53/53 (100% physically inspected from disk)
-- **Likely Files**: 0
-- **Unknown Files**: 0
-- **Source-Code Files Changed**: 0
+- **Total Mapped Files**: 92 files (102 Git tree entries including directories) at the latest verified inventory
+- **Content inspection**: Key entry points, execution rules, selected modules and design references inspected; not every file's full contents were manually reviewed.
+- **Remaining verification**: Target-application runtime, visual, browser and production checks must be performed in each consuming project.
+- **Repository inventory**: 92 tracked files across 10 directories at the latest inventory.
+- **Engine source files changed**: CLI, audit, compiler and validation scripts were updated and are covered by CI checks.
 - **Application Behavior Altered**: No
 
+
+
+## Verified Repository Inventory (overhaul branch baseline)
+- Git tree contained 102 entries: 92 files and 10 directories at the time this map was refreshed.
+- Runtime scripts are under `scripts/`; there is no `lib/resolve-paths.js` or `bin/website-builder.js`.
+- `package.json` is required for the documented npm command workflow and is restored on the overhaul branch.
+- Treat this map as a navigation aid, not proof that every implementation is current. Re-run `npm test` and `npm run validate:docs` after documentation changes.
+
+
+## New Execution and Quality Engines
+- `EXECUTION_CONTRACT.md`: Highest-precedence architecture-aware task lifecycle and evidence rules.
+- `engines/PROJECT_INTELLIGENCE.md`: Repository reconnaissance, architecture mapping and dependency tracing.
+- `engines/INTENT_AND_SCOPE.md`: Outcome definition, scope classification and phased plan format.
+- `engines/INDEPENDENT_REVIEWER.md`: Separate review role, severity model and evidence-based acceptance.
+- `quality/ANIMATION_QA.md`: Multi-stage motion specification and browser QA checklist.
+- `quality/ACCEPTANCE_CRITERIA.md`: Requirement/evidence ledger and completion gate.
+
+
+### Current Overhaul Additions
+- `engines/`: project intelligence, intent/scope planning and independent review.
+- `quality/`: animation QA and acceptance/evidence ledger.
+- `tests/`: regression tests for the audit engine and execution contract.
+- `.github/workflows/quality.yml`: CI validation, framework tests, audit and CLI smoke checks.
+- `package.json`: restored local CLI/test scripts (no third-party runtime dependencies).
+
+- `BRAIN.md`: Current authoritative execution addendum is placed first; the previous compiled knowledge body is preserved below it. The compiler now includes the new execution and quality engines and exits non-zero if any source file is missing.
+
+- `tests/scaffold-safety.test.js`: verifies dry-run, explicit apply, forced-overwrite backup and unsupported-project safety.

@@ -2,7 +2,7 @@
 
 > **FILE:** `design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md`  
 > **CLASSIFICATION:** Advanced Fluid Dynamics & Micro-Interaction System  
-> **COMPANION COMPONENT:** [`components/LiquidTabs.tsx`](../components/LiquidTabs.tsx)  
+> **COMPANION COMPONENT (generated in the target project):** `components/LiquidTabs.tsx`  
 > **RECIPE:** [`design-system/09_IMPLEMENTATION_RECIPES.md#recipe-14`](./09_IMPLEMENTATION_RECIPES.md#recipe-14)  
 > **INSPIRATION:** Usman Shams ([@iusmanshams](https://www.instagram.com/iusmanshams/)), Aaron Iker, and Apple macOS Liquid Glass
 

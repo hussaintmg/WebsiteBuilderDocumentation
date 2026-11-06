@@ -1,5 +1,7 @@
 # Master Discovery Questionnaire ("Kiya Puchna Hai")
 
+> **Applicability and precedence:** Read [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md) first. This questionnaire is for greenfield discovery or material product decisions. For an existing repository, inspect its real architecture before asking technology questions. All options are prompts, not defaults; no stack, role, integration, design pattern or module is selected until the user confirms it. Skip irrelevant questions and mark them NOT APPLICABLE.
+
 > **FOR THE AGENT**: When onboarding a user or starting any new project, use this questionnaire to interview the user.  
 > Ask questions in **focused batches** (Phase 1, then Phase 2, etc.) rather than sending the entire document at once. Always highlight the **(Recommended)** option.
 
@@ -9,7 +11,7 @@
 
 ### Q1.1: Project Type & Scope (Kiya Banana Chahte Hain?)
 What is the scope of this build?
-- [x] **(Recommended) Full-Stack Application** (Complete Frontend + Backend + Database)
+- [ ] **(Recommended) Full-Stack Application** (Complete Frontend + Backend + Database)
 - [ ] **Frontend Only** (User Interface, Dashboards, Marketing SPA/PWA connecting to existing APIs)
 - [ ] **Backend Only** (API server, Database models, Background jobs, Business logic)
 - [ ] **Standalone REST / GraphQL APIs** (Microservices or API gateway)
@@ -17,9 +19,9 @@ What is the scope of this build?
 ---
 
 ### Q1.2: Core Technology Stack & Backend Placement (Backend Kahan Rakhna Hai?)
-> **MANDATORY AGENT REQUIREMENT**: The agent MUST ask the user upfront how they want the backend structured (inside the same Next.js project, as a separate Next.js backend project, as Python FastAPI, or Node.js).
+> **Ask only when needed**: Ask about backend placement only if the user has not specified it and repository evidence does not resolve it. Present the options below as examples, not a mandatory menu or default.
 Which architectural setup do you prefer?
-- [x] **(Recommended Dual Next.js) Next.js Frontend + Dedicated Next.js Backend API (2 Separate Next.js Projects)**:  
+- [ ] **(Recommended Dual Next.js) Next.js Frontend + Dedicated Next.js Backend API (2 Separate Next.js Projects)**:  
   - `frontend/`: Next.js App Router for UI, Layouts, SSR, and Client Components.  
   - `backend/`: Dedicated Next.js project solely hosting `/api` Route Handlers, Database ODM (Mongoose / MongoDB), Background Jobs, and Webhooks.  
   *Best for team separation, independent deployments, and end-to-end TypeScript.*
@@ -35,7 +37,7 @@ Which architectural setup do you prefer?
 
 ### Q1.3: Server vs Serverless Deployment (Hosting Model)
 How should the backend be hosted?
-- [x] **(Recommended) Dedicated ASGI Server (FastAPI / Uvicorn in Docker or VPS)**  
+- [ ] **(Recommended) Dedicated ASGI Server (FastAPI / Uvicorn in Docker or VPS)**  
   *Ideal if long-running tasks, heavy computing, or WebSocket connections are required.*
 - [ ] **Serverless Functions (Next.js API Routes / Vercel Serverless / AWS Lambda)**  
   *Zero server maintenance, auto-scaling, pay-per-execution.*
@@ -43,9 +45,9 @@ How should the backend be hosted?
 ---
 
 ### Q1.4: Project Folder Hierarchy Standard (Root-Level `/app` Mandate)
-> **MANDATORY DIRECTORY RULE**: Framework standard strictly mandates the Next.js App Router directly at project root (`<root>/app/`). Wrapping folders in an unnecessary `src/` wrapper is strictly prohibited.
+> **Framework directory choice**: If Next.js App Router is selected for a greenfield project, choose root `app/` or `src/app/` deliberately based on tooling and team preference. For an existing project, preserve its current supported layout.
 Which directory structure should be scaffolded?
-- [x] **(Mandatory Framework Standard) Clean Root-Level `/app` Hierarchy (Zero `src/` Wrapper)**:
+- [ ] **(Mandatory Framework Standard) Clean Root-Level `/app` Hierarchy (Zero `src/` Wrapper)**:
   - `<root>/app/`: App Router pages, layouts, and `/api` route handlers directly at root.
   - Sibling root directories: `/components`, `/context`, `/models`, `/hooks`, `/lib`, `/public`, `/styles`, and `/.project/`.
   - TypeScript path aliases: `"@/*": ["./*"]`.
@@ -56,9 +58,9 @@ Which directory structure should be scaffolded?
 ## 🎨 Phase 2: Design Aesthetics, UI/UX & Component Architecture
 
 ### Q2.0: Bespoke Brand Identity & Aesthetic Theme ("Design Apna Banana Hai")
-> **MANDATORY PRINCIPLE**: Documentation code snippets are mechanical blueprints. The agent will craft a completely original, bespoke visual identity for your project, NOT a generic copy-paste from docs.
+> **Design guidance**: Documentation code snippets are examples. Adapt them to the product brand and existing design system; create a bespoke identity when branding/design work is in scope.
 What is the visual personality, vibe, and bespoke color motif of your brand?
-- [x] **(Recommended) High-End Obsidian & Sky Cyan / Electric Indigo** (Sleek dark mode, glowing sky-cyan highlights, deep frosted glass).
+- [ ] **(Recommended) High-End Obsidian & Sky Cyan / Electric Indigo** (Sleek dark mode, glowing sky-cyan highlights, deep frosted glass).
 - [ ] **Emerald Mint & Deep Slate** (Fintech / Banking / Growth aesthetic, prestige feel).
 - [ ] **Warm Amber, Gold & Midnight Charcoal** (Luxury e-commerce, hospitality, premium agency).
 - [ ] **Vibrant Violet & Rose Gradient** (Creator economy, AI SaaS, modern social tool).
@@ -68,9 +70,9 @@ What is the visual personality, vibe, and bespoke color motif of your brand?
 ---
 
 ### Q2.0B: Brand Logo & Real Favicon Suite Style (Logo & Favicon Kesa Chahiye?)
-> **MANDATORY BRANDING RULE**: Leaving framework default favicons (Next.js triangle, Vite bird, React atom) or generic unstyled text for a logo is strictly forbidden. The agent MUST create a bespoke, production-ready SVG brand logo and full favicon suite.
+> **Branding scope**: When custom branding is part of the accepted scope, create an appropriate logo and favicon suite. Do not add branding work to unrelated tasks.
 Which visual style should be crafted for your brand logo and favicon suite?
-- [x] **(Recommended) High-End Geometric Abstract Mark + Wordmark**:
+- [ ] **(Recommended) High-End Geometric Abstract Mark + Wordmark**:
   - **Full Logo**: Bespoke geometric vector emblem with glowing multi-stop gradient paired with bold typographic wordmark (using display font).
   - **Collapsed Glyph**: High-contrast 32x32 vector glyph tailored for the `h-dvh` collapsed sidebar, mobile topbar, and PWA icon.
   - **Complete Favicon Suite**: Real `favicon.ico` (multi-resolution), `icon.svg` (crisp scalable vector), `apple-touch-icon.png` (180x180 iOS), `icon-192.png` & `icon-512.png` (Android/PWA), and `site.webmanifest`.
@@ -84,14 +86,14 @@ Which visual style should be crafted for your brand logo and favicon suite?
 ---
 
 ### Q2.1: Styling Framework
-- [x] **(Mandatory) Tailwind CSS (v3 / v4)**  
+- [ ] **(Optional) Tailwind CSS (v3 / v4)**  
   *Tailwind CSS is the official styling engine. Built with `dark:` class dual-theme support, custom glassmorphism utilities, and glow effects.*
 
 ---
 
 ### Q2.2: Bespoke Typography & Font Discovery (Konsa Font Chahiye?)
 Which modern typeface pairing would you like for headers and interface body text?
-- [x] **(Recommended) High-Impact Modern Tech Pairing**:  
+- [ ] **(Recommended) High-Impact Modern Tech Pairing**:  
   - **Display / Headers**: **Neofolio** or **Nexo Kora** *(Sharp, high-contrast, futuristic neo-grotesque)*  
   - **Body / Interface**: **Plus Jakarta Sans** or **Outfit** *(Clean, geometric, ultra-legible)*
 - [ ] **Editorial Luxury & Avant-Garde Pairing**:  
@@ -105,7 +107,7 @@ Which modern typeface pairing would you like for headers and interface body text
 
 ### Q2.3: Animation & 3D WebGL Capabilities
 Which animation libraries and interactive 3D elements should be active?
-- [x] **(Recommended) Framer Motion + GSAP ScrollTrigger**:  
+- [ ] **(Recommended) Framer Motion + GSAP ScrollTrigger**:  
   *Fluid layout morphing, spring entrance/exit toasts, interactive cards glow hover, and smooth scroll animations.*
 - [ ] **Add Three.js Interactive 3D Model (User Permission Granted)**:  
   *Includes a lightweight, 100% free, animated 3D GLTF model (from free sources like Kenney or Three.js official models) or procedural 3D particle canvas. (Paid/heavy models are forbidden).*
@@ -115,7 +117,7 @@ Which animation libraries and interactive 3D elements should be active?
 
 ### Q2.4: Iconography & Animated Lottie Ecosystem
 Which icon libraries should be integrated?
-- [x] **(Recommended) Hybrid Modern Vectors + Animated Micro-Icons**:  
+- [ ] **(Recommended) Hybrid Modern Vectors + Animated Micro-Icons**:  
   - **Static Vectors**: `lucide-react`, `@fortawesome/react-fontawesome`, Google Material Symbols.  
   - **Animated Icons & Lottie**: **Lordicon** (`lordicon.com`), **Icons8** (`icons8.com`), **LottieFlow** (`lottieflow.com`), **LottieFiles** (`lottiefiles.com`) for interactive button triggers, success toasts, and empty states.
 - [ ] **Static Lucide React Only**.
@@ -123,7 +125,7 @@ Which icon libraries should be integrated?
 ---
 
 ### Q2.5: Form Inputs Architecture (Floating Label Rule)
-- [x] **(Mandatory Standard) Custom Floating Label Inputs (Zero Placeholders)**:  
+- [ ] **(Mandatory Standard) Custom Floating Label Inputs (Zero Placeholders)**:  
   - Text/Password inputs: Label starts vertically centered; floats to top border outline on focus or when value exists.  
   - Textarea: Label starts aligned to the first line; floats to top border on focus.  
   - Select: Google Forms style centered label with zero premature placeholder text.
@@ -131,7 +133,7 @@ Which icon libraries should be integrated?
 ---
 
 ### Q2.6: Layout Architecture & Mobile Navigation (Sidebar, Mobile Bottom Bar & Floating Menu Pill)
-- [x] **(Recommended Master Responsive Layout Engine)**:  
+- [ ] **(Recommended Master Responsive Layout Engine)**:  
   - **Desktop (`>= 1024px`)**: Fixed resizable `h-dvh` sidebar with drag handle, `localStorage` width memory, collapse/expand toggle, and glass topbar.
   - **Public Pages Mobile (`< 1024px`)**: **Strict No-Sidebar Rule**. Fixed bottom footer navigation bar (`fixed bottom-0`) with 3-4 primary links + a mandatory "More" (`...`) link that slides open a native-style bottom sheet drawer for all auxiliary pages.
   - **Dashboard Mobile (`< 1024px`)**: Slide-out mobile navigation drawer triggered via a floating bottom-center obsidian glass pill labeled `"Menu"` (Vercel-inspired design). Features **Dual Close Controls**: bottom pill morphs into `"Close"` ('X') while the sidebar header also contains a dedicated top 'X' close button.
@@ -144,17 +146,17 @@ Which icon libraries should be integrated?
 
 ### Q3.1: User Roles & Actors (System Main Kon Kon Ho Ga?)
 Which user personas exist in this application?
-- [x] **Developer (Super-Root)**: Platform architect, manages server health, registers client companies.
-- [x] **Owner (Business Master)**: Owns the company account, views financials, manages staff, controls billing.
-- [x] **Admin**: Manages day-to-day operations, assigns tasks, manages inventory/users.
-- [x] **Staff / Employee**: Executes daily workflow (e.g. processes orders, updates status).
-- [x] **Customer / Client**: Public user who places orders, views invoices, and manages their own profile.
+- [ ] **Developer (Super-Root)**: Platform architect, manages server health, registers client companies.
+- [ ] **Owner (Business Master)**: Owns the company account, views financials, manages staff, controls billing.
+- [ ] **Admin**: Manages day-to-day operations, assigns tasks, manages inventory/users.
+- [ ] **Staff / Employee**: Executes daily workflow (e.g. processes orders, updates status).
+- [ ] **Customer / Client**: Public user who places orders, views invoices, and manages their own profile.
 
 ---
 
 ### Q3.2: Developer vs Owner Hierarchy & Protection Boundaries
 Who holds the ultimate business authority, and can the Developer alter the Owner's rights?
-- [x] **(Recommended) Strict Dual-Protection Model**:  
+- [ ] **(Recommended) Strict Dual-Protection Model**:  
   - **Developer** controls system infrastructure, multi-tenant company onboarding, database indexing & schemas, and developer safeguards.  
   - **Owner** is the sovereign business master. **Developer cannot revoke Owner's company rights or modify business data without explicit consent.**  
   - **Owner cannot lock out Developer from platform infrastructure.**
@@ -165,7 +167,7 @@ Who holds the ultimate business authority, and can the Developer alter the Owner
 
 ### Q3.3: Permission Granularity (Page-Level vs Action/Button-Level)
 How deep should RBAC security be implemented?
-- [x] **(Recommended) Action-Level Granular RBAC (Button & API Level)**  
+- [ ] **(Recommended) Action-Level Granular RBAC (Button & API Level)**  
   *Permissions are granular per action (e.g., `orders:view`, `orders:create`, `orders:edit`, `orders:delete`). Staff can view and edit an order, but the "Delete" button is physically hidden/disabled in the UI AND rejected by the backend API if attempted.*
 - [ ] **Page-Level RBAC Only**  
   *Access is controlled by URL route (e.g., Staff can access `/orders`, but not `/finance`). Once on the page, all actions are allowed.*
@@ -174,7 +176,7 @@ How deep should RBAC security be implemented?
 
 ### Q3.4: Dedicated User Portals
 Which dedicated portal interfaces are required?
-- [x] **(Recommended) Multi-Portal System**:
+- [ ] **(Recommended) Multi-Portal System**:
   - `Customer Portal`: Clean storefront / client dashboard (`/portal` or `/my-account`).
   - `Employee/Staff Portal`: Operational task view (`/staff` or `/app`).
   - `Owner / Executive Dashboard`: Analytics, revenue, audit logs (`/admin` or `/dashboard`).
@@ -185,7 +187,7 @@ Which dedicated portal interfaces are required?
 
 ### Q3.5: Authentication Engine, Silent Facelock & Multi-Account Switcher
 Which authentication and identity workflows should be enabled?
-- [x] **(Recommended) Advanced Multi-Account & Biometric Facelock Suite**:
+- [ ] **(Recommended) Advanced Multi-Account & Biometric Facelock Suite**:
   - **Silent Background Facelock**: Automatically probes face detection on login page without opening visible camera UI; falls back to manual button.
   - **Multi-Face Conflict Dialog**: If 1 face matches multiple profiles, user chooses target account; remaining profiles load into multi-session vault.
   - **Topbar Account Switcher**: Switch between active accounts instantly from the user profile dropdown without re-entering passwords.
@@ -197,9 +199,9 @@ Which authentication and identity workflows should be enabled?
 ---
 
 ### Q3.5B: Zero-Demo Credentials Policy & Inter-Auth Navigation Ergonomics
-> **MANDATORY AUTH ERGONOMICS & SECURITY RULE**: Pre-filled demo credentials, mock accounts, or "Click to login as Admin/Owner" backdoor buttons are strictly prohibited in all environments. Input fields must initialize to clean empty strings (`""`). Additionally, all auth views must feature frictionless bidirectional navigation links so users never get trapped.
+> **Authentication security guidance**: Pre-filled demo credentials, mock accounts, or "Click to login as Admin/Owner" backdoor buttons are strictly prohibited in all environments. Input fields must initialize to clean empty strings (`""`). Additionally, all auth views must feature frictionless bidirectional navigation links so users never get trapped.
 Which auth form ergonomics and security standards must be enforced?
-- [x] **(Recommended Mandatory Standard) Strict Zero-Demo Security & Complete Navigation Ergonomics**:
+- [ ] **(Recommended Mandatory Standard) Strict Zero-Demo Security & Complete Navigation Ergonomics**:
   - **Zero Demo Credentials & Backdoors**: Zero pre-filled values, zero mock click-to-login buttons in production and development. Prevents security audit failures and user confusion.
   - **Password Header Navigation**: Login form features a right-aligned `"Forgot password?"` link placed directly above or alongside the password input label.
   - **Cross-Auth Card Footers**: `/login` features `"Don't have an account? Sign up"`; `/signup` features `"Already have an account? Log in"`.
@@ -210,9 +212,9 @@ Which auth form ergonomics and security standards must be enforced?
 ---
 
 ### Q3.6: Edge Proxy Route Protection & Unauthorized Access Feedback (Proxy & Protected Routes)
-> **MANDATORY SECURITY PROXY RULE**: Protected routes must be strictly guarded via Next.js Edge Middleware (`middleware.ts`). Unauthorized or unauthenticated visitors must be immediately blocked, redirected to a safe view, and alerted via toast notification ("Aap is page pe nahi ja sakte hain").
+> **Route protection guidance**: When Next.js is the chosen framework, use the appropriate server-side route protection mechanism; other frameworks must use their native trusted server middleware. Unauthorized or unauthenticated visitors must be immediately blocked, redirected to a safe view, and alerted via toast notification ("Aap is page pe nahi ja sakte hain").
 Which route protection and proxy behavior should be enforced?
-- [x] **(Recommended Mandatory Standard) Dual-Shield Edge Proxy + Interception Toasts + Fresh Evaluation on Auth**:
+- [ ] **(Recommended Mandatory Standard) Dual-Shield Edge Proxy + Interception Toasts + Fresh Evaluation on Auth**:
   - **Edge Middleware Proxy**: Intercepts every route before server render; blocks unauthorized users at the network edge.
   - **Client RouteGuard**: Prevents visual layout flashing on client-side SPA transitions.
   - **Animated Interception Toast**: Blocked navigation triggers an instant error toast: *"⛔ Aap is page pe nahi ja sakte hain (Access Denied)"*.
@@ -225,7 +227,7 @@ Which route protection and proxy behavior should be enforced?
 
 ### Q4.1: Single Company vs Multi-Company (Multi-Tenancy)
 Will this application serve a single company or multiple independent organizations?
-- [x] **Multi-Company / Multi-Tenant SaaS Platform**:  
+- [ ] **Multi-Company / Multi-Tenant SaaS Platform**:  
   *Multiple companies register on the platform. Each company's data is completely isolated. Developer onboards companies; each company manages its own staff and customers.*
 - [ ] **Single Company / Dedicated Instance**:  
   *The entire app belongs exclusively to one organization.*
@@ -234,7 +236,7 @@ Will this application serve a single company or multiple independent organizatio
 
 ### Q4.2: Public Pages & Custom Domain Routing
 How should multi-tenant routing and public storefronts work?
-- [x] **(Recommended) Hybrid Custom Domains & Subdomains**:  
+- [ ] **(Recommended) Hybrid Custom Domains & Subdomains**:  
   - Each company gets a subdomain (e.g. `company1.app.com`).
   - Optional custom domain mapping (e.g. `clientstore.com` -> routes to `company1`).
   - Main root (`/` on `app.com`) serves as the SaaS platform landing page & login portal.
@@ -249,7 +251,7 @@ How should multi-tenant routing and public storefronts work?
 
 ### Q5.1: Order Management Architecture
 Do you need an Order Management System?
-- [x] **(Recommended) Dual-View Order System**:  
+- [ ] **(Recommended) Dual-View Order System**:  
   1. **Master Table View**: Comprehensive data table with multi-criteria filtering (status, date, payment), search, sorting, and pagination.  
   2. **Focused 1-by-1 Slide/Carousel Processing View**: Staff or Owner clicks **"Start Processing"** -> opens an immersive, distraction-free single-order card showing complete customer items, payment status, and quick action buttons (Update Price, Mark Paid, Change Status, Cancel, Print Invoice) with **Next / Previous Order** hotkeys.
 - [ ] **Standard Table View Only** (No focused slide mode).
@@ -262,7 +264,7 @@ Do you need an Order Management System?
 
 ### Q6.1: CMS Requirement & Shell Placement
 Which architectural mode should the CMS use?
-- [x] **(Recommended) Integrated Dashboard CMS (`/dashboard/cms`)**:  
+- [ ] **(Recommended) Integrated Dashboard CMS (`/dashboard/cms`)**:  
   *Embedded inside the Owner/Admin dashboard. Features an Options Card Grid, auto-syncing sidebar submenus, a Live Status Report (active theme, published pages overview), and a Recent Activity Feed with one-click revision rollback.*
 - [ ] **Standalone Portal Mode (`/cms` or `/studio`)**:  
   *A dedicated full-screen visual studio with an isolated navigation rail, "← Back to Dashboard" and "↗ View Live Website" buttons, and full keyboard shortcut integration (`Ctrl+S`, `Ctrl+Z`, `Alt+T`).*
@@ -274,7 +276,7 @@ Which architectural mode should the CMS use?
 
 ### Q6.2: Dynamic Data, Theming & Visual Workflow Automation
 What advanced CMS features should be active?
-- [x] **(Recommended) Full Enterprise Suite**:  
+- [ ] **(Recommended) Full Enterprise Suite**:  
   - **Bidirectional Live Sync**: Real-time sync between Visual WYSIWYG Canvas and Monaco HTML/CSS Editor.  
   - **Variable Registry**: Dynamic tokens (`{{user.username}}`, `{{order.total}}`) with automated "Sync Models" schema introspection.  
   - **Visual Workflow Studio**: Node-based visual API pipeline (triggers, branches, MongoDB queries, AI prompts with model fallback).  
@@ -286,7 +288,7 @@ What advanced CMS features should be active?
 
 ### Q6.3: Template Gallery & Scroll Video Hero
 Should pre-built template blueprints and interactive scroll-driven video be included?
-- [x] **(Recommended) 30 Public Templates + Section SDK + FFmpeg Scroll Video Scrubber**:  
+- [ ] **(Recommended) 30 Public Templates + Section SDK + FFmpeg Scroll Video Scrubber**:  
   *Includes 30 categorized blueprints, 100–200 modular sections with `<div layout>` wrappers, single-item array loops, and an FFmpeg frame extraction pipeline for cinematic scroll-scrubbed video animations.*
 - [ ] **Standard Sections Only** (Hero, Features, Pricing, and Contact form without video scrubbing).
 
@@ -294,7 +296,7 @@ Should pre-built template blueprints and interactive scroll-driven video be incl
 
 ### Q6.4: Custom In-House Media Viewers & Universal 404 Game Experience
 How should media documents and 404 error routes be handled?
-- [x] **(Recommended) Custom Frosted Glass Video Player, In-House PDF Reader & Interactive 404 Game Page**:  
+- [ ] **(Recommended) Custom Frosted Glass Video Player, In-House PDF Reader & Interactive 404 Game Page**:  
   - **Custom Video Player**: Custom frosted glass control pill, scrub bar with hover thumbnail preview, playback speed (0.5x to 2x), volume slider, and PiP (zero native browser controls).  
   - **In-House PDF Viewer**: Smooth virtualized scrolling, zoom slider, sidebar page thumbnail rail, in-document search, download & print buttons.  
   - **Universal 404 Interactive Game Page (`app/not-found.tsx`)**: Standalone route featuring a playable retro-arcade HTML5 Canvas mini-game (Cyber Asteroid Dodger), score counter, touch/keyboard controls, and "Return to Safety" CTAs when any deleted/disabled page is visited.
@@ -304,7 +306,7 @@ How should media documents and 404 error routes be handled?
 
 ### Q6.5: Dynamic Document Studio (PDF, Email, WhatsApp) & Bulk Worker Pipeline
 How should transactional documents (invoices, receipts, emails, WhatsApp messages) and bulk batch processing be structured?
-- [x] **(Recommended) Dynamic PDF Canvas Studio, Email Builder, WhatsApp Studio & Parallel Worker Pipeline**:  
+- [ ] **(Recommended) Dynamic PDF Canvas Studio, Email Builder, WhatsApp Studio & Parallel Worker Pipeline**:  
   - **Dynamic PDF Studio**: Absolute positioning canvas (`x`, `y`, `width`, `height`), perimeter resize handles, dynamic QR code generator with model variables, multi-page custom sizing, layer tree with drag reordering, and strict missing-data omission.  
   - **Email Template Builder**: Cross-client flow/table layout (`width`, `margin`, `padding`, `text-align`, zero absolute layers), variable loops, and code sync.  
   - **WhatsApp Message Studio**: Formatted text (`*bold*`, `_italic_`), parameter variables, dynamic action buttons, and media headers.  
@@ -316,7 +318,7 @@ How should transactional documents (invoices, receipts, emails, WhatsApp message
 
 ### Q6.6: Digital Asset Management (DAM), Website Details Cascading & Auth Pages Theme Studio
 How should brand assets, global company contact information, and authentication page styling be managed?
-- [x] **(Recommended) Centralized Assets DAM, Single Source of Truth Brand Details, 5-Card Auth Customizer & Tenant CMS Delegation**:  
+- [ ] **(Recommended) Centralized Assets DAM, Single Source of Truth Brand Details, 5-Card Auth Customizer & Tenant CMS Delegation**:  
   - **Central Assets DAM & Universal Auto-Ingestion**: Any image, video, SVG, or document uploaded anywhere (carousel, hero, section, product, email) automatically saves into `/dashboard/cms/assets`. Features in-house frosted glass video previewer with precision scrub bar, resolution switcher (720p/1080p/4K), and high-definition image inspector with pan/zoom.  
   - **Reference-Based Media Architecture (Zero Duplication)**: Assets generate reference tokens (`{{assets.logo}}`); components store references, ensuring updating a logo in Assets updates the entire site instantly.  
   - **Website Details Studio (`/dashboard/cms/website-details`)**: Centralized management of Website Name, Favicon, Light/Dark Logos, Support Email, Phone, WhatsApp, Physical Address, and Social Links. Automatically cascades to Topbar, Sidebar, and Footer with selective override capability.  
@@ -328,7 +330,7 @@ How should brand assets, global company contact information, and authentication 
 
 ### Q6.7: Root Models & React Contexts Architecture (State & API Standard)
 How should database schemas, API operations, and client-side state variables be structured across the codebase?
-- [x] **(Mandatory Standard) Dedicated Root `/models`, Corresponding Root `/context`, and Context-First API Encapsulation**:  
+- [ ] **(Optional architecture) Dedicated Models and Context/State Layer:**  
   - **Root `/models`**: Separate file per MongoDB collection (e.g. `models/Program.ts`, `models/Order.ts`). Mongoose schemas, compound indexes, and strict multi-tenant scoping (`companyId`).  
   - **Root `/context`**: 1-to-1 matching React Context per model (e.g. `context/ProgramContext.tsx`, `context/OrderContext.tsx`) + 3 global structural contexts (`AuthContext`, `ThemeContext`, `ToastContext`).  
   - **Zero Direct Component API Calls**: All mutations, fetches, and domain operations (e.g. `createProgram`, `editProgram`, `deleteProgram`, `downloadProgramPdf`, `sendProgramEmail`) execute exclusively through context methods.  
@@ -341,7 +343,7 @@ How should database schemas, API operations, and client-side state variables be 
 ## ⌨️ Phase 7: Special Features, Shortcuts & Global Search
 
 ### Q7.1: Global Search & Command Palette
-- [x] **(Recommended) Command Palette (`Cmd+K` / `Ctrl+K`)**:  
+- [ ] **(Recommended) Command Palette (`Cmd+K` / `Ctrl+K`)**:  
   *Instant search modal across pages, orders, customers, settings, and quick actions.*
 - [ ] **Simple Top Navbar Search Bar**.
 - [ ] **No Global Search**.
@@ -350,7 +352,7 @@ How should database schemas, API operations, and client-side state variables be 
 
 ### Q7.2: Keyboard Shortcuts Engine
 What level of keyboard shortcut support should be built?
-- [x] **(Recommended) Master Power-User Shortcuts**:  
+- [ ] **(Recommended) Master Power-User Shortcuts**:  
   *`Cmd+K` (Search), `Esc` (Close modal/slide), `J`/`K` or `ArrowDown`/`ArrowUp` (Table row navigation), `ArrowRight`/`ArrowLeft` (Next/Prev order in Slide view), `Ctrl+Enter` (Submit/Approve), `Alt+T` (Theme toggle).*
 - [ ] **Basic Shortcuts Only**:  
   *`Cmd+K` for search and `Esc` for closing dialogs.*
@@ -360,14 +362,14 @@ What level of keyboard shortcut support should be built?
 
 ### Q7.3: Biometric / Facelock Authentication
 Should facial biometric authentication be provided?
-- [x] **(Recommended) Custom Face Recognition AI Model (128-d Vector Embeddings - No Passkeys)**:  
+- [ ] **(Recommended) Custom Face Recognition AI Model (128-d Vector Embeddings - No Passkeys)**:  
   *Uses client-side computer vision models (MediaPipe / FaceNet) to extract 128-d face descriptors, matched on backend via vector distance. Supports silent background scan and multi-face account resolution without requiring OS WebAuthn passkeys.*
 - [ ] **Standard Auth Only (Email/Password, Google OAuth, Magic Link)**.
 
 ---
 
 ### Q7.4: Theme Toggle (Dark / Light Mode)
-- [x] **(Recommended) Tri-State Theme Toggle (Dark / Light / System Sync)**.
+- [ ] **(Recommended) Tri-State Theme Toggle (Dark / Light / System Sync)**.
 - [ ] **Dark Mode Only**.
 - [ ] **Light Mode Only**.
 
@@ -377,7 +379,7 @@ Should facial biometric authentication be provided?
 
 ### Q8.1: Notification Channels
 Which notification and messaging automations are needed?
-- [x] **(Recommended) Multi-Channel Notifications**:  
+- [ ] **(Recommended) Multi-Channel Notifications**:  
   - **SMTP Email**: Transactional order receipts, password resets, daily executive summaries.
   - **WhatsApp Business Automation**: Instant order confirmation alerts, status update pings, OTP verification.
   - **In-App Toast & Web Push**: Real-time browser notifications for staff when a new order arrives.
@@ -387,7 +389,7 @@ Which notification and messaging automations are needed?
 ---
 
 ### Q8.2: CI/CD & GitHub Workflow
-- [x] **(Recommended) Automated GitHub Actions**:  
+- [ ] **(Recommended) Automated GitHub Actions**:  
   *Automated linting, TypeScript type-checking, backend test runner, and automated preview deployment on commit.*
 - [ ] **Manual Deployment**.
 
@@ -397,7 +399,7 @@ Which notification and messaging automations are needed?
 
 ### Q9.1: Developer Client Payment Management Safeguard
 Do you want to enable the Developer Payment Safeguard module for client projects?
-- [x] **(Recommended) Enable Developer Payment Safeguard Module**:  
+- [ ] **(Recommended) Enable Developer Payment Safeguard Module**:  
   - **Rule**: Client application queries Developer license API: `{ paymentClear: boolean }`.
   - **Behavior**:
     * If `paymentClear == true`: 100% normal, completely invisible.
@@ -410,13 +412,13 @@ Do you want to enable the Developer Payment Safeguard module for client projects
 ## ⚙️ Phase 10: Settings Architecture, Integrations & Dynamic Feature Flags
 
 ### Q10.1: Settings Structure & System Settings Access (Kisko Mile Gi System Settings?)
-> **MANDATORY SETTINGS RULE**: Every project MUST feature a Settings hub with two distinct tiers: **Normal Settings** (Personal profile, security, appearance, regional preferences, company profile) and **System Settings** (Platform infrastructure, credentials, storage, AI keys, and feature flags).
+> **Settings module applicability**: If the product requires settings, define the needed user and administrative settings based on its roles and security model. A two-tier settings hub is one optional pattern, not a universal requirement.
 Who should have access to **System Settings**?
-- [x] **(Recommended if Developer Role Exists) Dual Developer Governance with Delegation Option**:
+- [ ] **(Recommended if Developer Role Exists) Dual Developer Governance with Delegation Option**:
   - Developer has full platform governance over System Settings.
   - **Delegation Choice**:
     - [ ] **Delegate to Owner**: Both Developer AND Owner can access System Settings (Owner manages credentials, Developer provides backup).
-    - [x] **Developer Only**: Restricted exclusively to Developer console. Owner only sees Normal Settings.
+    - [ ] **Developer Only**: Restricted exclusively to Developer console. Owner only sees Normal Settings.
 - [ ] **(Mandatory if NO Developer Role Exists) Always Grant System Settings to Owner / Main User**:
   - When the project has no Developer role, System Settings is **ALWAYS granted to the Owner / Main User role**. Critical service credentials must never become inaccessible.
 
@@ -424,13 +426,13 @@ Who should have access to **System Settings**?
 
 ### Q10.2: Storage Integration Providers & Live Testing (Storage Kahan Rakhna Hai?)
 Which file storage providers should be configured in System Settings? *(Multiple providers can be configured; active provider chosen via dropdown)*
-- [x] **(Recommended Multi-Cloud & Hybrid Storage Suite - Polymorphic Engine)**:
-  - [x] **MongoDB Native GridFS / Buffer Storage** (Zero third-party cloud subscription, stored directly inside MongoDB Atlas; supports 2MB chunked streaming to bypass Vercel Free-Plan 4.5MB limit, auto-caches via `/api/media/[id]`).
-  - [x] **Vercel Blob** (Fast edge blob storage for Next.js deployments).
-  - [x] **Supabase Storage** (S3-compatible bucket with CDN, publicId metadata, and image transforms).
-  - [x] **Firebase Storage** (Google Cloud Storage integration with download tokens).
-  - [x] **Local File Storage** (Direct server filesystem storage for on-premise / VPS; automatically falls back to MongoDB GridFS when deployed on Vercel read-only serverless instances).
-  - [x] **Cloudflare R2 / AWS S3 / MinIO** (Zero egress-fee R2 or enterprise S3 buckets).
+- [ ] **(Recommended Multi-Cloud & Hybrid Storage Suite - Polymorphic Engine)**:
+  - [ ] **MongoDB Native GridFS / Buffer Storage** (Zero third-party cloud subscription, stored directly inside MongoDB Atlas; supports 2MB chunked streaming to bypass Vercel Free-Plan 4.5MB limit, auto-caches via `/api/media/[id]`).
+  - [ ] **Vercel Blob** (Fast edge blob storage for Next.js deployments).
+  - [ ] **Supabase Storage** (S3-compatible bucket with CDN, publicId metadata, and image transforms).
+  - [ ] **Firebase Storage** (Google Cloud Storage integration with download tokens).
+  - [ ] **Local File Storage** (Direct server filesystem storage for on-premise / VPS; automatically falls back to MongoDB GridFS when deployed on Vercel read-only serverless instances).
+  - [ ] **Cloudflare R2 / AWS S3 / MinIO** (Zero egress-fee R2 or enterprise S3 buckets).
   - **Polymorphic Media Specification**: See [`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`](./modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md) for universal schema, presigned uploads, and `<UnifiedMedia />` resolver.
   - **Live Verification Requirement**: Every storage provider card **MUST include a "Test Connection & Upload" button** that executes a real 1KB dummy upload, verifies read access, auto-deletes the file, and displays roundtrip latency in ms.
 - [ ] **Single Dedicated Storage Provider Only** *(Specify provider)*.
@@ -439,16 +441,16 @@ Which file storage providers should be configured in System Settings? *(Multiple
 
 ### Q10.3: AI Integrations, Multi-Key & Fallback Engine (Konsi AI APIs & Fallback Chahiye?)
 Which AI providers, models, and fallback chains should be configured?
-- [x] **(Recommended Multi-Provider AI Hub with Multi-Key & Fallback)**:
+- [ ] **(Recommended Multi-Provider AI Hub with Multi-Key & Fallback)**:
   - **Supported Providers**: OpenAI (`gpt-4o`, `o1`), Anthropic Claude (`claude-3-5-sonnet`), OpenRouter (200+ models), Google Gemini (`gemini-1.5-pro/flash`), Groq (`llama-3.3-70b`), Mistral, Perplexity, DeepSeek (`deepseek-v3/r1`), Ollama (Local LLM), and Custom Endpoints.
   - **Multi-Key Capability**: Ability to enter multiple API keys for any single provider (with custom labels and priority tiers).
   - **Intelligent Fallback Chains**: Auto-fallback upon rate limits (HTTP 429) or outages (HTTP 500) (e.g. Primary OpenAI Key 1 -> Backup OpenAI Key 2 -> Claude 3.5 Sonnet -> Groq LPU).
   - **Live Test Ping**: Every key and provider features a dedicated **"Test Key" button** measuring latency (ms) and confirming model handshake.
   - **AI Placement Matrix**: Select where AI is activated across the website:
-    - [x] AI Customer Chatbot & Support Assistant
-    - [x] AI Product Description & SEO Content Generator
-    - [x] AI Business Analytics & Executive PDF Report Summarizer
-    - [x] AI Vision, Document & Invoice OCR
+    - [ ] AI Customer Chatbot & Support Assistant
+    - [ ] AI Product Description & SEO Content Generator
+    - [ ] AI Business Analytics & Executive PDF Report Summarizer
+    - [ ] AI Vision, Document & Invoice OCR
     - [ ] AI Image & Banner Generator
 - [ ] **Single AI Provider Only (No Fallback)** *(Specify provider)*.
 - [ ] **No AI Integrations Required**.
@@ -456,16 +458,16 @@ Which AI providers, models, and fallback chains should be configured?
 ---
 
 ### Q10.4: Dynamic Feature Flags & Strict Zero-Leak UI Enforcement (Konse Features On/Off Rakhne Hain?)
-> **STRICT ZERO-LEAK MANDATE**: Features toggled OFF must **COMPLETELY DISAPPEAR** from the user experience. No disabled buttons, no locked teaser menus, no routes accessible. Direct URL visits trigger a clean 404 Not Found.
+> **Feature-flag behavior**: Define disabled-feature behavior explicitly. Hide or disable UI according to product UX, and always enforce authorization server-side; a hidden control is never a security boundary.
 Which modular features should be controllable via the Developer / Owner Feature Flags panel?
-- [x] **(Recommended Comprehensive Feature Flags Engine)**:
-  - [x] **AI Capabilities** (`feature:ai_engine`): Toggle all AI touchpoints on/off.
-  - [x] **WhatsApp Business Automation** (`feature:whatsapp_automation`): Toggle WhatsApp notifications on/off.
-  - [x] **3D Models Upload & Viewer** (`feature:3d_models`): Toggle 3D GLTF product/dashboard models on/off.
-  - [x] **Biometric Facelock Auth** (`feature:facelock_auth`): Toggle face recognition login on/off.
-  - [x] **Barcode & QR Code Scanner** (`feature:barcode_scanner`): Toggle camera scanning tools on/off.
-  - [x] **Dedicated Portals** (`feature:customer_portal`, `feature:vendor_portal`): Toggle individual sub-portals on/off.
-  - [x] **Content Management System** (`feature:cms_engine`): Toggle announcements and blog CMS on/off.
+- [ ] **(Recommended Comprehensive Feature Flags Engine)**:
+  - [ ] **AI Capabilities** (`feature:ai_engine`): Toggle all AI touchpoints on/off.
+  - [ ] **WhatsApp Business Automation** (`feature:whatsapp_automation`): Toggle WhatsApp notifications on/off.
+  - [ ] **3D Models Upload & Viewer** (`feature:3d_models`): Toggle 3D GLTF product/dashboard models on/off.
+  - [ ] **Biometric Facelock Auth** (`feature:facelock_auth`): Toggle face recognition login on/off.
+  - [ ] **Barcode & QR Code Scanner** (`feature:barcode_scanner`): Toggle camera scanning tools on/off.
+  - [ ] **Dedicated Portals** (`feature:customer_portal`, `feature:vendor_portal`): Toggle individual sub-portals on/off.
+  - [ ] **Content Management System** (`feature:cms_engine`): Toggle announcements and blog CMS on/off.
 - [ ] **Static Code-Level Features Only (No Dynamic Toggle Matrix)**.
 
 ---
@@ -473,7 +475,7 @@ Which modular features should be controllable via the Developer / Owner Feature 
 ### Q10.5: Multi-Tenant Settings Isolation (Tenant Settings Kese Hon Gi?)
 *(Applicable only if Multi-Tenancy is enabled in Phase 4)*
 How should settings behave across tenant companies?
-- [x] **(Recommended) Tenant-Isolated Credentials with Developer Super Console Control**:
+- [ ] **(Recommended) Tenant-Isolated Credentials with Developer Super Console Control**:
   - Each tenant maintains independent settings (custom SMTP, custom WhatsApp, dedicated storage bucket, custom AI keys).
   - Developer Super Console (`/system-console`) can inspect, manage, or override settings per tenant, or allow tenants to inherit platform defaults.
 - [ ] **Global Platform Credentials Shared for All Tenants**.
@@ -484,7 +486,7 @@ How should settings behave across tenant companies?
 
 ### Q11.1: Customer Payment Timeout & Double-Debit Protection
 When a customer pays on the website and the connection between the backend and bank gateway times out (e.g. money debited from bank account, but client or server drops connection):
-- [x] **(Recommended) Enable Enterprise Idempotency & Inquire-Before-Charge (IBC) Engine**:
+- [ ] **(Recommended) Enable Enterprise Idempotency & Inquire-Before-Charge (IBC) Engine**:
   - **Pre-Created PaymentIntent & Idempotency Key**: Each checkout session creates a persistent `PaymentIntent` with a unique key (`idemp_<orderId>_attempt_1`).
   - **Distributed Redis Mutex Lock**: 60-second atomic lock rejects concurrent clicks or rapid retries with `409 Conflict: Processing`.
   - **Inquire-Before-Charge (IBC)**: Any retry or subsequent payment attempt queries the Bank Status API (`/bank/query-status`) before touching the gateway, guaranteeing the customer is never charged twice.
@@ -498,7 +500,7 @@ When a customer pays on the website and the connection between the backend and b
 
 ### Q12.1: Slow 2G/3G Connection & Data Saver Optimization
 How should the platform behave for users on slow mobile networks (2G, throttled 3G, high-latency satellite, or limited mobile data)?
-- [x] **(Recommended) Enable 5-Pillar Low-Bandwidth Speed Engine**:
+- [ ] **(Recommended) Enable 5-Pillar Low-Bandwidth Speed Engine**:
   - **Adaptive Images & BlurHash LQIP**: Automatically serve WebP/AVIF images with compact 20-character BlurHash placeholders. On slow 2G/3G or Save-Data, dynamically request 60% smaller images and lower quality to cut data usage by 80%.
   - **Server Streaming with Suspense & Projection Pruning**: Stream HTML shells in < 50ms TTFB while database queries stream asynchronously. Prune MongoDB listing payloads by 90% (exclude heavy unneeded fields).
   - **Offline-First SWR Caching**: Persist API responses in IndexedDB so repeat visits and back/forward navigation render instantaneously (0ms lag).
@@ -512,7 +514,7 @@ How should the platform behave for users on slow mobile networks (2G, throttled 
 
 ### Q13.1: High-Frequency Button Clicking & Double-Click Protection
 When users rapidly multi-click interactive buttons (e.g. clicking "Next" page 3 times to jump to Page 4, tapping quantity `+` 5 times in cart, skipping slides, or tapping like bursts):
-- [x] **(Recommended) Enable Optimistic Rapid-Click Batching Engine**:
+- [ ] **(Recommended) Enable Optimistic Rapid-Click Batching Engine**:
   - **Instant 0ms Visual Feedback**: The local UI counter (page number, cart quantity, like count, slide index) updates immediately with an animated morphing badge without freezing or disabling buttons.
   - **300ms Settling Quiet Window**: Every rapid click resets a debounce timer. Zero intermediate network requests are dispatched while the user is actively clicking.
   - **Single Settled Request**: Once 300ms passes without clicks, a single network request fires for the final destination (e.g. Page 4, Qty 5).

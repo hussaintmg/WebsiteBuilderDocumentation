@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "name": "website-builder-engine",
-  "version": "2.1.0",
-  "description": "Cross-platform autonomous web engineering engine, design system, and quality gate for Next.js, FastAPI, Node.js, and MongoDB.",
+  "version": "2.2.0",
+  "description": "Cross-platform, architecture-aware web engineering skill with modular design documentation and evidence-based verification.",
   "supportedEnvironments": [
     "Claude Code",
     "Google Gemini / Antigravity",
@@ -14,17 +14,20 @@
     "tier0_manifest_and_core_law": {
       "purpose": "Essential laws and architecture contracts loaded before taking any action. Total payload < 300 lines.",
       "mandatoryFiles": [
+        "EXECUTION_CONTRACT.md",
         "rules/CORE_DIRECTIVE.md",
         "rules/MANDATORY_EXECUTION_CHECKLIST.md"
       ]
     },
     "tier1_foundation_and_scaffolding": {
-      "purpose": "Foundational design tokens, color physics, typography, and initial project scaffolding.",
+      "purpose": "Load architecture discovery, scope planning, foundational design tokens and safe scaffolding guidance when relevant to the task.",
       "files": [
         "design-system/DESIGN_ARCHITECTURE.md",
         "design-system/FRONTEND_DESIGN_RULES.md",
         "rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md",
-        "rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md"
+        "rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md",
+        "engines/PROJECT_INTELLIGENCE.md",
+        "engines/INTENT_AND_SCOPE.md"
       ]
     },
     "tier2_domain_modules": {
@@ -147,6 +150,27 @@
         "carousel-3d": [
           "design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md",
           "design-system/09_IMPLEMENTATION_RECIPES.md"
+        ],
+        "project-discovery": [
+          "engines/PROJECT_INTELLIGENCE.md",
+          "EXECUTION_CONTRACT.md"
+        ],
+        "scope-planning": [
+          "engines/INTENT_AND_SCOPE.md",
+          "PLAN_BUILDER.md"
+        ],
+        "independent-review": [
+          "engines/INDEPENDENT_REVIEWER.md",
+          "quality/ACCEPTANCE_CRITERIA.md"
+        ],
+        "animation-qa": [
+          "quality/ANIMATION_QA.md",
+          "design-system/05_ANIMATIONS_CATALOGUE.md"
+        ],
+        "completion-gate": [
+          "quality/ACCEPTANCE_CRITERIA.md",
+          "engines/INDEPENDENT_REVIEWER.md",
+          "EXECUTION_CONTRACT.md"
         ]
       }
     },
@@ -167,4 +191,3 @@
     "testFramework": "node scripts/test-framework.js"
   }
 }
-

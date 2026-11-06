@@ -1,4 +1,7 @@
-# Frontend Design & UI/UX Standards (Tailwind CSS Engine)
+# Frontend Design & UI/UX Standards (Tailwind CSS Profile)
+
+> **Applicability:** This document describes a Tailwind-oriented design system profile. Use it when Tailwind is already selected or explicitly requested. For projects using CSS Modules, vanilla CSS, Sass, styled-components, another utility framework or a design-system package, preserve the existing styling architecture and translate only the relevant visual principles. This document does not authorize a framework migration.
+
 
 > **CORE PRINCIPLE**: The user must be WOWED at first glance. Generic, default HTML or basic MVP designs are considered a complete failure. Every project MUST use **Tailwind CSS** as its foundation, paired with rich animations, glowing elements, bespoke typography, and specialized UI components.
 
@@ -42,9 +45,9 @@
 
 ---
 
-## 🎨 1. Tailwind CSS Mandatory Standard
+## 🎨 1. Tailwind CSS Standard (When Tailwind Is Selected)
 
-Tailwind CSS (v3 / v4) is the mandatory styling engine across all applications. Do not use plain, unstyled HTML or basic CSS files.
+Tailwind CSS (v3 / v4) is used by this design profile. Do not migrate an existing application to Tailwind solely to follow this document; preserve its current styling system.
 - Enable `darkMode: 'class'` for seamless Dark/Light dual theming.
 - Use Tailwind utility classes for layout, flexbox, grid, spacing, and responsive design (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`).
 - Cross-reference full architecture in [`DESIGN_ARCHITECTURE.md`](./DESIGN_ARCHITECTURE.md).

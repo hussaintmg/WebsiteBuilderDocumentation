@@ -1,5 +1,7 @@
 # Plan Builder Specification & Generation Engine
 
+> **Applicability:** This is a planning template, not a mandatory architecture. Read [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md) first. The Next.js + MongoDB + Tailwind structure below is an example profile only. For an existing project, preserve its actual stack; for a greenfield project, choose each technology from requirements and trade-offs. Mark irrelevant modules NOT APPLICABLE instead of enabling everything.
+
 > **FOR THE AGENT**: When conducting project onboarding or starting a new build, use this guide to compile the user's interview responses into a concrete, executable project directory (`/.project/`).
 
 ---
@@ -35,13 +37,13 @@ The agent must generate `PLAN.md` using the following standardized layout:
 ## 2. Technical Stack Matrix
 - **Scope**: [Fullstack | Frontend Only | Backend Only | Standalone APIs]
 - **Frontend Framework**: [Next.js App Router | Vite + React | Other]
-- **Styling Engine**: **Tailwind CSS (v3 / v4) - Mandatory**
+- **Styling Engine**: Project-native styling system (Tailwind is one option)
 - **Typography Choice**: [Display: Neofolio / Nexo Kora / Bierika / OSIRIS | Body: Plus Jakarta Sans / Outfit]
 - **Animation Stack**: [Framer Motion + GSAP ScrollTrigger | Three.js (Optional with User Permission)]
 - **Icon Ecosystem**: [Lucide React + Animated Icons (Lordicon, Icons8, LottieFlow, LottieFiles)]
 - **UI Architecture**: [Floating Label Inputs (No Placeholders) | Resizable dvh Sidebar | Public Mobile Bottom Bar with "More" Drawer | Dashboard Floating "Menu"/"Close" Pill | Framer Toasts]
 - **Backend Framework**: [FastAPI (ASGI) | Next.js Serverless Route Handlers | Node Express]
-- **Database & Storage**: **MongoDB (Atlas / Self-Hosted) - Mandatory NoSQL**
+- **Database & Storage**: Database selected from domain, hosting, scale and team requirements
 - **ODM / Query Driver**: **Mongoose (Next.js/Node) | Motor / Beanie (FastAPI Python)**
 - **Authentication**: [NextAuth/Auth.js | Supabase Auth | Custom JWT + Custom AI Face Models]
 - **State Management**: [Zustand | React Query (TanStack) | Context API]
@@ -59,19 +61,19 @@ The agent must generate `PLAN.md` using the following standardized layout:
 | **Keyboard Shortcuts** | [Enabled/Disabled] | [Basic (Cmd+K, Esc) | Master (Vim-style, Hotkeys)] |
 | **Facelock / Biometrics** | [Enabled/Disabled] | Custom AI Face Models (128-d Vector Embeddings, No Passkeys) |
 | **Automations & SMTP** | [Enabled/Disabled] | SMTP emails + WhatsApp Business alerts |
-| **Settings System** | **Mandatory** | Dual-tier: Normal Settings + System Settings (SMTP, WA, Multi-Storage, Multi-Key AI) |
-| **Route Proxy & Protection** | **Mandatory** | Edge Middleware (`middleware.ts`), Interception Toasts & Login/Logout Cache Invalidation |
+| **Settings System** | Conditional | Dual-tier: Normal Settings + System Settings (SMTP, WA, Multi-Storage, Multi-Key AI) |
+| **Route Proxy & Protection** | Conditional (when auth/protected routes exist) | Edge Middleware (`middleware.ts`), Interception Toasts & Login/Logout Cache Invalidation |
 | **Dynamic Feature Flags** | [Enabled/Disabled] | Developer/Owner toggle matrix with strict Zero-Leak UI elimination |
 | **Developer Payment Safeguard** | [Enabled/Disabled] | Grace period up to 8th of month, Owner-only banner |
-| **Universal 404 Game Page** | **Mandatory** | Standalone `app/not-found.tsx` with playable HTML5 Canvas arcade mini-game, high score counter & return CTAs |
-| **Root Models & Contexts Architecture** | **Mandatory** | Dedicated root `/models` (1 file per MongoDB model) + root `/context` (1 context per model + 3 global), context-first API encapsulation (Zero direct component API calls), in-place state mutation & single-fetch guarantee |
-| **Backend Scaling & Resilience Engine** | **Mandatory** | 3-Tier Progressive Capacity Matrix, BullMQ 30s Heartbeat Lease Worker Failover, Two-Tier L1/L2 Cache with Redis Pub/Sub Invalidation, Payment Circuit Breaker & Safe Add/Remove Adapter Protocol (`modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`) |
+| **Custom 404 Experience** | Optional product choice | Standalone `app/not-found.tsx` with playable HTML5 Canvas arcade mini-game, high score counter & return CTAs |
+| **Models & State/Data Layer** | Conditional | Dedicated root `/models` (1 file per MongoDB model) + root `/context` (1 context per model + 3 global), context-first API encapsulation (Zero direct component API calls), in-place state mutation & single-fetch guarantee |
+| **Backend Scaling & Resilience Engine** | When scale/reliability requirements justify it | 3-Tier Progressive Capacity Matrix, BullMQ 30s Heartbeat Lease Worker Failover, Two-Tier L1/L2 Cache with Redis Pub/Sub Invalidation, Payment Circuit Breaker & Safe Add/Remove Adapter Protocol (`modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`) |
 | **Advanced System Designs & Hyper-Scale Patterns** | [Enabled/Disabled] | 20M Likes Buffer, Hybrid Push/Pull Feeds, Millions-Scale Reminders, Uber H3 Hexagonal Rides with Surge Pricing, CQRS Search, and 20 Production System Designs (`modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md`) |
 | **Payment Idempotency & Reconciliation Engine** | [Enabled/Disabled] | Order-bound idempotency keys, Redis Mutex locking, Inquire-Before-Charge (IBC) timeout recovery, dual webhooks + BullMQ poller reconciliation (`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`) |
 | **Multi-Storage Polymorphic Media Engine** | [Enabled/Disabled] | Heterogeneous storage (Local, Vercel Blob, Supabase, Firebase, S3/R2, GridFS), presigned uploads, 2MB chunked GridFS streaming for Vercel Free plan, polymorphic `<UnifiedMedia />` resolver (`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`) |
-| **Low-Bandwidth & Extreme Performance Engine** | **Mandatory** | 5 Pillars of Low-Bandwidth Speed: Adaptive WebP/AVIF images with BlurHash LQIP, React Server Component streaming (<50ms TTFB), MongoDB projection pruning, IndexedDB offline-first SWR cache, and 80KB JS budget (`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`) |
-| **Optimistic Rapid-Click Batching Engine** | **Mandatory** | 0ms local optimistic UI updates with 300ms settling debounce & AbortController cancellation for pagination, cart quantity steppers, slide carousels, like bursts, and tri-state sorting (`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`) |
-| **Existing Project Retrofit Engine** | [Enabled/Disabled] | 6-stage autonomous retrofit, packages harmonization, motion physics, glass depth, and 95%+ audit gate (`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`) |
+| **Low-Bandwidth & Performance** | When required by measured constraints | 5 Pillars of Low-Bandwidth Speed: Adaptive WebP/AVIF images with BlurHash LQIP, React Server Component streaming (<50ms TTFB), MongoDB projection pruning, IndexedDB offline-first SWR cache, and 80KB JS budget (`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`) |
+| **Optimistic Rapid-Click Batching Engine** | For high-frequency interactions where it fits | 0ms local optimistic UI updates with 300ms settling debounce & AbortController cancellation for pagination, cart quantity steppers, slide carousels, like bursts, and tri-state sorting (`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`) |
+| **Existing Project Retrofit Engine** | [Enabled/Disabled] | scoped, dependency-aware retrofit with independent review and evidence-based verification (`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`) |
 | **Screen-Level Genie Trash Bin Deletion** | [Enabled/Disabled] | Kinetic right-edge bin entrance, screen portal elevation via getBoundingClientRect, 3D vacuum siphon drop, and layout glide re-flow (`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`) |
 
 ## 4. Acceptance Criteria & Success Metrics
@@ -80,7 +82,7 @@ The agent must generate `PLAN.md` using the following standardized layout:
 - [ ] Strict role-based permissions prevent unauthorized page visits and button actions.
 - [ ] All forms feature robust validation with clear, responsive error toasts.
 - [ ] Zero layout shifts, high aesthetic standard (curated typography, dark mode, smooth transitions).
-- [ ] Codebase achieves >= 95% compliance score on the automated audit engine (`node <skill-path>/scripts/audit-engine.js .`).
+- [ ] Every required acceptance criterion has fresh evidence; unconfigured checks are explicitly marked NOT CONFIGURED.
 - [ ] Production build passes with zero lint, type, or runtime errors.
 ```
 
@@ -104,7 +106,7 @@ graph TD
     Backend -->|Webhooks / Notifications| External[WhatsApp / SMTP Services]
 \`\`\`
 
-## 2. Directory & Component Structure (Mandatory Root-Level `/app`, Zero `src/` Wrapper)
+## 2. Example Directory & Component Structure (Next.js Profile Only)
 ```
 <project_root>/
 ├── app/                               # Next.js App Router (Root-level, NO src/ wrapper)
@@ -144,7 +146,7 @@ graph TD
 └── tsconfig.json                      # Strict TypeScript configuration with root alias paths ("@/*": ["./*"])
 ```
 
-## 3. Database Schema Blueprint (MongoDB / NoSQL)
+## 3. Optional Database Schema Blueprint (MongoDB / NoSQL Example)
 Define core document collections (users, companies/tenants, roles, orders, cms_posts, audit_logs).
 Include BSON ObjectIds, tenant scoping (`companyId`), compound indexes, and validation rules.
 
@@ -176,13 +178,13 @@ Compile project-specific rules selected from `design-system/` (visual design) an
 The agent must structure the implementation plan following the **6-Phase Non-Breaking Phased Architecture** defined in [`rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`](rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md).
 
 > 🛡️ **THE OPEN-CLOSED PHASED BUILD LAW**:  
-> Every subsequent phase must build upon previous phases without breaking them. Existing working code is enhanced, never dismantled. All major new features and subsystems MUST reside in dedicated, newly created files that integrate cleanly through established interfaces.
+> Every phase should preserve verified working behavior and integrate through the project's established interfaces. Modular files are preferred when they improve cohesion and maintainability; do not split code into new files mechanically or refactor unrelated working code.
 
 ```markdown
 # Implementation Sprints: [Project Name]
 
 - [ ] **Phase 1: Foundation & Identity Core (Zero-Debt Skeleton)**
-  - [ ] Initialize repository with strict TypeScript config (`tsconfig.json`) and Next.js App Router / Vite
+  - [ ] Initialize the selected framework/runtime and its native type/config setup.
   - [ ] Configure database connection pool and environment variables template (`.env.example`)
   - [ ] Scaffold root `/models` and root `/context` directory structure
   - [ ] Implement minimal robust Auth: User model, password hashing (bcrypt), JWT session cookies, and login/signup handlers with strict Zero-Demo credentials policy and full inter-auth navigation ergonomics
@@ -190,14 +192,14 @@ The agent must structure the implementation plan following the **6-Phase Non-Bre
   - [ ] Verification Gate: User can signup, login, view empty authenticated dashboard, and logout with zero warnings
 
 - [ ] **Phase 2: Core Domain Purpose & Business Workflows (Functional Minimal Core)**
-  - [ ] Define primary MongoDB domain models in `models/` with tenant scoping (`companyId`)
+  - [ ] Define domain models and tenant scoping only when the selected database/product requires them.
   - [ ] Implement corresponding domain React Contexts in `context/` encapsulating 100% of API calls
   - [ ] Implement primary REST/Serverless CRUD API routes with strict validation (`POST`, `GET`, `PATCH`, `DELETE`)
   - [ ] Build functional master data tables and input forms (functional end-to-end before heavy styling)
   - [ ] Verification Gate: Primary business workflow executes with complete database mutation fidelity
 
 - [ ] **Phase 3: Visual Excellence, Design System & Ergonomics**
-  - [ ] Implement Tailwind design token system per [`design-system/01_CSS_PROPERTIES_REFERENCE.md`](design-system/01_CSS_PROPERTIES_REFERENCE.md)
+  - [ ] Implement the selected styling system and design tokens per [`design-system/01_CSS_PROPERTIES_REFERENCE.md`](design-system/01_CSS_PROPERTIES_REFERENCE.md)
   - [ ] Apply visual effects (Glassmorphism, Frosted Glass, Border Beams, Ambient Mesh) per [`design-system/02_VISUAL_EFFECTS_CATALOGUE.md`](design-system/02_VISUAL_EFFECTS_CATALOGUE.md)
   - [ ] Scaffold production UI components (Floating Labels, Gated Action Buttons, Feedback Overlays) per [`design-system/03_UI_COMPONENTS_LIBRARY.md`](design-system/03_UI_COMPONENTS_LIBRARY.md) & [`design-system/09_IMPLEMENTATION_RECIPES.md`](design-system/09_IMPLEMENTATION_RECIPES.md)
   - [ ] Implement card layouts and stacked decks (Fan-Out, 3D Tilt, Bento Grids) per [`design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md`](design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md)
@@ -223,21 +225,21 @@ The agent must structure the implementation plan following the **6-Phase Non-Bre
 - [ ] **Phase 5: Sovereign Security, Biometrics & Hardening**
   - [ ] Enforce granular Role-Based Access Control (`<resource>:<action>`) across UI buttons and API endpoints
   - [ ] Implement custom AI Face Recognition biometrics (128-d vector embeddings)
-  - [ ] Deploy Next.js Edge Middleware route proxy (`middleware.ts`), flash toasts (*"Aap is page pe nahi ja sakte hain"*), and session cache invalidation
+  - [ ] Implement the selected framework's server-side route protection and session invalidation when auth/protected routes are in scope.
   - [ ] Implement Developer Payment Safeguard banner for Owner
   - [ ] Implement standalone interactive Universal 404 Arcade Game page (`app/not-found.tsx`)
   - [ ] Verification Gate: Penetration tests pass; unauthorized actions blocked with flash toasts
 
 - [ ] **Phase 6: Universal Verification, Chaos Testing & Code Review Gate**
   - [ ] Execute the 7-Tier Universal Verification Lifecycle (`rules/TESTING_AND_VERIFICATION.md`)
-  - [ ] Tier 1 (Static Gate): `npx tsc --noEmit` & `npm run build` succeed with Exit Code 0
+  - [ ] Tier 1: Run configured project-native build and typecheck commands when applicable.
   - [ ] Tier 2 (Chaos Monkey): Fuzz forms and endpoints with `null`, `undefined`, extreme strings, and multi-clicks
   - [ ] Tier 3: Verify zero dirty state mutations in database
-  - [ ] Tier 4: Verify zero direct component API calls (Context Law)
+  - [ ] Tier 4: Verify state/data access follows the project's established architecture.
   - [ ] Tier 5: Verify zero leaked backend technical jargon on UI
-  - [ ] Tier 6: Verify 60 FPS animations and multi-viewport layout
+  - [ ] Tier 6: Verify relevant visual/motion behavior and responsive viewports.
   - [ ] Tier 7: Perform Principal Code Review using 8-point inspection checklist
-  - [ ] Execute Automated Audit Engine (`node <skill-path>/scripts/audit-engine.js .`) and achieve >= 95% compliance score (Exit Code 0)
+  - [ ] Execute configured, relevant tests/build/typecheck/lint/browser checks and complete the acceptance evidence ledger.
   - [ ] Verification Gate: Fresh terminal output evidence recorded; final build signed off
 ```
 

@@ -16,7 +16,7 @@
  * 6. components/GlassCard.tsx (Obsidian dark glassmorphic card container)
  * 7. lib/safe-storage.ts (Multi-tier unified storage engine: local, buffer, supabase, vercel)
  * 8. context/AppContext.tsx (Context law single-source-of-truth master provider)
- * 9. Audit and update package.json for required dependencies
+ * 9. Check required declared dependencies without mutating package.json
  * 
  * Usage:
  *   node scaffold-engine.js [project-directory]
@@ -30,16 +30,46 @@ const args = process.argv.slice(2);
 if (args.includes('--help') || args.includes('-h')) {
   console.log(`
 Usage:
-  node scaffold-engine.js [project-directory] [--force]
+  node scaffold-engine.js [project-directory] [--apply] [--force]
 
 Options:
-  --force    Overwrite existing files
+  --apply    Write the planned scaffold files (default is a read-only dry run)
+  --force    Back up and overwrite existing files; requires --apply
   --help     Show this help message
 `);
   process.exit(0);
 }
 const targetDirArg = args.find(a => !a.startsWith('--'));
 const targetDir = path.resolve(targetDirArg || process.cwd());
+const isApply = args.includes('--apply');
+const isForce = args.includes('--force');
+const backupStamp = new Date().toISOString().replace(/[:.]/g, '-');
+
+if (isForce && !isApply) {
+  console.error('Error: --force requires --apply. No files were changed.');
+  process.exit(1);
+}
+if (!fs.existsSync(targetDir) || !fs.statSync(targetDir).isDirectory()) {
+  console.error('Error: Target directory does not exist: ' + targetDir);
+  process.exit(1);
+}
+const pkgPathPreflight = path.join(targetDir, 'package.json');
+let projectPackage;
+try {
+  projectPackage = JSON.parse(fs.readFileSync(pkgPathPreflight, 'utf8'));
+} catch (error) {
+  console.error('This scaffold only applies to an existing React + Tailwind project with a valid package.json. No files were changed.');
+  process.exit(2);
+}
+const projectDeps = { ...(projectPackage.dependencies || {}), ...(projectPackage.devDependencies || {}) };
+const requiredDeps = ['react', 'react-dom', 'tailwindcss', 'framer-motion', 'lucide-react', 'clsx', 'tailwind-merge'];
+const missingDeps = requiredDeps.filter((dep) => !projectDeps[dep]);
+if (missingDeps.length) {
+  console.error('Scaffold not applicable. Missing declared dependencies: ' + missingDeps.join(', '));
+  console.error('This command never installs dependencies or changes package.json. Add only the packages your project actually needs, then retry.');
+  process.exit(2);
+}
+
 
 const colors = {
   reset: '\x1b[0m',
@@ -67,18 +97,25 @@ function ensureDir(dirPath) {
   }
 }
 
-// Safe file creator (does not overwrite existing if custom, unless --force)
-const isForce = args.includes('--force');
-
+// Safe file creator: dry-run by default; force writes create timestamped backups.
 function safeWrite(relPath, content) {
   const fullPath = path.join(targetDir, relPath);
+  if (!isApply) {
+    log(`  ${colors.cyan}Plan:${colors.reset} ${fs.existsSync(fullPath) ? (isForce ? 'Back up and replace' : 'Skip existing') : 'Create'} ${relPath}`);
+    return false;
+  }
   ensureDir(path.dirname(fullPath));
   if (fs.existsSync(fullPath) && !isForce) {
     log(`  ${colors.yellow}↷ Skipped (already exists):${colors.reset} ${relPath}`);
     return false;
   }
+  if (fs.existsSync(fullPath) && isForce) {
+    const backupPath = fullPath + '.bak-' + backupStamp;
+    fs.copyFileSync(fullPath, backupPath);
+    log(`  ${colors.yellow}Backup created:${colors.reset} ${path.relative(targetDir, backupPath)}`);
+  }
   fs.writeFileSync(fullPath, content.trim() + '\n', 'utf8');
-  log(`  ${colors.green}✔ Created:${colors.reset} ${relPath}`);
+  log(`  ${colors.green}✔ Written:${colors.reset} ${relPath}`);
   return true;
 }
 
@@ -1087,9 +1124,9 @@ export function ResponsiveTabs<T extends string = string>({
     </div>
   );
 }
-\`;
+`;
 
-log(\`\${colors.bold}Step 1: Writing Core Standard Files...\${colors.reset}\`);
+log(`${colors.bold}Step 1: Writing Core Standard Files...${colors.reset}`);
 safeWrite('lib/utils.ts', UTILS_TS);
 safeWrite('hooks/useRapidClickBatcher.ts', RAPID_CLICK_BATCHER_TS);
 safeWrite('hooks/useGenieTrashDelete.ts', USE_GENIE_TRASH_DELETE_TS);
@@ -1103,49 +1140,14 @@ safeWrite('hooks/useResponsiveTabs.ts', USE_RESPONSIVE_TABS_TS);
 safeWrite('components/ResponsiveTabs.tsx', RESPONSIVE_TABS_TSX);
 
 // -----------------------------------------------------------------------------
-// Step 2: Audit and Ensure Dependencies in package.json
-// -----------------------------------------------------------------------------
-log(`\n${colors.bold}Step 2: Checking package.json dependencies...${colors.reset}`);
-const pkgPath = path.join(targetDir, 'package.json');
-if (fs.existsSync(pkgPath)) {
-  try {
-    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-    pkg.dependencies = pkg.dependencies || {};
-    
-    const requiredDeps = {
-      'clsx': '^2.1.1',
-      'tailwind-merge': '^2.3.0',
-      'framer-motion': '^11.2.10',
-      'lucide-react': '^0.395.0'
-    };
-
-    let modified = false;
-    for (const [dep, ver] of Object.entries(requiredDeps)) {
-      if (!pkg.dependencies[dep]) {
-        pkg.dependencies[dep] = ver;
-        log(`  ${colors.cyan}+ Added missing dependency:${colors.reset} ${dep}@${ver}`);
-        modified = true;
-      } else {
-        log(`  ${colors.green}✔ Present:${colors.reset} ${dep}`);
-      }
-    }
-
-    if (modified) {
-      fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
-      log(`  ${colors.green}✔ Updated package.json.${colors.reset} Run ${colors.bold}npm install${colors.reset} to install newly added dependencies.`);
-    } else {
-      log(`  ${colors.green}✔ All mandatory core dependencies are already present in package.json.${colors.reset}`);
-    }
-  } catch (err) {
-    log(`  ${colors.red}✖ Failed to parse package.json: ${err.message}${colors.reset}`);
-  }
-} else {
-  log(`  ${colors.yellow}↷ No package.json found in ${targetDir}. Skipping dependency check.${colors.reset}`);
-}
+// Step 2: Dependency safety — no automatic package.json mutation.
+log(`\n${colors.bold}Step 2: Dependency preflight...${colors.reset}`);
+log(`  ${colors.green}✔ Required dependencies were checked before planning.${colors.reset}`);
+log(`  ${colors.gray}No dependency is installed and package.json is never modified by this scaffold.${colors.reset}`);
 
 log(`\n${colors.bold}${colors.green}==============================================================================${colors.reset}`);
-log(`${colors.bold}${colors.green}  🎉 CORE AUTO-SCAFFOLDING COMPLETED SUCCESSFULLY!${colors.reset}`);
+log(`${colors.bold}${colors.green}  ${isApply ? 'CORE SCAFFOLD WRITES FINISHED' : 'READ-ONLY SCAFFOLD PLAN GENERATED'}${colors.reset}`);
 log(`${colors.bold}${colors.white}  Now run the audit engine to verify compliance:${colors.reset}`);
-log(`  ${colors.cyan}node ${path.join(__dirname, 'audit-engine.js')} .${colors.reset}`);
-log(`  ${colors.gray}(Or via CLI runner: npx website-builder audit .)${colors.reset}`);
+log(`  ${colors.cyan}node ${path.join(__dirname, 'audit-engine.js')} "${targetDir}"${colors.reset}`);
+if (!isApply) log(`  ${colors.gray}Review the plan, then re-run with --apply. Add --force only when backups are acceptable.${colors.reset}`);
 log(`${colors.bold}${colors.green}==============================================================================${colors.reset}\n`);

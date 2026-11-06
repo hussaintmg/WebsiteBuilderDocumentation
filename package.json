@@ -1,0 +1,22 @@
+{
+  "name": "website-builder-documentation-engine",
+  "version": "2.2.0",
+  "private": true,
+  "description": "Cross-platform, architecture-aware web engineering skill and documentation validation tools.",
+  "main": "scripts/resolve-paths.js",
+  "bin": {
+    "website-builder": "./scripts/website-builder.js"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.js && node scripts/test-framework.js",
+    "validate:docs": "node scripts/validate-docs.js",
+    "audit": "node scripts/audit-engine.js",
+    "scaffold": "node scripts/scaffold-engine.js",
+    "compile": "node scripts/compile-brain.js",
+    "load-docs": "node scripts/load-docs.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

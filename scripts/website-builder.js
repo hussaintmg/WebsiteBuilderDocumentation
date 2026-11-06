@@ -10,7 +10,7 @@
  * 
  * Commands:
  *   website-builder audit [target-dir] [--brain]
- *   website-builder scaffold [target-dir]
+ *   website-builder scaffold [target-dir] [--apply] [--force]
  *   website-builder docs <topic> [--content]
  *   website-builder compile
  *   website-builder test
@@ -31,18 +31,18 @@ function runScript(scriptName, extraArgs = []) {
     cwd: process.cwd(),
     env: process.env
   });
-  process.exit(result.status || 0);
+  process.exit(result.status === null ? 1 : result.status);
 }
 
 function showHelp() {
   console.log(`
-Website Builder Engine CLI v2.1.0
+Website Builder Engine CLI v2.2.0
 ══════════════════════════════════════════════════════════════════════════════
 Usage: website-builder <command> [options]
 
 Commands:
-  audit [dir]       Run the 10-suite compliance audit & quality gate on a project
-  scaffold [dir]    Auto-scaffold core utilities, hooks, portals, and contexts
+  audit [dir]       Run an architecture-aware evidence audit on a project
+  scaffold [dir]    Preview/apply guarded React + Tailwind helper files
   docs <topic>      Load targeted documentation without context blowout
   compile           Recompile all modular specs into BRAIN.md
   test              Run automated framework tests & verification

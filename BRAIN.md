@@ -1,3 +1,4101 @@
+# CURRENT AUTHORITATIVE EXECUTION ADDENDUM — READ FIRST
+
+> This addendum is the current source of truth for agent behavior. It supersedes conflicting historical instructions in the legacy compiled body below. The legacy body is preserved for its useful technical recipes, but its old universal stack, styling, motion and 95% score mandates must not override this addendum.
+>
+> **Mandatory first read:** EXECUTION_CONTRACT.md. Discover the real project architecture, define scoped acceptance criteria, implement only requested/dependency-required work, and verify with fresh evidence. Missing checks are NOT CONFIGURED / NOT VERIFIED, never PASS. Do not force Next.js, MongoDB, Tailwind, React Context, Framer Motion, glassmorphism, Genie animations or any other pattern unless it fits the project or the user requested it.
+
+## Current canonical documents
+
+
+---
+
+## Source: EXECUTION_CONTRACT.md
+
+# Execution Contract
+
+This document defines the non-negotiable runtime behavior of WebsiteBuilderDocumentation when used by a coding agent. It supersedes conflicting legacy examples and generic stack assumptions.
+
+## 1. Repository reconnaissance
+- Establish repository root, git status, uncommitted changes and workspace boundaries.
+- Read package manifests, lockfiles, runtime/configuration files, source entry points, routes, shared components, styles/tokens, models, API contracts, auth/authorization, tests and CI.
+- Build a concise architecture map from observed evidence.
+- Search for existing implementations before creating new abstractions.
+- For large projects, inventory all files and inspect all files in the affected dependency graph. Explicitly disclose files not inspected.
+
+## 2. Outcome and scope
+For every request, define:
+- User-visible outcome.
+- Functional behavior and edge cases.
+- Affected routes/components/API/data/permissions.
+- Required and dependency-required changes.
+- Out-of-scope areas.
+- Acceptance tests and rollback concerns.
+
+Broad inspection does not authorize broad unrelated modification. Keep the existing design language unless a redesign is requested.
+
+## 3. Architecture selection
+The repository is the source of truth. Do not force:
+- Next.js or a root /app layout,
+- MongoDB/Mongoose or any database,
+- Tailwind or plain CSS,
+- React Context or any state library,
+- Framer Motion/GSAP,
+- Lucide or any icon library,
+- glassmorphism, dark mode, floating labels, sidebars or other fixed UI patterns.
+
+Use the project's established stack and conventions. For greenfield work, select a stack only after requirements and constraints are understood.
+
+## 4. Phased execution
+1. Baseline: git status, current test/build health, relevant behavior.
+2. Plan: dependency graph, files, contracts, risks and acceptance criteria.
+3. Implement: smallest coherent vertical slice; preserve interfaces.
+4. Integrate: connect UI, API, persistence, permissions and state.
+5. Review: inspect diff for scope creep, secrets, unsafe operations and regressions.
+6. Verify: execute relevant tests, build, typecheck, lint and browser checks.
+7. Report: evidence, blockers, limitations and deployment/migration steps.
+
+Never overwrite uncommitted user changes. Use migrations for persisted data changes and define rollback where practical.
+
+## 5. Motion acceptance
+A motion spec must describe semantic stages rather than relying on a vague "smooth animation" instruction. For each stage record:
+- Trigger and initial state.
+- Visual object(s) and coordinate/origin relationship.
+- Intermediate stages and timing.
+- Easing/physics and overlap.
+- Final state and data/layout synchronization.
+- Cancellation, rapid repeated input and failure behavior.
+- prefers-reduced-motion behavior.
+
+Browser verification should inspect the actual rendered animation, not only source code. Check mobile viewport, overflow/clipping, z-index/portal behavior, focus, keyboard interaction and reduced motion. If browser access is unavailable, state NOT VERIFIED.
+
+## 6. Verification status vocabulary
+- PASS: command/tool executed and returned successful evidence.
+- FAIL: command/tool executed and returned a failure.
+- NOT CONFIGURED: project has no corresponding command or test harness.
+- NOT RUN: command exists but was not executed.
+- BLOCKED: execution was attempted but environment/tooling prevented it.
+- NOT APPLICABLE: check does not apply to this project.
+
+Missing scripts, missing TypeScript, or test files without execution are never PASS. Do not use arbitrary compliance percentages as a completion threshold.
+
+## 7. Completion report
+Include requested outcomes, files changed, decisions, exact verification commands/status, pre-existing failures, unverified items, known risks and next operational steps.
+
+
+---
+
+## Source: MAIN_AGENT_DIRECTIVE.md
+
+# Main Agent Directive & Autonomous Workflow Engine
+
+> **STATUS: MANDATORY FOR ALL AI AGENTS**  
+> If you are an AI assistant (Antigravity, Claude, ChatGPT, etc.) working on a project using this framework, you MUST read and execute this directive before taking any coding action.
+
+---
+
+## Execution Contract Precedence (Read Before Applying Legacy Rules)
+
+**First read [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md).** It has precedence over any older generic or stack-specific instruction in this repository.
+
+- Discover the target project's actual framework, package manager, architecture, design system and existing conventions before selecting implementation patterns.
+- The root `/app`, MongoDB, Tailwind, React Context, Framer Motion, glassmorphism, dark mode and any named component are not universal requirements. Apply them only when they fit the actual project or the user explicitly requests them.
+- Inspect broadly, but implement only the requested outcome and necessary dependencies. Preserve unrelated working code and user changes.
+- Define acceptance criteria and execute relevant tests/build/typecheck/lint/browser checks. Missing test configuration is **NOT CONFIGURED / NOT VERIFIED**, never PASS.
+- Do not use a 95% score or static regex audit as proof of completion. Completion requires evidence for the actual requested outcomes.
+
+## Required Engines for Every Meaningful Task
+
+After reading [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md), use the following guides as relevant:
+- [Project Intelligence](./engines/PROJECT_INTELLIGENCE.md) — discover actual stack, routes, dependencies and data flow.
+- [Intent and Scope](./engines/INTENT_AND_SCOPE.md) — acceptance criteria, scope boundaries and implementation phases.
+- [Independent Reviewer](./engines/INDEPENDENT_REVIEWER.md) — review the diff separately from implementation.
+- [Acceptance Criteria](./quality/ACCEPTANCE_CRITERIA.md) — maintain requirement-to-evidence traceability.
+- [Animation QA](./quality/ANIMATION_QA.md) — verify full motion choreography in browser when motion changes.
+
+## 🛑 Rule Zero: The Absolute Prerequisite
+
+```
+                     ┌─────────────────────────────┐
+                     │  New User Request Received  │
+                     └──────────────┬──────────────┘
+                                    │
+                                    ▼
+                      /───────────────────────────\
+                     <  Does /.project/PLAN.md     >
+                     <  already exist & approved?  >
+                      \───────────────────────────/
+                                    │
+                    NO              │            YES
+               ┌────────────────────┴───────────────────┐
+               ▼                                        ▼
+┌──────────────────────────────────┐     ┌──────────────────────────────┐
+│ STOP! DO NOT WRITE ANY CODE.     │     │ 1. Read .project/PLAN.md     │
+│ 1. Load DISCOVERY_QUESTIONNAIRE  │     │ 2. Read .project/RULES.md    │
+│ 2. Ask user clarifying questions │     │ 3. Execute current Sprint    │
+│ 3. Generate .project/ plan       │     │ 4. Verify evidence & test    │
+└──────────────────────────────────┘     └──────────────────────────────┘
+```
+
+**Never start scaffolding or writing production code until the user approves the generated plan file!**  
+Doing otherwise results in misaligned architecture, wasted tokens, and rework.
+
+---
+
+## 📋 The 5-Phase Agent Execution Protocol
+
+### Phase 1: Interactive Discovery Interview
+When the user presents an idea or starts a new project:
+1. Open [`DISCOVERY_QUESTIONNAIRE.md`](./DISCOVERY_QUESTIONNAIRE.md).
+2. Ask questions in structured, digestible batches (never overwhelm the user with 50 questions at once; group them logically by Phase: Scope -> UI/UX -> RBAC -> Features -> Safeguards).
+3. **Explicit Backend Placement Inquiry**: The agent **MUST explicitly ask the user upfront** whether they want the backend built:
+   - Inside the same Next.js project (Unified Monolith).
+   - As a dedicated Next.js Backend API project (Dual Next.js: `frontend/` + `backend/`).
+   - As a dedicated Python FastAPI backend.
+   - As a dedicated Node.js/Express backend.
+4. Always suggest recommended defaults based on their workload.
+5. Support the user in their preferred language (English, Urdu, or Roman Urdu).
+
+---
+
+### Phase 2: Project Workspace Initialization
+Once answers are received:
+1. Create a dedicated project configuration directory at the root:
+   - For single-project repos: `/.project/`
+   - For multi-project monorepos: `/projects/<project-name>/`
+2. Generate the following core blueprint files using [`PLAN_BUILDER.md`](./PLAN_BUILDER.md):
+   - `PLAN.md`: Objectives, stack, chosen modules, and scope boundaries.
+   - `ARCHITECTURE.md`: Data models, API contracts, RBAC permissions, and file structure.
+   - `RULES.md`: Design rules extracted from `design-system/` plus connection and security rules selected from `rules/`.
+   - `SPRINTS.md`: Phased task list with clear checkboxes and test gates.
+3. Present the plan summary to the user and request explicit confirmation to proceed.
+
+---
+
+### Phase 3: Scaffolding & Foundation First
+Once the plan is approved:
+1. Follow **Foundation-First rule**:
+   - **Original & Bespoke Design Mandate (Design Apna Banana Hai)**: Documentation code examples and color palettes are technical architecture blueprints—**NEVER copy them verbatim into the project**. The agent must craft an original visual identity, bespoke color palette, tailored card layouts, and custom typography pairing for every single project.
+   - **Bespoke Brand Logo & Complete Favicon Suite (With Canva Refinement Mandate)**: When the product requires custom branding or a PWA, design and integrate an authentic vector Brand Logo (wordmark and compact glyph) and a suitable Favicon/PWA suite (`favicon.ico`, `icon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest`). Leaving default framework favicons or generic unstyled text is strictly prohibited. **Canva Refinement Workflow**: If programmatic SVGs or generated logos/favicons do not meet state-of-the-art standards, developers/agents must leverage Canva to craft, refine, and export clean, high-resolution transparent vector/PNG brand assets.
+   - **Zero-Bar Draggable Modals & Apple Genie Origin-Morph System**: Use the Apple macOS 3D Genie Origin-Morph animation for modals, popup forms, confirmation boxes or dropdowns only when it is requested or fits the established product motion language (unrolls from origin button, funnels back on close while origin button elevates and absorbs). Once open, dialogs are freely draggable via their top padding region with zero extra titlebar and zero grip icons per [`design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`](./design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md).
+   - **Backend-Only Payment Safeguard Enforcement**: All licensing checks and payment verification calls must execute **strictly from the backend server**; the frontend browser must never call the licensing API directly.
+   - Use the project's existing styling system; select **Tailwind CSS** with dual-theme (`dark:`) configuration only if it fits the chosen stack and requirements per [`design-system/DESIGN_ARCHITECTURE.md`](./design-system/DESIGN_ARCHITECTURE.md) and [`design-system/FRONTEND_DESIGN_RULES.md`](./design-system/FRONTEND_DESIGN_RULES.md).
+   - Scaffold only the foundational UI atoms required by the accepted product scope, using existing component and interaction conventions.
+   - Set up the database schema and connection layer per [`rules/BACKEND_CONNECTION_RULES.md`](./rules/BACKEND_CONNECTION_RULES.md).
+   - Set up the environment variables template (`.env.example`).
+2. Scaffold only the necessary components and routes specified in the approved sprint.
+
+---
+
+### Phase 4: Module-Specific Implementation
+Whenever implementing a specific subsystem, the agent **MUST read the corresponding module guide** from the `modules/`, `rules/`, and `design-system/` directories before writing code:
+
+| Subsystem to Implement | Mandatory Module Document to Read |
+| :--- | :--- |
+| Tailwind Design System, Floating Inputs, Resizable Sidebar | [`design-system/DESIGN_ARCHITECTURE.md`](./design-system/DESIGN_ARCHITECTURE.md) & [`design-system/FRONTEND_DESIGN_RULES.md`](./design-system/FRONTEND_DESIGN_RULES.md) |
+| CSS Properties, Gradients, Shadows, Math clamp() & Modern CSS | [`design-system/01_CSS_PROPERTIES_REFERENCE.md`](./design-system/01_CSS_PROPERTIES_REFERENCE.md) |
+| Visual Effects (Glass, Neumorphism, Auroras, Spotlights, Beams) | [`design-system/02_VISUAL_EFFECTS_CATALOGUE.md`](./design-system/02_VISUAL_EFFECTS_CATALOGUE.md) |
+| Production UI Component Library (Buttons, Nav, Forms, Overlays) | [`design-system/03_UI_COMPONENTS_LIBRARY.md`](./design-system/03_UI_COMPONENTS_LIBRARY.md) |
+| Card Patterns, Stacked Decks, Fan-Outs & Gesture Swipe Physics | [`design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md`](./design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md) |
+| Animation Catalogue, Transitions, Keyframes & ScrollTimeline | [`design-system/05_ANIMATIONS_CATALOGUE.md`](./design-system/05_ANIMATIONS_CATALOGUE.md) |
+| Apple macOS 3D Genie Origin-Morph & Zero-Bar Draggable Modals | [`design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`](./design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md) |
+| Apple macOS Screen-Level Genie Trash Bin & Vacuum Deletion | [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md) |
+| Three.js 3D Model Architecture, Parts Audit & Inspection Studio | [`design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`](./design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md) |
+| Full-Page Website Sections (Heroes, Bento Grids, Timelines, Footers) | [`design-system/06_WEBSITE_SECTIONS_LIBRARY.md`](./design-system/06_WEBSITE_SECTIONS_LIBRARY.md) |
+| Complete Website Design Patterns (SaaS, AI, Agency, E-Commerce) | [`design-system/07_WEBSITE_DESIGN_PATTERNS.md`](./design-system/07_WEBSITE_DESIGN_PATTERNS.md) |
+| Production React + Tailwind Recipes & Searchable Taxonomy Index | [`design-system/09_IMPLEMENTATION_RECIPES.md`](./design-system/09_IMPLEMENTATION_RECIPES.md) & [`design-system/10_SEARCHABLE_INDEX.md`](./design-system/10_SEARCHABLE_INDEX.md) |
+| User Roles, Portals, Action Permissions | [`modules/RBAC_SYSTEM.md`](./modules/RBAC_SYSTEM.md) & [`rules/RBAC_SECURITY_RULES.md`](./rules/RBAC_SECURITY_RULES.md) |
+| Multi-Company / Multi-Tenant / Custom Domains | [`modules/MULTI_TENANT_SYSTEM.md`](./modules/MULTI_TENANT_SYSTEM.md) |
+| Order Table & 1-by-1 Slide/Carousel Processing | [`modules/ORDER_SLIDE_WORKFLOW.md`](./modules/ORDER_SLIDE_WORKFLOW.md) |
+| Master Data Table, Mobile Cards & Drag Selection | [`modules/DATA_TABLE_AND_CARDS_SYSTEM.md`](./modules/DATA_TABLE_AND_CARDS_SYSTEM.md) |
+| Content Management System (CMS) | [`modules/CMS_ENGINE.md`](./modules/CMS_ENGINE.md) |
+| Keyboard Shortcuts Engine | [`modules/SHORTCUT_KEYS_SYSTEM.md`](./modules/SHORTCUT_KEYS_SYSTEM.md) |
+| Custom AI Face Recognition & Multi-Account Auth | [`modules/AUTH_AND_FACELOCK.md`](./modules/AUTH_AND_FACELOCK.md) |
+| SMTP, WhatsApp Automations, GitHub CI/CD | [`modules/AUTOMATIONS_AND_NOTIFICATIONS.md`](./modules/AUTOMATIONS_AND_NOTIFICATIONS.md) |
+| Settings Hub, Third-Party Integrations & Dynamic Feature Flags | [`modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md`](./modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md) |
+| Edge Proxy Route Protection, Interception Toasts & Session Invalidation | [`modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md`](./modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md) |
+| Mobile Bottom Navigation Bar & Dashboard Floating Menu Pill | [`modules/MOBILE_NAVIGATION_AND_LAYOUT.md`](./modules/MOBILE_NAVIGATION_AND_LAYOUT.md) |
+| Real-Time Omni-Chat & Customer Portal Communication | [`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`](./modules/CHAT_AND_COMMUNICATION_SYSTEM.md) |
+| High-Concurrency Lightweight Sockets & Message Compression | [`modules/CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md`](./modules/CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md) |
+| AI Assistant, Multimodal Copilot & CMS Builder Engine | [`modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md`](./modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md) |
+| Tenant Public Contact Form & Dashboard Enquiries System | [`modules/ENQUIRIES_AND_LEADS_SYSTEM.md`](./modules/ENQUIRIES_AND_LEADS_SYSTEM.md) |
+| Newsletter Canvas Studio, Blog Engine & Public CMS Loop | [`modules/NEWSLETTER_AND_BLOGS_SYSTEM.md`](./modules/NEWSLETTER_AND_BLOGS_SYSTEM.md) |
+| Principal Engineer Mindset, Non-Breaking Phased Planning & Line Decision Matrix | [`rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`](./rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md) |
+| Client Payment Tracking & 8th-Date Banner | [`rules/PAYMENT_SAFEGUARD_RULE.md`](./rules/PAYMENT_SAFEGUARD_RULE.md) |
+| Safe Development, Zero-Regression & FILE-MAP Synchronization | [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](./rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md) |
+| Payment Idempotency & Split-Brain Timeout Reconciliation | [`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`](./modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md) |
+| Multi-Storage Polymorphic Media Engine & Vercel Free Workaround | [`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`](./modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md) |
+| Extreme Low-Bandwidth & Slow Network Performance Optimization | [`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`](./modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md) |
+| Optimistic Rapid-Click Batching & Debounced Settlement | [`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`](./modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md) |
+| Existing Website Retrofit & Modernization Engine | [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md) |
+
+---
+
+### Phase 5: Verification & Completion Gate
+
+1. Read [Execution Contract](./EXECUTION_CONTRACT.md), [Testing & Verification](./rules/TESTING_AND_VERIFICATION.md), and the task's acceptance ledger.
+2. Run the actual project-native commands that exist: tests, production build, typecheck, lint and relevant integration/E2E checks.
+3. Verify changed browser behavior in a real browser when browser tooling is available. For animation changes, follow [Animation QA](./quality/ANIMATION_QA.md).
+4. Review the full diff independently using [Independent Reviewer](./engines/INDEPENDENT_REVIEWER.md).
+5. Record each requirement as PASS, FAIL, NOT CONFIGURED, NOT RUN, BLOCKED or NOT APPLICABLE with evidence.
+6. Do not force unrelated visual patterns, stack migrations or global retrofits to satisfy legacy examples.
+7. Update FILE-MAP and task notes when repository structure or execution flows change.
+8. Never claim completion without evidence. There is no universal 95% score gate.
+
+## ⚡ Agent Behavioral Guardrails
+
+1. Preserve the existing product design, framework, conventions and working features unless the user asks for a redesign or migration.
+2. Treat all module and design-system documents as reusable patterns, not universal requirements.
+3. Apply RBAC, tenant isolation, server-side authorization, validation and payment safeguards according to the product's actual security model.
+4. Add settings, integrations, feature flags, multi-tenancy, custom domains, CMS, LMS, AI, 3D and communication modules only when requested or required by the accepted scope.
+5. Use the project's existing navigation and responsive patterns; do not force a bottom bar, floating menu pill or sidebar.
+6. Use the existing styling and animation stack. Do not force Tailwind, Framer Motion, GSAP, glassmorphism, dark mode or a specific icon library.
+7. Apply Genie deletion, liquid tabs, animated task buttons and other signature motion patterns only when they fit the requested behavior and product language.
+8. Keep user-facing copy understandable and consistent with the product's language and terminology.
+9. Do not add mock credentials, fake success states or controls that do nothing.
+10. Prefer minimal compatible changes over rewrites; document migrations and rollback steps for persisted data.
+11. Run a separate diff review and the relevant project-native verification commands.
+12. Report evidence and limitations precisely. Missing browser access, external services or test infrastructure must be disclosed as unverified.
+
+
+
+---
+
+## Source: rules/CORE_DIRECTIVE.md
+
+# Website Builder Engine — Tier 0 Core Directives & Laws
+
+> **MANDATORY PREREQUISITE FOR ALL AI AGENTS (Claude Code, Gemini, Cursor, Copilot)**  
+> Read this document first before writing code. This lightweight specification establishes the non-negotiable architectural laws and engineering standards of Website Builder Engine.
+
+---
+
+## Precedence: Architecture-Aware Execution Contract
+
+Read [../../EXECUTION_CONTRACT.md](../EXECUTION_CONTRACT.md) before applying the laws below. That contract supersedes legacy universal stack assumptions. The laws below are patterns for projects where they are applicable, not permission to force a stack or redesign unrelated areas.
+
+- Detect the project's real framework, architecture, package manager, design system and conventions first.
+- Root /app, MongoDB, Tailwind, React Context, Framer Motion and glassmorphism are conditional, not universal.
+- Missing tests/build/typecheck are NOT CONFIGURED or NOT VERIFIED, never a pass.
+- Inspect widely; change only requested outcomes and necessary dependencies.
+
+## 1. The 10 Ironclad Engine Laws
+
+### Law 1: Rule Zero (Plan First, Code Second)
+Never start writing production code until a structured implementation plan (`/.project/PLAN.md` or task plan) is created and aligned with the user.
+
+### Law 2: Root-Level `/app` Standard (Zero `src/` Wrapper)
+In all Next.js projects governed by this framework:
+- App Router is situated directly at `<root>/app/`.
+- Sibling root folders: `/components`, `/context`, `/models`, `/hooks`, `/lib`, `/public`, `/styles`.
+- Path aliases: `"@/*": ["./*"]` in `tsconfig.json`. Wrapping project files inside an unnecessary `src/` directory is prohibited unless an existing legacy project strictly requires migration.
+
+### Law 3: Respect the Existing Design System and Motion Language
+- Preserve the project's established visual language and accessibility conventions.
+- Glassmorphism, dark mode, Framer Motion, GSAP and spring effects are optional patterns, not universal requirements.
+- Use motion only when it improves the requested interaction; honor reduced-motion preferences.
+
+### Law 4: State Ownership and Data Boundaries
+Keep data access in the project's established service/state layer. React Context is one option, not a universal requirement. Avoid duplicated fetching and inconsistent sources of truth.
+
+### Law 5: Zero-Demo Auth & Bidirectional Ergonomics
+- Never place prefilled demo credentials or backdoor buttons ("Click to login as Admin") in any environment.
+- Initialize form inputs to empty strings (`""`).
+- Provide bidirectional navigation links (`/login` has right-aligned "Forgot password?" and bottom "Sign up"; `/signup` has "Log in"; recovery pages have "← Back to log in").
+
+### Law 6: Safe Destructive Operations
+Use confirmation, authorization, idempotency and clear failure handling for destructive actions. A screen-level Genie trash animation is an optional visual pattern only when requested or consistent with the product.
+
+### Law 7: Task-Specific In-Flight Button Animations (Zero Generic Spinners)
+- Generic circular loading spinners (`animate-spin` borders) on action buttons are strictly forbidden.
+- During network transit, buttons must display task-specific micro-animations inside their icon frames:
+  - **Delete**: In-button trash bin loop (bin glides in, lid pops open, document drops in, lid snaps, bin departs left; repeats until API settles).
+  - **Order / Dispatch**: Delivery truck driving along an animated road with spinning tyres ($\omega = 360^\circ$), moving road dashes, and trailing tyre dust lines.
+  - **Live Sync / Refresh**: Communications tower with apex blinking beacon, radiating RF wave arcs, and animated live pulsing status badge with audio equalizer bars.
+
+### Law 8: Responsive Navigation
+Choose wrapping, scrolling, dropdown overflow or alternate navigation based on the number of tabs, viewport, accessibility and existing design. Keep the active destination understandable and keyboard accessible.
+
+### Law 9: File Necessity, Anti-Bloat & Zero Dead-Code
+- Every file in the repository must serve a verified active purpose.
+- Unreferenced orphan files, dummy placeholder stubs (`// TODO`), and duplicate conflicting packages (`axios` vs `fetch`, `moment` vs `date-fns`) must be audited and cleaned.
+
+### Law 10: Evidence-Based Verification
+- Execute the project's configured, relevant test/build/typecheck/lint/browser checks.
+- Missing checks are NOT CONFIGURED or NOT VERIFIED, never PASS. TypeScript checks are NOT APPLICABLE when the project does not use TypeScript.
+- No percentage score substitutes for acceptance criteria and fresh evidence.
+
+---
+
+## 2. Progressive Documentation Loading Reference
+
+When implementing specific features, read the targeted module from the repository or invoke `node scripts/load-docs.js <topic>`:
+
+| Feature / Domain | Mandatory Documentation Path |
+| :--- | :--- |
+| **Responsive Mobile Tabs** | `design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md` |
+| **In-Flight Button Animations** | `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md` |
+| **Genie Trash Bin Deletion** | `design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md` |
+| **Auth & Edge Proxy Protection** | `modules/AUTH_AND_FACELOCK.md` & `modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md` |
+| **Data Tables & Mobile Cards** | `modules/DATA_TABLE_AND_CARDS_SYSTEM.md` |
+| **Rapid Click Batching** | `modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md` |
+| **Retrofit Protocol** | `modules/EXISTING_PROJECT_RETROFIT_ENGINE.md` |
+| **Mandatory Execution Checklist** | `rules/MANDATORY_EXECUTION_CHECKLIST.md` |
+| **Testing Standards & Verification** | `rules/TESTING_AND_VERIFICATION.md` |
+
+
+
+---
+
+## Source: rules/MANDATORY_EXECUTION_CHECKLIST.md
+
+# Mandatory Task Execution Checklist & Verification Gate
+
+> **UNIVERSAL PROTOCOL FOR ALL AI AGENTS & PAIR PROGRAMMERS**  
+> Use these checkpoints for every meaningful task; mark genuinely irrelevant checkpoints NOT APPLICABLE with a reason.
+> 
+> **PREMATURE COMPLETION PROHIBITION**: An agent is strictly forbidden from declaring any task complete, finished, or resolved until Checkpoints 1 through 10 have been executed with concrete terminal evidence. Merely mentioning or planning a test command does NOT qualify as executing it.
+
+---
+
+## Precedence and status rules
+
+Apply [../EXECUTION_CONTRACT.md](../EXECUTION_CONTRACT.md) first. This checklist is architecture-aware: skip checks that are not applicable, do not migrate a project to satisfy a folder convention, and record each skipped item as NOT APPLICABLE with a reason. Do not treat missing test configuration as a pass. Record PASS only with a fresh command/tool result.
+
+## 📋 The 10 Mandatory Checkpoints
+
+### 1. Project Analysis
+- [ ] Inspect the target workspace file structure, package dependencies, framework versions, and configurations.
+- [ ] Identify whether the project is Greenfield (new) or Existing (Retrofit).
+- [ ] Audit existing conventions, path aliases (`@/*`), and styling setups (Tailwind, CSS modules).
+
+### 2. Architecture Understanding
+- [ ] Trace data flows, existing models, context providers, and API routes.
+- [ ] Determine module boundaries and identify downstream dependencies to prevent breaking changes.
+- [ ] Verify root-level directory layout (Root `/app` standard vs legacy `src/`).
+
+### 3. Implementation Planning
+- [ ] Formulate a detailed, phased implementation plan (`/.project/PLAN.md` or scoped task checklist).
+- [ ] Specify exactly which files will be created, modified, or removed.
+- [ ] Define the exact testing and verification strategy before writing any code.
+
+### 4. Complete Code Implementation
+- [ ] Implement all planned components, hooks, models, and routes.
+- [ ] Preserve and follow the detected project design system, state/data layer and interaction patterns.
+- [ ] Add animation patterns only when required by the task and product language.
+- [ ] Complete all required UI/API/data/permission/error/loading integrations.
+- [ ] **NO PARTIAL WORK**: Do not stop after editing 1 or 2 files or leaving screens unstyled.
+
+### 5. Dependency Verification
+- [ ] Inspect the actual package manifest and lockfile for dependencies required by the accepted design.
+- [ ] Verify compatibility and avoid introducing duplicate libraries or unnecessary dependencies.
+- [ ] Run `npm ls` or inspect node modules if import errors occur.
+
+### 6. Build Execution
+- [ ] Run the configured project-native production build command, if one exists.
+- [ ] Run the configured typecheck command when the project uses a typed language and a checker is available.
+- [ ] Record the exact exit code and terminal output.
+- [ ] Ensure compilation finishes with **Exit Code 0** (Zero syntax errors, zero fatal build breaks).
+
+### 7. Relevant Automated Testing (Scoped & Real Execution)
+- [ ] Execute scoped, relevant automated tests targeting the modified subsystem:
+  - Unit tests: `npm test` or `npx vitest run <file>` or `node scripts/test-units.mjs`
+  - E2E / Integration tests (when applicable): `npx playwright test`
+  - Typecheck: `npx tsc --noEmit`
+- [ ] **SCOPE-AWARE RULE**: Scope tests to relevant changes and avoid running unnecessary, slow end-to-end suites that delay workflows without adding value.
+- [ ] **ZERO FABRICATION RULE**: Never report fabricated test outputs. Every claim of a passing test MUST include actual command invocation and verified stdout/stderr.
+
+### 8. Error Fixing & Defect Remediation
+- [ ] If any build, typecheck, or test failure occurs, immediately analyze the root cause.
+- [ ] Apply precise code fixes rather than suppressing errors with `@ts-ignore` or `eslint-disable`.
+- [ ] Re-run the failing test command to verify the fix.
+
+### 9. Regression Testing
+- [ ] Verify that existing, unmodified features continue to operate normally.
+- [ ] Check page navigation, auth routes, and core database interactions.
+- [ ] Ensure no orphan imports or broken component links were introduced.
+
+### 10. Final Verification & Evidence Ledger
+- [ ] Map every required acceptance criterion to an actual command, browser check or other relevant evidence.
+- [ ] Record PASS, FAIL, NOT CONFIGURED, NOT RUN, BLOCKED or NOT APPLICABLE with a reason.
+- [ ] Re-run checks after fixes and confirm they match the current diff.
+- [ ] Document remaining risks and unverified items in the final response.
+
+---
+
+## 🚫 Premature Completion Prevention Rules
+
+1. **The "1-File Exit" Violation**: If an agent edits only 1 or 2 files and says *"I have updated the component, you can integrate it"*, this is a critical framework violation. The agent must complete the entire integration, tests, and verification.
+2. **The "Unverified Success" Violation**: Claiming *"Tests pass"* without running a terminal command is strictly forbidden.
+3. **The "Ignored Build" Violation**: Marking a task complete without executing the configured, relevant build/typecheck commands—or disclosing that they are not configured—is invalid.
+
+
+
+---
+
+## Source: rules/TESTING_AND_VERIFICATION.md
+
+# Master Testing & Verification Architecture: The Ironclad Quality Engine
+
+> **THE IRONCLAD LAW OF VERIFICATION**:  
+> An agent or developer must **NEVER** claim a feature is complete, working, fixed, or passing without providing **concrete, fresh execution evidence** (terminal test output, compiler logs, database mutation confirmations, or browser visual inspection records).  
+> **Assertions without evidence are strictly prohibited.** Violating the letter of this rule is violating the spirit of the entire engineering architecture.
+
+---
+
+## Status vocabulary and evidence contract
+
+The project-aware [Execution Contract](../EXECUTION_CONTRACT.md) takes precedence over legacy universal assumptions in this document.
+
+Use these statuses:
+- **PASS** — the relevant command/tool actually ran and returned successful evidence.
+- **FAIL** — it ran and reported a failure.
+- **NOT CONFIGURED** — no corresponding script, test harness or capability exists.
+- **NOT RUN** — configured but not executed.
+- **BLOCKED** — attempted but blocked by environment/tooling.
+- **NOT APPLICABLE** — the check does not apply to the detected project.
+
+A test file's existence is not test execution. A JavaScript project without TypeScript is not a TypeScript pass. Static pattern checks cannot certify runtime, security, visual quality or animation behavior. Do not use a universal score as a completion gate.
+
+## 🏛️ 1. Executive Mandate & Universal Verification Lifecycle
+
+### 1.1 Scope of Obligation
+Select verification tiers according to the risk and behavior changed. A database mutation, authorization change, UI animation and documentation typo require different evidence. Do not run irrelevant tiers merely to satisfy a universal checklist; record NOT APPLICABLE with a reason.
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        UNIVERSAL FILE OPERATION EVENT DETECTED                         │
+│                    (Page / API Route / Utility / Model / Context / Component)          │
+└───────────────────────────────────────────┬────────────────────────────────────────────┘
+                                            │
+                                            ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ 1. LINE-BY-LINE ALGORITHMIC AUDIT & DEAD CODE PURGE                                    │
+│    - Deterministic purpose for each line; zero arbitrary/dumped code                   │
+│    - Check existing utilities & packages; eliminate duplicate functions/variables      │
+│    - Audit downstream dependents; ensure zero side-effect breakage                      │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 2. TIER 1: STATIC COMPILATION, TYPE SAFETY & STRICT BUILD GATE                         │
+│    - `the project's configured typecheck and build commands` (Exit Code: 0, Zero TS Errors)               │
+│    - Backend linting & type checks (`ruff check .`, `pyright`, `mypy`)                 │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 3. TIER 2: ADVERSARIAL "BRAINLESS USER" DESTRUCTION TESTING (CHAOS MONKEY)             │
+│    - Fuzzing with wrong types: `null`, `undefined`, NaN, extreme lengths, SQLi/XSS    │
+│    - Erratic behavior: frantic multi-clicks, aborted requests, out-of-order flows       │
+│    - Assertions: Zero white-screens, clean user-facing error toasts, strict security   │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 4. TIER 3: API CONTRACTS, DATABASE MUTATION FIDELITY & REACTIVE UI HANDSHAKE           │
+│    - Envelope validation: `{ success: boolean, data, error }`                          │
+│    - DB Mutation Check: Confirms ONLY targeted document/field mutated; zero dirty state│
+│    - Reactive DOM: Instant UI update on mutation without `window.location.reload()`   │
+│    - Performance & Redundancy: Eliminate duplicate calls, premature calls & lag        │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 5. TIER 4: SINGLE SOURCE OF TRUTH & CONTEXT LAW                                        │
+│    - Zero direct component API calls when a Domain Context exists                      │
+│    - Audit context methods; eliminate zombie/neglected state variables                 │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 6. TIER 5: UI COPYWRITING ABSTRACTION & HUMAN PREDICTABILITY STANDARDS                 │
+│    - Zero leaked backend jargon (no database pipelines or Axios terms on UI)           │
+│    - Human Mental Model Test: Predictable, intuitive control discovery                 │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 7. TIER 6: VISUAL, RESPONSIVE, THEME & SCROLL ANIMATION FIDELITY                       │
+│    - Theme tokens check (Light, Dark, Tenant/CMS DB themes; zero rogue hex codes)      │
+│    - Font family fidelity; 60 FPS scroll animations; DAM image parallax; mobile checks │
+└───────────────────────────────────────────┬────────────────────────────────────────────┘
+                                            │
+                                            ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        EVIDENCE RECORDED IN `SPRINTS.md`                               │
+│                      Only NOW may task be marked as complete [x]                       │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🚦 2. The 7-Tier Verification Framework
+
+```
+┌────────────────────────────────────────────────────────────────────────────┐
+│  Tier 7: Visual, Responsive, Theme & Scroll Animation Fidelity             │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Tier 6: UX Copywriting Abstraction & Human Predictability Standards       │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Tier 5: Line-by-Line Algorithmic Audit & Dead Code/File Purge             │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Tier 4: Single Source of Truth & Context Law Verification                 │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Tier 3: API Contracts, Database Mutation Fidelity & Reactive UI Sync     │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Tier 2: Adversarial "Brainless User" Destruction Testing (Chaos Monkey)   │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Tier 1: Static Compilation, Type Safety & Strict Build Gate               │
+└────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 🔍 2.1 Tier 1: Static Compilation, Type Safety & Strict Build Gate
+
+When a project has a configured static compiler/build, run relevant static checks before final browser acceptance and pull-request review. If a command is absent, report NOT CONFIGURED; do not invent a passing result.
+
+#### Mandatory Checks:
+1. **Frontend TypeScript Compilation**:
+   ```bash
+   npx tsc --noEmit
+   # or
+   npm run build
+   ```
+   - **Requirement**: Exit code `0`. Zero TypeScript diagnostics errors (`TS2304`, `TS2322`, `TS2345`, `TS2769`, etc.).
+   - **No `any` Escapes**: Using `any` to silence compiler errors is strictly forbidden. Use proper union types, generics, or type assertions backed by Zod schemas.
+2. **Backend Type Checking & Linting**:
+   ```bash
+   # Python / FastAPI
+   ruff check . && pyright
+   # or Node.js / Express
+   npm run lint
+   ```
+   - **Requirement**: Zero unresolved imports, zero syntax errors, and zero type mismatch warnings.
+3. **Environment & Schema Validation**:
+   - Validate that all referenced environment variables are defined in `.env.example` and parsed via type-safe schemas (e.g., Zod `env.mjs`).
+
+---
+
+### 💥 2.2 Tier 2: Adversarial "Brainless User" Destruction Testing (Chaos Monkey Protocol)
+
+> **THE BRAINLESS USER PHILOSOPHY**:  
+> In production, users will not follow your expected happy path. They will double-click frantically, press back mid-upload, input emojis where numbers are expected, leave required fields blank, paste 20,000 words into a name field, and tamper with hidden payload parameters.  
+> **Your job as a verification engineer is to aggressively try to BREAK, CORRUPT, and CRASH your own functions and APIs before a user ever touches them.**
+
+#### 2.2.1 Destructive Payload & Type Fuzzing Matrix
+Every API endpoint and utility function must be subjected to the following adversarial payloads:
+
+| Payload Category | Injection / Fuzz Value | Expected System Reaction | Forbidden Failure Mode |
+| :--- | :--- | :--- | :--- |
+| **Wrong Types** | Passing `{}` or `[]` where string expected; `true` where number expected | Returns `400 Bad Request` or `422 Unprocessable Entity` with validation detail | Crashing with `TypeError: x.toLowerCase is not a function` (500 Internal Error) |
+| **Null & Undefined** | `{ title: null, amount: undefined }` | Gracefully rejected with field-level validation error | `Cannot read property 'x' of undefined` crash |
+| **Numeric Edge Cases** | `-100`, `0`, `1e20`, `NaN`, `Infinity`, `0.000000001` | Rejected if quantity/price must be positive; clamped safely if unbounded | Negative balances, database overflow, or `NaN` saved in MongoDB |
+| **String Extremes** | Empty string `""`, whitespace only `"   "`, 50,000-character payload | Returns polite toast: *"Title must be between 3 and 100 characters"* | Buffer overflow, UI layout breaking, or database truncation error |
+| **Unicode & Special Chars**| Emojis (`🔥🎉🚀`), RTL overrides (`\u202E`), accents, zero-width spaces | Stored and rendered correctly without UTF-8 encoding corruption | Broken character display (`???`), regex infinite loop (ReDoS) |
+| **Injection Vectors** | SQL (`' OR '1'='1`), NoSQL (`{ "$gt": "" }`), XSS (`<script>alert(1)</script>`) | Sanitized, parameterized, and treated as inert string literals | Database extraction, unauthorized data bypass, script execution in DOM |
+| **Malformed JSON** | Truncated JSON `{"name": "test"`, missing brackets, raw text | Returns `400 Bad Request` with structured error envelope | Server crash or silent hanging request |
+
+#### 2.2.2 State & UI Destruction Attacks
+Simulate the impatient, frantic user in browser testing:
+1. **The Rapid Multi-Click Attack**:
+   - Rapidly click a submit button 5 to 10 times within 500ms.
+   - **Verification Requirement**: The button must immediately enter its disabled/loading state on the first click. Debounce or mutex locks must prevent duplicate API calls and duplicate database entries.
+2. **The Aborted Request / Navigation Attack**:
+   - Initiate a large file upload or long API call, and immediately navigate to another page or press browser Back.
+   - **Verification Requirement**: `AbortController` cleanly cancels the fetch. Component unmount does not trigger *"Can't perform a React state update on an unmounted component"* console warnings.
+3. **Out-of-Order Execution Attack**:
+   - Open two tabs on the same record; edit in Tab A and delete in Tab B; then try to save in Tab A.
+   - **Verification Requirement**: System gracefully detects stale version or returns `404 Not Found` with a clear toast: *"This record has been modified or deleted elsewhere"*.
+4. **Mandatory Outcome Assertions**:
+   - 🛡️ **Zero White-Screens**: The application MUST NEVER show a blank white screen or an unhandled React error boundary crash.
+   - 🔔 **Polite Error Toasts**: Any failure must trigger an animated, human-readable error toast (via `ToastContext` / `sonner`) explaining the issue cleanly without technical jargon.
+   - 🔒 **Rock-Solid Security Boundaries**: Unauthorized requests or role violations MUST return `403 Forbidden` with a standardized security envelope, completely preventing unauthorized data leakage.
+
+---
+
+### 🔄 2.3 Tier 3: API Contracts, Database Mutation Fidelity & Reactive UI Handshake
+
+When an API responds or state changes, data integrity across the backend and frontend must be mathematically sound.
+
+#### 2.3.1 Standard API Envelope Contract
+All API endpoints must respond with the standardized envelope defined in [`rules/BACKEND_CONNECTION_RULES.md`](./BACKEND_CONNECTION_RULES.md):
+```typescript
+// Success Response
+{
+  "success": true,
+  "data": { ... },
+  "message": "Operation completed successfully"
+}
+
+// Error Response
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_FAILED",
+    "message": "Please provide a valid program title.",
+    "details": [
+      { "field": "title", "issue": "Minimum 3 characters required" }
+    ]
+  }
+}
+```
+
+#### 2.3.2 Targeted Database Mutation Audit (Zero Dirty State)
+When testing an API endpoint that mutates data (`POST`, `PUT`, `PATCH`, `DELETE`):
+1. **Targeted Field Isolation**:
+   - Verify that the API mutates **ONLY** the designated record and the designated fields.
+   - **Check**: Does updating a user's phone number accidentally wipe their permissions array or reset their `createdAt` timestamp?
+   - **Check**: Does deleting an order inadvertently delete or detach related customer documents without explicit cascading rules?
+2. **Multi-Tenant Isolation Verification**:
+   - Inspect the database query filter: Every read and write MUST include `companyId` (or `tenantId`).
+   - Confirm that an update query cannot mutate a record belonging to another company under any circumstance:
+     ```typescript
+     // ✅ SECURE: Strict tenant isolation in mutation
+     await Program.findOneAndUpdate(
+       { _id: programId, companyId: session.companyId },
+       { $set: updateData },
+       { new: true }
+     );
+     ```
+
+#### 2.3.3 Reactive UI Update Handshake (No Reload Rule)
+> 🚫 **STRICTLY FORBIDDEN**: Using `window.location.reload()` or forcing a hard page refresh to reflect updated data.
+
+1. **Live State Synchronization**:
+   - When an API call succeeds (e.g. creating, editing, or deleting a record), the existing React Context state array must be updated **in-place** immediately.
+   - The UI table, cards, or metrics must reflect the updated data reactively in real time.
+2. **Animation Synchronization**:
+   - If an animated button was triggered, the loading animation must play cleanly until the API returns; if the API finishes faster than the animation cycle, the animation must complete smoothly before displaying the success state and triggering the toast.
+
+#### 2.3.4 Redundant Call & Performance Audit
+1. **Eliminate Duplicate API Calls**:
+   - Open Browser DevTools Network tab.
+   - On page load, verify that each endpoint is called **exactly once**.
+   - If an endpoint is called 2, 3, or more times, investigate and eliminate root causes:
+     - Missing or unstable dependency arrays in `useEffect`.
+     - Multiple child components making duplicate fetches instead of consuming a parent Context.
+     - React StrictMode double-mounting in dev (ensure cleanup logic or cache deduplication via SWR/TanStack Query).
+2. **Prevent Premature Calls**:
+   - Verify that endpoints requiring user action (e.g. search, filter, export) are NOT called on initial page mount before the user interacts.
+3. **Latency Benchmark**:
+   - Local development API responses must resolve in `< 150ms`.
+   - Any endpoint taking `> 500ms` locally must be profiled for unindexed database queries, N+1 query waterfalls, or missing projections.
+
+---
+
+### 🌐 2.4 Tier 4: Single Source of Truth & Context Law
+
+Per [`rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`](../rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md), React Contexts are the sole guardians of entity state and API interactions.
+
+#### 2.4.1 The Context Law: Zero Direct Component API Calls
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ❌ FORBIDDEN ANTI-PATTERN                                                  │
+│ Inside /app/programs/page.tsx:                                              │
+│ const res = await fetch('/api/programs');                                   │
+│ const data = await res.json();                                              │
+│ // Direct fetch bypasses global cache, causes state desync and duplicate code│
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ✅ THE CONTEXT LAW                                                          │
+│ Inside /app/programs/page.tsx:                                              │
+│ const { programs, isLoading, createProgram } = useProgram();                │
+│ // Consumes centralized, reactive state with single source of truth         │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### 2.4.2 Context Integrity Verification Checklist:
+- [ ] **Context Function Availability**: Before creating a direct API call or local state, verify if a Context already exists for this domain (`ProgramContext`, `OrderContext`, `UserContext`, `RoleContext`, `CustomerContext`, `CmsPageContext`, etc.).
+- [ ] **Zero Zombie Context Methods**: Audit the Context file. Are there functions defined in the Context interface (e.g. `archiveProgram()`, `exportOrders()`) that are never imported or called anywhere in the app? Either wire them up to their UI triggers or safely prune them.
+- [ ] **State Reuse Verification**: If a Context already holds `userList` or `companySettings`, verify that pages do NOT re-fetch this data independently.
+- [ ] **Optimistic vs Server State Alignment**: Ensure mutations update the Context's internal array so that sibling components and downstream selectors receive the fresh state instantly.
+
+---
+
+### 🧹 2.5 Tier 5: Line-by-Line Algorithmic Audit, Dead Code Elimination & Side-Effect Tracing
+
+> **THE STEP-BY-STEP ALGORITHMIC CONSTRUCTION RULE**:  
+> Code must never be dumped haphazardly ("and shand nahi dalna"). Every single line written must be a deliberate, logical step in an explicit algorithm with known inputs and deterministic outputs.
+
+#### 2.5.1 The Line-by-Line Audit Protocol
+Before finalizing any code modification:
+1. **Line-by-Line Purpose Justification**:
+   - Inspect every line added or modified.
+   - Ask: *"What is the exact purpose of this line? What is its input? What is its guaranteed output? Can this line cause an unhandled exception if input is unexpected?"*
+2. **Duplicate Logic & Variable Search**:
+   - Before declaring a new utility function (e.g., date formatter, currency parser, slugifier, regex validator), search the entire workspace:
+     ```bash
+     # Check if a similar helper already exists
+     git grep -i "formatDate"
+     git grep -i "slugify"
+     ```
+   - If a function already exists in `utils/` or `lib/`, **import and reuse it**. Never create duplicate variations of the same logic.
+3. **Existing Package Leverage Check**:
+   - Before writing 50 lines of custom date arithmetic or query string parsing, check `package.json`.
+   - If standard, audited packages exist in the project (e.g. `date-fns`, `clsx`, `tailwind-merge`, `lucide-react`, `zod`), utilize them. Never reinvent the wheel with custom, error-prone boilerplate.
+4. **Dead Code & Unused Import Elimination**:
+   - Run linter checks to detect unused variables, dead functions, and dangling imports:
+     ```bash
+     npm run lint
+     ```
+   - Search for unused files: If a component, utility, or route file is not imported anywhere in the project and is not an active Next.js page route, investigate why it exists and safely prune it.
+5. **Downstream Dependency & Architectural Impact Analysis**:
+   - Before modifying or deleting any function signature, model property, or component prop, perform a repository-wide grep for its identifier:
+     ```bash
+     git grep -n "oldFunctionName"
+     ```
+   - Trace all calling sites across all files. Update all callers in the same changeset to ensure zero downstream regressions or compilation failures.
+
+---
+
+### ✍️ 2.6 Tier 6: UI Copywriting Abstraction & Human Predictability Standards
+
+UI microcopy is the primary contract between the software and the human user. Technical jargon must never leak through this layer.
+
+#### 2.6.1 The Non-Technical Copywriting Law
+> 🚫 **STRICTLY FORBIDDEN**: Exposing internal database queries, backend architecture terms, framework pipelines, or developer workflows on user-facing UI elements.
+
+| Leaked Technical Jargon (❌ Strictly Prohibited) | Clean Human-Centered UX Copy (✅ Mandatory) |
+| :--- | :--- |
+| `"Trigger MongoDB Aggregation Pipeline"` | `"Generate Analytics Report"` |
+| `"Executing Axios POST to /api/orders"` | `"Saving Order..."` |
+| `"Execute FastAPI Background Worker"` | `"Processing in Background"` |
+| `"Mutate ProgramContext Array State"` | `"Update Program"` |
+| `"Insert Document into Collection"` | `"Add New Record"` |
+| `"Bypass Edge Proxy Middleware"` | `"Administrative Access"` |
+| `"Error: MongoError E11000 duplicate key"` | `"A program with this code already exists. Please choose another."` |
+
+#### 2.6.2 The Human Predictability & Discovery Test
+Every button, filter, and action must pass the **Predictable Mental Model Test**:
+1. **Can a first-time human user predict where this option lives?**
+   - Destructive actions (e.g., Delete, Archive) must reside within danger zones, require explicit confirmation, and use recognizable danger iconography.
+   - Primary actions (e.g., Create, Save, Export) must be anchored in predictable header or footer action bars.
+   - Settings must be categorized logically: Personal Settings (`/settings`), Business Configuration (`/settings/system`), and CMS Content (`/cms`).
+2. **Predictable Feedback**:
+   - Every user click must provide immediate sensory feedback: button state change, loading spinner/task animation, and an unambiguous success or error toast.
+   - A user must never be left wondering: *"Did my click work, or is the page frozen?"*
+
+---
+
+### 🎨 2.7 Tier 7: Visual, Responsive, Theme & Scroll Animation Fidelity
+
+Visual design is the first impression and the benchmark of software excellence.
+
+#### 2.7.1 Theme Token Adherence (Zero Rogue Colors)
+1. **Strict Design Token Enforcement**:
+   - Every color applied in Tailwind classes must trace back to the curated design tokens defined in [`design-system/DESIGN_ARCHITECTURE.md`](../design-system/DESIGN_ARCHITECTURE.md) and [`design-system/FRONTEND_DESIGN_RULES.md`](../design-system/FRONTEND_DESIGN_RULES.md).
+   - **Rogue Hex Codes Forbidden**: Hardcoded arbitrary colors (e.g. `bg-[#ff0033]`, `text-[#123456]`) are strictly forbidden unless dynamically loaded from the tenant's CMS database theme record.
+2. **Dual-Theme & CMS Theme Verification**:
+   - Test every page in both **Light Mode** and **Dark Mode**.
+   - Verify that text contrast satisfies WCAG AA standards (minimum `4.5:1` contrast ratio).
+   - Verify that tenant-customized brand colors saved in `WebsiteDetailsContext` or `CmsWebsiteDetails` apply seamlessly across buttons, badges, and accents.
+
+#### 2.7.2 Typography & Font Family Verification
+- Verify that configured Google Fonts (e.g. `Outfit`, `Inter`, `Plus Jakarta Sans`) load without layout shifts (CLS).
+- Headings (`h1`, `h2`, `h3`) must use designated display font weights; body text must use crisp, legible weights.
+
+#### 2.7.3 60 FPS Micro-Animations & Scroll Parallax Audit
+1. **Fluid Motion Standards**:
+   - Button hover animations (per [`design-system/MASTER_HOVER_ANIMATION_SYSTEM.md`](../design-system/MASTER_HOVER_ANIMATION_SYSTEM.md)) must execute with hardware-accelerated transforms (`transform`, `opacity`) without causing CPU layout recalculations or dropped frames.
+   - Row deletion fabric-fold and dustbin animations (per [`design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`](../design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md)) must trigger exactly once, run smoothly, and collapse surrounding rows without stutter.
+2. **Scroll-Driven Animation Verification**:
+   - CMS section scroll animations and DAM image parallax effects must execute at 60 FPS.
+   - **Scroll API Storm Prevention**: Scroll listeners must be passive and debounced; scrolling down a page must NEVER trigger unthrottled API calls or re-renders.
+
+#### 2.7.4 Multi-Viewport Mobile & Responsive Audit
+Every page must be verified across three distinct viewport dimensions:
+1. **Desktop Viewport (`1440x900`)**: Full layout, resizable sidebar, multi-column data tables.
+2. **Tablet Viewport (`768x1024`)**: Adaptive grid layouts, collapsible toolbars.
+3. **Mobile Viewport (`390x844` - iPhone standard)**:
+   - Zero horizontal scrollbar or content clipping.
+   - Tables automatically morph into mobile card stacks per [`modules/DATA_TABLE_AND_CARDS_SYSTEM.md`](../modules/DATA_TABLE_AND_CARDS_SYSTEM.md).
+   - Public pages render the fixed bottom navigation bar; dashboard pages render the floating bottom glass pill (`Menu`) with Dual Close Controls per [`modules/MOBILE_NAVIGATION_AND_LAYOUT.md`](../modules/MOBILE_NAVIGATION_AND_LAYOUT.md).
+   - Touch targets must be at least `44x44px` with adequate padding.
+
+---
+
+## 🛠️ 3. Concrete Verification & Adversarial Test Suites
+
+### 3.1 Automated Adversarial API & Chaos Fuzzing Suite
+Below is the standard TypeScript test suite using Jest / Vitest that agents and developers can execute against any API endpoint:
+
+```typescript
+// tests/adversarial/apiChaosFuzzer.test.ts
+import { describe, it, expect } from 'vitest';
+
+interface ChaosTestCase {
+  name: string;
+  payload: any;
+  expectedStatus: number;
+  expectedErrorCode?: string;
+}
+
+const CHAOS_PAYLOADS: ChaosTestCase[] = [
+  {
+    name: 'Null payload object',
+    payload: null,
+    expectedStatus: 400,
+    expectedErrorCode: 'INVALID_PAYLOAD',
+  },
+  {
+    name: 'Array instead of expected object',
+    payload: ['invalid', 'array'],
+    expectedStatus: 422,
+    expectedErrorCode: 'VALIDATION_FAILED',
+  },
+  {
+    name: 'SQL Injection in text field',
+    payload: { title: "'; DROP TABLE programs; --", amount: 100 },
+    expectedStatus: 201, // Stored safely as inert literal string without executing
+  },
+  {
+    name: 'NoSQL Operator Injection',
+    payload: { title: { $gt: '' }, amount: 100 },
+    expectedStatus: 422,
+    expectedErrorCode: 'VALIDATION_FAILED',
+  },
+  {
+    name: 'Extreme string length (50k characters)',
+    payload: { title: 'A'.repeat(50000), amount: 100 },
+    expectedStatus: 422,
+    expectedErrorCode: 'MAX_LENGTH_EXCEEDED',
+  },
+  {
+    name: 'Negative numeric amount',
+    payload: { title: 'Valid Program', amount: -500 },
+    expectedStatus: 422,
+    expectedErrorCode: 'POSITIVE_NUMBER_REQUIRED',
+  },
+  {
+    name: 'NaN and Infinity values',
+    payload: { title: 'Valid Program', amount: NaN },
+    expectedStatus: 422,
+    expectedErrorCode: 'INVALID_NUMBER',
+  },
+  {
+    name: 'Raw HTML & Script Tag XSS payload',
+    payload: { title: '<script>alert("xss")</script>', amount: 100 },
+    expectedStatus: 201, // Sanitized or escaped on output
+  },
+];
+
+describe('Adversarial Chaos Monkey API Verification', () => {
+  CHAOS_PAYLOADS.forEach(({ name, payload, expectedStatus, expectedErrorCode }) => {
+    it(`Adversarial Test: ${name}`, async () => {
+      const response = await fetch('http://localhost:3000/api/programs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer MOCK_TEST_TOKEN',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      // Assert status code
+      expect([expectedStatus, 400, 422]).toContain(response.status);
+
+      const json = await response.json();
+      // Assert standard envelope exists
+      expect(json).toHaveProperty('success');
+      
+      if (!json.success) {
+        expect(json).toHaveProperty('error');
+        expect(json.error).toHaveProperty('message');
+        // Ensure NO raw server stack trace leaked to client
+        expect(json.error).not.toHaveProperty('stack');
+      }
+    });
+  });
+});
+```
+
+---
+
+### 3.2 Live Database Mutation & Isolation Verification Script
+```typescript
+// tests/database/mutationIsolation.test.ts
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import mongoose from 'mongoose';
+import { Program } from '@/models/Program';
+
+describe('Database Mutation & Tenant Isolation Verification', () => {
+  const companyA = new mongoose.Types.ObjectId().toString();
+  const companyB = new mongoose.Types.ObjectId().toString();
+  let programAId: string;
+
+  beforeEach(async () => {
+    // Seed initial test records
+    const progA = await Program.create({
+      title: 'Company A Original Program',
+      code: 'PROG-A-01',
+      companyId: companyA,
+      amount: 500,
+      status: 'active',
+    });
+    programAId = progA._id.toString();
+
+    await Program.create({
+      title: 'Company B Protected Program',
+      code: 'PROG-B-01',
+      companyId: companyB,
+      amount: 1000,
+      status: 'active',
+    });
+  });
+
+  afterEach(async () => {
+    await Program.deleteMany({ companyId: { $in: [companyA, companyB] } });
+  });
+
+  it('Mutates ONLY targeted fields and preserves all other document attributes', async () => {
+    const updated = await Program.findOneAndUpdate(
+      { _id: programAId, companyId: companyA },
+      { $set: { amount: 750 } },
+      { new: true }
+    );
+
+    expect(updated).not.toBeNull();
+    expect(updated?.amount).toBe(750);
+    // Verify non-targeted fields remained intact
+    expect(updated?.title).toBe('Company A Original Program');
+    expect(updated?.code).toBe('PROG-A-01');
+    expect(updated?.status).toBe('active');
+  });
+
+  it('Strictly prevents cross-tenant mutation attacks', async () => {
+    // Attempt to update Company A record using Company B credentials
+    const unauthorizedUpdate = await Program.findOneAndUpdate(
+      { _id: programAId, companyId: companyB }, // Malicious tenant mismatch
+      { $set: { amount: 99999 } },
+      { new: true }
+    );
+
+    // Must return null; record must remain untouched in database
+    expect(unauthorizedUpdate).toBeNull();
+
+    const untouched = await Program.findById(programAId);
+    expect(untouched?.amount).toBe(500); // Original value preserved
+  });
+});
+```
+
+---
+
+## 📋 4. Step-by-Step Verification Matrix for File Operations
+
+Whenever an agent or developer operates on a file, follow this exact matrix:
+
+### 4.1 When Creating a New File
+1. **Check for Existing Modules / Packages**: Verify that an existing utility or library does not already perform this task.
+2. **Context Alignment**: If creating a new page or domain feature, ensure it consumes its domain React Context (`models/` -> `context/`).
+3. **Step-by-Step Algorithmic Code Writing**: Write code line-by-line with explicit purpose.
+4. **Compile Check**: Run the configured typecheck command when the project uses TypeScript and a checker is available.
+5. **Adversarial Chaos Testing**: Fuzz the new file's exports with invalid types, nulls, and edge cases.
+6. **Responsive & Theme Test**: Verify appearance across light/dark themes and mobile/desktop viewports.
+7. **Document in Sprints**: Record test commands and outputs in `SPRINTS.md`.
+
+### 4.2 When Editing an Existing File
+1. **Downstream Dependent Search**: Run `git grep "modifiedExportName"` to identify every file importing this file.
+2. **Line-by-Line Review**: Ensure edits do not introduce redundant variables or duplicate code blocks.
+3. **Run Regression Tests**: Run existing test suites to confirm no existing functionality broke.
+4. **Adversarial Edge Case Test**: Test newly added parameters or branches with invalid types and nulls.
+5. **Verify Single Source of Truth**: Confirm that state updates properly propagate to Context and reactive UI.
+6. **Compile Check**: Run the configured production build command, if one exists.
+
+### 4.3 When Deleting a File
+1. **Complete Codebase Grep**:
+   ```bash
+   git grep -n "deletedFileName"
+   git grep -n "deletedExportName"
+   ```
+2. **Clean All Imports**: Remove or refactor every import statement referencing the deleted file across all files.
+3. **Clean Route Registries**: Remove route from Next.js navigation menus, sidebar configs, and middleware route matchers.
+4. **Compile Check**: Run the configured typecheck and build commands, when applicable, to check for dangling references or build breaks.
+
+---
+
+## 📝 5. Standardized Verification Evidence Log Template
+
+Whenever marking a task as `[x]` in `SPRINTS.md` or opening a pull request, paste and complete this evidence block:
+
+```markdown
+- [x] Task Name: [e.g. Implement Granular Role Permission Matrix Studio]
+  - **Tier 1 (Static Compilation)**:
+    - Command: `npx tsc --noEmit` -> Passed with 0 errors (Exit code: 0).
+    - Command: `npm run build` -> Clean production build completed.
+  - **Tier 2 (Adversarial "Brainless User" Testing)**:
+    - Injected null and malformed payloads into `POST /api/roles`: Gracefully rejected with `422 Unprocessable Entity` and user-friendly toast: *"Role name is required"*.
+    - Tested rapid 10x multi-click on "Save Permissions" button: Debounced successfully; exactly 1 API call dispatched.
+    - Zero white-screens or unhandled React errors observed.
+  - **Tier 3 (API Contracts & DB Mutation Fidelity)**:
+    - Verified response envelope `{ success: true, data: { ... } }`.
+    - Confirmed MongoDB collection `roles` mutated only `permissions` field on targeted role; all other tenant roles untouched.
+    - UI table updated reactively in real time without page reload.
+    - Verified network tab: exactly 1 fetch executed on load, latency: 48ms.
+  - **Tier 4 (Single Source of Truth & Context Law)**:
+    - Verified `RoleContext.tsx` consumed via `useRole()`; zero direct component `fetch()` calls.
+    - Zero zombie context methods.
+  - **Tier 5 (Line-by-Line Audit & Dead Code Purge)**:
+    - Code reviewed step-by-step; zero duplicate helper functions.
+    - Reused existing `clsx` and `lucide-react` libraries; zero dead imports.
+    - Checked downstream dependents of `Role`: all 4 referencing files updated cleanly.
+  - **Tier 6 (UI Copywriting & UX Predictability)**:
+    - Zero technical terms on UI; buttons labeled *"Save Role"*, *"Delete Role"*, *"Manage Permissions"*.
+    - Human mental model test passed: Permissions studio intuitively located in Settings > Roles.
+  - **Tier 7 (Visual, Responsive, Theme & Animations)**:
+    - Tested in Light Mode and Dark Mode: zero rogue hex codes, WCAG contrast verified.
+    - Mobile Viewport (`390x844`): Cards rendered smoothly, zero horizontal scroll, touch targets >= 44px.
+    - Button animations and dustbin delete animated at 60 FPS without jank.
+```
+
+
+---
+
+## Source: engines/PROJECT_INTELLIGENCE.md
+
+# Project Intelligence Engine
+
+## Purpose
+Build a fact-based model of the target repository before proposing architecture or editing code. This engine prevents an agent from applying a remembered stack template to a project that uses a different architecture.
+
+## Discovery sequence
+
+### 1. Establish the workspace
+- Confirm the repository root, active branch, working-tree changes and monorepo/workspace boundaries.
+- Inventory files while excluding generated/vendor directories such as node_modules, .git, build output and caches.
+- Identify all package manifests, lockfiles, runtime versions, environment examples, deployment files and CI workflows.
+- Never overwrite or discard existing user changes.
+
+### 2. Detect the actual stack
+Record evidence for:
+- Framework and version.
+- Language and compiler.
+- Package manager and lockfile.
+- Frontend entry points and route conventions.
+- Backend/API entry points and service boundaries.
+- Database, ORM/ODM and migration strategy.
+- State management, data fetching and caching.
+- Styling system, tokens, component library and icon library.
+- Animation/runtime libraries.
+- Authentication, sessions, RBAC and tenant boundaries.
+- Test runners, build, typecheck, lint and browser tooling.
+
+A dependency in package.json is evidence of installation, not proof that every feature uses it. Trace actual imports and usage before deciding.
+
+### 3. Trace the requested feature
+Follow the feature across layers:
+1. Route/page entry point.
+2. Shared layout and components.
+3. State/query hooks or stores.
+4. API client and server handler.
+5. Service/domain logic.
+6. Models/schema and persistence.
+7. Permissions, validation and tenant isolation.
+8. Tests, fixtures, jobs, notifications and external integrations.
+
+Use repository search and import/reference tracing. Search for existing functionality before creating duplicates.
+
+### 4. Build an evidence-backed architecture map
+For each relevant layer record:
+- File/path.
+- Responsibility.
+- Inputs and outputs.
+- Dependencies and consumers.
+- Data ownership and security boundary.
+- Existing tests and observed behavior.
+- Confidence: verified, inferred, or unknown.
+
+Do not present inference as fact. If a file could not be read or output was truncated, record that limitation.
+
+### 5. Identify risks before implementation
+Check:
+- Shared components used by unrelated pages.
+- API contract consumers.
+- Database migration/backfill implications.
+- Auth and authorization checks on both server and client.
+- Multi-tenant scoping and data leakage.
+- Async race conditions, retries and idempotency.
+- Loading, empty, error and offline states.
+- Accessibility, keyboard behavior and reduced motion.
+- Mobile layout, long content and slow network behavior.
+
+## Required discovery artifact
+Create or update a task-scoped architecture note only when the work warrants it. It should contain:
+- Detected stack and evidence.
+- Relevant route/component/API/data-flow map.
+- Existing conventions to preserve.
+- Related modules/documentation loaded.
+- Unknowns and assumptions.
+- Files in the implementation dependency graph.
+
+## Stop conditions
+Ask the user only when an unknown materially changes architecture, security, irreversible data operations, cost or visible behavior. Otherwise choose the least disruptive evidence-based default and document it.
+
+
+---
+
+## Source: engines/INTENT_AND_SCOPE.md
+
+# Intent and Scope Engine
+
+## Convert requests into observable outcomes
+Do not plan from keywords alone. Rewrite the request as a concise outcome statement and list observable acceptance criteria.
+
+For every acceptance criterion, specify:
+- User action or system trigger.
+- Expected visible result.
+- Expected data/API side effect.
+- Permission and validation rules.
+- Loading, empty, error and cancellation behavior.
+- Responsive/accessibility requirements when relevant.
+- How the result will be verified.
+
+## Dependency-aware scope classification
+Classify each candidate change:
+
+| Class | Meaning | Default action |
+|---|---|---|
+| Required | Directly requested outcome | Implement |
+| Dependency-required | Needed for requested behavior to work safely | Implement and explain |
+| Optional improvement | Useful but not required | Recommend separately |
+| Unrelated | Does not support the requested outcome | Do not implement |
+
+Inspect broadly enough to discover dependencies; do not treat broad inspection as permission for broad rewrites.
+
+## Scope boundary questions
+Before implementation, answer:
+1. Which exact routes, screens, controls or workflows change?
+2. Which shared components or contracts are affected?
+3. What data, permission or external integration changes?
+4. What existing behavior must remain unchanged?
+5. What is explicitly out of scope?
+6. What are the acceptance tests and rollback concerns?
+
+## Existing-project rules
+- Preserve established framework, naming, folder layout, styling, state and API patterns.
+- Do not migrate architecture solely to match a documentation example.
+- Do not replace a working design system with a generic redesign unless requested.
+- Do not introduce new dependencies when an existing supported primitive is sufficient.
+- Keep unrelated files untouched and explain any unavoidable cross-cutting change.
+
+## Greenfield rules
+For a new project, derive architecture from product requirements, scale, team skill, deployment target, data sensitivity, budget and maintenance needs. Present material trade-offs before locking choices.
+
+## Plan format
+1. Outcome.
+2. Acceptance criteria.
+3. Detected project facts.
+4. Required/dependency-required work.
+5. Explicit exclusions.
+6. Files and contracts affected.
+7. Phases and dependency order.
+8. Verification plan.
+9. Risks, migration and rollback.
+
+
+---
+
+## Source: engines/INDEPENDENT_REVIEWER.md
+
+# Independent Implementation Reviewer
+
+## Role
+Review the implementation against the user's outcomes and repository evidence. Do not merely approve code because it follows the author's plan or because the diff is large.
+
+## Review sequence
+1. Re-read the original request and acceptance criteria.
+2. Inspect the complete diff against the baseline.
+3. Check that every changed file is necessary and every requested outcome is covered.
+4. Trace affected imports, routes, API contracts, models, permissions and data flows.
+5. Look for regressions in unrelated consumers of shared code.
+6. Check validation, error handling, async race conditions, idempotency and retries.
+7. Check security boundaries: server-side authorization, tenant scoping, input validation, secrets and unsafe logging.
+8. Check UX states: loading, empty, error, success, offline, disabled and permission denied.
+9. Check accessibility, keyboard focus, semantics, reduced motion and responsive layouts.
+10. Confirm the verification evidence corresponds to the current diff/commit.
+
+## Severity
+- BLOCKER: security/data loss, broken core flow, build failure, destructive migration without safety.
+- HIGH: requested behavior incomplete, API contract broken, serious regression, authorization gap.
+- MEDIUM: important edge case, accessibility issue, responsive breakage, maintainability risk.
+- LOW: cosmetic inconsistency or non-blocking cleanup.
+
+## Review output
+For each finding include severity, file/line, reproduction or evidence, impact and concrete fix.
+Do not invent findings. If no issue is found, state what was inspected and what was not verified.
+
+## Completion decision
+- ACCEPT only when all required acceptance criteria have evidence and no unresolved blocker/high issue remains.
+- REQUEST CHANGES when a required outcome fails or an important risk is unresolved.
+- NOT VERIFIED when browser, runtime, integration or environment checks were unavailable.
+A reviewer cannot convert missing evidence into PASS.
+
+
+---
+
+## Source: quality/ANIMATION_QA.md
+
+# Animation and Motion Quality Assurance
+
+## Core principle
+A visually smooth animation is not defined by the number of CSS keyframes. Browsers interpolate between keyframes. Quality is defined by whether the intended choreography, state transitions, timing, interaction and final layout are correct.
+
+## Motion specification template
+For each meaningful animation document:
+- Name and purpose.
+- Trigger and initial state.
+- Origin/anchor and coordinate system.
+- Semantic stages in order.
+- Duration per stage and total duration.
+- Easing/spring parameters and overlap.
+- Visual properties changed (transform, opacity, clip-path, filter, layout).
+- Final visual state and data/layout synchronization.
+- Interruption, cancellation, repeated input and failure behavior.
+- Reduced-motion alternative.
+- Responsive/viewport constraints.
+
+## Multi-stage choreography checklist
+Example for a delete-to-trash animation:
+1. User activates delete; confirmation UI appears from the correct origin.
+2. Confirm action locks duplicate destructive submissions without freezing unrelated controls.
+3. Item is snapshotted from its real bounding box.
+4. Trash/bin enters from the correct screen edge.
+5. Lid opens and reaches a stable open state.
+6. Item moves/deforms toward the aperture with continuous interpolation.
+7. Item is visually consumed; data mutation completes or failure is handled.
+8. Lid closes; bin exits; remaining layout settles.
+9. Toast and final data state agree with the actual server result.
+
+Do not copy this choreography to unrelated actions. Each animation must represent its actual task.
+
+## Implementation quality
+- Prefer transform/opacity for high-frequency motion; measure expensive filter/blur/layout animation.
+- Use stable layout IDs or measured geometry for shared-element transitions.
+- Keep portals, stacking contexts, clipping and scroll containers in mind.
+- Avoid animation state being the source of truth for persisted data.
+- Ensure API success/failure, cancellation and rapid repeat clicks resolve to a consistent final state.
+- Avoid perpetual animation for a completed or failed task.
+- Respect prefers-reduced-motion and provide a clear non-motion state.
+
+## Browser verification
+When browser tooling exists:
+- Test the exact user interaction on the real rendered page.
+- Capture initial, intermediate and final states.
+- Verify the complete sequence and timing, not just CSS declarations.
+- Check z-index, clipping, scroll, viewport resize, touch and keyboard interaction.
+- Test reduced-motion mode.
+- Test slow API, API failure, double-click and navigation during animation.
+- Inspect console/runtime errors and ensure data state matches the visual result.
+
+If browser tooling is unavailable, report browser motion QA as NOT VERIFIED. Source review alone is not a visual pass.
+
+
+---
+
+## Source: quality/ACCEPTANCE_CRITERIA.md
+
+# Acceptance Criteria and Evidence Ledger
+
+## Task acceptance template
+
+| ID | Requirement | Expected evidence | Status | Evidence reference |
+|---|---|---|---|---|
+| AC-01 | User-visible outcome | Repro steps or browser capture | NOT RUN | |
+| AC-02 | Data/API behavior | Test output or request/response evidence | NOT RUN | |
+| AC-03 | Permissions/security | Authorized and unauthorized test results | NOT RUN | |
+| AC-04 | Responsive behavior | Tested viewport sizes | NOT RUN | |
+| AC-05 | Regression safety | Relevant existing test suite | NOT RUN | |
+
+Remove rows that are genuinely not applicable and explain why. Add task-specific criteria rather than blindly reusing this example.
+
+## Evidence status vocabulary
+- PASS: executed and successful.
+- FAIL: executed and unsuccessful.
+- NOT CONFIGURED: no test or command exists.
+- NOT RUN: available but not executed.
+- BLOCKED: attempted but environment/tooling prevented execution.
+- NOT APPLICABLE: does not apply to the detected stack or task.
+
+## Evidence requirements
+Every PASS must identify:
+- Exact command or tool.
+- Commit/worktree state tested.
+- Exit code or observed result.
+- Relevant output, test name or browser state.
+
+A green static scan does not prove runtime behavior. A passing unit test does not prove browser layout. A successful build does not prove authorization. Choose evidence that matches the requirement.
+
+## Completion gate
+The task is accepted only when:
+1. Every required acceptance criterion is PASS.
+2. Required dependency criteria are PASS.
+3. No unresolved blocker/high-severity review issue remains.
+4. Relevant regression checks have run.
+5. Unverified checks are disclosed and do not affect a claim of full completion.
+6. Final report lists changed files, evidence, limitations and operational steps.
+
+No percentage score can replace this gate.
+
+
+---
+
+
+## Current Planning and Retrofit Documents
+
+---
+
+## Source: MASTER_SUMMONING_PROMPT.md
+
+# Website Builder Engine — Master Summoning Prompt
+
+Use this prompt when asking a coding agent to work on a website, web application, CMS, SaaS product or existing repository.
+
+## Highest-priority instruction
+Read [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md) first. It overrides conflicting historical examples in this repository. Then load [Project Intelligence](./engines/PROJECT_INTELLIGENCE.md), [Intent and Scope](./engines/INTENT_AND_SCOPE.md), and the task-relevant modules.
+
+## Copy-ready agent instruction
+
+You are the implementation agent responsible for delivering the requested outcome in the existing repository.
+
+1. **Understand the request**
+   - Translate the request into observable user outcomes and acceptance criteria.
+   - Identify required, dependency-required, optional and unrelated work.
+   - Do not expand the task into an unrelated redesign or rewrite.
+
+2. **Inspect the real project**
+   - Inspect git status and preserve uncommitted user changes.
+   - Detect the actual framework, language, package manager, runtime, routes, components, APIs, data models, auth/RBAC, design system, tests and CI from repository evidence.
+   - Trace the full dependency path of the requested feature before editing.
+   - Do not assume Next.js, MongoDB, Tailwind, React Context, Framer Motion, a root /app folder, or any specific design pattern.
+
+3. **Plan the connected work**
+   - List affected files, interfaces, data contracts, dependencies, migrations and risks.
+   - Include loading, empty, error, success, permission-denied and cancellation states where relevant.
+   - Define exact verification commands and browser checks before implementation.
+
+4. **Implement safely**
+   - Preserve existing conventions and working behavior.
+   - Implement the complete requested flow across UI, state, API, persistence, permissions and integrations when required.
+   - Avoid duplicate utilities, unnecessary dependencies, placeholders, fake success states and dead controls.
+   - Back up or migrate persisted data safely; never overwrite user changes.
+
+5. **Design and motion**
+   - Follow the product's existing design language and accessibility needs.
+   - Use the design-system documents as optional patterns, not universal mandates.
+   - For multi-stage animation, implement the full semantic choreography and test failure, interruption, repeated input and reduced motion.
+
+6. **Review and verify**
+   - Have an independent review of the complete diff.
+   - Execute configured project-native tests, build, typecheck and lint commands.
+   - Verify actual browser behavior when browser tooling is available.
+   - A test file existing is not a passing test. Missing checks are NOT CONFIGURED / NOT VERIFIED, never PASS.
+
+7. **Report**
+   - List requested outcomes delivered, files changed, exact test commands and evidence.
+   - Disclose pre-existing failures, blocked checks, unverified behavior and migration/deployment steps.
+   - Never use an arbitrary compliance percentage as proof of completion.
+
+## Useful documentation modules
+
+Load only the modules relevant to the accepted scope:
+- Existing-project work: [Retrofit Engine](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md)
+- Planning: [Plan Builder](./PLAN_BUILDER.md)
+- Discovery: [Discovery Questionnaire](./DISCOVERY_QUESTIONNAIRE.md)
+- Verification: [Testing & Verification](./rules/TESTING_AND_VERIFICATION.md)
+- Motion: [Animation QA](./quality/ANIMATION_QA.md)
+- Acceptance: [Evidence Ledger](./quality/ACCEPTANCE_CRITERIA.md)
+- Security: [RBAC Security Rules](./rules/RBAC_SECURITY_RULES.md)
+- Backend: [Backend Connection Rules](./rules/BACKEND_CONNECTION_RULES.md)
+
+## Final quality rule
+Deliver the smallest complete, safe and verifiable implementation that satisfies the user's actual request. Inspect broadly, implement within scope, verify honestly.
+
+
+---
+
+## Source: PLAN_BUILDER.md
+
+# Plan Builder Specification & Generation Engine
+
+> **Applicability:** This is a planning template, not a mandatory architecture. Read [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md) first. The Next.js + MongoDB + Tailwind structure below is an example profile only. For an existing project, preserve its actual stack; for a greenfield project, choose each technology from requirements and trade-offs. Mark irrelevant modules NOT APPLICABLE instead of enabling everything.
+
+> **FOR THE AGENT**: When conducting project onboarding or starting a new build, use this guide to compile the user's interview responses into a concrete, executable project directory (`/.project/`).
+
+---
+
+## 🏗️ The Project Blueprint Directory Structure
+
+Whenever an agent initializes a project, it must create a dedicated project folder at the root:
+
+```
+<project_root>/
+├── FILE-MAP.md                        # Living verified navigation map & functional index
+└── .project/                          # Single-project app (OR /projects/<name>/ in a monorepo)
+    ├── PLAN.md                        # Master scope, stack, requirements, and module selection
+    ├── ARCHITECTURE.md                # System design, data models, API endpoints, component tree
+    ├── RULES.md                       # Tailored engineering, security, and styling constraints
+    └── SPRINTS.md                     # Step-by-step phased execution plan with test checkboxes
+```
+
+---
+
+## 📄 File 1: `/.project/PLAN.md` Template
+
+The agent must generate `PLAN.md` using the following standardized layout:
+
+```markdown
+# Project Plan: [Project Name]
+
+## 1. Executive Summary & Objective
+- **Description**: [Concise 2-3 sentence summary of the application]
+- **Target Audience / End Users**: [Customers, Internal Staff, B2B Clients, Enterprise Admins]
+- **Deployment Target**: [Vercel, AWS, VPS, Docker, Serverless]
+
+## 2. Technical Stack Matrix
+- **Scope**: [Fullstack | Frontend Only | Backend Only | Standalone APIs]
+- **Frontend Framework**: [Next.js App Router | Vite + React | Other]
+- **Styling Engine**: Project-native styling system (Tailwind is one option)
+- **Typography Choice**: [Display: Neofolio / Nexo Kora / Bierika / OSIRIS | Body: Plus Jakarta Sans / Outfit]
+- **Animation Stack**: [Framer Motion + GSAP ScrollTrigger | Three.js (Optional with User Permission)]
+- **Icon Ecosystem**: [Lucide React + Animated Icons (Lordicon, Icons8, LottieFlow, LottieFiles)]
+- **UI Architecture**: [Floating Label Inputs (No Placeholders) | Resizable dvh Sidebar | Public Mobile Bottom Bar with "More" Drawer | Dashboard Floating "Menu"/"Close" Pill | Framer Toasts]
+- **Backend Framework**: [FastAPI (ASGI) | Next.js Serverless Route Handlers | Node Express]
+- **Database & Storage**: Database selected from domain, hosting, scale and team requirements
+- **ODM / Query Driver**: **Mongoose (Next.js/Node) | Motor / Beanie (FastAPI Python)**
+- **Authentication**: [NextAuth/Auth.js | Supabase Auth | Custom JWT + Custom AI Face Models]
+- **State Management**: [Zustand | React Query (TanStack) | Context API]
+- **Capacity & Scaling Tier**: [Tier 1 (<10k Users, <100 RPS, Lightweight In-Memory) | Tier 2 (10k–100k Users, 100–1,000 RPS, ALB + Redis + BullMQ) | Tier 3 (100k–1M+ Users, 1,000–10,000+ RPS, Multi-AZ ALB + L1/L2 Pub/Sub Cache + Worker Pool)]
+- **Worker Queue & Failover**: [In-Process (Tier 1) | BullMQ Redis 30s Heartbeat Lease with Auto-Failover (Tier 2 & 3)]
+- **Circuit Breaker Engine**: [In-Memory | Distributed Redis Circuit Breaker for Payments & External Gateways]
+
+## 3. Active Feature Modules
+| Module | Status | Configuration / Notes |
+| :--- | :--- | :--- |
+| **RBAC System** | [Enabled/Disabled] | Roles: Developer, Owner, Admin, Staff, Customer |
+| **Multi-Tenancy** | [Enabled/Disabled] | [Single-tenant | Multi-company (Subdomains / Custom Domains)] |
+| **Order Slide Workflow** | [Enabled/Disabled] | Table View + 1-by-1 Slide Carousel with Fast Actions |
+| **CMS Engine** | [Enabled/Disabled] | [Integrated in Dashboard (/dashboard/cms) | Standalone Portal (/cms)] + Dual WYSIWYG/Monaco Sync, Variable Registry, Visual Workflow Studio, 30 Templates, Section SDK, FFmpeg Scroll Video, Dynamic PDF Canvas Studio, Email Builder, WhatsApp Studio, Central Assets DAM (Auto-Ingestion & Video Previewer), Website Details Cascading, Auth Pages Theme Customizer & Multi-Tenant CMS Delegation |
+| **Keyboard Shortcuts** | [Enabled/Disabled] | [Basic (Cmd+K, Esc) | Master (Vim-style, Hotkeys)] |
+| **Facelock / Biometrics** | [Enabled/Disabled] | Custom AI Face Models (128-d Vector Embeddings, No Passkeys) |
+| **Automations & SMTP** | [Enabled/Disabled] | SMTP emails + WhatsApp Business alerts |
+| **Settings System** | Conditional | Dual-tier: Normal Settings + System Settings (SMTP, WA, Multi-Storage, Multi-Key AI) |
+| **Route Proxy & Protection** | Conditional (when auth/protected routes exist) | Edge Middleware (`middleware.ts`), Interception Toasts & Login/Logout Cache Invalidation |
+| **Dynamic Feature Flags** | [Enabled/Disabled] | Developer/Owner toggle matrix with strict Zero-Leak UI elimination |
+| **Developer Payment Safeguard** | [Enabled/Disabled] | Grace period up to 8th of month, Owner-only banner |
+| **Custom 404 Experience** | Optional product choice | Standalone `app/not-found.tsx` with playable HTML5 Canvas arcade mini-game, high score counter & return CTAs |
+| **Models & State/Data Layer** | Conditional | Dedicated root `/models` (1 file per MongoDB model) + root `/context` (1 context per model + 3 global), context-first API encapsulation (Zero direct component API calls), in-place state mutation & single-fetch guarantee |
+| **Backend Scaling & Resilience Engine** | When scale/reliability requirements justify it | 3-Tier Progressive Capacity Matrix, BullMQ 30s Heartbeat Lease Worker Failover, Two-Tier L1/L2 Cache with Redis Pub/Sub Invalidation, Payment Circuit Breaker & Safe Add/Remove Adapter Protocol (`modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`) |
+| **Advanced System Designs & Hyper-Scale Patterns** | [Enabled/Disabled] | 20M Likes Buffer, Hybrid Push/Pull Feeds, Millions-Scale Reminders, Uber H3 Hexagonal Rides with Surge Pricing, CQRS Search, and 20 Production System Designs (`modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md`) |
+| **Payment Idempotency & Reconciliation Engine** | [Enabled/Disabled] | Order-bound idempotency keys, Redis Mutex locking, Inquire-Before-Charge (IBC) timeout recovery, dual webhooks + BullMQ poller reconciliation (`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`) |
+| **Multi-Storage Polymorphic Media Engine** | [Enabled/Disabled] | Heterogeneous storage (Local, Vercel Blob, Supabase, Firebase, S3/R2, GridFS), presigned uploads, 2MB chunked GridFS streaming for Vercel Free plan, polymorphic `<UnifiedMedia />` resolver (`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`) |
+| **Low-Bandwidth & Performance** | When required by measured constraints | 5 Pillars of Low-Bandwidth Speed: Adaptive WebP/AVIF images with BlurHash LQIP, React Server Component streaming (<50ms TTFB), MongoDB projection pruning, IndexedDB offline-first SWR cache, and 80KB JS budget (`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`) |
+| **Optimistic Rapid-Click Batching Engine** | For high-frequency interactions where it fits | 0ms local optimistic UI updates with 300ms settling debounce & AbortController cancellation for pagination, cart quantity steppers, slide carousels, like bursts, and tri-state sorting (`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`) |
+| **Existing Project Retrofit Engine** | [Enabled/Disabled] | scoped, dependency-aware retrofit with independent review and evidence-based verification (`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`) |
+| **Screen-Level Genie Trash Bin Deletion** | [Enabled/Disabled] | Kinetic right-edge bin entrance, screen portal elevation via getBoundingClientRect, 3D vacuum siphon drop, and layout glide re-flow (`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`) |
+
+## 4. Acceptance Criteria & Success Metrics
+- [ ] Users can authenticate via configured auth methods.
+- [ ] Auth pages (`/login`, `/signup`, `/forgot-password`, `/reset-password`) feature ZERO demo credentials or quick-login buttons, and implement full bidirectional navigation ergonomics (Login ⇄ Signup ⇄ Forgot Password).
+- [ ] Strict role-based permissions prevent unauthorized page visits and button actions.
+- [ ] All forms feature robust validation with clear, responsive error toasts.
+- [ ] Zero layout shifts, high aesthetic standard (curated typography, dark mode, smooth transitions).
+- [ ] Every required acceptance criterion has fresh evidence; unconfigured checks are explicitly marked NOT CONFIGURED.
+- [ ] Production build passes with zero lint, type, or runtime errors.
+```
+
+---
+
+## 🏛️ File 2: `/.project/ARCHITECTURE.md` Template
+
+The agent must define the technical blueprint and data flows:
+
+```markdown
+# Architecture Specification: [Project Name]
+
+## 1. System Topology & Data Flow
+\`\`\`mermaid
+graph TD
+    Client[Web Browser / Client]
+    Client -->|HTTPS / WSS| Frontend[Frontend (Next.js / React)]
+    Frontend -->|REST / Typed API| Backend[Backend API (FastAPI / Serverless)]
+    Backend -->|Auth Verification| AuthMiddleware[RBAC & Auth Middleware]
+    AuthMiddleware -->|ODM / Queries| DB[(Database / MongoDB)]
+    Backend -->|Webhooks / Notifications| External[WhatsApp / SMTP Services]
+\`\`\`
+
+## 2. Example Directory & Component Structure (Next.js Profile Only)
+```
+<project_root>/
+├── app/                               # Next.js App Router (Root-level, NO src/ wrapper)
+│   ├── (auth)/                        # Grouped auth routes (login, register, facelock)
+│   ├── (dashboard)/                   # Protected dashboard routes (orders, cms, settings)
+│   ├── (public)/                      # Public marketing / storefront routes
+│   ├── api/                           # Serverless route handlers (REST endpoints, webhooks)
+│   │   ├── auth/                      # Authentication endpoints
+│   │   ├── payments/                  # Payment idempotency & webhook handlers
+│   │   ├── media/                     # Streaming cached media (/api/media/[id]) & chunked upload
+│   │   └── [resource]/                # Domain resource endpoints
+│   ├── favicon.ico                    # Favicon
+│   ├── globals.css                    # Tailwind CSS directives & theme variables
+│   ├── layout.tsx                     # Root HTML, Fonts, and Master Provider tree
+│   ├── not-found.tsx                  # Standalone 404 Canvas Mini-Game page
+│   └── page.tsx                       # Public Home Landing Page
+├── components/                        # Reusable React UI components
+│   ├── ui/                            # Atomic primitives (Button, AppleGenieModal, FloatingInput, Badge, Toast)
+│   ├── layout/                        # Sidebar, Navbar, PublicMobileBottomBar, DashboardMenuPill
+│   ├── media/                         # UnifiedMedia, AdaptiveImage, VideoPlayer
+│   └── modules/                       # Subsystem UI (OrderSlideView, CMSBuilder, FacelockScanner)
+├── context/                           # Root domain state contexts (1 per model + Auth, Theme, Settings)
+├── models/                            # Root MongoDB / Mongoose models (1 file per collection: User.ts, Order.ts, MediaAsset.ts)
+├── hooks/                             # Custom React hooks (useAuth, useNetworkQuality, useResilientPayment, useMultiStorageUpload)
+├── lib/                               # Server utilities, DB connection, storage adapters, payment locks
+│   ├── db/                            # MongoDB connection pool (dbConnect.ts)
+│   ├── storage/                       # Storage adapters (Supabase, Vercel Blob, GridFS, S3)
+│   ├── payments/                      # Payment adapters & mutex locks (paymentLock.ts, jazzCashAdapter.ts)
+│   └── utils/                         # Pure utility functions (formatting, CN helper)
+├── public/                            # Static public assets (SVGs, brand logos, favicons suite, manifest)
+├── styles/                            # Design tokens, keyframe animations, font definitions
+├── rules/                             # Project-specific rules (generated from framework)
+├── FILE-MAP.md                        # Living verified repository navigation map
+├── .env.example                       # Documented environment variables template
+├── next.config.ts                     # Next.js configuration (with edge image domains)
+├── tailwind.config.ts                 # Tailwind configuration (dark mode, custom fonts, plugins)
+└── tsconfig.json                      # Strict TypeScript configuration with root alias paths ("@/*": ["./*"])
+```
+
+## 3. Optional Database Schema Blueprint (MongoDB / NoSQL Example)
+Define core document collections (users, companies/tenants, roles, orders, cms_posts, audit_logs).
+Include BSON ObjectIds, tenant scoping (`companyId`), compound indexes, and validation rules.
+
+## 4. API Endpoints Contract
+List all endpoints with HTTP Method, Path, Required Role, and Payload summary.
+Example:
+- `POST /api/v1/auth/login` (Public)
+- `GET /api/v1/orders` (Auth: Staff, Admin, Owner)
+- `PATCH /api/v1/orders/:id/status` (Auth: Action permission `orders:edit`)
+- `DELETE /api/v1/orders/:id` (Auth: Action permission `orders:delete` - Owner/Admin only)
+```
+
+---
+
+## 🛡️ File 3: `/.project/RULES.md` Template
+
+Compile project-specific rules selected from `design-system/` (visual design) and `rules/` (engineering/security):
+1. **Design Rules**: Palette tokens, CSS variables, dark/light contrast rules, responsive breakpoints.
+2. **Backend & API Connection Rules**: API base URLs, typed error responses, CORS whitelists, connection timeouts.
+3. **RBAC Guardrails**: Hierarchy tree, protected roles (Owner cannot be degraded; Developer cannot tamper business data).
+4. **Developer Payment Safeguard Rules**: Logic for `{ paymentClear: boolean }`, 8th-day grace period, and Owner sticky banner.
+
+---
+
+---
+
+## 🏃 File 4: `/.project/SPRINTS.md` Template
+
+The agent must structure the implementation plan following the **6-Phase Non-Breaking Phased Architecture** defined in [`rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`](rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md).
+
+> 🛡️ **THE OPEN-CLOSED PHASED BUILD LAW**:  
+> Every subsequent phase must build upon previous phases without breaking them. Existing working code is enhanced, never dismantled. All major new features and subsystems MUST reside in dedicated, newly created files that integrate cleanly through established interfaces.
+
+```markdown
+# Implementation Sprints: [Project Name]
+
+- [ ] **Phase 1: Foundation & Identity Core (Zero-Debt Skeleton)**
+  - [ ] Initialize the selected framework/runtime and its native type/config setup.
+  - [ ] Configure database connection pool and environment variables template (`.env.example`)
+  - [ ] Scaffold root `/models` and root `/context` directory structure
+  - [ ] Implement minimal robust Auth: User model, password hashing (bcrypt), JWT session cookies, and login/signup handlers with strict Zero-Demo credentials policy and full inter-auth navigation ergonomics
+  - [ ] Mount root navigation shells (Topbar and Sidebar skeleton)
+  - [ ] Verification Gate: User can signup, login, view empty authenticated dashboard, and logout with zero warnings
+
+- [ ] **Phase 2: Core Domain Purpose & Business Workflows (Functional Minimal Core)**
+  - [ ] Define domain models and tenant scoping only when the selected database/product requires them.
+  - [ ] Implement corresponding domain React Contexts in `context/` encapsulating 100% of API calls
+  - [ ] Implement primary REST/Serverless CRUD API routes with strict validation (`POST`, `GET`, `PATCH`, `DELETE`)
+  - [ ] Build functional master data tables and input forms (functional end-to-end before heavy styling)
+  - [ ] Verification Gate: Primary business workflow executes with complete database mutation fidelity
+
+- [ ] **Phase 3: Visual Excellence, Design System & Ergonomics**
+  - [ ] Implement the selected styling system and design tokens per [`design-system/01_CSS_PROPERTIES_REFERENCE.md`](design-system/01_CSS_PROPERTIES_REFERENCE.md)
+  - [ ] Apply visual effects (Glassmorphism, Frosted Glass, Border Beams, Ambient Mesh) per [`design-system/02_VISUAL_EFFECTS_CATALOGUE.md`](design-system/02_VISUAL_EFFECTS_CATALOGUE.md)
+  - [ ] Scaffold production UI components (Floating Labels, Gated Action Buttons, Feedback Overlays) per [`design-system/03_UI_COMPONENTS_LIBRARY.md`](design-system/03_UI_COMPONENTS_LIBRARY.md) & [`design-system/09_IMPLEMENTATION_RECIPES.md`](design-system/09_IMPLEMENTATION_RECIPES.md)
+  - [ ] Implement card layouts and stacked decks (Fan-Out, 3D Tilt, Bento Grids) per [`design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md`](design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md)
+  - [ ] Configure keyframes, transitions, and scroll animations per [`design-system/05_ANIMATIONS_CATALOGUE.md`](design-system/05_ANIMATIONS_CATALOGUE.md)
+  - [ ] Structure full page sections per [`design-system/06_WEBSITE_SECTIONS_LIBRARY.md`](design-system/06_WEBSITE_SECTIONS_LIBRARY.md) and industry archetypes per [`design-system/07_WEBSITE_DESIGN_PATTERNS.md`](design-system/07_WEBSITE_DESIGN_PATTERNS.md)
+  - [ ] Build resizable `h-dvh` Sidebar, mobile bottom navigation bar with drawer, and dashboard floating glass menu pill
+  - [ ] Enforce mobile responsive standard: zero horizontal overflow (`overflow-x: hidden`) and minimum `44x44px` touch targets
+  - [ ] Verification Gate: Visual review passes on Desktop (`1440px`), Tablet (`768px`), and Mobile (`390px`)
+
+- [ ] **Phase 4: Advanced Subsystems Expansion (Modular Plug-ins)**
+  - *(Note: All subsystems built in dedicated new files; zero modification to core domain tables)*
+  - [ ] Subsystem A: Omni-Chat & Socket.IO (`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`) + Lightweight Concurrency (`modules/CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md`)
+  - [ ] Subsystem B: Autonomous AI Copilot with Voice Waveforms & Confirmation Gates (`modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md`)
+  - [ ] Subsystem C: Next-Gen CMS Engine & 2D Vector Canvas with Knife Tool (`modules/CMS_ENGINE.md`)
+  - [ ] Subsystem D: Public Enquiries & Leads Triage with Honeypot Defense (`modules/ENQUIRIES_AND_LEADS_SYSTEM.md`)
+  - [ ] Subsystem E: Newsletter Canvas Studio & Blog Engine with Dynamic CMS Loop (`modules/NEWSLETTER_AND_BLOGS_SYSTEM.md`)
+  - [ ] Subsystem F: Automations, SMTP & WhatsApp Dispatches (`modules/AUTOMATIONS_AND_NOTIFICATIONS.md`)
+  - [ ] Subsystem G: Keyboard Shortcuts Engine (`modules/SHORTCUT_KEYS_SYSTEM.md`)
+  - [ ] Subsystem H: Three.js 3D Model Architecture, Parts Inspection & Anatomy Engine (`design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`)
+  - [ ] Subsystem I: 24/7 Autonomous AI Lead Responder, Auto-Guide & Booking/Order Engine (`modules/AUTONOMOUS_AI_LEAD_RESPONDER_AND_BOOKING_SYSTEM.md`)
+  - [ ] Verification Gate: Each modular subsystem functions smoothly and interacts strictly via context hooks
+
+- [ ] **Phase 5: Sovereign Security, Biometrics & Hardening**
+  - [ ] Enforce granular Role-Based Access Control (`<resource>:<action>`) across UI buttons and API endpoints
+  - [ ] Implement custom AI Face Recognition biometrics (128-d vector embeddings)
+  - [ ] Implement the selected framework's server-side route protection and session invalidation when auth/protected routes are in scope.
+  - [ ] Implement Developer Payment Safeguard banner for Owner
+  - [ ] Implement standalone interactive Universal 404 Arcade Game page (`app/not-found.tsx`)
+  - [ ] Verification Gate: Penetration tests pass; unauthorized actions blocked with flash toasts
+
+- [ ] **Phase 6: Universal Verification, Chaos Testing & Code Review Gate**
+  - [ ] Execute the 7-Tier Universal Verification Lifecycle (`rules/TESTING_AND_VERIFICATION.md`)
+  - [ ] Tier 1: Run configured project-native build and typecheck commands when applicable.
+  - [ ] Tier 2 (Chaos Monkey): Fuzz forms and endpoints with `null`, `undefined`, extreme strings, and multi-clicks
+  - [ ] Tier 3: Verify zero dirty state mutations in database
+  - [ ] Tier 4: Verify state/data access follows the project's established architecture.
+  - [ ] Tier 5: Verify zero leaked backend technical jargon on UI
+  - [ ] Tier 6: Verify relevant visual/motion behavior and responsive viewports.
+  - [ ] Tier 7: Perform Principal Code Review using 8-point inspection checklist
+  - [ ] Execute configured, relevant tests/build/typecheck/lint/browser checks and complete the acceptance evidence ledger.
+  - [ ] Verification Gate: Fresh terminal output evidence recorded; final build signed off
+```
+
+
+
+---
+
+## Source: DISCOVERY_QUESTIONNAIRE.md
+
+# Master Discovery Questionnaire ("Kiya Puchna Hai")
+
+> **Applicability and precedence:** Read [EXECUTION_CONTRACT.md](./EXECUTION_CONTRACT.md) first. This questionnaire is for greenfield discovery or material product decisions. For an existing repository, inspect its real architecture before asking technology questions. All options are prompts, not defaults; no stack, role, integration, design pattern or module is selected until the user confirms it. Skip irrelevant questions and mark them NOT APPLICABLE.
+
+> **FOR THE AGENT**: When onboarding a user or starting any new project, use this questionnaire to interview the user.  
+> Ask questions in **focused batches** (Phase 1, then Phase 2, etc.) rather than sending the entire document at once. Always highlight the **(Recommended)** option.
+
+---
+
+## 🧭 Phase 1: Project Scope, Framework & Architecture
+
+### Q1.1: Project Type & Scope (Kiya Banana Chahte Hain?)
+What is the scope of this build?
+- [ ] **(Recommended) Full-Stack Application** (Complete Frontend + Backend + Database)
+- [ ] **Frontend Only** (User Interface, Dashboards, Marketing SPA/PWA connecting to existing APIs)
+- [ ] **Backend Only** (API server, Database models, Background jobs, Business logic)
+- [ ] **Standalone REST / GraphQL APIs** (Microservices or API gateway)
+
+---
+
+### Q1.2: Core Technology Stack & Backend Placement (Backend Kahan Rakhna Hai?)
+> **MANDATORY AGENT REQUIREMENT**: The agent MUST ask the user upfront how they want the backend structured (inside the same Next.js project, as a separate Next.js backend project, as Python FastAPI, or Node.js).
+Which architectural setup do you prefer?
+- [ ] **(Recommended Dual Next.js) Next.js Frontend + Dedicated Next.js Backend API (2 Separate Next.js Projects)**:  
+  - `frontend/`: Next.js App Router for UI, Layouts, SSR, and Client Components.  
+  - `backend/`: Dedicated Next.js project solely hosting `/api` Route Handlers, Database ODM (Mongoose / MongoDB), Background Jobs, and Webhooks.  
+  *Best for team separation, independent deployments, and end-to-end TypeScript.*
+- [ ] **Next.js (App Router) Frontend + Dedicated FastAPI (Python) Backend + MongoDB (Motor)**:  
+  *Best for high-performance dedicated server tasks, Python AI/data pipelines, and enterprise scale.*
+- [ ] **Unified Full-Stack Next.js Monolith (Single Next.js Project)**:  
+  *Frontend UI and internal `/api` Route Handlers reside inside a single repository. Zero CORS, fast deployment.*
+- [ ] **Next.js Frontend + Dedicated Node.js / Express Backend + MongoDB (Mongoose)**:  
+  *Best for traditional Node microservices.*
+- [ ] **Custom Stack** *(Specify frontend, backend, collections, and ODM driver)*
+
+---
+
+### Q1.3: Server vs Serverless Deployment (Hosting Model)
+How should the backend be hosted?
+- [ ] **(Recommended) Dedicated ASGI Server (FastAPI / Uvicorn in Docker or VPS)**  
+  *Ideal if long-running tasks, heavy computing, or WebSocket connections are required.*
+- [ ] **Serverless Functions (Next.js API Routes / Vercel Serverless / AWS Lambda)**  
+  *Zero server maintenance, auto-scaling, pay-per-execution.*
+
+---
+
+### Q1.4: Project Folder Hierarchy Standard (Root-Level `/app` Mandate)
+> **MANDATORY DIRECTORY RULE**: If Next.js App Router is selected for a greenfield project, choose the root or src/app convention deliberately. For an existing project, preserve its current supported layout.
+Which directory structure should be scaffolded?
+- [ ] **(Mandatory Framework Standard) Clean Root-Level `/app` Hierarchy (Zero `src/` Wrapper)**:
+  - `<root>/app/`: App Router pages, layouts, and `/api` route handlers directly at root.
+  - Sibling root directories: `/components`, `/context`, `/models`, `/hooks`, `/lib`, `/public`, `/styles`, and `/.project/`.
+  - TypeScript path aliases: `"@/*": ["./*"]`.
+- [ ] **Custom Directory Layout** *(Specify if explicit legacy compatibility requires src/)*.
+
+---
+
+## 🎨 Phase 2: Design Aesthetics, UI/UX & Component Architecture
+
+### Q2.0: Bespoke Brand Identity & Aesthetic Theme ("Design Apna Banana Hai")
+> **MANDATORY PRINCIPLE**: Documentation code snippets are mechanical blueprints. The agent will craft a completely original, bespoke visual identity for your project, NOT a generic copy-paste from docs.
+What is the visual personality, vibe, and bespoke color motif of your brand?
+- [ ] **(Recommended) High-End Obsidian & Sky Cyan / Electric Indigo** (Sleek dark mode, glowing sky-cyan highlights, deep frosted glass).
+- [ ] **Emerald Mint & Deep Slate** (Fintech / Banking / Growth aesthetic, prestige feel).
+- [ ] **Warm Amber, Gold & Midnight Charcoal** (Luxury e-commerce, hospitality, premium agency).
+- [ ] **Vibrant Violet & Rose Gradient** (Creator economy, AI SaaS, modern social tool).
+- [ ] **Minimalist Monochrome & Architectural Precision** (Clean black, stark white, fine borders, high Swiss typographic rigor).
+- [ ] **Custom Brand Identity** *(User provides brand primary hex code, secondary color, and style guidelines)*.
+
+---
+
+### Q2.0B: Brand Logo & Real Favicon Suite Style (Logo & Favicon Kesa Chahiye?)
+> **MANDATORY BRANDING RULE**: Leaving framework default favicons (Next.js triangle, Vite bird, React atom) or generic unstyled text for a logo is strictly forbidden. When custom branding is part of the accepted scope, create a bespoke, production-ready SVG logo and appropriate favicon suite.
+Which visual style should be crafted for your brand logo and favicon suite?
+- [ ] **(Recommended) High-End Geometric Abstract Mark + Wordmark**:
+  - **Full Logo**: Bespoke geometric vector emblem with glowing multi-stop gradient paired with bold typographic wordmark (using display font).
+  - **Collapsed Glyph**: High-contrast 32x32 vector glyph tailored for the `h-dvh` collapsed sidebar, mobile topbar, and PWA icon.
+  - **Complete Favicon Suite**: Real `favicon.ico` (multi-resolution), `icon.svg` (crisp scalable vector), `apple-touch-icon.png` (180x180 iOS), `icon-192.png` & `icon-512.png` (Android/PWA), and `site.webmanifest`.
+- [ ] **Modern Tech Monogram / Stylized Lettermark**:
+  - High-impact typography monogram with ambient glow and clean corporate subtitle.
+- [ ] **Minimalist Architectural Shield / Emblem**:
+  - Clean vector crest/shield with fine geometric lines (ideal for fintech, legal, security, enterprise).
+- [ ] **Custom Existing Brand Assets**:
+  - *User provides exact SVG vector paths, high-res PNGs, and existing brand guidelines to integrate.*
+
+---
+
+### Q2.1: Styling Framework
+- [ ] **(Optional) Tailwind CSS (v3 / v4)**  
+  *Tailwind CSS is the official styling engine. Built with `dark:` class dual-theme support, custom glassmorphism utilities, and glow effects.*
+
+---
+
+### Q2.2: Bespoke Typography & Font Discovery (Konsa Font Chahiye?)
+Which modern typeface pairing would you like for headers and interface body text?
+- [ ] **(Recommended) High-Impact Modern Tech Pairing**:  
+  - **Display / Headers**: **Neofolio** or **Nexo Kora** *(Sharp, high-contrast, futuristic neo-grotesque)*  
+  - **Body / Interface**: **Plus Jakarta Sans** or **Outfit** *(Clean, geometric, ultra-legible)*
+- [ ] **Editorial Luxury & Avant-Garde Pairing**:  
+  - **Display / Headers**: **Bierika** or **OSIRIS** *(Architectural, curved terminals, high elegance)*  
+  - **Body / Interface**: **Inter** or **Plus Jakarta Sans**
+- [ ] **Bold Cyberpunk / Monospaced**:  
+  - **Display**: **Clash Display** or **Syne** | **Body**: **Geist Mono** / **Outfit**
+- [ ] **Custom Approved Font Combination** *(Specify font names)*
+
+---
+
+### Q2.3: Animation & 3D WebGL Capabilities
+Which animation libraries and interactive 3D elements should be active?
+- [ ] **(Recommended) Framer Motion + GSAP ScrollTrigger**:  
+  *Fluid layout morphing, spring entrance/exit toasts, interactive cards glow hover, and smooth scroll animations.*
+- [ ] **Add Three.js Interactive 3D Model (User Permission Granted)**:  
+  *Includes a lightweight, 100% free, animated 3D GLTF model (from free sources like Kenney or Three.js official models) or procedural 3D particle canvas. (Paid/heavy models are forbidden).*
+- [ ] **Lightweight CSS/Framer Motion Only (No 3D)**.
+
+---
+
+### Q2.4: Iconography & Animated Lottie Ecosystem
+Which icon libraries should be integrated?
+- [ ] **(Recommended) Hybrid Modern Vectors + Animated Micro-Icons**:  
+  - **Static Vectors**: `lucide-react`, `@fortawesome/react-fontawesome`, Google Material Symbols.  
+  - **Animated Icons & Lottie**: **Lordicon** (`lordicon.com`), **Icons8** (`icons8.com`), **LottieFlow** (`lottieflow.com`), **LottieFiles** (`lottiefiles.com`) for interactive button triggers, success toasts, and empty states.
+- [ ] **Static Lucide React Only**.
+
+---
+
+### Q2.5: Form Inputs Architecture (Floating Label Rule)
+- [ ] **(Mandatory Standard) Custom Floating Label Inputs (Zero Placeholders)**:  
+  - Text/Password inputs: Label starts vertically centered; floats to top border outline on focus or when value exists.  
+  - Textarea: Label starts aligned to the first line; floats to top border on focus.  
+  - Select: Google Forms style centered label with zero premature placeholder text.
+
+---
+
+### Q2.6: Layout Architecture & Mobile Navigation (Sidebar, Mobile Bottom Bar & Floating Menu Pill)
+- [ ] **(Recommended Master Responsive Layout Engine)**:  
+  - **Desktop (`>= 1024px`)**: Fixed resizable `h-dvh` sidebar with drag handle, `localStorage` width memory, collapse/expand toggle, and glass topbar.
+  - **Public Pages Mobile (`< 1024px`)**: **Strict No-Sidebar Rule**. Fixed bottom footer navigation bar (`fixed bottom-0`) with 3-4 primary links + a mandatory "More" (`...`) link that slides open a native-style bottom sheet drawer for all auxiliary pages.
+  - **Dashboard Mobile (`< 1024px`)**: Slide-out mobile navigation drawer triggered via a floating bottom-center obsidian glass pill labeled `"Menu"` (Vercel-inspired design). Features **Dual Close Controls**: bottom pill morphs into `"Close"` ('X') while the sidebar header also contains a dedicated top 'X' close button.
+- [ ] **Standard Responsive Hamburger Menu (Traditional top hamburger on all pages)**.
+
+
+---
+
+## 🔐 Phase 3: Roles, Hierarchy & RBAC Permissions
+
+### Q3.1: User Roles & Actors (System Main Kon Kon Ho Ga?)
+Which user personas exist in this application?
+- [ ] **Developer (Super-Root)**: Platform architect, manages server health, registers client companies.
+- [ ] **Owner (Business Master)**: Owns the company account, views financials, manages staff, controls billing.
+- [ ] **Admin**: Manages day-to-day operations, assigns tasks, manages inventory/users.
+- [ ] **Staff / Employee**: Executes daily workflow (e.g. processes orders, updates status).
+- [ ] **Customer / Client**: Public user who places orders, views invoices, and manages their own profile.
+
+---
+
+### Q3.2: Developer vs Owner Hierarchy & Protection Boundaries
+Who holds the ultimate business authority, and can the Developer alter the Owner's rights?
+- [ ] **(Recommended) Strict Dual-Protection Model**:  
+  - **Developer** controls system infrastructure, multi-tenant company onboarding, database indexing & schemas, and developer safeguards.  
+  - **Owner** is the sovereign business master. **Developer cannot revoke Owner's company rights or modify business data without explicit consent.**  
+  - **Owner cannot lock out Developer from platform infrastructure.**
+- [ ] **Developer-First (Developer controls all permissions, including Owner's).**
+- [ ] **Owner-First (Owner is absolute root; Developer is an internal staff technician).**
+
+---
+
+### Q3.3: Permission Granularity (Page-Level vs Action/Button-Level)
+How deep should RBAC security be implemented?
+- [ ] **(Recommended) Action-Level Granular RBAC (Button & API Level)**  
+  *Permissions are granular per action (e.g., `orders:view`, `orders:create`, `orders:edit`, `orders:delete`). Staff can view and edit an order, but the "Delete" button is physically hidden/disabled in the UI AND rejected by the backend API if attempted.*
+- [ ] **Page-Level RBAC Only**  
+  *Access is controlled by URL route (e.g., Staff can access `/orders`, but not `/finance`). Once on the page, all actions are allowed.*
+
+---
+
+### Q3.4: Dedicated User Portals
+Which dedicated portal interfaces are required?
+- [ ] **(Recommended) Multi-Portal System**:
+  - `Customer Portal`: Clean storefront / client dashboard (`/portal` or `/my-account`).
+  - `Employee/Staff Portal`: Operational task view (`/staff` or `/app`).
+  - `Owner / Executive Dashboard`: Analytics, revenue, audit logs (`/admin` or `/dashboard`).
+  - `Developer Super Console`: Tenant management, API logs, system health (`/system-console`).
+- [ ] **Unified Dashboard (All roles use the same dashboard with conditional UI components).**
+
+---
+
+### Q3.5: Authentication Engine, Silent Facelock & Multi-Account Switcher
+Which authentication and identity workflows should be enabled?
+- [ ] **(Recommended) Advanced Multi-Account & Biometric Facelock Suite**:
+  - **Silent Background Facelock**: Automatically probes face detection on login page without opening visible camera UI; falls back to manual button.
+  - **Multi-Face Conflict Dialog**: If 1 face matches multiple profiles, user chooses target account; remaining profiles load into multi-session vault.
+  - **Topbar Account Switcher**: Switch between active accounts instantly from the user profile dropdown without re-entering passwords.
+  - **Anti-Enumeration & Timing Attack Defense**: Generic `"Invalid email or password"` message; backend executes constant-time bcrypt checks against a dummy hash for non-existent users.
+  - **Multi-Step Signup & 6-Box OTP**: Email-first registration with signed token URL (`?token=&option=otp`), 6-box auto-verifying OTP (with `Ctrl+V` support), and strong password policy enforcement.
+  - **Dynamic Rate Limiting**: All auth endpoints governed by `.env` request caps.
+- [ ] **Standard Credentials Only (Email + Password + Simple OTP)**.
+
+---
+
+### Q3.5B: Zero-Demo Credentials Policy & Inter-Auth Navigation Ergonomics
+> **MANDATORY AUTH ERGONOMICS & SECURITY RULE**: Pre-filled demo credentials, mock accounts, or "Click to login as Admin/Owner" backdoor buttons are strictly prohibited in all environments. Input fields must initialize to clean empty strings (`""`). Additionally, all auth views must feature frictionless bidirectional navigation links so users never get trapped.
+Which auth form ergonomics and security standards must be enforced?
+- [ ] **(Recommended Mandatory Standard) Strict Zero-Demo Security & Complete Navigation Ergonomics**:
+  - **Zero Demo Credentials & Backdoors**: Zero pre-filled values, zero mock click-to-login buttons in production and development. Prevents security audit failures and user confusion.
+  - **Password Header Navigation**: Login form features a right-aligned `"Forgot password?"` link placed directly above or alongside the password input label.
+  - **Cross-Auth Card Footers**: `/login` features `"Don't have an account? Sign up"`; `/signup` features `"Already have an account? Log in"`.
+  - **Recovery Backlinks**: `/forgot-password` and `/reset-password` feature an explicit `"← Back to log in"` return link.
+  - **State Cleanliness**: All input state initialized to `""`, with standard browser autocomplete hints (`autocomplete="email"`, `autocomplete="current-password"`).
+- [ ] **Custom Auth Ergonomics** *(Specify any specialized non-standard flow)*.
+
+---
+
+### Q3.6: Edge Proxy Route Protection & Unauthorized Access Feedback (Proxy & Protected Routes)
+> **MANDATORY SECURITY PROXY RULE**: When Next.js is the chosen framework, use the appropriate server-side route protection mechanism; other frameworks must use their native trusted server middleware. Unauthorized or unauthenticated visitors must be immediately blocked, redirected to a safe view, and alerted via toast notification ("Aap is page pe nahi ja sakte hain").
+Which route protection and proxy behavior should be enforced?
+- [ ] **(Recommended Mandatory Standard) Dual-Shield Edge Proxy + Interception Toasts + Fresh Evaluation on Auth**:
+  - **Edge Middleware Proxy**: Intercepts every route before server render; blocks unauthorized users at the network edge.
+  - **Client RouteGuard**: Prevents visual layout flashing on client-side SPA transitions.
+  - **Animated Interception Toast**: Blocked navigation triggers an instant error toast: *"⛔ Aap is page pe nahi ja sakte hain (Access Denied)"*.
+  - **Fresh Login/Logout Invalidation**: On every login and logout, the proxy session cookie and client cache are wiped and re-evaluated from scratch. Browser Back-button navigation is blocked via `Cache-Control: no-store`.
+- [ ] **Basic Client-Only Route Redirects (No Edge Middleware)**.
+
+---
+
+## 🏢 Phase 4: Multi-Company & Multi-Tenant Architecture
+
+### Q4.1: Single Company vs Multi-Company (Multi-Tenancy)
+Will this application serve a single company or multiple independent organizations?
+- [ ] **Multi-Company / Multi-Tenant SaaS Platform**:  
+  *Multiple companies register on the platform. Each company's data is completely isolated. Developer onboards companies; each company manages its own staff and customers.*
+- [ ] **Single Company / Dedicated Instance**:  
+  *The entire app belongs exclusively to one organization.*
+
+---
+
+### Q4.2: Public Pages & Custom Domain Routing
+How should multi-tenant routing and public storefronts work?
+- [ ] **(Recommended) Hybrid Custom Domains & Subdomains**:  
+  - Each company gets a subdomain (e.g. `company1.app.com`).
+  - Optional custom domain mapping (e.g. `clientstore.com` -> routes to `company1`).
+  - Main root (`/` on `app.com`) serves as the SaaS platform landing page & login portal.
+- [ ] **Path / ID Based Routing**:  
+  *Shared domain with path-based tenants (e.g., `app.com/c/company1/orders`).*
+- [ ] **Replace Root Home Page with Tenant Lookup**:  
+  *Root `/` prompts user to enter company code or redirects to the user's registered company portal.*
+
+---
+
+## 📦 Phase 5: Order Processing System & Slide Review Workflow
+
+### Q5.1: Order Management Architecture
+Do you need an Order Management System?
+- [ ] **(Recommended) Dual-View Order System**:  
+  1. **Master Table View**: Comprehensive data table with multi-criteria filtering (status, date, payment), search, sorting, and pagination.  
+  2. **Focused 1-by-1 Slide/Carousel Processing View**: Staff or Owner clicks **"Start Processing"** -> opens an immersive, distraction-free single-order card showing complete customer items, payment status, and quick action buttons (Update Price, Mark Paid, Change Status, Cancel, Print Invoice) with **Next / Previous Order** hotkeys.
+- [ ] **Standard Table View Only** (No focused slide mode).
+- [ ] **Kanban Board View** (Drag and drop across Pending -> Processing -> Delivered columns).
+- [ ] **No Order System Needed** (Project is not an e-commerce or order-based app).
+
+---
+
+## 📝 Phase 6: Content Management System (CMS) & Visual Site Operating System
+
+### Q6.1: CMS Requirement & Shell Placement
+Which architectural mode should the CMS use?
+- [ ] **(Recommended) Integrated Dashboard CMS (`/dashboard/cms`)**:  
+  *Embedded inside the Owner/Admin dashboard. Features an Options Card Grid, auto-syncing sidebar submenus, a Live Status Report (active theme, published pages overview), and a Recent Activity Feed with one-click revision rollback.*
+- [ ] **Standalone Portal Mode (`/cms` or `/studio`)**:  
+  *A dedicated full-screen visual studio with an isolated navigation rail, "← Back to Dashboard" and "↗ View Live Website" buttons, and full keyboard shortcut integration (`Ctrl+S`, `Ctrl+Z`, `Alt+T`).*
+- [ ] **Dual-Mode (Both Available)**:  
+  *Admins use the dashboard tab for quick edits; developers use the standalone portal for deep code/layout management.*
+- [ ] **No CMS Needed** (Content is static or code-managed).
+
+---
+
+### Q6.2: Dynamic Data, Theming & Visual Workflow Automation
+What advanced CMS features should be active?
+- [ ] **(Recommended) Full Enterprise Suite**:  
+  - **Bidirectional Live Sync**: Real-time sync between Visual WYSIWYG Canvas and Monaco HTML/CSS Editor.  
+  - **Variable Registry**: Dynamic tokens (`{{user.username}}`, `{{order.total}}`) with automated "Sync Models" schema introspection.  
+  - **Visual Workflow Studio**: Node-based visual API pipeline (triggers, branches, MongoDB queries, AI prompts with model fallback).  
+  - **Global Theming & Skeletons**: Independent Light/Dark palettes, custom skeleton animations, and unified styling across tables, cards, and pages.  
+  - **Reusable Smooth Drag-and-Drop**: Physics-based displacement for links, social icons, and layout items.
+- [ ] **Basic Content Management Only** (Markdown blogs, announcements, and simple text banners).
+
+---
+
+### Q6.3: Template Gallery & Scroll Video Hero
+Should pre-built template blueprints and interactive scroll-driven video be included?
+- [ ] **(Recommended) 30 Public Templates + Section SDK + FFmpeg Scroll Video Scrubber**:  
+  *Includes 30 categorized blueprints, 100–200 modular sections with `<div layout>` wrappers, single-item array loops, and an FFmpeg frame extraction pipeline for cinematic scroll-scrubbed video animations.*
+- [ ] **Standard Sections Only** (Hero, Features, Pricing, and Contact form without video scrubbing).
+
+---
+
+### Q6.4: Custom In-House Media Viewers & Universal 404 Game Experience
+How should media documents and 404 error routes be handled?
+- [ ] **(Recommended) Custom Frosted Glass Video Player, In-House PDF Reader & Interactive 404 Game Page**:  
+  - **Custom Video Player**: Custom frosted glass control pill, scrub bar with hover thumbnail preview, playback speed (0.5x to 2x), volume slider, and PiP (zero native browser controls).  
+  - **In-House PDF Viewer**: Smooth virtualized scrolling, zoom slider, sidebar page thumbnail rail, in-document search, download & print buttons.  
+  - **Universal 404 Interactive Game Page (`app/not-found.tsx`)**: Standalone route featuring a playable retro-arcade HTML5 Canvas mini-game (Cyber Asteroid Dodger), score counter, touch/keyboard controls, and "Return to Safety" CTAs when any deleted/disabled page is visited.
+- [ ] **Standard Fallbacks Only** (Browser default `<video>` and static plain 404 text page).
+
+---
+
+### Q6.5: Dynamic Document Studio (PDF, Email, WhatsApp) & Bulk Worker Pipeline
+How should transactional documents (invoices, receipts, emails, WhatsApp messages) and bulk batch processing be structured?
+- [ ] **(Recommended) Dynamic PDF Canvas Studio, Email Builder, WhatsApp Studio & Parallel Worker Pipeline**:  
+  - **Dynamic PDF Studio**: Absolute positioning canvas (`x`, `y`, `width`, `height`), perimeter resize handles, dynamic QR code generator with model variables, multi-page custom sizing, layer tree with drag reordering, and strict missing-data omission.  
+  - **Email Template Builder**: Cross-client flow/table layout (`width`, `margin`, `padding`, `text-align`, zero absolute layers), variable loops, and code sync.  
+  - **WhatsApp Message Studio**: Formatted text (`*bold*`, `_italic_`), parameter variables, dynamic action buttons, and media headers.  
+  - **Cross-Template Attachments**: Automatically hydrates and attaches compiled PDF templates to outgoing emails and WhatsApp alerts.  
+  - **Single Batch API & Parallel Workers**: Frontend fires a single request for selected table/card rows (`POST /api/v1/bulk/...`); backend worker pool compiles 50+ PDFs concurrently in 1–2 seconds and streams a ZIP/merged file without blocking the event loop.
+- [ ] **Basic Transactional Text Only** (Simple unstyled email text without PDF canvas or WhatsApp templates).
+
+---
+
+### Q6.6: Digital Asset Management (DAM), Website Details Cascading & Auth Pages Theme Studio
+How should brand assets, global company contact information, and authentication page styling be managed?
+- [ ] **(Recommended) Centralized Assets DAM, Single Source of Truth Brand Details, 5-Card Auth Customizer & Tenant CMS Delegation**:  
+  - **Central Assets DAM & Universal Auto-Ingestion**: Any image, video, SVG, or document uploaded anywhere (carousel, hero, section, product, email) automatically saves into `/dashboard/cms/assets`. Features in-house frosted glass video previewer with precision scrub bar, resolution switcher (720p/1080p/4K), and high-definition image inspector with pan/zoom.  
+  - **Reference-Based Media Architecture (Zero Duplication)**: Assets generate reference tokens (`{{assets.logo}}`); components store references, ensuring updating a logo in Assets updates the entire site instantly.  
+  - **Website Details Studio (`/dashboard/cms/website-details`)**: Centralized management of Website Name, Favicon, Light/Dark Logos, Support Email, Phone, WhatsApp, Physical Address, and Social Links. Automatically cascades to Topbar, Sidebar, and Footer with selective override capability.  
+  - **Auth Pages Theme Customizer (`/dashboard/cms/auth-themes`)**: Dedicated 5-card hub for Login, Signup, Forgot Password, Reset Password, and 6-Box OTP. Dual Light/Dark mode styling, 4 layout modes (Split Left Form, Split Right Form, Centered Card, Minimal Card), and **The Mobile Anti-Compression Law** (100% full-width collapse on `< 768px`, minimum 48px touch targets, 16px iOS anti-zoom font size).  
+  - **Multi-Tenant CMS Isolation & Developer Delegation**: Every tenant operates an isolated CMS instance. The Developer can govern permissions or delegate full visual builder, code editor, and document capabilities to tenant owners.
+- [ ] **Static Assets & Unstyled Auth Pages** (Manual hardcoded image links and standard uncustomizable auth templates).
+
+---
+
+### Q6.7: Root Models & React Contexts Architecture (State & API Standard)
+How should database schemas, API operations, and client-side state variables be structured across the codebase?
+- [ ] **(Mandatory Standard) Dedicated Root `/models`, Corresponding Root `/context`, and Context-First API Encapsulation**:  
+  - **Root `/models`**: Separate file per MongoDB collection (e.g. `models/Program.ts`, `models/Order.ts`). Mongoose schemas, compound indexes, and strict multi-tenant scoping (`companyId`).  
+  - **Root `/context`**: 1-to-1 matching React Context per model (e.g. `context/ProgramContext.tsx`, `context/OrderContext.tsx`) + 3 global structural contexts (`AuthContext`, `ThemeContext`, `ToastContext`).  
+  - **Zero Direct Component API Calls**: All mutations, fetches, and domain operations (e.g. `createProgram`, `editProgram`, `deleteProgram`, `downloadProgramPdf`, `sendProgramEmail`) execute exclusively through context methods.  
+  - **Single-Fetch & Shared State (Zero Duplicate Variables)**: Data loads once into context state; components consume shared variables directly. Updating an item updates the context array in-place, triggering automatic re-renders across all consumer components with zero redundant network requests.  
+  - **Public Pages Restraint**: Heavy domain contexts are excluded from public landing pages, mounting only within their respective protected route segments.
+- [ ] **Scattered Models & Ad-Hoc Fetching** (Loose schema files and direct `fetch()` calls in random components).
+
+---
+
+## ⌨️ Phase 7: Special Features, Shortcuts & Global Search
+
+### Q7.1: Global Search & Command Palette
+- [ ] **(Recommended) Command Palette (`Cmd+K` / `Ctrl+K`)**:  
+  *Instant search modal across pages, orders, customers, settings, and quick actions.*
+- [ ] **Simple Top Navbar Search Bar**.
+- [ ] **No Global Search**.
+
+---
+
+### Q7.2: Keyboard Shortcuts Engine
+What level of keyboard shortcut support should be built?
+- [ ] **(Recommended) Master Power-User Shortcuts**:  
+  *`Cmd+K` (Search), `Esc` (Close modal/slide), `J`/`K` or `ArrowDown`/`ArrowUp` (Table row navigation), `ArrowRight`/`ArrowLeft` (Next/Prev order in Slide view), `Ctrl+Enter` (Submit/Approve), `Alt+T` (Theme toggle).*
+- [ ] **Basic Shortcuts Only**:  
+  *`Cmd+K` for search and `Esc` for closing dialogs.*
+- [ ] **No Keyboard Shortcuts**.
+
+---
+
+### Q7.3: Biometric / Facelock Authentication
+Should facial biometric authentication be provided?
+- [ ] **(Recommended) Custom Face Recognition AI Model (128-d Vector Embeddings - No Passkeys)**:  
+  *Uses client-side computer vision models (MediaPipe / FaceNet) to extract 128-d face descriptors, matched on backend via vector distance. Supports silent background scan and multi-face account resolution without requiring OS WebAuthn passkeys.*
+- [ ] **Standard Auth Only (Email/Password, Google OAuth, Magic Link)**.
+
+---
+
+### Q7.4: Theme Toggle (Dark / Light Mode)
+- [ ] **(Recommended) Tri-State Theme Toggle (Dark / Light / System Sync)**.
+- [ ] **Dark Mode Only**.
+- [ ] **Light Mode Only**.
+
+---
+
+## 🔔 Phase 8: Automations, Notifications & CI/CD
+
+### Q8.1: Notification Channels
+Which notification and messaging automations are needed?
+- [ ] **(Recommended) Multi-Channel Notifications**:  
+  - **SMTP Email**: Transactional order receipts, password resets, daily executive summaries.
+  - **WhatsApp Business Automation**: Instant order confirmation alerts, status update pings, OTP verification.
+  - **In-App Toast & Web Push**: Real-time browser notifications for staff when a new order arrives.
+- [ ] **Email (SMTP) Only**.
+- [ ] **In-App Notification Bell Only**.
+
+---
+
+### Q8.2: CI/CD & GitHub Workflow
+- [ ] **(Recommended) Automated GitHub Actions**:  
+  *Automated linting, TypeScript type-checking, backend test runner, and automated preview deployment on commit.*
+- [ ] **Manual Deployment**.
+
+---
+
+## 🛡️ Phase 9: Developer Client Payment Safeguard Module
+
+### Q9.1: Developer Client Payment Management Safeguard
+Do you want to enable the Developer Payment Safeguard module for client projects?
+- [ ] **(Recommended) Enable Developer Payment Safeguard Module**:  
+  - **Rule**: Client application queries Developer license API: `{ paymentClear: boolean }`.
+  - **Behavior**:
+    * If `paymentClear == true`: 100% normal, completely invisible.
+    * If `paymentClear == false` AND today's date <= 8th of the month: A clean, non-intrusive sticky top banner is shown **ONLY to the Owner role** stating: *"Scheduled monthly hosting/maintenance payment is pending. Please complete payment before the 8th."* (Customers & Staff see nothing).
+    * If `paymentClear == false` AND today's date > 8th: Grace period has lapsed; displays an urgent resolution banner to the Owner.
+- [ ] **Disable Safeguard Module** (Project is internal or has alternative billing).
+
+---
+
+## ⚙️ Phase 10: Settings Architecture, Integrations & Dynamic Feature Flags
+
+### Q10.1: Settings Structure & System Settings Access (Kisko Mile Gi System Settings?)
+> **MANDATORY SETTINGS RULE**: Every project MUST feature a Settings hub with two distinct tiers: **Normal Settings** (Personal profile, security, appearance, regional preferences, company profile) and **System Settings** (Platform infrastructure, credentials, storage, AI keys, and feature flags).
+Who should have access to **System Settings**?
+- [ ] **(Recommended if Developer Role Exists) Dual Developer Governance with Delegation Option**:
+  - Developer has full platform governance over System Settings.
+  - **Delegation Choice**:
+    - [ ] **Delegate to Owner**: Both Developer AND Owner can access System Settings (Owner manages credentials, Developer provides backup).
+    - [ ] **Developer Only**: Restricted exclusively to Developer console. Owner only sees Normal Settings.
+- [ ] **(Mandatory if NO Developer Role Exists) Always Grant System Settings to Owner / Main User**:
+  - When the project has no Developer role, System Settings is **ALWAYS granted to the Owner / Main User role**. Critical service credentials must never become inaccessible.
+
+---
+
+### Q10.2: Storage Integration Providers & Live Testing (Storage Kahan Rakhna Hai?)
+Which file storage providers should be configured in System Settings? *(Multiple providers can be configured; active provider chosen via dropdown)*
+- [ ] **(Recommended Multi-Cloud & Hybrid Storage Suite - Polymorphic Engine)**:
+  - [ ] **MongoDB Native GridFS / Buffer Storage** (Zero third-party cloud subscription, stored directly inside MongoDB Atlas; supports 2MB chunked streaming to bypass Vercel Free-Plan 4.5MB limit, auto-caches via `/api/media/[id]`).
+  - [ ] **Vercel Blob** (Fast edge blob storage for Next.js deployments).
+  - [ ] **Supabase Storage** (S3-compatible bucket with CDN, publicId metadata, and image transforms).
+  - [ ] **Firebase Storage** (Google Cloud Storage integration with download tokens).
+  - [ ] **Local File Storage** (Direct server filesystem storage for on-premise / VPS; automatically falls back to MongoDB GridFS when deployed on Vercel read-only serverless instances).
+  - [ ] **Cloudflare R2 / AWS S3 / MinIO** (Zero egress-fee R2 or enterprise S3 buckets).
+  - **Polymorphic Media Specification**: See [`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`](./modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md) for universal schema, presigned uploads, and `<UnifiedMedia />` resolver.
+  - **Live Verification Requirement**: Every storage provider card **MUST include a "Test Connection & Upload" button** that executes a real 1KB dummy upload, verifies read access, auto-deletes the file, and displays roundtrip latency in ms.
+- [ ] **Single Dedicated Storage Provider Only** *(Specify provider)*.
+
+---
+
+### Q10.3: AI Integrations, Multi-Key & Fallback Engine (Konsi AI APIs & Fallback Chahiye?)
+Which AI providers, models, and fallback chains should be configured?
+- [ ] **(Recommended Multi-Provider AI Hub with Multi-Key & Fallback)**:
+  - **Supported Providers**: OpenAI (`gpt-4o`, `o1`), Anthropic Claude (`claude-3-5-sonnet`), OpenRouter (200+ models), Google Gemini (`gemini-1.5-pro/flash`), Groq (`llama-3.3-70b`), Mistral, Perplexity, DeepSeek (`deepseek-v3/r1`), Ollama (Local LLM), and Custom Endpoints.
+  - **Multi-Key Capability**: Ability to enter multiple API keys for any single provider (with custom labels and priority tiers).
+  - **Intelligent Fallback Chains**: Auto-fallback upon rate limits (HTTP 429) or outages (HTTP 500) (e.g. Primary OpenAI Key 1 -> Backup OpenAI Key 2 -> Claude 3.5 Sonnet -> Groq LPU).
+  - **Live Test Ping**: Every key and provider features a dedicated **"Test Key" button** measuring latency (ms) and confirming model handshake.
+  - **AI Placement Matrix**: Select where AI is activated across the website:
+    - [ ] AI Customer Chatbot & Support Assistant
+    - [ ] AI Product Description & SEO Content Generator
+    - [ ] AI Business Analytics & Executive PDF Report Summarizer
+    - [ ] AI Vision, Document & Invoice OCR
+    - [ ] AI Image & Banner Generator
+- [ ] **Single AI Provider Only (No Fallback)** *(Specify provider)*.
+- [ ] **No AI Integrations Required**.
+
+---
+
+### Q10.4: Dynamic Feature Flags & Strict Zero-Leak UI Enforcement (Konse Features On/Off Rakhne Hain?)
+> **STRICT ZERO-LEAK MANDATE**: Features toggled OFF must **COMPLETELY DISAPPEAR** from the user experience. No disabled buttons, no locked teaser menus, no routes accessible. Direct URL visits trigger a clean 404 Not Found.
+Which modular features should be controllable via the Developer / Owner Feature Flags panel?
+- [ ] **(Recommended Comprehensive Feature Flags Engine)**:
+  - [ ] **AI Capabilities** (`feature:ai_engine`): Toggle all AI touchpoints on/off.
+  - [ ] **WhatsApp Business Automation** (`feature:whatsapp_automation`): Toggle WhatsApp notifications on/off.
+  - [ ] **3D Models Upload & Viewer** (`feature:3d_models`): Toggle 3D GLTF product/dashboard models on/off.
+  - [ ] **Biometric Facelock Auth** (`feature:facelock_auth`): Toggle face recognition login on/off.
+  - [ ] **Barcode & QR Code Scanner** (`feature:barcode_scanner`): Toggle camera scanning tools on/off.
+  - [ ] **Dedicated Portals** (`feature:customer_portal`, `feature:vendor_portal`): Toggle individual sub-portals on/off.
+  - [ ] **Content Management System** (`feature:cms_engine`): Toggle announcements and blog CMS on/off.
+- [ ] **Static Code-Level Features Only (No Dynamic Toggle Matrix)**.
+
+---
+
+### Q10.5: Multi-Tenant Settings Isolation (Tenant Settings Kese Hon Gi?)
+*(Applicable only if Multi-Tenancy is enabled in Phase 4)*
+How should settings behave across tenant companies?
+- [ ] **(Recommended) Tenant-Isolated Credentials with Developer Super Console Control**:
+  - Each tenant maintains independent settings (custom SMTP, custom WhatsApp, dedicated storage bucket, custom AI keys).
+  - Developer Super Console (`/system-console`) can inspect, manage, or override settings per tenant, or allow tenants to inherit platform defaults.
+- [ ] **Global Platform Credentials Shared for All Tenants**.
+
+---
+
+## 💳 Phase 11: Payment Idempotency & Split-Brain Timeout Reconciliation Engine
+
+### Q11.1: Customer Payment Timeout & Double-Debit Protection
+When a customer pays on the website and the connection between the backend and bank gateway times out (e.g. money debited from bank account, but client or server drops connection):
+- [ ] **(Recommended) Enable Enterprise Idempotency & Inquire-Before-Charge (IBC) Engine**:
+  - **Pre-Created PaymentIntent & Idempotency Key**: Each checkout session creates a persistent `PaymentIntent` with a unique key (`idemp_<orderId>_attempt_1`).
+  - **Distributed Redis Mutex Lock**: 60-second atomic lock rejects concurrent clicks or rapid retries with `409 Conflict: Processing`.
+  - **Inquire-Before-Charge (IBC)**: Any retry or subsequent payment attempt queries the Bank Status API (`/bank/query-status`) before touching the gateway, guaranteeing the customer is never charged twice.
+  - **Passive Dual Reconciliation**: Webhook listener + BullMQ background cron worker (running every 2 minutes) automatically verifies and settles orphaned transactions if the customer closes their browser.
+  - **No-Panic UI State**: Frontend catches timeouts and displays an amber "Payment In Verification" status modal with auto-polling instead of "Payment Failed" (`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`).
+- [ ] **Standard Direct Payment (No Timeout Inquiry)**: Disables Inquire-Before-Charge; retries treat failed requests as new transactions.
+
+---
+
+## ⚡ Phase 12: Low-Bandwidth & Slow Network Performance Optimization
+
+### Q12.1: Slow 2G/3G Connection & Data Saver Optimization
+How should the platform behave for users on slow mobile networks (2G, throttled 3G, high-latency satellite, or limited mobile data)?
+- [ ] **(Recommended) Enable 5-Pillar Low-Bandwidth Speed Engine**:
+  - **Adaptive Images & BlurHash LQIP**: Automatically serve WebP/AVIF images with compact 20-character BlurHash placeholders. On slow 2G/3G or Save-Data, dynamically request 60% smaller images and lower quality to cut data usage by 80%.
+  - **Server Streaming with Suspense & Projection Pruning**: Stream HTML shells in < 50ms TTFB while database queries stream asynchronously. Prune MongoDB listing payloads by 90% (exclude heavy unneeded fields).
+  - **Offline-First SWR Caching**: Persist API responses in IndexedDB so repeat visits and back/forward navigation render instantaneously (0ms lag).
+  - **Auto-Degradation & Data Saver Pill**: Auto-disable background video loops, replace heavy 3D WebGL canvases with 2D snapshots, and provide a manual "Data Saver" toggle pill in the UI (`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`).
+  - **Strict 80KB JS Budget**: Route code-splitting with `next/dynamic` and self-hosted Latin font subsetting (`font-display: swap`).
+- [ ] **Standard High-Bandwidth Only**: Serve full-resolution media and heavy JavaScript bundles without network adaptation.
+
+---
+
+## 🖱️ Phase 13: Optimistic Rapid-Click Batching & Interaction Fluidity
+
+### Q13.1: High-Frequency Button Clicking & Double-Click Protection
+When users rapidly multi-click interactive buttons (e.g. clicking "Next" page 3 times to jump to Page 4, tapping quantity `+` 5 times in cart, skipping slides, or tapping like bursts):
+- [ ] **(Recommended) Enable Optimistic Rapid-Click Batching Engine**:
+  - **Instant 0ms Visual Feedback**: The local UI counter (page number, cart quantity, like count, slide index) updates immediately with an animated morphing badge without freezing or disabling buttons.
+  - **300ms Settling Quiet Window**: Every rapid click resets a debounce timer. Zero intermediate network requests are dispatched while the user is actively clicking.
+  - **Single Settled Request**: Once 300ms passes without clicks, a single network request fires for the final destination (e.g. Page 4, Qty 5).
+  - **AbortController Active Cancellation**: In-flight requests are automatically aborted if a new burst starts, eliminating 75% of server query spikes and race conditions (`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`).
+- [ ] **Standard Button Disabling**: Disable buttons on the very first click (`disabled={loading}`) forcing the user to wait for every single network response.
+
+
+
+
+
+
+---
+
+## Source: modules/EXISTING_PROJECT_RETROFIT_ENGINE.md
+
+# Existing Project Retrofit and Modernization Engine
+
+> This is the canonical workflow for existing-project changes. Read [EXECUTION_CONTRACT.md](../EXECUTION_CONTRACT.md) first. Older stack-specific recipes in this repository are optional patterns and must not override the target project's actual architecture or the user's accepted scope.
+
+## Purpose
+Prevent shallow cosmetic edits while also preventing unrelated full-site rewrites. The agent must understand the connected system, implement the requested outcome end-to-end, and prove it with relevant evidence.
+
+## Stage 0 — Baseline and preservation
+1. Confirm repository root, active branch and working-tree status.
+2. Record uncommitted user changes and do not overwrite them.
+3. Run the relevant existing tests/build before editing when practical; record pre-existing failures.
+4. Identify generated files, migrations and deployment-sensitive configuration.
+
+## Stage 1 — Project intelligence
+Use [Project Intelligence](../engines/PROJECT_INTELLIGENCE.md):
+- Detect actual framework, language, package manager, folder conventions and dependencies.
+- Map routes, shared components, state/data layer, APIs, models, auth/RBAC and integrations.
+- Trace the requested behavior through every affected layer.
+- Search for existing implementations and downstream consumers.
+- Record unknowns rather than guessing.
+
+## Stage 2 — Outcome and scope
+Use [Intent and Scope](../engines/INTENT_AND_SCOPE.md):
+- Convert the request into observable acceptance criteria.
+- Classify work as required, dependency-required, optional or unrelated.
+- Inspect broadly, but implement only the requested outcome and necessary dependencies.
+- Record unchanged behavior and explicit exclusions.
+- Ask only when a material architectural, security, cost or irreversible-data decision is unknown.
+
+## Stage 3 — Dependency-aware plan
+Create a task plan containing:
+- User outcome and acceptance criteria.
+- Affected routes, components, API contracts, models and permissions.
+- Files to add/change and why.
+- Data migration/backfill and rollback steps, if needed.
+- Loading, empty, error, success, permission and cancellation states.
+- Regression surfaces and exact verification commands.
+
+## Stage 4 — Complete scoped implementation
+Implement a coherent vertical slice and connect all required layers:
+1. UI and responsive behavior.
+2. State ownership, queries and mutations.
+3. Server/API validation and error contracts.
+4. Persistence and data consistency.
+5. Authentication, authorization and tenant isolation.
+6. Notifications, jobs and external integrations, if in scope.
+7. Loading, empty, error, success and offline behavior.
+
+Preserve existing libraries and design tokens. Do not install a generic animation stack, impose glassmorphism, migrate folder structures, or redesign unrelated pages simply because an example document recommends it.
+
+## Stage 5 — Independent review
+Use [Independent Reviewer](../engines/INDEPENDENT_REVIEWER.md):
+- Inspect the full diff against the original request.
+- Check scope creep, duplicate logic, secrets, permissions, tenant boundaries, async races and API contract regressions.
+- Verify shared components still serve unrelated consumers.
+- Fix blocker/high-severity issues before acceptance.
+
+## Stage 6 — Evidence-based verification
+Use [Testing & Verification](../rules/TESTING_AND_VERIFICATION.md) and [Acceptance Criteria](../quality/ACCEPTANCE_CRITERIA.md):
+- Run the actual configured tests relevant to the changed behavior.
+- Run configured build, typecheck and lint commands when applicable.
+- Run integration/E2E tests for affected critical flows when available.
+- Use real-browser inspection for changed UI, responsive layouts and animations when browser tooling exists.
+- Re-run failed checks after fixes.
+- Record PASS, FAIL, NOT CONFIGURED, NOT RUN, BLOCKED or NOT APPLICABLE with evidence.
+
+A missing test runner is not a pass. A JavaScript project without TypeScript is not a typecheck pass. A static scan cannot certify runtime or visual behavior. There is no universal 95% score gate.
+
+## Optional pattern catalogue
+Load only when the project and request justify it:
+- Tailwind, glass effects and typography: design-system documents.
+- Genie trash/deletion choreography: APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md.
+- Task-specific button animations: BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md.
+- Responsive tab overflow: RESPONSIVE_MOBILE_TABS_SYSTEM.md.
+- Multi-tenancy, RBAC, payments, storage, CMS, chat and AI: their corresponding modules.
+
+These are optional implementation patterns, not retrofit obligations for every project.
+
+## Completion report
+List the delivered outcomes, files changed, important decisions, exact verification commands/results, pre-existing failures, unverified checks, known risks and deployment/migration steps. Do not claim full completion for any criterion without evidence.
+
+
+---
+
+
+## Current Skill and Design-System Source Documents
+
+---
+
+## Source: SKILL.md
+
+---
+name: website-builder-engine
+description: Use when planning, building, debugging, retrofitting, modernizing, or verifying web applications and full-stack projects across existing stacks. Requires architecture-aware discovery, scoped implementation, real verification evidence, and truthful completion reporting.
+---
+
+# Website Builder & Autonomous Web Engineering Engine (`website-builder-engine`)
+
+> **PURPOSE**: Master production architecture and autonomous engineering engine for building, modernizing, and retrofitting complete, high-performance, non-breaking web applications in a single run. Enforces Rule Zero ("Plan First, Code Second"), bespoke visual branding, root-level `/app` directory standard (Zero `src/` wrapper), polymorphic multi-storage, split-brain payment resilience, 5-pillar low-bandwidth performance, optimistic rapid-click batching, mandatory deep-documentation inspection, and automated evidence-based acceptance criteria audit score gates.
+
+---
+
+
+
+## MANDATORY EXECUTION CONTRACT — OVERRIDES LEGACY CONFLICTS
+
+This contract has precedence over older examples, score gates, and stack-specific defaults elsewhere in this skill.
+
+### A. Discover the real project before choosing an architecture
+1. Inspect repository root, all relevant source/configuration files, package manifests and lockfiles, framework entry points, route structure, existing design tokens/components, data models, API boundaries, auth/RBAC, tests, CI and deployment configuration.
+2. Identify the actual framework, language, package manager, runtime, workspace/monorepo boundaries and installed libraries from repository evidence. Do not infer Next.js, MongoDB, Tailwind, Framer Motion, Lucide, a root `/app`, or any other stack component unless the project demonstrates it or the user explicitly requests it.
+3. For large repositories, use a repeatable inventory and targeted file reads. Record what was inspected and what could not be inspected; never claim a complete audit when files were truncated, inaccessible or skipped.
+4. Read only the documentation modules relevant to the request and its discovered dependencies. Load additional modules when implementation reveals a dependency.
+
+### B. Understand intent and control scope
+1. Translate the request into observable outcomes and acceptance criteria before editing.
+2. Classify work as: required, dependency-required, optional recommendation, or unrelated. Implement the first two categories; do not silently expand into unrelated redesigns or rewrites.
+3. Inspect broadly to understand impact, but change only the requested outcome and necessary connected work.
+4. Preserve existing architecture, naming, conventions, working behavior and useful documentation unless a documented reason and migration plan justify a change.
+5. Ask a concise clarification only when a decision materially changes architecture, security, cost, user-visible behavior or irreversible data operations. Otherwise choose the least disruptive evidence-based default and state it.
+
+### C. Plan and implement in safe phases
+1. Establish a baseline: current git status/diff, existing tests, build state and known failures. Never overwrite user changes.
+2. Produce a dependency-aware plan listing affected files, contracts, migration risks, acceptance criteria and verification commands.
+3. Implement the smallest coherent vertical slice, then integrate dependent layers. Keep API, schema, UI, permissions, loading/error/empty states and responsive behavior consistent.
+4. Use existing project libraries and design system before introducing dependencies. Add dependencies only when justified and compatible with the package manager/runtime.
+5. Do not generate placeholder handlers, fake data presented as real, dead controls, TODO-only implementations or success states that are not backed by actual operations.
+6. Preserve backward compatibility where required; use explicit migrations and rollback plans for data/schema changes.
+
+### D. Design and motion must be contextual and complete
+1. Existing brand, visual language, accessibility, platform conventions and user requirements outrank generic aesthetic mandates. Glassmorphism, dark mode, floating labels, sidebars, specific icon libraries and any one animation style are optional unless requested or already part of the product system.
+2. Treat animation documentation as a pattern library, not a requirement to add motion to every control.
+3. For multi-stage motion, specify semantic stages, start/end states, timing, easing, interruption/cancellation behavior, reduced-motion fallback and final layout/data state. Two CSS keyframes can interpolate smoothly; the acceptance criterion is whether the complete intended choreography is present and works, not the number of keyframes.
+4. Verify motion in a real browser when browser tooling is available. Check actual rendered states, clipping/overflow, stacking contexts, responsive layouts, reduced motion and interaction interruption. If browser verification is unavailable, report it as NOT VERIFIED.
+
+### E. Verification is evidence-based; no false passes
+1. Execute the relevant existing test command(s). A test file existing is not evidence that tests passed.
+2. Run the project's actual build, typecheck and lint commands when configured and relevant. Do not substitute a guessed command or install dependencies without authorization/context.
+3. For projects with no test script, report TESTS: NOT CONFIGURED / NOT VERIFIED. Do not mark them passed.
+4. A JavaScript project without TypeScript is NOT APPLICABLE for TypeScript checking, not a TypeScript pass.
+5. Separate PASS, FAIL, NOT RUN, NOT CONFIGURED, NOT APPLICABLE and BLOCKED. Every PASS must include the command/tool, exit status and useful output/evidence.
+6. Compare against the baseline and run focused regression tests for changed behavior. Add tests for new behavior and bug fixes when a test harness exists.
+7. Static regex checks are advisory only. They cannot prove visual quality, runtime correctness, security, API behavior or animation quality.
+8. Do not use a universal percentage threshold as a completion gate. Completion is based on acceptance criteria and evidence for the actual task.
+
+### F. Completion report
+Report: requested outcomes; files changed; important design/architecture decisions; tests/build/typecheck/lint/browser checks with exact status; known failures and pre-existing failures; unverified items and why; migration/deployment steps; and remaining risks.
+Never say "complete", "passed", "production-ready" or "verified" for an item without supporting evidence. If a tool or environment prevents verification, say so plainly and identify the next exact step.
+
+## 🌐 UNIVERSAL CROSS-PLATFORM PATH RESOLUTION LAW
+
+> 📌 **CROSS-ENVIRONMENT COMPLIANCE DIRECTIVE**:  
+> The Website Builder Engine is designed to run seamlessly across all major AI coding environments:
+> - **Claude Code**: Installed at `~/.claude/skills/website-builder-engine/` or in project configuration.
+> - **Google Gemini / Antigravity**: Installed at `~/.gemini/config/skills/website-builder-engine/`.
+> - **Cursor / VS Code**: Installed at `~/.cursor/skills/` or cloned in your active workspace.
+> - **Autonomous CLI / CI/CD**: Supported via environment variable `WEBSITE_BUILDER_SKILL_DIR` or the global CLI `node scripts/website-builder.js`.
+> 
+> The framework automatically resolves its canonical root via `scripts/resolve-paths.js`. You may invoke commands using standard relative paths, via the unified CLI `website-builder`, or directly via node:
+> - **Audit CLI Runner**: `node scripts/audit-engine.js .` *(or `node scripts/website-builder.js audit .`)*
+> - **Scaffolding Runner**: `node scripts/scaffold-engine.js .` *(or `node scripts/website-builder.js scaffold .`)*
+> - **Documentation Loader**: `node scripts/load-docs.js <topic>` *(or `node scripts/website-builder.js docs <topic>`)*
+> - **Automated Test Suite**: `npm test` *(or `node scripts/website-builder.js test`)*
+
+---
+
+## 🧠 MANDATORY TIERED PROGRESSIVE INGESTION PROTOCOL
+
+> ⚡ **CRITICAL FIRST ACTION FOR THE AGENT (NO CONTEXT BLOWOUT)**:  
+> Attempting to read the entire 1.8MB `BRAIN.md` in one turn causes tool read limits (46KB) or context truncation.
+> The framework enforces **Tiered Progressive Ingestion**:
+> 
+> 1. **Step 1 — Ingest Tier 0 Core Laws**: Read [`rules/CORE_DIRECTIVE.md`](./rules/CORE_DIRECTIVE.md) and [`rules/MANDATORY_EXECUTION_CHECKLIST.md`](./rules/MANDATORY_EXECUTION_CHECKLIST.md). This loads all mandatory architectural rules, context laws, motion physics, and test gates into working memory in under 200 lines.
+> 2. **Step 2 — Load Targeted Module on Demand**: Use [`SKILL_MANIFEST.json`](./SKILL_MANIFEST.json) or run `node scripts/load-docs.js <topic>` (e.g. `responsive-tabs`, `buttons`, `auth`, `datatable`, `genie-trash`, `retrofit`) to load ONLY the exact specifications needed for your active task.
+> 3. **Step 3 — Master Brain Reference**: `BRAIN.md` is compiled as a unified single-file offline reference and search index. Compile anytime via `node scripts/compile-brain.js`.
+
+---
+
+## 🧠 MANDATORY DEEP-INSPECTION & ZERO-SHALLOW DIRECTIVE
+
+> ⚠️ **STRICT MANDATE FOR ALL AI AGENTS & PAIR PROGRAMMERS**:  
+> When the `/website-builder-engine` command or skill is activated, you **MUST NOT** provide shallow, generic, or off-the-cuff boilerplate code. You **MUST NOT** rely on vague memory or hallucinate patterns when canonical, battle-tested specifications exist in this framework.
+> 
+> **Every decision and architecture proposal MUST be grounded in the framework's actual documentation files:**
+> 1. **Scan the Living Map First**: Always consult [`FILE-MAP.md`](./FILE-MAP.md) or [`SKILL_MANIFEST.json`](./SKILL_MANIFEST.json) to locate the exact module, rule, or design pattern needed.
+> 2. **Read Before Designing or Coding**: You MUST explicitly read the canonical documentation files (`modules/`, `rules/`, `design-system/`) relevant to the user's task before proposing solutions or scaffolding code.
+> 3. **Cite & Link Specific Blueprints**: Explicitly reference the underlying module specification, models, hooks, and component recipes in your plan.
+> 4. **Reuse With Architectural Fit**: When a canonical implementation matches the detected stack, existing design system and accepted scope, prefer it over duplicating logic. If it does not fit, use the project's native abstraction; never force a library, component or pattern simply because it appears in this documentation.
+
+---
+
+## Project Intelligence, Scope and Independent Review
+
+Before implementing a task, use:
+- [Project Intelligence Engine](./engines/PROJECT_INTELLIGENCE.md) to discover the actual architecture and trace the relevant dependency graph.
+- [Intent and Scope Engine](./engines/INTENT_AND_SCOPE.md) to turn the request into acceptance criteria and prevent unrelated work.
+- [Independent Reviewer](./engines/INDEPENDENT_REVIEWER.md) to inspect the final diff and evidence.
+- [Acceptance Criteria Ledger](./quality/ACCEPTANCE_CRITERIA.md) for task-specific verification.
+- [Animation QA](./quality/ANIMATION_QA.md) whenever the task changes meaningful motion.
+
+These are required workflow guides; their instructions remain architecture-aware and do not force a particular stack or visual style.
+
+## 🧭 DUAL WORKFLOW PROTOCOL: GREENFIELD VS EXISTING RETROFIT
+
+Choose your workflow based on the current workspace state:
+
+```
+                     ┌─────────────────────────────┐
+                     │  New User Request Received  │
+                     └──────────────┬──────────────┘
+                                    │
+                                    ▼
+                      /───────────────────────────\
+                     <    Is this an EXISTING      >
+                     <    Website / Repository?    >
+                      \───────────────────────────/
+                                    │
+                     YES            │            NO (Greenfield)
+               ┌────────────────────┴───────────────────┐
+               ▼                                        ▼
+┌──────────────────────────────────┐     ┌──────────────────────────────┐
+│ WORKFLOW B: RETROFIT ENGINE      │     │ WORKFLOW A: GREENFIELD BUILD │
+│ 1. Run audit-engine.js baseline  │     │ 1. Rule Zero: Discovery Qs   │
+│ 2. Read RETROFIT_ENGINE.md       │     │ 2. Generate /.project/PLAN   │
+│ 3. Upgrade UI, Motion, Security  │     │ 3. Scaffold Root /app & DB   │
+│ 4. Implement scoped changes and verify each acceptance criterion with evidence       │     │ 4. Phased Sprints Execution  │
+└──────────────────────────────────┘     └──────────────────────────────┘
+```
+
+---
+
+## 🛠️ WORKFLOW A: GREENFIELD APPLICATION SCAFFOLDING
+
+### Phase 1: Interactive Discovery Interview
+When starting a brand new project:
+1. Open [`DISCOVERY_QUESTIONNAIRE.md`](./DISCOVERY_QUESTIONNAIRE.md).
+2. Ask questions in structured, digestible batches (Scope -> UI/UX -> RBAC -> Features -> Safeguards -> Storage -> Performance).
+3. **Backend Placement Inquiry**: Ask whether backend is Unified Monolith, Dual Next.js (`frontend/` + `backend/`), FastAPI (Python), or Node.js.
+4. Support the user in their preferred language (English, Urdu, or Roman Urdu).
+
+### Phase 2: Project Workspace Initialization
+Once answers are received:
+1. Create a dedicated project configuration directory at the root (`/.project/` or `/projects/<project-name>/`).
+2. Generate the core blueprint files using [`PLAN_BUILDER.md`](./PLAN_BUILDER.md):
+   - `PLAN.md`: Objectives, stack, chosen modules, and scope boundaries.
+   - `ARCHITECTURE.md`: Data models, API contracts, RBAC permissions, and root-level `/app` file structure.
+   - `RULES.md`: Design rules extracted from `design-system/` plus engineering rules from `rules/`.
+   - `SPRINTS.md`: Phased task list with clear checkboxes and test gates.
+   - `FILE-MAP.md`: Living repository navigation map per [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](./rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md).
+3. Present the plan summary to the user and request explicit confirmation to proceed.
+
+### Phase 3: Scaffolding & Foundation First
+Once the plan is approved:
+1. **Root-Level `/app` Directory Standard (Zero `src/` Wrapper)**:
+   - Place Next.js App Router directly at `<root>/app/`.
+   - Sibling root directories: `/app`, `/components`, `/context`, `/models`, `/hooks`, `/lib`, `/public`, `/styles`.
+   - Path alias: `"@/*": ["./*"]` in `tsconfig.json`.
+2. **Original & Bespoke Design Mandate ("Design Apna Banana Hai")**:
+   - Never copy documentation code examples or dummy colors verbatim.
+   - Craft a bespoke visual identity, palette, and custom typography pairing per [`design-system/DESIGN_ARCHITECTURE.md`](./design-system/DESIGN_ARCHITECTURE.md).
+3. **Bespoke Brand Logo & Complete Favicon Suite**:
+   - Create vector brand logos (wordmark + 32x32 glyph) and full favicon suite (`favicon.ico`, `icon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest`).
+4. **Zero-Bar Draggable Modals & Apple Genie Origin-Morph System**:
+   - Implement macOS 3D Genie Origin-Morph animation unrolling from origin buttons per [`design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`](./design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md).
+5. **Database Schemas & Models**:
+   - Dedicated root `/models` (1 collection per file) following [`rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`](./rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md).
+
+---
+
+## ⚡ WORKFLOW B: EXISTING PROJECT RETROFIT & MODERNIZATION
+
+For an existing repository, follow the architecture-aware process in [Project Intelligence](./engines/PROJECT_INTELLIGENCE.md), [Intent and Scope](./engines/INTENT_AND_SCOPE.md), and [Execution Contract](./EXECUTION_CONTRACT.md).
+
+1. **Baseline and discover**: inspect git status, actual stack, routes, components, data flow, shared dependencies, current tests and known failures. Preserve existing user changes.
+2. **Define the outcome**: write observable acceptance criteria. Classify work as required, dependency-required, optional or unrelated.
+3. **Build a dependency-aware plan**: list affected files/contracts, migration risks, regression surfaces, exclusions and exact verification commands.
+4. **Implement complete connected behavior**: update the UI, state, API, persistence, permissions and loading/error/empty states needed for the requested outcome. Do not perform an unrelated full redesign.
+5. **Review independently**: inspect the complete diff for scope creep, security gaps, duplicate logic and regressions.
+6. **Verify with evidence**: execute relevant project-native tests, build, typecheck, lint and browser checks where configured and applicable. Missing commands are NOT CONFIGURED, never PASS.
+7. **Report honestly**: list changed files, exact evidence, pre-existing failures, unverified items and operational steps. Never use a universal 95% score as a completion gate.
+
+## 📚 Master Modular Subsystems Library
+
+Before designing or implementing any subsystem, the agent **MUST read the canonical specification**:
+
+| Domain | Capability | Canonical Framework Specification |
+| :--- | :--- | :--- |
+| **Retrofit** | Existing Website Modernization & evidence-based acceptance criteria Audit Protocol | [`modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`](./modules/EXISTING_PROJECT_RETROFIT_ENGINE.md) |
+| **Interactive UI** | Optimistic Rapid-Click Batching (Pagination, Steppers, Slides, Likes) | [`modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`](./modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md) |
+| **Performance** | Low-Bandwidth 2G/3G & 5-Pillar Speed (BlurHash LQIP, RSC, SWR) | [`modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`](./modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md) |
+| **Storage** | Multi-Storage Polymorphic & Vercel Free Bypass (Presigned, 2MB GridFS) | [`modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`](./modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md) |
+| **Fintech** | Idempotency, Mutex & Timeout Reconciliation (Inquire-Before-Charge) | [`modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`](./modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md) |
+| **Scaling** | BullMQ 30s Heartbeat Lease & Two-Tier L1/L2 Redis Cache | [`modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`](./modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md) |
+| **High Scale** | 20 Production Hyper-Scale Blueprints (20M Likes, Feeds, Reminders) | [`modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md`](./modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md) |
+| **Orders** | Dual-View Master Table & 1-by-1 Slide Review Carousel | [`modules/ORDER_SLIDE_WORKFLOW.md`](./modules/ORDER_SLIDE_WORKFLOW.md) |
+| **Data Tables** | Marquee Box Drag Select, Tri-State Sorting & Smart Pagination | [`modules/DATA_TABLE_AND_CARDS_SYSTEM.md`](./modules/DATA_TABLE_AND_CARDS_SYSTEM.md) |
+| **CMS** | Monaco/WYSIWYG, Dynamic PDF Canvas, Email Builder & Visual Studio | [`modules/CMS_ENGINE.md`](./modules/CMS_ENGINE.md) |
+| **Auth** | Biometric AI Face Models (128-d Vector Embeddings) & Multi-Account | [`modules/AUTH_AND_FACELOCK.md`](./modules/AUTH_AND_FACELOCK.md) |
+| **Settings** | Dual-Tier (Normal & System) Settings Hub & Live Ping Tests | [`modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md`](./modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md) |
+| **Route Proxy** | Edge Middleware, Interception Toasts & Session Cache Invalidation | [`modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md`](./modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md) |
+| **Chat** | Real-Time Omni-Chat & Binary WebSocket Concurrency Compression | [`modules/CHAT_AND_COMMUNICATION_SYSTEM.md`](./modules/CHAT_AND_COMMUNICATION_SYSTEM.md) |
+| **AI Copilot** | Multimodal Copilot, Table Ingestion, CMS Generator & Actions | [`modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md`](./modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md) |
+| **Leads** | Autonomous AI Lead Responder & Calendar Booking Engine | [`modules/AUTONOMOUS_AI_LEAD_RESPONDER_AND_BOOKING_SYSTEM.md`](./modules/AUTONOMOUS_AI_LEAD_RESPONDER_AND_BOOKING_SYSTEM.md) |
+| **Public Enquiries** | Public Contact Forms & Dashboard Enquiries Inbox | [`modules/ENQUIRIES_AND_LEADS_SYSTEM.md`](./modules/ENQUIRIES_AND_LEADS_SYSTEM.md) |
+| **Blogs** | Newsletter Studio, Blog Engine & Public Content Feeds | [`modules/NEWSLETTER_AND_BLOGS_SYSTEM.md`](./modules/NEWSLETTER_AND_BLOGS_SYSTEM.md) |
+| **Social** | Recursive Nested Comments, Reactions & Upvotes | [`modules/INFINITE_COMMENTS_AND_REPLIES_SYSTEM.md`](./modules/INFINITE_COMMENTS_AND_REPLIES_SYSTEM.md) |
+| **Education** | LMS Live Video Streaming & Virtual Classroom Studio | [`modules/LMS_LIVE_STREAMING_AND_INTERACTIVE_CLASSES.md`](./modules/LMS_LIVE_STREAMING_AND_INTERACTIVE_CLASSES.md) |
+| **Mobile UX** | Public Bottom Bar vs Floating Dashboard Menu Pill | [`modules/MOBILE_NAVIGATION_AND_LAYOUT.md`](./modules/MOBILE_NAVIGATION_AND_LAYOUT.md) |
+| **Multi-Tenancy** | Subdomain Routing, Custom Domains & Multi-Company DB Isolation | [`modules/MULTI_TENANT_SYSTEM.md`](./modules/MULTI_TENANT_SYSTEM.md) |
+| **Access Control** | 5-Role RBAC Matrices & Permission Guards | [`modules/RBAC_SYSTEM.md`](./modules/RBAC_SYSTEM.md) |
+| **Productivity** | Global Keyboard Shortcuts & Command Palette | [`modules/SHORTCUT_KEYS_SYSTEM.md`](./modules/SHORTCUT_KEYS_SYSTEM.md) |
+| **Notifications** | SMTP Email Engine & WhatsApp Business Automation | [`modules/AUTOMATIONS_AND_NOTIFICATIONS.md`](./modules/AUTOMATIONS_AND_NOTIFICATIONS.md) |
+| **404 UX** | Standalone Canvas Arcade Mini-Game Page | [`modules/NOT_FOUND_PAGE.md`](./modules/NOT_FOUND_PAGE.md) |
+| **3D Graphics** | Three.js GLTF Viewer & Inspection Studio | [`design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`](./design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md) |
+| **Trash & Delete** | Apple macOS Screen-Level Genie Trash Bin & Vacuum Deletion | [`design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`](./design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md) |
+
+---
+
+## ⚡ Engineering Guardrails (Apply When Relevant)
+
+1. **Preserve the existing project**: trace imports, consumers, models and routes before changing shared code. Keep unrelated working behavior intact.
+2. **Architecture is evidence-driven**: root `/app`, MongoDB, Tailwind, React Context, middleware, Framer Motion and named packages are used only when the project actually uses them or the user requests them.
+3. **Security is server-enforced**: enforce authorization, tenant isolation, validation and secrets handling at trusted server boundaries. Client-side hiding is not authorization.
+4. **Data consistency matters**: use transactions, idempotency, concurrency controls and migration/rollback strategies when the domain requires them.
+5. **Design patterns are optional references**: dark mode, glass surfaces, floating labels, mobile navigation patterns, Genie deletion and task-specific button animations are selected according to the existing product design and user request. Do not add every catalogue item to every project.
+6. **Motion must match the task**: use [Animation QA](./quality/ANIMATION_QA.md) for meaningful motion changes. Include full choreography, interruption, failure, reduced-motion and final data-state behavior.
+7. **Performance must be measured**: optimize relevant bottlenecks and network constraints; do not add infrastructure or dependencies without evidence.
+8. **Feature flags and payment safeguards**: implement only when the product has those systems or the user requests them. Protect payment and licensing operations on the server.
+9. **Auth UX and demo safety**: when auth screens are in scope, keep production credentials out of UI and ensure recovery/navigation flows match the actual product.
+10. **Responsive behavior**: test the layouts and interactions relevant to the changed pages and target viewport range.
+11. **No false completion**: use the evidence statuses in [Acceptance Criteria](./quality/ACCEPTANCE_CRITERIA.md). A score or static scan cannot substitute for actual acceptance evidence.
+
+
+
+---
+
+## Source: FILE-MAP.md
+
+# Repository Navigation & Functional File Map (FILE-MAP.md)
+
+> **STATUS: FULLY VERIFIED REPOSITORY BLUEPRINT**  
+> This file acts as the verified navigation map for `WebsiteBuilderDocumentation` (Main-Docs). It traces all entry points, architectural rules, visual systems, and production modular subsystems to enable rapid navigation without redundant repository-wide scans.
+
+---
+
+## 📊 Repository Profile
+
+- **Repository Type**: Enterprise Web Development Documentation & Autonomous AI Engineering Framework (Main-Docs)
+- **Primary Languages / Formats**: Markdown (`.md`), TypeScript (`.ts`/`.tsx`), Mermaid (`mermaid`), KaTeX Math
+- **Application Target**: Full-stack Next.js (App Router), FastAPI (Python), Node.js/Express, MongoDB (Mongoose), Redis (BullMQ), Tailwind CSS
+- **Core Purpose**: Enables AI agents and human developers to plan, architect, scaffold, and verify production-grade web applications in a single run with zero regressions and zero bloat.
+
+---
+
+## 🧭 Functional Subsystem Maps
+
+### 1. Agent Directives & Autonomous Project Orchestration
+- **Functionality**: Defines the mandatory 5-phase execution protocol, behavioral guardrails, discovery interview engine, and standardized blueprint generators for all AI coding agents.
+- **Confidence**: Verified
+- **Entry Point**: `MAIN_AGENT_DIRECTIVE.md` & `rules/CORE_DIRECTIVE.md`
+- **Primary Files**:
+  - `MAIN_AGENT_DIRECTIVE.md`: Master agent operating directive, Rule Zero, 5-phase protocol, behavioral guardrails.
+  - `rules/CORE_DIRECTIVE.md`: Tier 0 rapid manifest and 10 ironclad architectural laws (< 200 lines).
+  - `rules/MANDATORY_EXECUTION_CHECKLIST.md`: 10-step mandatory task execution checklist, scoped test requirements, and anti-premature completion gate.
+  - `SKILL_MANIFEST.json`: Progressive loading index mapping topics to targeted documentation files.
+  - `scripts/resolve-paths.js`: Cross-platform dynamic path and environment resolver (Claude Code, Gemini, Cursor, CI).
+  - `scripts/website-builder.js`: Unified cross-platform CLI runner for audit, scaffold, docs, test, and compile.
+  - `scripts/load-docs.js`: On-demand targeted documentation loader to eliminate 1.8MB context blowout.
+  - `scripts/test-framework.js`: Automated framework testing suite with 30 passing verification checkpoints.
+  - `PLAN_BUILDER.md`: Project blueprint generator for `PLAN.md`, `ARCHITECTURE.md`, `RULES.md`, `SPRINTS.md`, and `FILE-MAP.md`.
+  - `DISCOVERY_QUESTIONNAIRE.md`: 11-phase onboarding questionnaire covering stack, RBAC, features, and timeouts.
+- **Supporting Files**:
+  - `README.md`: High-level repository orientation and philosophy.
+- **Flow**:
+  `New Task ➔ MAIN_AGENT_DIRECTIVE.md ➔ DISCOVERY_QUESTIONNAIRE.md ➔ PLAN_BUILDER.md ➔ /.project/ Blueprints ➔ Phase Execution`
+- **Dependencies**: None (Root orchestration layer).
+- **Used By**: All AI agents and human engineers initializing or extending projects.
+
+---
+
+### 2. Engineering, Safety & Architecture Rules
+- **Functionality**: Non-visual platform standards governing database connections, RBAC security, phased delivery, testing lifecycles, payment safeguards, and zero-regression development.
+- **Confidence**: Verified
+- **Entry Point**: `rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md` & `rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`
+- **Primary Files**:
+  - `rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`: 10 safety laws, zero-regression protocol, anti-bloat guard, and `FILE-MAP.md` standard.
+  - `rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md`: Principal engineer mindset, 6-phase non-breaking build law, 4-question line foresight matrix.
+  - `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`: Root `/models` (1 per file) and `/context` single source of truth rules.
+  - `rules/TESTING_AND_VERIFICATION.md`: Universal 7-tier verification lifecycle (Static, Adversarial Chaos, DB Mutation, Context, Dead Code, Copywriting, Visual).
+  - `rules/BACKEND_CONNECTION_RULES.md`: Server-to-server contracts, DB connection caching, and API standards.
+  - `rules/RBAC_SECURITY_RULES.md`: Role definitions (Developer, Owner, Admin, Staff, Customer), security matrices, permission guards.
+  - `rules/PAYMENT_SAFEGUARD_RULE.md`: Developer monthly hosting & maintenance payment banner and grace period rules.
+- **Flow**:
+  `Sprint Tasks ➔ SAFE_DEVELOPMENT_AND_FILE_MAP_RULES ➔ Targeted Code ➔ TESTING_AND_VERIFICATION ➔ FILE-MAP Sync`
+- **Dependencies**: Root directive files.
+- **Used By**: Every implementation sprint across frontend and backend.
+
+---
+
+### 3. Design System & Visual Engineering
+- **Functionality**: Comprehensive visual design tokens, typography, modern CSS math, glassmorphism, 3D Apple macOS Genie origin-morph animations, Three.js 3D inspection studio, and website sections.
+- **Confidence**: Verified
+- **Entry Point**: `design-system/README.md`
+- **Primary Files**:
+  - `design-system/DESIGN_ARCHITECTURE.md`: Master design tokens, typography, layout architecture, dark mode palette.
+  - `design-system/FRONTEND_DESIGN_RULES.md`: Core UI laws (floating label inputs, resizable sidebar, zero-bar dialogs).
+  - `design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`: Apple macOS 3D Genie Origin-Morph unrolling animation & zero-bar draggable dialogs.
+  - `design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md`: Screen-level Genie Trash Bin, portal coordinate elevation, 3D vacuum siphon drop & layout glide-up.
+  - `design-system/RESPONSIVE_MOBILE_TABS_SYSTEM.md`: Apple-inspired responsive mobile tab overflow system, dynamic container measurement, `[More ▼]` dropdown, with full copy-paste hook and component implementations.
+  - `design-system/300_VIRAL_ANIMATIONS_AND_HOVER_EFFECTS_CATALOGUE.md`: Master catalog of 300 viral social media animations, hover mechanics, and Usman Shams (@iusmanshams) micro-interactions across 8 categories.
+  - `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md`: Task-specific in-flight micro-animations suite (delete bin loop, truck road, RF tower, cargo airplane takeoff, scooter courier rider) with universal `AnimatedTaskButton` component.
+  - `design-system/LIQUID_GOOEY_NAVIGATION_TABS_SYSTEM.md`: Viscous fluid navigation tabs with SVG color-matrix goo filter, 3-tier text protection, and complete `LiquidTabs` component.
+  - `design-system/3D_INTERACTIVE_CAROUSEL_SYSTEM.md`: 3D cylindrical card carousel with touch momentum, spring snapping, specular gloss lighting, and complete `CardCarousel3D` component.
+  - `design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`: Three.js model viewer, GLTF loader, parts audit studio.
+  - `design-system/01_CSS_PROPERTIES_REFERENCE.md` through `07_WEBSITE_DESIGN_PATTERNS.md`: Modern CSS clamp math, visual effects, components, cards, animations, sections, and patterns.
+  - `design-system/09_IMPLEMENTATION_RECIPES.md` & `10_SEARCHABLE_INDEX.md`: Production React/Tailwind recipes and searchable index.
+- **Supporting Files**:
+  - `design-system/MASTER_HOVER_ANIMATION_SYSTEM.md`: Micro-interactions and magnetic hovers.
+  - `design-system/PREMIUM_BUTTON_ANIMATION_SYSTEM.md`: High-end button animations and shimmer states.
+  - `design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`: Interactive marquee trashcan deletion mechanics.
+  - `design-system/TASK_ANIMATED_BUTTONS_SYSTEM.md`: Task-state animated buttons.
+  - `design-system/assets/MISSING_REFERENCE_ASSETS.md`: Recovery ledger for local visual reference images.
+- **Flow**:
+  `Design Requirement ➔ DESIGN_ARCHITECTURE.md ➔ UI Components / Genie Dialogs / Sections ➔ React Component Tree`
+- **Dependencies**: Tailwind CSS, Framer Motion, Three.js, Lucide React.
+- **Used By**: All UI/UX pages, modals, dashboards, and storefronts.
+
+---
+
+### 4. Financial & High-Scale Resilience Engines
+- **Functionality**: Distributed idempotency, in-flight mutex locking, Inquire-Before-Charge timeout recovery, BullMQ worker crash failover, hyper-scale patterns, and universal polymorphic multi-storage architecture.
+- **Confidence**: Verified
+- **Entry Point**: `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`, `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md` & `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`
+- **Primary Files**:
+  - `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md`: Order-bound idempotency keys, Redis mutex lock, Inquire-Before-Charge (IBC) protocol, dual reconciliation (webhooks + BullMQ poller), JazzCash/Stripe adapters, `useResilientPayment` Hook.
+  - `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md`: Universal `MediaAsset` schema, polymorphic `<UnifiedMedia />` resolver, Direct-to-Storage presigned uploads (bypassing Vercel 4.5MB limits), 2MB chunked GridFS streaming, and edge caching (`/api/media/[id]`).
+  - `modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md`: 5 pillars of slow-network speed: Adaptive WebP/AVIF images, 20-char BlurHash LQIP, React Server Component streaming (<50ms TTFB), MongoDB projection pruning (90% JSON reduction), IndexedDB offline-first SWR cache, and auto-degradation.
+  - `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md`: 3-tier capacity planning, BullMQ 30s heartbeat failover, L1/L2 Redis cache, payment circuit breakers.
+  - `modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md`: 20 production high-scale blueprints (20M Likes buffer, feeds, reminders, Uber H3 rides).
+- **Flow**:
+  `Customer "Pay" ➔ Redis Mutex Lock ➔ Pre-Persist PaymentIntent ➔ Bank Call ➔ [Timeout Catch] ➔ Inquire-Before-Charge ➔ Settlement`
+- **Dependencies**: Redis, BullMQ, MongoDB GridFS, Supabase, Vercel Blob, Firebase, S3/R2, Gateway APIs.
+- **Used By**: Checkout flows, billing systems, media uploaders, CMS, and background workers.
+
+---
+
+### 5. Core Business Modules & Workflows
+- **Functionality**: Production-ready enterprise specifications for orders, CMS, auth, real-time chat, leads, blogs, settings, optimistic rapid-click batching, and automated codebase retrofit.
+- **Confidence**: Verified
+- **Primary Files**:
+  - `scripts/audit-engine.js`: Architecture-aware evidence runner; executes configured test/build/typecheck/lint scripts and reports missing checks as NOT CONFIGURED. No universal score gate.
+  - `modules/EXISTING_PROJECT_RETROFIT_ENGINE.md`: 6-stage end-to-end modernization protocol for existing websites.
+  - `modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md`: 0ms optimistic UI updates, 300ms settling debounce, AbortController cancellation for pagination, cart steppers, slides, and likes.
+  - `modules/ORDER_SLIDE_WORKFLOW.md`: Master order table + 1-by-1 slide carousel review workflow.
+  - `modules/DATA_TABLE_AND_CARDS_SYSTEM.md`: Marquee box drag selection, tri-state sorting, smart pagination.
+  - `modules/CMS_ENGINE.md`: WYSIWYG/Monaco CMS, variable registry, dynamic PDF canvas, email builder.
+  - `modules/AUTH_AND_FACELOCK.md`: Biometric face embeddings (128-d vectors), multi-account auth, strict zero-demo security policy & inter-auth navigation ergonomics.
+  - `modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md`: Dual-tier settings (Normal & System), live test buttons, zero-leak flags.
+  - `modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md`: Edge middleware, interception toasts, session cache invalidation.
+  - `modules/CHAT_AND_COMMUNICATION_SYSTEM.md` & `CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md`: Omni-chat & socket compression.
+  - `modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md` & `AUTONOMOUS_AI_LEAD_RESPONDER_AND_BOOKING_SYSTEM.md`: Autonomous AI lead conversion.
+  - `modules/ENQUIRIES_AND_LEADS_SYSTEM.md`: Public enquiry capture and dashboard lead management.
+  - `modules/NEWSLETTER_AND_BLOGS_SYSTEM.md`: Blog engine, newsletter canvas studio, and public CMS feed.
+  - `modules/INFINITE_COMMENTS_AND_REPLIES_SYSTEM.md`: Nested recursive comments & reactions.
+  - `modules/LMS_LIVE_STREAMING_AND_INTERACTIVE_CLASSES.md`: Live streaming & classroom management.
+  - `modules/MOBILE_NAVIGATION_AND_LAYOUT.md`: Public bottom navigation bar & floating menu pill.
+  - `modules/MULTI_TENANT_SYSTEM.md`: Multi-company tenant isolation & custom domains.
+  - `modules/RBAC_SYSTEM.md`: Complete 5-role permission matrices.
+  - `modules/SHORTCUT_KEYS_SYSTEM.md`: Global keyboard shortcuts & command palette.
+  - `modules/AUTOMATIONS_AND_NOTIFICATIONS.md`: SMTP email & WhatsApp Business alerts.
+  - `modules/NOT_FOUND_PAGE.md`: Playable HTML5 Canvas arcade 404 mini-game page.
+- **Flow**: Consumed directly into client project `.project/PLAN.md` during onboarding.
+
+---
+
+## 📑 File-to-Function Index
+
+### Root Orchestration
+| File Path | Type | Main Responsibility | Important For | Confidence |
+| :--- | :--- | :--- | :--- | :--- |
+| `SKILL.md` | Master Skill | Official Antigravity global skill definition & 5-phase orchestrator | Skill Invocation | Verified |
+| `README.md` | Doc Entry | Framework overview, golden rule, directory tree | Orientation | Verified |
+| `MAIN_AGENT_DIRECTIVE.md` | Directive | Master agent rules, 5-phase protocol, behavioral guardrails | Autonomous Execution | Verified |
+| `PLAN_BUILDER.md` | Generator | Blueprint specification for `.project/` and `FILE-MAP.md` | Project Onboarding | Verified |
+| `DISCOVERY_QUESTIONNAIRE.md` | Interview | 11-phase structured discovery questionnaire | Requirements Capture | Verified |
+| `MASTER_SUMMONING_PROMPT.md` | Master Prompt | High-impact executive prompt template and action matrix | Fast Invocation & Pilot | Verified |
+| `FILE-MAP.md` | Living Map | Verified repository navigation and functional index | Codebase Navigation | Verified |
+| `BRAIN.md` | Master Brain | Compiled high-density synthesis of all 49 framework specifications | Instant Context Ingestion | Verified |
+| `scripts/audit-engine.js` | Audit CLI | Standalone 9-suite compliance & testing validator, 0-100% scoring | Quality Gate & Testing | Verified |
+| `scripts/scaffold-engine.js` | Scaffolder CLI | Automated zero-dependency generator for core framework files & packages | Fast Foundation Scaffolding | Verified |
+| `scripts/compile-brain.js` | Compiler | Automated build script compiling all specs into unified BRAIN.md | Knowledge Compilation | Verified |
+
+### Rules & Engineering Standards (`rules/`)
+| File Path | Type | Main Responsibility | Important For | Confidence |
+| :--- | :--- | :--- | :--- | :--- |
+| `rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md` | Safety Rule | 10 laws, zero-regression, anti-bloat, FILE-MAP sync | Non-Breaking Dev | Verified |
+| `rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md` | Engineering | Principal engineer mindset, 4-question line foresight | Phased Architecture | Verified |
+| `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md` | Arch Rule | Root `/models` and `/context` encapsulation | State & Data Layer | Verified |
+| `rules/TESTING_AND_VERIFICATION.md` | Quality | Universal 7-tier verification lifecycle | Quality Assurance | Verified |
+| `rules/BACKEND_CONNECTION_RULES.md` | Backend Rule | DB connection caching, API envelopes, server-to-server calls | Backend Integration | Verified |
+| `rules/RBAC_SECURITY_RULES.md` | Security Rule | 5-tier role hierarchy, permission enforcement | Security & Auth | Verified |
+| `rules/PAYMENT_SAFEGUARD_RULE.md` | Billing Rule | Developer hosting safeguard banner and 8th-day grace date | Platform Billing | Verified |
+
+### Design System (`design-system/`)
+| File Path | Type | Main Responsibility | Important For | Confidence |
+| :--- | :--- | :--- | :--- | :--- |
+| `design-system/README.md` | Index | Design system overview and reference index | UI Entry Point | Verified |
+| `design-system/DESIGN_ARCHITECTURE.md` | Tokens | Typography, color palette, viewport layout rules | Visual Foundations | Verified |
+| `design-system/FRONTEND_DESIGN_RULES.md` | UI Rules | Floating inputs, resizable dvh sidebar, theme rules | Core UI Mechanics | Verified |
+| `design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md` | Animation | 3D Genie Origin-Morph unroll & zero-bar draggable dialogs | Modal Windows | Verified |
+| `design-system/APPLE_GENIE_TRASH_BIN_DELETION_SYSTEM.md` | Animation | Screen-level Genie Trash Bin, portal elevation, 3D vacuum drop | Deletion Physics | Verified |
+| `design-system/BUTTON_IN_FLIGHT_TASK_ANIMATIONS_SPECIFICATION.md` | Animation | In-flight button task micro-animations (Delete bin loop, order truck, live sync tower) | Button In-Flight Physics | Verified |
+| `design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md` | 3D Graphics | Three.js GLTF model viewer and inspection studio | 3D Interactive UI | Verified |
+| `design-system/01_CSS_PROPERTIES_REFERENCE.md` | Reference | Modern CSS properties, clamp math, layout reference | Styling | Verified |
+| `design-system/02_VISUAL_EFFECTS_CATALOGUE.md` | Effects | Glass, neumorphism, aurora, spotlight effects | Visual Polish | Verified |
+| `design-system/03_UI_COMPONENTS_LIBRARY.md` | Components | Floating inputs, buttons, navigation, overlays | Atomic UI | Verified |
+| `design-system/04_CARDS_AND_CARD_STACKS_LIBRARY.md` | Components | Card patterns, swipe physics, stacked decks | Content Display | Verified |
+| `design-system/05_ANIMATIONS_CATALOGUE.md` | Animation | Keyframes, transitions, GSAP ScrollTimeline | Motion Graphics | Verified |
+| `design-system/06_WEBSITE_SECTIONS_LIBRARY.md` | Sections | Heroes, Bento grids, timelines, footers | Page Layouts | Verified |
+| `design-system/07_WEBSITE_DESIGN_PATTERNS.md` | Patterns | Complete SaaS, AI, Agency, E-Commerce designs | Full Site Design | Verified |
+| `design-system/08_SOURCES_AND_REFERENCES.md` | Reference | Design sources, typography pairings, palettes | Design Inspiration | Verified |
+| `design-system/09_IMPLEMENTATION_RECIPES.md` | Code Recipes | Copy-paste production React + Tailwind recipes | Fast Prototyping | Verified |
+| `design-system/10_SEARCHABLE_INDEX.md` | Index | Searchable taxonomy index for all design tokens | Fast Lookup | Verified |
+| `design-system/MASTER_HOVER_ANIMATION_SYSTEM.md` | Micro-UI | Master hover animations and tactile physics | Interaction Design | Verified |
+| `design-system/PREMIUM_BUTTON_ANIMATION_SYSTEM.md` | Micro-UI | High-end button animations and loaders | Action Feedback | Verified |
+| `design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md` | Animation | Interactive trashcan animation for deletions | Destructive Actions | Verified |
+| `design-system/TASK_ANIMATED_BUTTONS_SYSTEM.md` | Animation | Task-state animated buttons | Status Progression | Verified |
+| `design-system/assets/MISSING_REFERENCE_ASSETS.md` | Asset Ledger | Recovery ledger for missing local visual assets | Asset Tracking | Verified |
+
+### Modules (`modules/`)
+| File Path | Type | Main Responsibility | Important For | Confidence |
+| :--- | :--- | :--- | :--- | :--- |
+| `modules/EXISTING_PROJECT_RETROFIT_ENGINE.md` | Module | 6-stage end-to-end modernization protocol for existing websites | Codebase Retrofit | Verified |
+| `modules/OPTIMISTIC_RAPID_CLICK_BATCHING_ENGINE.md` | Module | Optimistic multi-click batching, 300ms settling debounce, AbortController | High-Frequency UI | Verified |
+| `modules/LOW_BANDWIDTH_AND_EXTREME_PERFORMANCE_ENGINE.md` | Module | 5 pillars of slow-network speed: BlurHash LQIP, RSC streaming, projection pruning, offline SWR | Performance | Verified |
+| `modules/MULTI_STORAGE_POLYMORPHIC_MEDIA_ENGINE.md` | Module | Polymorphic MediaAsset, Vercel 4.5MB bypass, 2MB chunked GridFS, edge caching | Media Storage | Verified |
+| `modules/PAYMENT_IDEMPOTENCY_AND_RECONCILIATION_ENGINE.md` | Module | Idempotency keys, Redis mutex lock, Inquire-Before-Charge, cron reconciliation | Payment Processing | Verified |
+| `modules/BACKEND_SCALING_AND_RESILIENCE_ARCHITECTURE.md` | Module | 3-tier scaling matrix, BullMQ failover, L1/L2 Redis cache | High Scale Backend | Verified |
+| `modules/ADVANCED_SYSTEM_DESIGNS_AND_HIGH_SCALE_PATTERNS.md` | Module | 20 hyper-scale system blueprints (20M likes, reminders) | Architecture Design | Verified |
+| `modules/ORDER_SLIDE_WORKFLOW.md` | Module | Master order table + 1-by-1 slide carousel review | Order Processing | Verified |
+| `modules/DATA_TABLE_AND_CARDS_SYSTEM.md` | Module | Marquee drag selection, smart pagination, column sorting | Data Exploration | Verified |
+| `modules/CMS_ENGINE.md` | Module | WYSIWYG/Monaco CMS, dynamic PDF canvas, email builder | Content Management | Verified |
+| `modules/AUTH_AND_FACELOCK.md` | Module | Biometric face embeddings, zero-demo policy, inter-auth nav ergonomics | Identity & Security | Verified |
+| `modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md` | Module | Dual-tier settings, live test buttons, zero-leak flags | Platform Settings | Verified |
+| `modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md` | Module | Edge middleware, interception toasts, session cache invalidation | Route Security | Verified |
+| `modules/CHAT_AND_COMMUNICATION_SYSTEM.md` | Module | Omni-chat portal, live threads, agent inbox | Customer Support | Verified |
+| `modules/CHAT_LIGHTWEIGHT_CONCURRENCY_AND_COMPRESSION.md` | Module | WebSocket binary compression, concurrency control | Real-Time Chat | Verified |
+| `modules/AI_ASSISTANT_AND_COPILOT_SYSTEM.md` | Module | Multimodal AI copilot, table extraction, CMS generator | AI Capabilities | Verified |
+| `modules/AUTONOMOUS_AI_LEAD_RESPONDER_AND_BOOKING_SYSTEM.md` | Module | AI lead responder, slot booking, calendar sync | Lead Generation | Verified |
+| `modules/ENQUIRIES_AND_LEADS_SYSTEM.md` | Module | Public contact forms & dashboard enquiry inbox | Inbound Leads | Verified |
+| `modules/NEWSLETTER_AND_BLOGS_SYSTEM.md` | Module | Blog engine, newsletter canvas studio, public feeds | Content Marketing | Verified |
+| `modules/INFINITE_COMMENTS_AND_REPLIES_SYSTEM.md` | Module | Recursive nested comments, reactions, upvotes | Community / Social | Verified |
+| `modules/LMS_LIVE_STREAMING_AND_INTERACTIVE_CLASSES.md` | Module | Live video streaming, interactive classrooms | EdTech / Courses | Verified |
+| `modules/MOBILE_NAVIGATION_AND_LAYOUT.md` | Module | Public bottom bar & dashboard floating menu pill | Mobile Ergonomics | Verified |
+| `modules/MULTI_TENANT_SYSTEM.md` | Module | Subdomains, custom domains, tenant DB isolation | SaaS Multi-Tenancy | Verified |
+| `modules/RBAC_SYSTEM.md` | Module | 5-role permission matrices and guard components | Access Control | Verified |
+| `modules/SHORTCUT_KEYS_SYSTEM.md` | Module | Keyboard shortcut manager and command palette | Productivity | Verified |
+| `modules/AUTOMATIONS_AND_NOTIFICATIONS.md` | Module | SMTP email & WhatsApp Business automation | Notifications | Verified |
+| `modules/NOT_FOUND_PAGE.md` | Module | Standalone 404 page with playable HTML5 canvas arcade | Error Handling | Verified |
+
+---
+
+## 🔄 Critical Execution Flows
+
+### Flow 1: Safe Feature Addition Flow (Zero-Regression & Anti-Bloat)
+1. `rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md` (Read pre-flight rules)
+2. `FILE-MAP.md` (Trace existing entry points, models, and contexts)
+3. `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md` (Extend models/context additively; reuse utilities)
+4. `rules/TESTING_AND_VERIFICATION.md` (Execute 7-tier verification lifecycle)
+5. `FILE-MAP.md` (Synchronize and record updated verified state)
+
+### Flow 2: Project Onboarding & Scaffolding Flow
+1. `MAIN_AGENT_DIRECTIVE.md` (Agent activates Rule Zero)
+2. `DISCOVERY_QUESTIONNAIRE.md` (Conducts structured 11-phase interview)
+3. `PLAN_BUILDER.md` (Generates `.project/PLAN.md`, `ARCHITECTURE.md`, `RULES.md`, `SPRINTS.md`, `FILE-MAP.md`)
+4. User Approves Plan
+5. `rules/EXPERT_ENGINEERING_AND_PHASED_PLANNING_SYSTEM.md` (Executes phased build)
+
+### Flow 3: Split-Brain Timeout & Resilient Payment Flow
+1. `hooks/useResilientPayment.ts` (Customer triggers checkout)
+2. `lib/payments/paymentLock.ts` (Acquires Redis Distributed Mutex Lock: `lock:payment:<orderId>`)
+3. `app/api/payments/process/route.ts` (Pre-persists `PaymentIntent` with `Idempotency-Key`)
+4. `lib/payments/adapters/` (Calls Bank Gateway; handles 504 Timeout)
+5. `components/checkout/PaymentVerificationModal.tsx` (Displays amber `PENDING_VERIFICATION` modal; auto-polls)
+6. `workers/reconciliationWorker.ts` (BullMQ poller executes Inquire-Before-Charge to auto-settle orphaned debits)
+
+### Flow 4: Multi-Storage Presigned Upload & Polymorphic Resolution Flow
+1. `hooks/useMultiStorageUpload.ts` (Determines upload method based on provider & file size)
+2. `app/api/media/upload/presign/route.ts` (Generates client upload token in < 50ms, bypassing Vercel 4.5MB cap)
+3. Direct Cloud Upload OR `app/api/media/upload/chunk/route.ts` (Streams 2MB slices directly to MongoDB GridFS)
+4. `models/MediaAsset.ts` (Records exact provider, publicId, download token, dimensions, and mimeType)
+5. `components/media/UnifiedMedia.tsx` & `lib/storage/resolveMediaUrl.ts` (Transparently renders local, cloud, or GridFS assets with 1-year edge cache `/api/media/[id]`)
+
+### Flow 5: Low-Bandwidth Adaptive Streaming & Degradation Flow
+1. `hooks/useNetworkQuality.ts` (Detects `navigator.connection` 2G/3G/Save-Data or manual Data Saver toggle)
+2. `app/layout.tsx` (RSC streams HTML shell + sub-22KB subsetted fonts in < 50ms)
+3. `components/media/AdaptiveImage.tsx` (Renders 20-char BlurHash placeholder instantly; requests 60% smaller WebP payload)
+4. `lib/cache/offlineSwrStorage.ts` (Loads cached catalog from IndexedDB in 0ms on repeat visits)
+5. Auto-Degradation Guard (Replaces 3D WebGL canvases and video loops with lightweight 25KB static WebP posters)
+
+### Flow 6: Optimistic Rapid-Click Batching & Network Settlement Flow
+1. `components/tables/DataTablePagination.tsx` OR `components/cart/CartQuantityStepper.tsx` (User rapidly taps Next or + 4 times)
+2. `hooks/useRapidClickBatcher.ts` (Optimistically updates local UI state in 0ms with badge pulse; resets 300ms settling timer on each click)
+3. Settling Window Expiration (User stops clicking; 300ms quiet window completes)
+4. `AbortController` (Aborts any previous in-flight HTTP requests)
+5. API Dispatch (Dispatches single settled network query for final state e.g. Page 4 or Qty 5)
+
+---
+
+## 🎯 Verification & Confidence Audit
+- **Total Mapped Files**: 92 files (102 Git tree entries including directories) across 3 directories and root
+- **Verified Files**: 53/53 (100% physically inspected from disk)
+- **Likely Files**: 0
+- **Unknown Files**: 0
+- **Source-Code Files Changed**: 0
+- **Application Behavior Altered**: No
+
+
+
+## Verified Repository Inventory (overhaul branch baseline)
+- Git tree contained 102 entries: 92 files and 10 directories at the time this map was refreshed.
+- Runtime scripts are under `scripts/`; there is no `lib/resolve-paths.js` or `bin/website-builder.js`.
+- `package.json` is required for the documented npm command workflow and is restored on the overhaul branch.
+- Treat this map as a navigation aid, not proof that every implementation is current. Re-run `npm test` and `npm run validate:docs` after documentation changes.
+
+
+## New Execution and Quality Engines
+- `EXECUTION_CONTRACT.md`: Highest-precedence architecture-aware task lifecycle and evidence rules.
+- `engines/PROJECT_INTELLIGENCE.md`: Repository reconnaissance, architecture mapping and dependency tracing.
+- `engines/INTENT_AND_SCOPE.md`: Outcome definition, scope classification and phased plan format.
+- `engines/INDEPENDENT_REVIEWER.md`: Separate review role, severity model and evidence-based acceptance.
+- `quality/ANIMATION_QA.md`: Multi-stage motion specification and browser QA checklist.
+- `quality/ACCEPTANCE_CRITERIA.md`: Requirement/evidence ledger and completion gate.
+
+
+### Current Overhaul Additions
+- `engines/`: project intelligence, intent/scope planning and independent review.
+- `quality/`: animation QA and acceptance/evidence ledger.
+- `tests/`: regression tests for the audit engine and execution contract.
+- `.github/workflows/quality.yml`: CI validation, framework tests, audit and CLI smoke checks.
+- `package.json`: restored local CLI/test scripts (no third-party runtime dependencies).
+
+- `BRAIN.md`: Current authoritative execution addendum is placed first; the previous compiled knowledge body is preserved below it. The compiler now includes the new execution and quality engines and exits non-zero if any source file is missing.
+
+- `tests/scaffold-safety.test.js`: verifies dry-run, explicit apply, forced-overwrite backup and unsupported-project safety.
+
+
+---
+
+## Source: design-system/DESIGN_ARCHITECTURE.md
+
+# Master Design Architecture & UI/UX System Specification
+
+> **Applicability:** This document describes a Tailwind-oriented design system profile. Use it when Tailwind is already selected or explicitly requested. For projects using CSS Modules, vanilla CSS, Sass, styled-components, another utility framework or a design-system package, preserve the existing styling architecture and translate only the relevant visual principles. This document does not authorize a framework migration.
+
+
+> **CORE MANDATE**: Tailwind CSS is the styling framework for this documented design profile, not a universal requirement across all projects. Every interface must feature state-of-the-art micro-animations, bespoke typography, fluid hover transitions, accessible dark/light themes, and specialized interactive components (Floating Label inputs, resizable `dvh` sidebars, animated toasts, and animated icons).
+>
+> 👑 **THE GOLDEN LAW: "DESIGN APNA BANANA HAI" (ZERO BLIND COPYING FROM DOCS)**:  
+> This documentation defines architectural mechanics, structural patterns, and behavioral contracts. The AI agent or developer **MUST craft an original, bespoke, brand-tailored visual design** for each specific project. **NEVER copy-paste the exact dummy colors, example layouts, or sample palettes verbatim from these docs**. The color harmonies, typography pairings, card layouts, hero styling, and aesthetic personality must be handcrafted uniquely to match the client's domain and brand identity.
+
+---
+
+## 🎨 1. The Visual Foundations & Tailwind Theme System
+
+### 1.1 Dual-Theme Harmony (Dark Mode Default + Light Mode)
+All color utilities must use Tailwind's `dark:` variant and CSS variable blending for instantaneous, zero-flash theme toggling.
+
+```javascript
+// tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  darkMode: 'class',
+  content: [
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        canvas: {
+          light: '#f8fafc',
+          dark: '#07090e',
+        },
+        surface: {
+          light: '#ffffff',
+          dark: '#0f141f',
+          elevatedLight: '#f1f5f9',
+          elevatedDark: '#182030',
+        },
+        brand: {
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          400: '#38bdf8', /* Primary Sky Cyan */
+          500: '#0ea5e9',
+          600: '#0284c7',
+        },
+        accent: {
+          indigo: '#6366f1',
+          emerald: '#10b981',
+          amber: '#f59e0b',
+          rose: '#f43f5e',
+        }
+      },
+      boxShadow: {
+        'glow-sky': '0 0 25px -5px rgba(56, 189, 248, 0.35)',
+        'glow-indigo': '0 0 25px -5px rgba(99, 102, 241, 0.35)',
+        'glass-dark': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+        'glass-light': '0 8px 32px 0 rgba(31, 38, 135, 0.08)',
+      },
+      height: {
+        dvh: '100dvh',
+      },
+      minHeight: {
+        dvh: '100dvh',
+      },
+      maxHeight: {
+        dvh: '100dvh',
+      }
+    },
+  },
+  plugins: [],
+}
+```
+
+---
+
+## 🎭 2. Animation & 3D Engineering Stack
+
+### 2.1 Framer Motion (Component & Layout Animations)
+- **Mandatory** for modal entrance/exits, layout morphing, toast popups, and hover physics.
+- Standard easing curve: `cubic-bezier(0.16, 1, 0.3, 1)` (spring-like deceleration).
+
+### 2.2 GSAP & ScrollTrigger (Scroll Sequences & High-Performance Timelines)
+- Used for complex landing page reveals, timeline synchronizations, smooth parallax, and text scramble/reveal animations.
+
+### 2.3 Three.js & WebGL 3D Models (High-Fidelity Standard, Parts Audit & Inspection Protocol)
+- **Hard Constraint**: Three.js 3D scenes are ONLY enabled with explicit user confirmation.
+- **The High-Quality 3D Model Law**: Every 3D model introduced—whether procedural in code or imported from verified sources—must be an exceptionally high-quality, complete 3D model with high-precision parameters. Unfinished or crude low-poly assets are strictly prohibited.
+- **Mandatory Multi-Part Decomposition**: Every 3D model must be broken down and audited into its constituent child meshes, nodes, and bones:
+  - Verify every part's geometry, world coordinates, pivot alignment, scale $(1, 1, 1)$, and surface normals.
+  - Audit PBR materials (`roughness`, `metalness`, `envMapIntensity`, soft shadows, and power-of-two textures).
+- **3D Staging & Inspection Tools**: All models must be inspected in the **Three.js Editor** (`threejs.org/editor`), Blender, or via our built-in `<ThreeModelInspector />` component before production integration.
+- **Scroll & Timeline Rigging**: GSAP ScrollTrigger camera dollies, exploded part disassemblies, and turntable rotations must strictly adhere to geometric motion instructions.
+- **Performance & Sourcing Budgets**:
+  - External models must be 100% free, lightweight, animated, and licensed under CC0/Open Source (`.glb` with Draco compression from Kenney, Three.js official assets, or Sketchfab CC0).
+  - Strict performance budgets: Desktop $\le 100\text{k}$ triangles; draw calls $\le 40$; mobile $\le 30\text{k}$ triangles.
+  - Strict GPU disposal: On React unmount, recursively traverse the scene to dispose geometries, materials, textures, and force WebGL context loss to prevent memory leaks.
+  - Graceful fallback: If WebGL is unsupported or mobile battery is constrained, fallback to animated 2D SVGs or Lottie.
+- **Master Documentation**: See [`design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`](./THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md).
+
+---
+
+## ✨ 3. Iconography, Animated Icons & Lottie Ecosystem
+
+All projects must leverage high-grade iconography. Combine static icon sets with interactive, animated vector libraries:
+
+### 3.1 Static & Lucide Icon Libraries
+- **Lucide React** (`lucide-react`): Primary modern vector icon library.
+- **FontAwesome** (`@fortawesome/react-fontawesome`): Comprehensive utility icons.
+- **Google Material Symbols / Material Icons**: Enterprise & Google forms parity.
+
+### 3.2 Animated Icons & Lottie Sources
+| Platform | Asset Type | Best Use Case | Integration Method |
+| :--- | :--- | :--- | :--- |
+| **Lordicon** (`https://lordicon.com/` / `lordicons.com`) | Interactive Morphing Icons | Action triggers (Download, Delete, Success tick, Payment cards) | Web Component / Lordicon Lottie Player |
+| **Icons8** (`https://icons8.com/`) | Animated & Illustrated Icons | Status cards, empty states, features | SVG / Animated WebP / Lottie |
+| **LottieFlow** (`https://lottieflow.com/`) | Minimal Flow Animations | Toggle switches, menu burger-to-cross, spinners | `@dotlottie/react-player` |
+| **LottieFiles** (`https://lottiefiles.com/`) | Rich Character & Scene Animations | Hero illustrations, checkout celebration, 404 pages | `@lottiefiles/react-lottie-player` |
+
+### 3.3 Bespoke Brand Logo & Real Favicon Suite Architecture
+
+> **MANDATORY BRAND ASSET RULE**:  
+> Every project MUST have custom-crafted brand assets. Leaving the default Next.js triangle, Vite bird, React atom, or empty globe icon is strictly forbidden. The agent must create real, high-resolution, beautiful branding assets.
+
+#### 1. Reusable Vector Brand Logo (`components/ui/BrandLogo.tsx`)
+```tsx
+"use client";
+
+import React from "react";
+
+export const BrandLogo: React.FC<{
+  variant?: "full" | "icon";
+  className?: string;
+  brandName?: string;
+}> = ({ variant = "full", className = "", brandName = "NovaSaaS" }) => {
+  return (
+    <div className={`flex items-center gap-2.5 select-none ${className}`}>
+      {/* Custom Vector Brand Mark */}
+      <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 via-indigo-600 to-cyan-400 p-[1.5px] shadow-glow-sky group cursor-pointer">
+        <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden">
+          <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 transition-transform duration-300 group-hover:scale-110">
+            <defs>
+              <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#38bdf8" />
+                <stop offset="100%" stopColor="#818cf8" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M12 2L2 7L12 12L22 7L12 2Z"
+              stroke="url(#logo-grad)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M2 17L12 22L22 17"
+              stroke="url(#logo-grad)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M2 12L12 17L22 12"
+              stroke="url(#logo-grad)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+      </div>
+
+      {/* Styled Wordmark (Only in full variant) */}
+      {variant === "full" && (
+        <span className="font-display font-extrabold text-lg tracking-tight text-slate-900 dark:text-white flex items-center">
+          {brandName}
+          <span className="w-1.5 h-1.5 rounded-full bg-sky-400 ml-0.5 animate-pulse" />
+        </span>
+      )}
+    </div>
+  );
+};
+```
+
+#### 2. Complete Favicon & PWA Suite Checklist
+Before deploying or completing foundation scaffolding, generate and install:
+- `/public/favicon.ico`: Multi-resolution icon for legacy browser tabs.
+- `/public/icon.svg` or `/src/app/icon.tsx`: Modern crisp SVG vector favicon that scales to Retina displays without pixelation.
+- `/public/apple-touch-icon.png`: 180x180 px PNG for iOS home screen bookmarks and Safari tabs.
+- `/public/icon-192.png` & `/public/icon-512.png`: PWA manifest icons.
+- `/public/site.webmanifest`: Complete with `name`, `short_name`, `theme_color`, and `background_color`.
+
+---
+
+## 🔠 4. Bespoke Typography & Font Discovery
+
+Never default to generic standard browser fonts. Recommend and configure expressive modern display typefaces alongside ultra-clean body fonts:
+
+### 4.1 Curated Font Catalog
+- **Display & Hero Statement Fonts**:
+  - **Neofolio**: Modern geometric neo-grotesque with sharp high-contrast tech personality.
+  - **Nexo Kora**: Futuristic, bold, cyber-industrial display font for SaaS & FinTech headers.
+  - **Bierika**: Elegant, avant-garde editorial modern styling with curved terminals.
+  - **OSIRIS**: Sci-fi, clean, minimalist architectural aesthetic for titles and badges.
+  - **Clash Display / Cabinet Grotesk / Syne**: High-impact modern SaaS headlines.
+- **Body & Interface Fonts**:
+  - **Plus Jakarta Sans**: Crisp, ultra-legible contemporary UI font.
+  - **Outfit**: Clean, geometric, friendly interface typeface.
+  - **Inter**: High-density operational data tables and forms.
+
+### 4.2 Discovery Protocol
+During the planning interview, the agent presents 2-3 tailored font combinations from this catalog, showcases their vibe, and obtains the user's explicit approval before locking into the Tailwind font family config.
+
+---
+
+## 🧩 5. Custom Floating Label Input Components (Zero Placeholders!)
+
+> **MANDATE**: Do NOT use default HTML `placeholder="..."` attributes. All inputs must use the custom floating label architecture designed below.
+
+### 5.1 Floating Label Text & Password Input (`FloatingInput.tsx`)
+
+#### Interaction Mechanics:
+1. **Empty & Unfocused**: The label sits **vertically centered** inside the input, horizontally aligned to the left with padding (`left-4 top-1/2 -translate-y-1/2`).
+2. **On Focus OR Has Value (`value.length > 0`)**: The label smoothly animates up to the **top border outline** (`top-0 -translate-y-1/2 scale-75`), with an opaque background notch matching the card/surface background.
+3. **On Blur with Empty Value**: Smoothly returns to vertical center.
+
+```tsx
+"use client";
+
+import React, { useState, useId } from "react";
+
+interface FloatingInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string;
+  error?: string;
+}
+
+export const FloatingInput: React.FC<FloatingInputProps> = ({
+  label,
+  value = "",
+  onChange,
+  onFocus,
+  onBlur,
+  error,
+  type = "text",
+  className = "",
+  ...props
+}) => {
+  const id = useId();
+  const [isFocused, setIsFocused] = useState(false);
+  const hasValue = String(value).length > 0;
+  const isFloating = isFocused || hasValue;
+
+  return (
+    <div className="relative w-full">
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={onChange}
+        onFocus={(e) => {
+          setIsFocused(true);
+          onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setIsFocused(false);
+          onBlur?.(e);
+        }}
+        placeholder=" " /* Empty space trick for CSS peer fallback */
+        className={`peer w-full rounded-xl border px-4 pt-4 pb-2 text-base text-slate-900 dark:text-slate-100 bg-transparent transition-all duration-200 outline-none
+          ${
+            error
+              ? "border-rose-500 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20"
+              : "border-slate-300 dark:border-slate-700/80 focus:border-sky-500 dark:focus:border-sky-400 focus:ring-2 focus:ring-sky-500/20"
+          } ${className}`}
+        {...props}
+      />
+      
+      <label
+        htmlFor={id}
+        className={`pointer-events-none absolute left-4 transition-all duration-200 origin-[0] px-1 font-medium select-none
+          bg-surface-light dark:bg-surface-dark
+          ${
+            isFloating
+              ? "top-0 -translate-y-1/2 text-xs font-semibold text-sky-600 dark:text-sky-400"
+              : "top-1/2 -translate-y-1/2 text-base text-slate-500 dark:text-slate-400"
+          }
+          ${error ? "!text-rose-500" : ""}`}
+      >
+        {label}
+      </label>
+
+      {error && <p className="mt-1.5 text-xs text-rose-500 font-medium pl-1">{error}</p>}
+    </div>
+  );
+};
+```
+
+---
+
+### 5.2 Floating Label Textarea (`FloatingTextarea.tsx`)
+
+#### Interaction Mechanics:
+- In a textarea, the label must **never start in the middle of a tall box**. It sits aligned with the **first line** of text (`top-4`).
+- Upon focus or when containing text, it transitions smoothly up to the top border notch (`top-0 -translate-y-1/2 text-xs`).
+
+```tsx
+"use client";
+
+import React, { useState, useId } from "react";
+
+interface FloatingTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label: string;
+  error?: string;
+}
+
+export const FloatingTextarea: React.FC<FloatingTextareaProps> = ({
+  label,
+  value = "",
+  onChange,
+  onFocus,
+  onBlur,
+  error,
+  rows = 4,
+  className = "",
+  ...props
+}) => {
+  const id = useId();
+  const [isFocused, setIsFocused] = useState(false);
+  const hasValue = String(value).length > 0;
+  const isFloating = isFocused || hasValue;
+
+  return (
+    <div className="relative w-full">
+      <textarea
+        id={id}
+        rows={rows}
+        value={value}
+        onChange={onChange}
+        onFocus={(e) => {
+          setIsFocused(true);
+          onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setIsFocused(false);
+          onBlur?.(e);
+        }}
+        placeholder=" "
+        className={`peer w-full rounded-xl border px-4 pt-5 pb-3 text-base text-slate-900 dark:text-slate-100 bg-transparent transition-all duration-200 outline-none resize-y
+          ${
+            error
+              ? "border-rose-500 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20"
+              : "border-slate-300 dark:border-slate-700/80 focus:border-sky-500 dark:focus:border-sky-400 focus:ring-2 focus:ring-sky-500/20"
+          } ${className}`}
+        {...props}
+      />
+
+      <label
+        htmlFor={id}
+        className={`pointer-events-none absolute left-4 transition-all duration-200 origin-[0] px-1 font-medium select-none
+          bg-surface-light dark:bg-surface-dark
+          ${
+            isFloating
+              ? "top-0 -translate-y-1/2 text-xs font-semibold text-sky-600 dark:text-sky-400"
+              : "top-4 text-base text-slate-500 dark:text-slate-400"
+          }
+          ${error ? "!text-rose-500" : ""}`}
+      >
+        {label}
+      </label>
+
+      {error && <p className="mt-1.5 text-xs text-rose-500 font-medium pl-1">{error}</p>}
+    </div>
+  );
+};
+```
+
+---
+
+### 5.3 Google Forms Style Floating Select (`FloatingSelect.tsx`)
+
+#### Interaction Mechanics:
+- Vertically centered label; no default selected placeholder text until the user actively picks an option or focuses.
+- On focus or selection, the label rises to the top border.
+
+```tsx
+"use client";
+
+import React, { useState, useId } from "react";
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface FloatingSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  label: string;
+  options: Option[];
+  error?: string;
+}
+
+export const FloatingSelect: React.FC<FloatingSelectProps> = ({
+  label,
+  options,
+  value = "",
+  onChange,
+  onFocus,
+  onBlur,
+  error,
+  className = "",
+  ...props
+}) => {
+  const id = useId();
+  const [isFocused, setIsFocused] = useState(false);
+  const hasValue = String(value).length > 0;
+  const isFloating = isFocused || hasValue;
+
+  return (
+    <div className="relative w-full">
+      <select
+        id={id}
+        value={value}
+        onChange={onChange}
+        onFocus={(e) => {
+          setIsFocused(true);
+          onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setIsFocused(false);
+          onBlur?.(e);
+        }}
+        className={`w-full rounded-xl border px-4 pt-4 pb-2 text-base text-slate-900 dark:text-slate-100 bg-transparent transition-all duration-200 outline-none appearance-none cursor-pointer
+          ${
+            error
+              ? "border-rose-500 focus:border-rose-500"
+              : "border-slate-300 dark:border-slate-700/80 focus:border-sky-500 dark:focus:border-sky-400 focus:ring-2 focus:ring-sky-500/20"
+          } ${className}`}
+        {...props}
+      >
+        <option value="" disabled hidden />
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+            {opt.label}
+          </option>
+        ))}
+      </select>
+
+      <label
+        htmlFor={id}
+        className={`pointer-events-none absolute left-4 transition-all duration-200 origin-[0] px-1 font-medium select-none
+          bg-surface-light dark:bg-surface-dark
+          ${
+            isFloating
+              ? "top-0 -translate-y-1/2 text-xs font-semibold text-sky-600 dark:text-sky-400"
+              : "top-1/2 -translate-y-1/2 text-base text-slate-500 dark:text-slate-400"
+          }
+          ${error ? "!text-rose-500" : ""}`}
+      >
+        {label}
+      </label>
+
+      {/* Custom Chevron Indicator */}
+      <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+
+      {error && <p className="mt-1.5 text-xs text-rose-500 font-medium pl-1">{error}</p>}
+    </div>
+  );
+};
+```
+
+---
+
+## 🔘 6. Interactive Atoms: Buttons, Links, Scrollbars & Dropdowns
+
+### 6.1 Mandatory `cursor: pointer` Rule
+Every interactive button, clickable card, tab, dropdown trigger, and link component **MUST** include `cursor-pointer` explicitly.
+- **Button Micro-Interactions**:
+  - `active:scale-[0.98]`
+  - `hover:-translate-y-0.5`
+  - Radiant border glow on primary CTAs (`shadow-glow-sky`).
+
+```tsx
+// components/ui/AppButton.tsx
+export const AppButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'danger' }> = ({
+  children,
+  variant = 'primary',
+  className = '',
+  ...props
+}) => {
+  const styles = {
+    primary: "bg-gradient-to-r from-sky-400 to-blue-500 text-slate-950 font-semibold shadow-md hover:shadow-glow-sky hover:from-sky-300 hover:to-blue-400",
+    secondary: "bg-slate-100 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700/80 hover:bg-slate-200 dark:hover:bg-slate-700",
+    danger: "bg-rose-600 text-white hover:bg-rose-500 shadow-md hover:shadow-rose-500/25",
+  };
+
+  return (
+    <button
+      className={`inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl cursor-pointer transition-all duration-200 active:scale-[0.98] hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${styles[variant]} ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+```
+
+### 6.2 Custom Animated Scrollbars
+In `globals.css` via Tailwind `@layer utilities`:
+```css
+@layer utilities {
+  /* Ultra-sleek custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.25);
+    border-radius: 9999px;
+    transition: background 0.2s ease;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(56, 189, 248, 0.6);
+  }
+}
+```
+
+---
+
+## 🍞 7. High-End Animated Toast System (Framer Motion)
+
+- Entrance: Slides in from top/right with spring bounce.
+- Hover: Pause timer and subtle scale-up + border highlight.
+- Exit: Smooth shrink and slide-out.
+
+```tsx
+// components/ui/ToastContainer.tsx
+import { motion, AnimatePresence } from "framer-motion";
+
+export const ToastItem = ({ toast, onDismiss }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -15, scale: 0.9 }}
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+      className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-slate-900/90 text-slate-100 border border-sky-400/30 backdrop-blur-xl shadow-glow-sky cursor-pointer"
+      onClick={onDismiss}
+    >
+      <span className="text-xl">✨</span>
+      <div>
+        <h4 className="font-semibold text-sm">{toast.title}</h4>
+        <p className="text-xs text-slate-300">{toast.message}</p>
+      </div>
+    </motion.div>
+  );
+};
+```
+
+---
+
+## 📐 8. Layout Engine: Resizable `h-dvh` Sidebar & Glass Topbar
+
+### 8.1 The Resizable Dynamic Viewport Sidebar (`Sidebar.tsx`)
+- **Position**: `fixed top-0 left-0`.
+- **Height**: `h-dvh` (Dynamic viewport height to prevent mobile browser URL bar bugs).
+- **Collapsible**: Smooth collapse to icon rail (e.g. 72px) or zero.
+- **Draggable Handle**: A split handle on the right edge allows users to drag and set custom width (e.g. between 220px and 450px), saved in `localStorage`.
+
+```tsx
+"use client";
+
+import React, { useState, useEffect, useRef, useCallback } from "react";
+
+export const ResizableSidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [width, setWidth] = useState(280);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const isResizingRef = useRef(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("sidebar_width");
+    if (saved) setWidth(Number(saved));
+    const savedCollapse = localStorage.getItem("sidebar_collapsed");
+    if (savedCollapse !== null) setIsCollapsed(savedCollapse === "true");
+  }, []);
+
+  // Keyboard shortcut toggle: Ctrl+B or Alt+S
+  const toggleCollapse = useCallback(() => {
+    setIsCollapsed((prev) => {
+      const next = !prev;
+      localStorage.setItem("sidebar_collapsed", String(next));
+      return next;
+    });
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const isInput = ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) || target.isContentEditable;
+      if (isInput) return;
+
+      if ((e.ctrlKey && e.key.toLowerCase() === "b") || (e.altKey && e.key.toLowerCase() === "s")) {
+        e.preventDefault();
+        toggleCollapse();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [toggleCollapse]);
+
+  const startResizing = (e: React.MouseEvent) => {
+    e.preventDefault();
+    isResizingRef.current = true;
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      if (!isResizingRef.current) return;
+      const newWidth = Math.min(Math.max(moveEvent.clientX, 200), 480);
+      setWidth(newWidth);
+    };
+
+    const onMouseUp = () => {
+      isResizingRef.current = false;
+      document.body.style.cursor = "default";
+      document.body.style.userSelect = "auto";
+      localStorage.setItem("sidebar_width", String(width));
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+  };
+
+  return (
+    <aside
+      style={{ width: isCollapsed ? 76 : width }}
+      className="fixed top-0 left-0 h-dvh bg-surface-light dark:bg-surface-dark border-r border-slate-200 dark:border-slate-800/80 z-40 transition-[width] duration-150 ease-out flex flex-col justify-between"
+    >
+      <div className="flex-1 overflow-y-auto px-4 py-6 scrollbar-thin">
+        {children}
+      </div>
+
+      {/* Drag & Resize Handle */}
+      {!isCollapsed && (
+        <div
+          onMouseDown={startResizing}
+          className="absolute top-0 right-0 w-1.5 h-full cursor-col-resize hover:bg-sky-400/50 active:bg-sky-400 transition-colors"
+          title="Drag to resize sidebar width"
+        />
+      )}
+    </aside>
+  );
+};
+```
+
+---
+
+### 8.2 Mobile Public Pages: Strict No-Sidebar & Fixed Bottom Footer Bar
+
+Cross-referenced with [`modules/MOBILE_NAVIGATION_AND_LAYOUT.md`](../modules/MOBILE_NAVIGATION_AND_LAYOUT.md).
+
+> **MANDATORY PUBLIC MOBILE LAYOUT LAW**:  
+> On mobile viewports (`< 1024px`), **public marketing, landing, and storefront pages MUST NEVER render a sidebar or slide-out sidepanel**.
+
+Instead, public pages on mobile **MUST feature a Fixed Bottom Footer Navigation Bar**:
+1. **Positioning**: Fixed at bottom of screen (`fixed bottom-0 inset-x-0 z-40 lg:hidden`).
+2. **Glassmorphism**: High-blur frosted glass (`backdrop-blur-xl bg-white/90 dark:bg-slate-950/90 border-t border-slate-200/80 dark:border-slate-800/80 pb-safe`).
+3. **Curated Primary Tabs (3-4 Only)**: Display only 3-4 key destinations (e.g. Home, Explore, Cart/Orders) with crisp icons and labels to guarantee zero clutter.
+4. **Mandatory "More" Link & Bottom Sheet**: The final item in the bottom bar is always **"More"** (`...`). Tapping it smoothly slides up an animated native-style bottom sheet containing all secondary links (About, FAQs, Contact, Terms, Language/Theme controls).
+
+---
+
+### 8.3 Mobile Dashboard: Floating Bottom-Center "Menu" Pill & Dual Close Controls
+
+In authenticated dashboard applications (Staff, Admin, Owner, Developer):
+1. **Mobile Sidebar Available**: Dashboards provide a full navigation sidebar that slides in as a mobile drawer from the left.
+2. **Floating Bottom-Center "Menu" Pill (Vercel-Inspired)**:
+   - Anchored at bottom center: `fixed bottom-6 left-1/2 -translate-x-1/2 z-50 lg:hidden`.
+   - Bespoke obsidian glass styling with ambient glow shadow and micro-icon: `"Menu"`.
+3. **Dual Close ('X') Controls & State Morphing**:
+   - When the mobile sidebar opens:
+     - **Control 1 (Bottom Floating Pill Morphing)**: The bottom pill smoothly morphs into **"Close"** with an animated 'X' cross icon.
+     - **Control 2 (Sidebar Header Close Button)**: Inside the open mobile drawer, the top header has a dedicated close button with an 'X' icon.
+   - Clicking **either** the bottom floating Close button, the top header 'X' button, or tapping the blurred backdrop dismisses the sidebar.
+
+---
+
+## 📊 9. Responsive Data Presentation: Desktop Table vs Mobile Cards Hybrid Architecture
+
+> **MANDATORY DESIGN RULE**:  
+> Anywhere data is presented in a listing or management screen:
+> - **Desktop (`lg:`, `>= 1024px`)**: ALWAYS render the Master Data Table. The Card Grid is strictly hidden (`hidden lg:block`).
+> - **Mobile & Tablet (`< 1024px`)**: ALWAYS render the touch-optimized Interactive Cards Grid. The Data Table is strictly hidden (`block lg:hidden`).
+> - Both views share the same dataset, filter bar, sorting mechanism, selection state, and pagination.
+
+### 9.1 Column Sorting Standard
+- Sorting is enabled **ONLY** on valid sortable columns (e.g. ID, Date, Amount, Status, Name).
+- Action columns, avatars, and checkboxes MUST have sorting disabled.
+- Tri-state toggle: Neutral (`null`) -> Ascending (`asc`) -> Descending (`desc`).
+- Active sort columns display glowing Sky Cyan indicators (`▲` / `▼`).
+
+### 9.2 Smart Pagination with Animated Navigation Loaders
+- **Arrow Navigation**: `ArrowLeft` flips to Previous Page; `ArrowRight` flips to Next Page (active when user is not typing in an input).
+- **Loading State**: When switching pages, the active navigation button displays an animated spinner (`Loader2 animate-spin text-sky-500`), all navigation controls are disabled to prevent double-clicks, and the data container displays a subtle skeleton/shimmer effect.
+
+---
+
+## 🖱️ 10. Google Drive-Style Marquee Drag Selection Engine
+
+To provide desktop-grade power usability, users can click and drag across the screen to select multiple items:
+1. **Interactive Drag Box**: Holding mouse down on any empty canvas area and dragging draws a translucent rectangle (`border border-sky-400 bg-sky-500/15 backdrop-blur-[1px] rounded-sm pointer-events-none`).
+2. **AABB Intersection Detection**:
+   - Each row (`<tr data-selectable-id="...">`) and card (`<div data-selectable-id="...">`) is measured against the drag rectangle's coordinates.
+   - Any item that collides with or lies within the rectangle is dynamically selected in real-time.
+3. **Modifiers**:
+   - `Shift + Drag`: Adds items to the existing selection.
+   - `Ctrl + Drag`: Inverts the selection state of intersected items.
+   - Normal Drag: Replaces current selection with the newly intersected items.
+   - `Escape`: Instantly cancels selection.
+4. Reference full code hook in [`modules/DATA_TABLE_AND_CARDS_SYSTEM.md`](../modules/DATA_TABLE_AND_CARDS_SYSTEM.md).
+
+---
+
+## ⚡ 11. Floating Bulk Action Toolbar & Mandatory Animated Icons
+
+Whenever 1 or more items are selected (via checkbox, `Ctrl + A`, or marquee drag), a floating glassmorphic toolbar slides up from the bottom center (`fixed bottom-6 left-1/2 -translate-x-1/2`).
+
+### 11.1 "Select on All Other Pages" Banner
+When all items on the current page are checked:
+- Display banner: *"All 25 items on this page are selected. [Select all 1,450 items across all pages]"*.
+- Clicking allows batch execution across the full filtered dataset.
+
+### 11.2 Mandatory Animated Icons Rule
+Every button in the Bulk Action Toolbar **MUST** contain an animated icon (Lordicon, Lottie, or Framer Motion animated SVG):
+1. **Delete All** (`Alt + D`): Animated Trash Can with lifting lid + confirmation modal.
+2. **Bulk PDF Download** (`Alt + E`): Animated Document Downloader with bouncing downward arrow.
+3. **Bulk Send Email** (`Alt + M`): Animated Flying Envelope.
+4. **Bulk Send WhatsApp** (`Alt + W`): Animated WhatsApp Chat Bubble with pulsing wave.
+
+---
+
+## ⌨️ 12. Master Keyboard Shortcuts & Global Search (`F`) System
+
+All interfaces must hook into the master shortcut engine detailed in [`modules/SHORTCUT_KEYS_SYSTEM.md`](../modules/SHORTCUT_KEYS_SYSTEM.md):
+- **Global Search `F` Key**: Pressing `f` (or `/`) opens Global Search / Command Palette **ONLY** when the cursor is outside text inputs, textareas, and select elements.
+- **Sidebar Toggles**: `Ctrl + B` or `Alt + S`.
+- **Theme Switcher**: `Alt + T`.
+- **Complete `Ctrl` Suite**: `Ctrl + A` (Select all), `Ctrl + C` (Copy record), `Ctrl + V` (Batch paste), `Ctrl + X` (Cut/stage), `Ctrl + O` (Open details), `Ctrl + Z` (Undo), `Ctrl + Y` (Redo), `Ctrl + S` (Save draft), `Ctrl + Enter` (Submit/Approve), `Ctrl + K` (Command palette), `Ctrl + P` (PDF print).
+- **Complete `Alt` Suite**: `Alt + D` (Delete selected), `Alt + E` (Bulk PDF), `Alt + M` (Bulk Email), `Alt + W` (Bulk WhatsApp), `Alt + N` (New record), `Alt + F` (Focus filter).
+
+---
+
+## 🔐 13. Authentication & Account Switching UI/UX Standards
+
+Cross-referenced with [`modules/AUTH_AND_FACELOCK.md`](../modules/AUTH_AND_FACELOCK.md).
+
+### 13.1 Silent Background Facelock (Custom AI Model Engine - No Passkeys)
+- When the login page mounts, biometric face recognition is initiated silently in the background via our custom client-side face landmark model **(NO WebAuthn / NO OS passkeys)** without displaying any camera feed or webcam preview box.
+- The model captures a clean frame via a hidden off-screen video element, extracts a 128-dimensional embedding vector, and matches it against database vectors.
+- If recognized: user is authenticated automatically.
+- If unverified or unsupported: the manual "Sign in with Face Biometric" button is shown gracefully without throwing disruptive errors.
+
+### 13.2 Multi-Account Topbar Switcher
+- The topbar user profile dropdown must include an interactive **"Switch Account"** section displaying all currently logged-in accounts on this device.
+- Clicking any authenticated account switches active session instantaneously **without requiring a password re-entry**.
+- Includes an **"Add another account"** button linking to `/login?mode=add_account`. If only 1 account exists, clicking "Switch Account" redirects to the login screen.
+
+### 13.3 6-Box Auto-Verifying OTP Component
+- **Structure**: 6 discrete rounded input boxes (`input type="text"`, `inputMode="numeric"`, `maxLength={1}`).
+- **Clipboard Paste**: Full support for pasting (`Ctrl + V`) a 6-digit code which distributes across the boxes automatically.
+- **Auto-Verification**: Trigger verification immediately upon completion of the 6th digit—**never require clicking a manual "Verify" button**.
+
+### 13.4 Real-Time Password Strength Meter
+- Every password creation and reset screen must display a dynamic strength bar (Weak, Moderate, Strong) paired with real-time green checkmarks for all 5 criteria:
+  1. Minimum 8 characters.
+  2. Uppercase letter (`[A-Z]`).
+  3. Lowercase letter (`[a-z]`).
+  4. Numeric digit (`[0-9]`).
+  5. Special symbol (`[!@#$%^&*]`).
+
+---
+
+## ⏳ 14. Loading State Architecture, Skeleton Themes & Two-Phase Dashboard Hydration
+
+Cross-referenced with [`modules/CMS_ENGINE.md`](../modules/CMS_ENGINE.md#26-two-phase-dashboard-hydration-lifecycle--hierarchical-single-fetch-context-providers).
+
+### 14.1 The Zero Upper Progress Bar Law
+> 🚫 **STRICT BAN ON TOP LOADING BARS**:
+> The application must **NEVER** render a top progress line, browser-edge thin bar (e.g. NProgress), or top-screen loading indicator on the Home page, public pages, or dashboard.
+>
+> **The Standard**: Every asynchronous loading state must render an exact **Layout-Matching Skeleton** that preserves the physical aspect ratio, card height, and table grid of the destination view, guaranteeing **Zero Layout Shift (CLS = 0)**.
+
+### 14.2 Skeleton Loading Themes & `localStorage` Synchronization
+1. **Visual Theme Variants**:
+   - **`CLASSIC_SHIMMER`**: Smooth diagonal metallic gradient sweep (`90deg` shimmer).
+   - **`PULSE_WAVE`**: Sinusoidal opacity fade wave (`0.35` to `0.90`).
+   - **`CYBER_NEON_GLOW`**: Subtle ambient neon edge breathing glow (Cyan / Violet tint).
+   - **`LIQUID_GLASS`**: Translucent frosted shimmer with `backdrop-filter: blur(8px)`.
+   - **`MINIMAL_STATIC`**: Flat, low-contrast placeholder blocks for dense tabular screens.
+2. **`localStorage` Persistence**:
+   - Active skeleton theme is stored in `localStorage.setItem("cms_skeleton_theme", theme)` so client-side navigation renders with zero styling flash.
+
+### 14.3 New User / First-Time Visitor Default: Branded Circle Loader
+- When a user visits the platform for the first time (no cached theme in `localStorage` or initial asset cold boot):
+  - The UI presents a centered **`<BrandedCircleLoader />`** with dual concentric orbital rings and ambient brand glow.
+  - As soon as the client environment initializes, the application permanently activates the customized Skeleton Loading system.
+
+### 14.4 Two-Phase Dashboard Hydration Lifecycle
+When navigating to `/dashboard/*`:
+1. **Phase 1: User & Session Verification Handshake**:
+   - The UI displays the centered **`<BrandedCircleLoader />`** while verifying the session cookie, tenant binding, and role permissions.
+   - Prevents flashing unauthorized dashboard layouts before the proxy check passes.
+2. **Phase 2: Post-Verification Layout Skeleton (`<DashboardSkeletonLayout />`)**:
+   - The instant authentication is validated, the screen cross-fades into the complete **Dashboard Skeleton Layout**:
+     - Sidebar skeleton with logo pill and 6–8 navigation shimmer bars.
+     - Topbar skeleton with breadcrumb, search input pill, and user profile circle.
+     - Main content area with 4 metric card skeletons, chart shimmer canvas, and 5-row striped table skeleton.
+   - Once data arrives, the skeleton cross-fades into live interactive components.
+
+### 14.5 The "Fetch-Once" Context Standard
+- Sidebar items, user profile, unread notification counts, and company details are loaded **EXACTLY ONCE** into a `DashboardShellContext` on initial dashboard mount.
+- Internal navigation between dashboard tabs (e.g. `/dashboard` -> `/dashboard/orders` -> `/dashboard/cms`) **never triggers re-fetching of sidebar or shell data**.
+
+---
+
+## 🧩 15. Context-Driven State Management & Automatic Component Synchronization
+
+Cross-referenced with [`rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`](../rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md).
+
+### 15.1 The Zero-Duplicate-Variable Law
+> ⚠️ **STRICT PROHIBITION**:
+> Components and sub-views **must never create duplicate local state variables** for data that is already managed by a React Context.
+>
+> - **Anti-Pattern**: Copying context arrays into local component state (`const [localList, setLocalList] = useState(contextList)`) causes split-brain state desynchronization.
+> - **The Standard**: Components must consume context variables directly:
+>   ```tsx
+>   // ✅ CORRECT: Direct subscription to context variables
+>   const { programs, selectedProgram, editProgram, deleteProgram } = useProgram();
+>   ```
+
+### 15.2 In-Place State Mutation & Automatic UI Re-Rendering
+1. When an entity is created, edited, or deleted:
+   - The operation executes through the context method (e.g. `editProgram(id, updates)`).
+   - Upon API confirmation, the context updates its existing state array in-place immutably using React `useState`:
+     ```tsx
+     setPrograms((prev) => prev.map((item) => (item._id === updated._id ? updated : item)));
+     ```
+2. **Automatic Synchronization Across Views**:
+   - Every active component subscribed to `useProgram()` across the page (e.g. the Master Data Table, the Slide View Card, the Metric Summary Pill, and the Edit Drawer) **automatically re-renders with the fresh data**.
+   - No manual window reloads, no duplicate API round-trips, and zero visual desynchronization.
+
+### 15.3 Layout Stability & Context Scoping
+- Dashboard Layouts and Shells must never execute API calls on route changes. Layout data is read directly from `DashboardShellContext`.
+- Public landing pages remain lightweight by omitting domain-specific model contexts.
+
+---
+
+## 🚀 16. Premium Button Animation System (100 Hover & 100 Task Presets)
+
+Cross-referenced with master specifications [`design-system/PREMIUM_BUTTON_ANIMATION_SYSTEM.md`](../design-system/PREMIUM_BUTTON_ANIMATION_SYSTEM.md), [`design-system/TASK_ANIMATED_BUTTONS_SYSTEM.md`](./TASK_ANIMATED_BUTTONS_SYSTEM.md), and [`design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`](./ROW_CARD_DELETE_DUSTBIN_ANIMATION.md).
+
+### 16.1 The 100 Hover + 100 Task Animation Standard
+- **Enterprise Scope**: The application supports a centralized registry of **100 Unique Hover Presets** (Surface, Typography, Iconography, Interactive Light, and CTA Utilities) and **100 Unique Task Presets** (Shopping, Payment, Documents, Messaging, CRUD, RBAC, and Engagement).
+- **The 9-State Lifecycle Machine**: Every button operates deterministically across `idle`, `hover`, `pressed`, `loading`, `processing`, `success`, `error`, `cancelled`, and `reset` states without layout shifts or text overflow.
+- **The Zero-Boring-Spinner Prohibition**: Generic circle loading spinners (`animate-spin` simple borders) are strictly banned across all surfaces. Buttons must reflect the tangible physical operation being executed.
+
+### 16.2 The Minimum Cycle & Loop Synchronization Law
+1. **Looping on Slow API Response**: If the server network request takes longer than the animation cycle duration ($T_{api} > T_{cycle}$), the animation seamlessly loops continuously without stuttering or abrupt restarts.
+2. **Cycle Completion on Fast API Response**: If the server responds faster than the animation cycle (e.g. API takes 150ms while $T_{cycle} = 1000\text{ms}$), the animation **MUST complete its ongoing cycle gracefully to 100% duration**. Never cut off, snap, or abort an in-flight animation.
+3. **The Strict Post-Animation Toast Execution Rule**:
+   - Toast notifications (`toast.success()`, `toast.error()`) **MUST NEVER be triggered mid-flight** while the button is still animating.
+   - The toast trigger callback is guaranteed to fire **strictly after the full animation cycle and terminal morph transition finish**.
+
+### 16.3 Standard Component Integration
+All action buttons are implemented using the universal `<AnimatedButton />` primitive, `<TaskAnimationRenderer />`, and `useTaskAnimationSync` hook:
+
+```tsx
+<TaskAnimatedButton
+  id="btn-delete-program"
+  label="Delete Program"
+  activeLabel="Shredding Record..."
+  successLabel="Program Deleted"
+  variant="destructive"
+  idleIcon={<Trash2 className="w-5 h-5" />}
+  animatingVector={<ShredderAnimationVector />}
+  cycleDuration={850}
+  onClick={() => deleteProgram(program._id)}
+  onSuccessToast={() => toast.success("Program permanently deleted from MongoDB.")}
+/>
+```
+
+### 16.4 The Table Row & Card Deletion Protocol (Confirmation Modal + Canvas Dustbin Fabric-Fold)
+Cross-referenced with master specification [`design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`](./ROW_CARD_DELETE_DUSTBIN_ANIMATION.md).
+
+1. **The Confirmation Modal Handshake**:
+   - Clicking Delete on any table row or card **never runs an abrupt in-place animation**.
+   - `<DeleteConfirmationModal />` opens first.
+   - The modal's Delete button loops its task-specific shredder animation while awaiting API completion.
+2. **Success Sequence (Toast -> Modal Close -> Canvas Dustbin)**:
+   - On HTTP 200 confirmation, Success Toast displays first, the modal closes, and the **Canvas Dustbin emerges from the right side of the screen/viewport**.
+   - The deleted row or card performs a **3D Fabric Folding Wave**: curling from its right edge like silk fabric and suctioning directly into the dustbin mouth.
+   - The dustbin lid snaps shut and exits right offscreen.
+   - The item is removed from the single canonical React Context state array (`programs`), and all remaining rows/cards glide seamlessly into place using Framer Motion `layout` FLIP physics.
+3. **Bulk Deletion Group Flight**:
+   - Multiple selected rows/cards lift and fold into the right-side dustbin **together at the exact same time** (sequential deletion is banned).
+4. **Error Immunity**:
+   - If the backend call fails, Error Toast displays, the canvas dustbin animation **NEVER EXECUTES**, and the item remains 100% visible and untouched.
+
+### 16.5 The Universal Hover Animation System Across 9 UI Categories
+Cross-referenced with master specification [`design-system/MASTER_HOVER_ANIMATION_SYSTEM.md`](./MASTER_HOVER_ANIMATION_SYSTEM.md).
+
+Hover micro-interactions are not restricted to buttons; they are enforced across all 9 core UI element categories:
+1. **Buttons & CTAs**: Vercel ambient glow, Codrops sliding color sweep, Framer Motion spring physics.
+2. **Links & Navigation Typography**: Kinetic rolling split-text, center-out underlines, cursor-following media reveals, `:has()` sibling dimming.
+3. **Cards & Content Surfaces**: 3D perspective gyro tilt (`perspective: 1000px`), real-time cursor radial spotlights, offset-path border beams.
+4. **Data Tables & Rows**: Progressive disclosure action toolbars, soft cyan highlighter tint shifts, left accent strips, elevation micro-shadows.
+5. **Navigation Menus & Tabs**: Framer Motion shared `layoutId="active-pill"` and `layoutId="hover-pill"`, animated dropdown panels, chevron 180° rotation.
+6. **Form Inputs & Controls**: Floating label `peer` transforms, glowing focus ring auras (`ring-4 ring-brand/15`), animated toggle switches.
+7. **Media, Avatars & Video**: Cursor-following action badges ("EXPLORE"), coordinate-aware zoom lenses, radar acoustic beacon pings.
+8. **Badges, Tags & Chips**: Lift & glow micro-elevation (`translateY(-1px)`), rotating close 'x' icons, selection state scale morphs.
+9. **Overlays, Tooltips & Accordions**: Portal-rendered tooltips (`z-50`), rotating plus-to-minus indicators (45°), smooth height layout expansion.
+
+---
+
+## 🛡️ 17. The Granular RBAC Permission UI & Zero-Leak UI Elimination Law
+
+Cross-referenced with master specification [`modules/RBAC_SYSTEM.md`](../modules/RBAC_SYSTEM.md).
+
+### 17.1 The Zero-Leak UI Elimination Law
+User interfaces must never expose UI elements that the user cannot interact with:
+1. **Zero-Leak Navigation Elimination**:
+   - If a page is disabled for a role, its navigation link is **completely stripped** from desktop sidebars, mobile bottom bars, topbar breadcrumbs, and quick action palettes.
+   - If a user navigates to the URL directly, [`<RouteGuard />`](../modules/RBAC_SYSTEM.md#64-route-level-access-guard-componentscommonrouteguardtsx) returns `null` immediately and redirects, preventing any visual frame flash.
+2. **Zero-Leak Button Elimination**:
+   - If an action button (e.g. Delete, Export PDF, WhatsApp) is disallowed, [`<ActionGuard />`](../modules/RBAC_SYSTEM.md#62-action-level-button-guard-componentscommonactionguardtsx) returns `null`.
+   - **Banned Practice**: Disallowed buttons must **never** be rendered in disabled states, greyed out, or visually styled with `opacity-0` or `pointer-events-none`. If a user cannot execute an action, the button does not exist in the DOM.
+
+### 17.2 The Owner 3-Tier Permission Governance Studio
+Implemented in [`components/rbac/OwnerPermissionStudio.tsx`](../modules/RBAC_SYSTEM.md#7-the-owner-permission-studio-component-componentsrbacownerpermissionstudiotsx):
+- **Tier 1 (Role Selection)**: Owner selects the target company role from an interactive pill bar.
+- **Tier 2 (Page Module Grid)**: Displays cards for each domain module (`Programs`, `Orders`, `Customers`, `Invoices`, `CMS`) with master toggle switches.
+- **Tier 3 (Granular Drilldown Modal)**:
+  - **Part A (Action Buttons)**: Checkbox matrix for `create`, `edit`, `delete`, `export_pdf`, `send_whatsapp`.
+  - **Part B (Row-Level Data Scope)**: Radio selector for `OWNER_ONLY`, `OWN_ONLY`, `ALL_USERS`, `SELECTED_ROLES`, `SELECTED_USERS`. Role and user dropdown pickers are strictly filtered to the current tenant (`companyId`).
+  - **Part C (Action-on-Scoped-Data Matrix)**: Fine-grained controls defining allowed actions on records created by other users within the selected scope.
+
+### 17.3 Task-Synchronized Save Animation
+- The "Save Permissions" button uses `<TaskAnimatedButton />` with the **`save_vault_lock`** preset.
+- Follows the **Minimum Cycle & Loop Synchronization Law**: guarantees a full 1000ms cyber-vault locking animation, smooth looping during network latency, flawless transition to a checkmark shield, and triggers success toast notifications strictly *after* motion completion.
+
+---
+
+## 🚧 18. Website Maintenance Mode UI & Ambient Visual Standards
+
+Cross-referenced with master specification [`modules/CMS_ENGINE.md`](../modules/CMS_ENGINE.md#25-website-maintenance-mode-studio--sovereign-access-interceptor) and [`modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md`](../modules/ROUTE_PROXY_AND_PROTECTION_SYSTEM.md#7-edge-middleware-maintenance-mode-interception--sovereign-bypass-handshake).
+
+### 18.1 Public Maintenance Screen Aesthetics (`<MaintenanceModeView />`)
+When maintenance mode is active, public visitors must never see a crude plain text message. They encounter an enterprise-grade visual experience:
+1. **Atmospheric Canvas Lighting**:
+   - Deep canvas background (`#07090e`) with layered radial ambient glows: cyan blur aura (`blur-[140px]`) at top center, subtle amber bloom at bottom.
+2. **Dynamic Brand Identity**:
+   - Header inherits the organization's high-resolution logo and title from [`CmsWebsiteDetails`](../modules/CMS_ENGINE.md#23-website-details-studio--global-brand-cascading).
+   - Real-time maintenance status pill with pulsing amber radar beacon.
+3. **Typography & Message Delivery**:
+   - Dynamic `headline` in high-impact font (`font-black tracking-tight text-white`).
+   - Dynamic `tagline` paragraph (`text-slate-300 font-normal leading-relaxed max-w-xl mx-auto`).
+   - Optional live countdown timer displaying estimated completion timestamp.
+4. **Prominent Admin & Owner Login CTA**:
+   - A bold, illuminated CTA button (`bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-8 py-4 rounded-2xl shadow-xl shadow-cyan-500/25`) directing authorized personnel to `/login`.
+
+### 18.2 Sovereign Bypass Dashboard Banner (`<MaintenanceActiveBanner />`)
+- When a Developer or Owner navigates the dashboard while maintenance mode is active, a persistent, non-intrusive warning banner is anchored to the top of the viewport (`sticky top-0 z-50 bg-amber-500 text-slate-950`).
+- Displays a clear status notice: *"⚠️ MAINTENANCE MODE IS ACTIVE: Public visitors see your maintenance screen. [ Manage in CMS ]"*.
+
+### 18.3 Non-Owner Role Lockout Screen (`<MaintenanceLockoutScreen />`)
+- If a non-owner authenticated user (Staff, Admin, Customer) logs in while maintenance is active:
+  - System intercepts navigation and displays a centered frosted dark card (`bg-slate-900/90 border-slate-800`).
+  - Displays user email and role badge, clearly stating: *"Access to operational dashboards is restricted to Platform Developers and Business Owners during maintenance."*
+  - Provides a single-click `[ Sign Out ]` button.
+
+---
+
+## 🎛️ 19. Animation Engine Feature Flag (`feature:animations`) & Dual-Mode Rendering Standards
+
+Cross-referenced with master specification [`modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md`](../modules/SETTINGS_AND_FEATURE_FLAGS_SYSTEM.md#63-the-animation-engine-feature-flag-featureanimations--instant-fallback-contract) and [`design-system/PREMIUM_BUTTON_ANIMATION_SYSTEM.md`](./PREMIUM_BUTTON_ANIMATION_SYSTEM.md#10-feature-flag-interceptor--instant-fallback-engine-featureanimations).
+
+The **`feature:animations`** flag allows platform operators and tenant owners to dictate whether rich micro-animations are rendered on their website and dashboard:
+
+### 19.1 The Dual-Mode Visual Rendering Law
+1. **Mode A: Rich Motion Mode (`feature:animations === true`, Default)**:
+   - Full motion architecture active: all 100 Hover presets, 100 Task-synchronized animations, Mac-like 3D Fabric Fold into right-sliding Canvas Dustbin, 3D gyro perspective card tilt, and kinetic typography.
+2. **Mode B: Instant Accessible Fallback Mode (`feature:animations === false`)**:
+   - Designed for low-latency corporate environments, battery-constrained devices, or clients preferring clean, distraction-free software.
+   - **Zero 3D Transforms / Canvas Overlays**: Canvas Dustbin and 3D gyro tilt are completely unmounted.
+   - **Instant State Labels**: Action buttons swap states instantly without looping vector delays (`"Saving..."` ➔ `"Saved"`).
+   - **Zero Spinners Law Preserved**: Even with animations disabled, **no generic spinning circles (`animate-spin`) are permitted**. Clean typography and status text convey state.
+   - **Row/Card Deletions**: Removed from context state immediately with a clean 150ms opacity fade.
+
+---
+
+## 🎨 20. The Universal Decorative Shell & Component Styling Engine
+
+Cross-referenced with master specification [`modules/CMS_ENGINE.md`](../modules/CMS_ENGINE.md#29-the-universal-component-decorator--responsive-multi-viewport-stylist).
+
+### 20.1 Decorative Tokens & Universal Target Registry
+The design system exposes a unified set of decorative styling tokens that govern both public storefront shells and operational dashboard components:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    UNIVERSAL DECORATIVE STYLING TOKENS                      │
+├────────────────────┬────────────────────────────────────────────────────────┤
+│ Corner Radiuses    │ `radius-none` (0px), `radius-sm` (6px), `radius-md`    │
+│                    │ (12px), `radius-lg` (18px), `radius-xl` (24px),        │
+│                    │ `radius-2xl` (32px), `radius-full` (9999px)            │
+├────────────────────┼────────────────────────────────────────────────────────┤
+│ Border Glows       │ `glow-cyan` (0 0 15px rgba(6, 182, 212, 0.35)),        │
+│                    │ `glow-magenta` (0 0 15px rgba(236, 72, 153, 0.35)),     │
+│                    │ `glow-amber` (0 0 15px rgba(245, 158, 11, 0.35)),      │
+│                    │ `glow-subtle` (0 0 8px rgba(255, 255, 255, 0.12))      │
+├────────────────────┼────────────────────────────────────────────────────────┤
+│ Surface Optics     │ `glass-frosted` (bg-surface/70 backdrop-blur-md),       │
+│                    │ `glass-heavy` (bg-surface/85 backdrop-blur-xl),         │
+│                    │ `glass-translucent` (bg-surface/40 backdrop-blur-sm)    │
+├────────────────────┼────────────────────────────────────────────────────────┤
+│ Hover Physics      │ `hover-lift` (scale 1.02x, translateY -2px, 200ms),     │
+│                    │ `hover-glow` (border-opacity 100%, shadow increase)     │
+└────────────────────┴────────────────────────────────────────────────────────┘
+```
+
+### 20.2 Shell & Core UI Component Customization
+
+#### 1. Public & Dashboard Navigation Shells:
+- **Public Topbar & Mobile Bottom Bar**:
+  - Configurable floating pill vs edge-to-edge docking.
+  - Active navigation indicator pill with subtle colored underglow.
+- **Dashboard Resizable Sidebar**:
+  - Right-border accent gradient stroke (`border-r border-white/10 dark:border-white/5`).
+  - Active menu link: illuminated background pill (`bg-cyan-500/10 text-cyan-400 border border-cyan-500/20`).
+- **Dashboard Mobile Floating Menu Glass Pill**:
+  - Frosted glass HUD with morphing text icon between `"Menu"` and `"Close"` and ambient glow beacon.
+
+#### 2. Dashboard Core Data UI Components:
+- **Bento & Metric Cards**:
+  - Configurable corner radius (`12px` to `24px`), multi-layer box shadows, and frosted glass opacity.
+- **Master Data Tables**:
+  - Gradient table header with crisp uppercase typography.
+  - Alternating zebra row tinting (`bg-surface/20`) and hover glow highlights.
+  - Integration with the 3D Canvas Dustbin deletion animation.
+- **Filters, Search Bars & Pagination**:
+  - Custom floating label inputs with accent focus rings (`focus:ring-2 focus:ring-cyan-500/40`).
+  - Pagination pills with active page glow and tactile chevron buttons.
+- **Chart & Graph Containers**:
+  - Card backdrops with subtle gradient mesh lighting and accessible axis gridline contrast.
+
+### 20.3 Multi-Viewport Responsive Law (Desktop, Tablet, Mobile)
+- **Viewport Dimension Standards**:
+  - Desktop: `1440x900`
+  - Tablet: `768x1024`
+  - Mobile: `390x844` (iPhone standard)
+- **Fluid Adaptation**:
+  - All card grids automatically transition from 4-column (Desktop) ➔ 2-column (Tablet) ➔ 1-column stacked cards (Mobile).
+  - Data tables automatically morph into responsive card decks on viewports `< 768px`.
+  - Minimum touch target for all interactive elements on mobile is strictly **`44x44px`**.
+  - Horizontal scrollbars on the document body are strictly prohibited (`overflow-x: hidden`).
+
+
+
+
+
+
+---
+
+## Source: design-system/FRONTEND_DESIGN_RULES.md
+
+# Frontend Design & UI/UX Standards (Tailwind CSS Profile)
+
+> **Applicability:** This document describes a Tailwind-oriented design system profile. Use it when Tailwind is already selected or explicitly requested. For projects using CSS Modules, vanilla CSS, Sass, styled-components, another utility framework or a design-system package, preserve the existing styling architecture and translate only the relevant visual principles. This document does not authorize a framework migration.
+
+
+> **CORE PRINCIPLE**: The user must be WOWED at first glance. Generic, default HTML or basic MVP designs are considered a complete failure. Every project MUST use **Tailwind CSS** as its foundation, paired with rich animations, glowing elements, bespoke typography, and specialized UI components.
+
+---
+
+## 👑 0. The Law of Original & Bespoke Design ("Design Apna Banana Hai - No Blind Copying from Docs")
+
+> **CRITICAL ARCHITECTURAL DIRECTIVE FOR ALL AGENTS & DEVELOPERS**:
+> - **Documentation is an Architectural Blueprint, NOT a Static Template**: All code snippets, color palettes, card layouts, and dummy examples in `Main-docs` exist to define **mechanics, structural rules, and behavioral contracts** (e.g. dynamic `h-dvh` sidebars, floating label transitions, hybrid desktop table vs mobile cards, marquee drag selection math, keyboard event stacks).
+> - **NEVER Blindly Copy Documentation Design**: You must NEVER copy-paste the exact dummy colors, placeholder cards, or generic mock themes verbatim from the documentation into the project.
+> - **Design Apna Banana Hai (Craft Bespoke UI/UX)**: Every application MUST have its own dedicated, bespoke visual identity:
+>   1. **Tailored Color Palette**: Curate brand-specific primary, secondary, and accent colors tailored to the client's business domain (e.g. obsidian & emerald for fintech, deep midnight indigo & cyan for cloud SaaS, rich amber & slate for logistics).
+>   2. **Distinct Typography Pairing**: Select and configure intentional font pairings from our bespoke font library (e.g. Neofolio + Plus Jakarta Sans, Bierika + Outfit, Nexo Kora + Inter) that express the unique brand personality.
+>   3. **Bespoke Component Styling**: Design custom card layouts, hero sections, metric badges, and empty states tailored specifically to the project's actual data models and workflows.
+>   4. **WOW-Factor Polish**: Handcrafted micro-animations, glassmorphic depths, and glowing hover states that blow the user away at first glance.
+
+### 🏷️ 0.1 Bespoke Logo & Real Favicon Suite Mandate (Never Leave Default Icons!)
+
+> **MANDATORY BRANDING RULE**:  
+> Leaving the default framework favicon (e.g. Next.js black/white triangle `favicon.ico`, Vite bird icon, React atom, or empty browser globe) or using generic plain unstyled text for a company logo is considered **AN UNACCEPTABLE DESIGN FAILURE**.
+
+1. **Bespoke Logo Requirements**:
+   - Every application MUST feature a high-end, custom-crafted brand Logo:
+     - **Full Logo (`variant="full"`)**: Scalable vector brand glyph mark + stylized brand wordmark using one of our bespoke fonts (e.g. Neofolio, Nexo Kora, Bierika, or Clash Display) for the Topbar, Auth cards, Landing page hero, and Footer.
+     - **Compact Icon / Glyph (`variant="icon"`)**: Square or circular emblem for the collapsed `h-dvh` sidebar rail, mobile header, and PWA launcher.
+     - **Dual Theme Support**: Logo must automatically adapt or pop across dark and light modes using glowing gradients, SVG filters, or clean monochrome contrasts.
+2. **Complete Favicon Suite Requirements**:
+   - The developer / agent must create a real, crisp, bespoke Favicon suite placed in `/public` or via Next.js metadata (`app/icon.tsx`):
+     - `favicon.ico`: Multi-resolution (16x16, 32x32, 48x48) clean icon.
+     - `icon.svg`: Crisp vector icon with glowing gradients.
+     - `apple-touch-icon.png`: 180x180 px high-res icon for iOS home screen bookmarks and Safari tab bars.
+     - `icon-192.png` & `icon-512.png`: PWA Android / Chrome manifest icons.
+     - `site.webmanifest`: Linked with project brand theme colors.
+3. **Design Quality Bar**:
+   - Whether handcrafted directly in SVG code, designed with modern geometry, or generated using image/vector tools—the logo and favicon **MUST BE TOP-NOTCH, REAL, AND STATE-OF-THE-ART**. No blurry, generic, or stock icons are permitted!
+4. **The Mandatory Canva Refinement Workflow**:
+   - If programmatic SVGs or initially generated logos/favicons do not meet ultra-premium, crisp visual standards, the developer/agent MUST leverage **Canva** (or guide the workflow in Canva) to design, polish, and export clean, high-resolution transparent vector/PNG brand marks:
+     - Full Brand Logo (`variant="full"`) with bespoke typography.
+     - Compact Glyph / Favicon (`512x512` master, `180x180` Apple touch icon, and multi-res `favicon.ico`).
+   - Mediocre, misaligned, or blurry brand assets are strictly forbidden from entering production.
+
+---
+
+## 🎨 1. Tailwind CSS Standard (When Tailwind Is Selected)
+
+Tailwind CSS (v3 / v4) is used by this design profile. Do not migrate an existing application to Tailwind solely to follow this document; preserve its current styling system.
+- Enable `darkMode: 'class'` for seamless Dark/Light dual theming.
+- Use Tailwind utility classes for layout, flexbox, grid, spacing, and responsive design (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`).
+- Cross-reference full architecture in [`DESIGN_ARCHITECTURE.md`](./DESIGN_ARCHITECTURE.md).
+
+---
+
+## 🔠 2. Typography & Bespoke Fonts
+
+Never use default system serif/sans-serif. Always configure expressive display fonts and ultra-clean interface fonts:
+- **Display & Headings**: **Neofolio**, **Nexo Kora**, **Bierika**, **OSIRIS**, or **Clash Display**.
+- **Body & UI**: **Plus Jakarta Sans**, **Outfit**, or **Inter**.
+- Typography hierarchy in Tailwind:
+  - `h1`: `text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white`
+  - `h2`: `text-2xl lg:text-3xl font-bold tracking-tight text-slate-800 dark:text-slate-100`
+  - `h3`: `text-xl font-semibold text-slate-800 dark:text-slate-200`
+  - `body`: `text-base leading-relaxed text-slate-600 dark:text-slate-300`
+  - `caption`: `text-xs font-medium text-slate-500 dark:text-slate-400`
+
+---
+
+## 💎 3. Glassmorphism & Hover Glow Cards
+
+All card and surface elements should feel tactile, frosted, and alive:
+
+```tsx
+<div className="rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-6 shadow-sm hover:shadow-glow-sky hover:border-sky-400/40 transition-all duration-300 hover:-translate-y-1">
+  {/* Card Content */}
+</div>
+```
+
+---
+
+## ⚡ 4. Animations: Framer Motion, GSAP & Free 3D Models
+
+1. **Framer Motion**:
+   - Mandatory for all modals, slideovers, dropdown popups, and toast notifications.
+   - Use `AnimatePresence` for exit animations.
+2. **GSAP & ScrollTrigger**:
+   - For scroll-driven storytelling, parallax sections, and complex timeline sequences.
+3. **Three.js & High-Fidelity 3D Models (Mandatory Parts Audit & Inspection Standard)**:
+   - **Explicit User Opt-In**: Three.js 3D scenes are enabled only with user confirmation.
+   - **The High-Quality 3D Model Law**: Every 3D model used in the application—whether procedural in code or imported from verified free/CC0 web sources—**must be an exceptionally high-quality, complete 3D model with high-precision parameters**. Low-poly accidental defaults or unverified crude assets are strictly forbidden.
+   - **Mandatory Parts Decomposition**: The developer/agent must systematically decompose the model into its individual sub-parts, meshes, and bone nodes:
+     - Audit every part's geometry, world coordinates, pivot alignment, scale $(1, 1, 1)$, and surface normals.
+     - Verify PBR materials (`roughness`, `metalness`, `envMapIntensity`, soft shadows, and power-of-two textures).
+   - **3D Staging & Inspection Tools**: Pre-inspect and validate models in the **Three.js Editor** (`threejs.org/editor`) or our built-in `<ThreeModelInspector />` component before deploying.
+   - **Rigorous Animation Instructions**: Scroll-driven storytelling (via GSAP ScrollTrigger), exploded-view choreography, and camera dollies must strictly follow exact geometric keyframe instructions.
+   - **Sourcing & Performance Budgets**: Exclusively use 100% free/CC0 models (`.glb` with Draco compression from Kenney, Three.js examples, Sketchfab CC0) or procedural geometry. Desktop polycount $\le 100\text{k}$ triangles; draw calls $\le 40$; strictly dispose GPU buffers on unmount.
+   - **Master Architecture**: Cross-referenced with [`design-system/THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md`](./THREEJS_3D_MODEL_ARCHITECTURE_AND_INSPECTION_SYSTEM.md).
+
+---
+
+## 🎯 5. Icon Ecosystem & Animated Lottie
+
+Integrate high-quality vector and interactive animated icons:
+- **Static Icons**: `lucide-react`, `@fortawesome/react-fontawesome`, Google Material Symbols.
+- **Animated Vectors & Lottie**:
+  - **Lordicon** (`https://lordicon.com/` / `lordicons.com`): Interactive morphing micro-icons.
+  - **Icons8** (`https://icons8.com/`): Expressive UI status illustrations.
+  - **LottieFlow** (`https://lottieflow.com/`): Micro-interaction switches and triggers.
+  - **LottieFiles** (`https://lottiefiles.com/`): Hero scenes and empty states.
+
+---
+
+## 📝 6. Input Component Rule: Floating Labels (No Placeholders!)
+
+All form fields must use custom Floating Label components (see [`DESIGN_ARCHITECTURE.md`](./DESIGN_ARCHITECTURE.md)):
+- **Text Inputs**: Centered label floats to top border outline on focus or when value exists.
+- **Textareas**: First-line aligned label floats to top border on focus.
+- **Select Dropdowns**: Google Forms style centered label with zero premature placeholder text.
+
+---
+
+## 🖱️ 7. Interactive Elements & Layout Guardrails
+
+1. **Mandatory `cursor-pointer`**: Every button, link, tab, clickable table row, and dropdown trigger must have `cursor-pointer`.
+2. **Custom Sleek Scrollbars**: Styled with thin dimensions and semi-transparent thumb.
+3. **Fixed Resizable Sidebar (Desktop)**:
+   - Position: `fixed top-0 left-0`.
+   - Height: `h-dvh` (Dynamic viewport height).
+   - Resizable width handle with drag listener and `localStorage` memory.
+4. **Toast Notifications**: Interactive animated toasts with hover-to-pause and glowing status borders.
+5. **Mobile Public Pages Navigation (Fixed Bottom Bar & Strict No-Sidebar)**:
+   - On mobile viewports (`< 1024px`), public/marketing pages **MUST NEVER render a sidebar or sidepanel drawer**.
+   - Fixed bottom tab bar (`fixed bottom-0`) with 3-4 primary links (Home, Explore, Orders) + a mandatory "More" (`...`) link that slides open a native-style bottom sheet drawer for auxiliary links.
+6. **Mobile Dashboard Navigation (Floating Bottom-Center "Menu" Pill & Dual Close Controls)**:
+   - On mobile dashboards, navigation is triggered via a floating bottom-center obsidian glass pill with the label `"Menu"` (Vercel-inspired bespoke design).
+   - **Dual Close Controls**: Opening the sidebar morphs the bottom floating pill into `"Close"` with an animated 'X', while the open sidebar header also features a dedicated top 'X' close button. Clicking either control or the backdrop dismisses the drawer.
+7. **Zero-Bar, Zero-Icon Top-Hold Draggable Modals & Popups**:
+   - Universal draggable support across all centered modal dialogs, entity forms, and confirmation boxes on desktop.
+   - **Strict Zero-Bar & Zero-Icon Mandate**: No dedicated drag titlebar or extra header strip is created, and zero move/grip icons (such as 6-dot grips or 4-way arrows) are displayed.
+   - **Top-Hold Grip Zone**: Users click and hold anywhere along the top region/header of the modal (top `48px-64px`) to drag.
+   - **Cursor Feedback**: Displays `cursor-grab` on hover and `cursor-grabbing` while held (`select-none`).
+   - **Interactive Isolation**: Clicks on inner controls (such as the '✕' close button, tabs, or input fields) are safely excluded from drag events (`closest('button, a, input, textarea, select')`).
+   - **Viewport Edge Clamping**: Window coordinates are clamped continuously to prevent modals from dragging off-screen.
+   - **Mobile Adaptation**: On mobile viewports (`< 768px`), modals remain fixed/centered or bottom sheets to prevent scroll conflicts.
+8. **Apple macOS 3D Genie Origin-Morph & Button Absorb Standard**:
+   - Cross-referenced with master specification [`design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`](./APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md).
+   - Contextual modals, forms, dropdowns, and confirmation boxes emerge from the exact coordinates of the clicked button (3D Genie unfold).
+   - On close, the modal rolls/sucks back down into that same button, while the source button visually elevates (`translate-y-[-3px]`), glows, and plays a tactile 'absorb/catch' bounce.
+
+---
+
+## 🎬 8. Premium Button Animation System (100 Hover & 100 Task Presets)
+
+Cross-referenced with master specification [`design-system/PREMIUM_BUTTON_ANIMATION_SYSTEM.md`](../design-system/PREMIUM_BUTTON_ANIMATION_SYSTEM.md), [`design-system/TASK_ANIMATED_BUTTONS_SYSTEM.md`](./TASK_ANIMATED_BUTTONS_SYSTEM.md), and [`design-system/ROW_CARD_DELETE_DUSTBIN_ANIMATION.md`](./ROW_CARD_DELETE_DUSTBIN_ANIMATION.md).
+
+1. **The 100 Hover + 100 Task Presets Standard**:
+   - Universal central animation registry supporting 100 unique hover interactions and 100 unique task-specific action animations across the entire application.
+   - Governed by a **9-State Finite State Machine** (`idle`, `hover`, `pressed`, `loading`, `processing`, `success`, `error`, `cancelled`, `reset`).
+2. **Universal Ban on Boring Circle Spinners**:
+   - Never use generic loading circles (e.g. `animate-spin` simple ring borders) on interactive action buttons across Public pages, CMS, or Dashboards.
+   - Action buttons must render **Task-Specific Micro-Animations** representing what the button actually does (paper planes for messages, shredders for deletion, cash register printouts for invoices, chip reader for card payments, satellite beams for publishing).
+3. **The Minimum Cycle & Looping Law**:
+   - Slow API calls: Animation continuously loops smoothly without jitter.
+   - Fast API calls: Ongoing animation cycle **must run to 100% completion**; never abruptly truncate or snap.
+4. **Strict Post-Animation Toast Execution**:
+   - Toast notifications must only be displayed **AFTER** the button's animation cycle and success/error morph finish completely.
+5. **The Universal Hover Animation System Across 9 Categories**:
+   - Cross-referenced with [`design-system/MASTER_HOVER_ANIMATION_SYSTEM.md`](./MASTER_HOVER_ANIMATION_SYSTEM.md).
+   - Hover animations are mandatory across all 9 UI categories: Buttons, Links, Cards, Table Rows, Nav Tabs, Form Inputs, Media Assets, Status Badges, and Tooltip/Accordions.
+
+
+---
+
+# PRESERVED LEGACY COMPILED BRAIN
+
+The following historical compiled content is retained as a reference library. When any instruction conflicts with the current authoritative addendum above, follow the addendum and current source documents.
+
+---
+
 # 🧠 WEBSITE BUILDER ENGINE — MASTER COMPILED BRAIN
 > **CANONICAL PRODUCTION SPECIFICATION & COMPLETE KNOWLEDGE BASE**  
 > Auto-generated compiled synthesis of all 50+ architecture modules, design systems, engineering rules, and verification standards.
