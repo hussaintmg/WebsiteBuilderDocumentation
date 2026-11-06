@@ -5,7 +5,7 @@ description: Use when planning, building, debugging, retrofitting, modernizing, 
 
 # Website Builder & Autonomous Web Engineering Engine (`website-builder-engine`)
 
-> **PURPOSE**: Master production architecture and autonomous engineering engine for building, modernizing, and retrofitting complete, high-performance, non-breaking web applications in a single run. Enforces Rule Zero ("Plan First, Code Second"), bespoke visual branding, root-level `/app` directory standard (Zero `src/` wrapper), polymorphic multi-storage, split-brain payment resilience, 5-pillar low-bandwidth performance, optimistic rapid-click batching, mandatory deep-documentation inspection, and automated evidence-based acceptance criteria audit score gates.
+> **PURPOSE**: Architecture-aware, reusable web engineering skill for planning, implementing, debugging, modernizing and verifying web projects. It discovers the target repository first, preserves its conventions, applies only relevant modules, implements the requested outcome within scope, and requires real verification evidence. Stack blueprints, design patterns, storage strategies, payment flows and performance techniques are selectable references—not universal requirements.
 
 ---
 
@@ -144,7 +144,7 @@ Choose your workflow based on the current workspace state:
 When starting a brand new project:
 1. Open [`DISCOVERY_QUESTIONNAIRE.md`](./DISCOVERY_QUESTIONNAIRE.md).
 2. Ask questions in structured, digestible batches (Scope -> UI/UX -> RBAC -> Features -> Safeguards -> Storage -> Performance).
-3. **Backend Placement Inquiry**: Ask whether backend is Unified Monolith, Dual Next.js (`frontend/` + `backend/`), FastAPI (Python), or Node.js.
+3. Ask about backend placement only when the user's requirements or existing context do not already resolve it. Offer suitable alternatives for the actual constraints; do not force a fixed list.
 4. Support the user in their preferred language (English, Urdu, or Roman Urdu).
 
 ### Phase 2: Project Workspace Initialization
@@ -152,7 +152,7 @@ Once answers are received:
 1. Create a dedicated project configuration directory at the root (`/.project/` or `/projects/<project-name>/`).
 2. Generate the core blueprint files using [`PLAN_BUILDER.md`](./PLAN_BUILDER.md):
    - `PLAN.md`: Objectives, stack, chosen modules, and scope boundaries.
-   - `ARCHITECTURE.md`: Data models, API contracts, RBAC permissions, and root-level `/app` file structure.
+   - `ARCHITECTURE.md`: Data models, API contracts, permissions, and the selected framework's native project structure.
    - `RULES.md`: Design rules extracted from `design-system/` plus engineering rules from `rules/`.
    - `SPRINTS.md`: Phased task list with clear checkboxes and test gates.
    - `FILE-MAP.md`: Living repository navigation map per [`rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md`](./rules/SAFE_DEVELOPMENT_AND_FILE_MAP_RULES.md).
@@ -160,19 +160,19 @@ Once answers are received:
 
 ### Phase 3: Scaffolding & Foundation First
 Once the plan is approved:
-1. **Root-Level `/app` Directory Standard (Zero `src/` Wrapper)**:
-   - Place Next.js App Router directly at `<root>/app/`.
-   - Sibling root directories: `/app`, `/components`, `/context`, `/models`, `/hooks`, `/lib`, `/public`, `/styles`.
-   - Path alias: `"@/*": ["./*"]` in `tsconfig.json`.
+1. **Framework-native project structure**:
+   - Follow the selected framework and repository conventions (including `src/` where appropriate).
+   - Add directories such as `app`, `components`, `context`, `models`, `hooks`, `lib`, `public` or `styles` only when they fit the chosen architecture.
+   - Configure aliases using the actual language and build tooling.
 2. **Original & Bespoke Design Mandate ("Design Apna Banana Hai")**:
    - Never copy documentation code examples or dummy colors verbatim.
    - Craft a bespoke visual identity, palette, and custom typography pairing per [`design-system/DESIGN_ARCHITECTURE.md`](./design-system/DESIGN_ARCHITECTURE.md).
 3. **Bespoke Brand Logo & Complete Favicon Suite**:
    - Create vector brand logos (wordmark + 32x32 glyph) and full favicon suite (`favicon.ico`, `icon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest`).
-4. **Zero-Bar Draggable Modals & Apple Genie Origin-Morph System**:
-   - Implement macOS 3D Genie Origin-Morph animation unrolling from origin buttons per [`design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md`](./design-system/APPLE_GENIE_ORIGIN_MORPH_SYSTEM.md).
-5. **Database Schemas & Models**:
-   - Dedicated root `/models` (1 collection per file) following [`rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`](./rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md).
+4. **Interaction and motion patterns**:
+   - Select accessible, purposeful interaction patterns from the design system only when the product needs them. Genie origin-morph is an optional pattern, not a default modal requirement.
+5. **Data layer**:
+   - Follow the selected database and persistence architecture. Use [`rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`](./rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md) only when its model/context approach matches the project.
 
 ---
 
