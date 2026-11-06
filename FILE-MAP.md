@@ -50,6 +50,7 @@
   - `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md`: Optional models and state-layer patterns.
   - `rules/TESTING_AND_VERIFICATION.md`: Project-aware verification guidance (Static, Adversarial Chaos, DB Mutation, Context, Dead Code, Copywriting, Visual).
   - `rules/BACKEND_CONNECTION_RULES.md`: Server-to-server contracts, DB connection caching, and API standards.
+  - `rules/SECRETS_AND_CREDENTIALS_SECURITY.md`: Password hashing, encrypted integration credentials, JWT separation, tenant-safe secret access and rotation.
   - `rules/RBAC_SECURITY_RULES.md`: Role definitions (Developer, Owner, Admin, Staff, Customer), security matrices, permission guards.
   - `rules/PAYMENT_SAFEGUARD_RULE.md`: Developer monthly hosting & maintenance payment banner and grace period rules.
 - **Flow**:
@@ -160,6 +161,7 @@
 | `rules/MODELS_AND_CONTEXTS_ARCHITECTURE.md` | Arch Rule | Optional models and state/data-layer patterns | State & Data Layer | Verified |
 | `rules/TESTING_AND_VERIFICATION.md` | Quality | Optional 7-tier verification reference | Quality Assurance | Verified |
 | `rules/BACKEND_CONNECTION_RULES.md` | Backend Rule | DB connection caching, API envelopes, server-to-server calls | Backend Integration | Verified |
+| `rules/SECRETS_AND_CREDENTIALS_SECURITY.md` | Security Rule | Password hashing, encrypted provider secrets, JWT separation, key management and rotation | Secrets / Credentials / JWT | Added |
 | `rules/RBAC_SECURITY_RULES.md` | Security Rule | 5-tier role hierarchy, permission enforcement | Security & Auth | Verified |
 | `rules/PAYMENT_SAFEGUARD_RULE.md` | Billing Rule | Developer hosting safeguard banner and 8th-day grace date | Platform Billing | Verified |
 
