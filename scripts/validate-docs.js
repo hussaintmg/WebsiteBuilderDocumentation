@@ -40,9 +40,9 @@ const activeDirectives = [
   'modules/EXISTING_PROJECT_RETROFIT_ENGINE.md'
 ];
 const forbiddenActivePatterns = [
-  { pattern: /(?:compliance\\s+)?score\\s*(?:>=|>|of)\\s*95%/i, label: 'legacy 95% score completion gate' },
-  { pattern: /npx\\s+website-builder/i, label: 'unpublished npx website-builder invocation' },
-  { pattern: /lib\\/resolve-paths\\.js|bin\\/website-builder\\.js/, label: 'stale runtime script path' },
+  { pattern: /(?:compliance\s+)?score\s*(?:>=|>|of)\s*95%/i, label: 'legacy 95% score completion gate' },
+  { pattern: /npx\s+website-builder/i, label: 'unpublished npx website-builder invocation' },
+  { pattern: /lib\/resolve-paths\.js|bin\/website-builder\.js/, label: 'stale runtime script path' },
   { pattern: /Tailwind CSS.{0,35}mandatory/i, label: 'universal Tailwind mandate' },
   { pattern: /MongoDB.{0,35}mandatory/i, label: 'universal MongoDB mandate' }
 ];
@@ -57,7 +57,7 @@ if (manifest && manifest.tiers && manifest.tiers.tier0_manifest_and_core_law) {
   const mandatory = manifest.tiers.tier0_manifest_and_core_law.mandatoryFiles || [];
   const lineBudget = mandatory.reduce((sum, rel) => {
     if (!exists(rel)) return sum;
-    return sum + fs.readFileSync(path.join(root, rel), 'utf8').split('\\n').length;
+    return sum + fs.readFileSync(path.join(root, rel), 'utf8').split('\n').length;
   }, 0);
   if (lineBudget > 300) errors.push('Tier-0 mandatory context exceeds 300 lines (' + lineBudget + '). Move optional guides to progressive tiers.');
   else console.log('Tier-0 context budget: PASS (' + lineBudget + '/300 lines).');
